@@ -49,3 +49,7 @@ run_test: test
 clean:
 	rm -f ./*.o
 	rm -f ./$(BINARY_NAME)
+
+.PHONY: cleanlib
+cleanlib:
+	cd .. && make cleanlib
