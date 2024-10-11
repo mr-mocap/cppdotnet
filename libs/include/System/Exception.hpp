@@ -10,19 +10,41 @@
 namespace System
 {
 
+/** The base exception class in .NET
+ *
+ *  @note You shouldn't use this OR SystemException.  Use one of the classes
+ *        derived from those.
+ */
 class Exception : public std::exception
 {
 public:
     Exception() = default;
 
+    /** Remove the ability to copy objects of this class
+     *
+     *  @{
+     */
     Exception(const Exception &) = delete;
     Exception &operator =(const Exception &) = delete;
+    /// @}
 
-    // Move
+    /** Define the ability to move objects of this class
+     *
+     *  @{
+     */
     Exception(Exception &&other);
     Exception &operator =(Exception &&other);
+    /// @}
 
     Exception(const std::string_view message);
+
+    /** 
+     *
+     *  @note This pattern allows for only move of Exception classes into the InnerException()
+     *        since we need to copy the entire Exception object and not just this base class slice.
+     *
+     *  @{
+     */
     template <class ExceptionType>
     Exception(const std::string_view message, const ExceptionType &inner_exception) = delete;
 
@@ -33,6 +55,7 @@ public:
         _innerException{ std::make_unique<ExceptionType>( std::move(inner_exception) ) }
     {
     }
+    /// @}
 
     virtual ~Exception();
 
@@ -65,16 +88,25 @@ public:
 
     SystemException() = default;
 
+    /** Remove the ability to copy objects of this class
+     *
+     *  @{
+     */
     SystemException(const SystemException &) = delete;
     SystemException &operator =(const SystemException &) = delete;
+    /// @}
 
-    // Move
+    /** Define the ability to move objects of this class
+     *
+     *  @{
+     */
     SystemException(SystemException &&other) : Exception( std::move(other) ) { }
     SystemException &operator =(SystemException &&other)
     {
         Exception::operator =( std::move(other) );
         return *this;
     }
+    /// @}
 
     SystemException(const std::string_view message)
         :
@@ -92,10 +124,18 @@ public:
 
     ArgumentException() = default;
 
+    /** Remove the ability to copy objects of this class
+     *
+     *  @{
+     */
     ArgumentException(const ArgumentException &) = delete;
     ArgumentException &operator =(const ArgumentException &) = delete;
+    /// @}
 
-    // Move
+    /** Define the ability to move objects of this class
+     *
+     *  @{
+     */
     ArgumentException(ArgumentException &&other)
         :
         SystemException( std::move(other) ),
@@ -108,6 +148,7 @@ public:
         _paramName = std::move(other._paramName);
         return *this;
     }
+    /// @}
 
     ArgumentException(const std::string_view message) : SystemException( message ) { }
     ArgumentException(const std::string_view message, const std::string_view param_name)
@@ -139,16 +180,25 @@ public:
 
     ArgumentNullException() = default;
 
+    /** Remove the ability to copy objects of this class
+     *
+     *  @{
+     */
     ArgumentNullException(const ArgumentNullException &) = delete;
     ArgumentNullException &operator =(const ArgumentNullException &) = delete;
+    /// @}
 
-    // Move
+    /** Define the ability to move objects of this class
+     *
+     *  @{
+     */
     ArgumentNullException(ArgumentNullException &&other) : ArgumentException( std::move(other) ) { }
     ArgumentNullException &operator =(ArgumentNullException &&other)
     {
         ArgumentException::operator =( std::move(other) );
         return *this;
     }
+    /// @}
 
     ArgumentNullException(const std::string_view param_name);
     ArgumentNullException(const std::string_view param_name, const std::string_view message)
@@ -167,16 +217,25 @@ public:
 
     ArgumentOutOfRangeException() = default;
 
+    /** Remove the ability to copy objects of this class
+     *
+     *  @{
+     */
     ArgumentOutOfRangeException(const ArgumentOutOfRangeException &) = delete;
     ArgumentOutOfRangeException &operator =(const ArgumentOutOfRangeException &) = delete;
+    /// @}
 
-    // Move
+    /** Define the ability to move objects of this class
+     *
+     *  @{
+     */
     ArgumentOutOfRangeException(ArgumentOutOfRangeException &&other) : ArgumentException( std::move(other) ) { }
     ArgumentOutOfRangeException &operator =(ArgumentOutOfRangeException &&other)
     {
         ArgumentException::operator =( std::move(other) );
         return *this;
     }
+    /// @}
 
     ArgumentOutOfRangeException(const std::string_view param_name);
     ArgumentOutOfRangeException(const std::string_view param_name, const std::string_view message)
@@ -195,16 +254,25 @@ public:
 
     NotSupportedException() = default;
 
+    /** Remove the ability to copy objects of this class
+     *
+     *  @{
+     */
     NotSupportedException(const NotSupportedException &) = delete;
     NotSupportedException &operator =(const NotSupportedException &) = delete;
+    /// @}
 
-    // Move
+    /** Define the ability to move objects of this class
+     *
+     *  @{
+     */
     NotSupportedException(NotSupportedException &&other) : SystemException( std::move(other) ) { }
     NotSupportedException &operator =(NotSupportedException &&other)
     {
         SystemException::operator =( std::move(other) );
         return *this;
     }
+    /// @}
 
     NotSupportedException(const std::string_view message) : SystemException( message ) { }
 
@@ -218,16 +286,25 @@ public:
 
     InvalidOperationException() = default;
 
+    /** Remove the ability to copy objects of this class
+     *
+     *  @{
+     */
     InvalidOperationException(const InvalidOperationException &) = delete;
     InvalidOperationException &operator =(const InvalidOperationException &) = delete;
+    /// @}
 
-    // Move
+    /** Define the ability to move objects of this class
+     *
+     *  @{
+     */
     InvalidOperationException(InvalidOperationException &&other) : SystemException( std::move(other) ) { }
     InvalidOperationException &operator =(InvalidOperationException &&other)
     {
         SystemException::operator =( std::move(other) );
         return *this;
     }
+    /// @}
 
     InvalidOperationException(const std::string_view message) : SystemException( message ) { }
 
@@ -241,10 +318,18 @@ public:
 
     ObjectDisposedException() = default;
     
+    /** Remove the ability to copy objects of this class
+     *
+     *  @{
+     */
     ObjectDisposedException(const ObjectDisposedException &) = delete;
     ObjectDisposedException &operator =(const ObjectDisposedException &) = delete;
+    /// @}
 
-    // Move
+    /** Define the ability to move objects of this class
+     *
+     *  @{
+     */
     ObjectDisposedException(ObjectDisposedException &&other)
         :
         InvalidOperationException( std::move(other) ),
@@ -257,6 +342,7 @@ public:
         _objectName = std::move(other._objectName);
         return *this;
     }
+    /// @}
 
     ObjectDisposedException(const std::string_view disposed_object_name);
     ObjectDisposedException(const std::string_view disposed_object_name, const std::string_view message);
@@ -268,9 +354,16 @@ protected:
     std::string _objectName;
 };
 
+/** Throws the given exception and fills in the TargetSite()
+ *
+ *  @param exception_to_throw
+ *
+ *  @note The second parameter is boilerplate for C++ to acquire
+ *        the information about the call-site of the function call.
+ */ 
 template <class ExceptionType>
-void ThrowWithTarget(ExceptionType &&exception_to_throw,
-                             std::source_location sloc = std::source_location::current())
+void ThrowWithTarget(ExceptionType        &&exception_to_throw,
+                     std::source_location   sloc = std::source_location::current())
 {
     ExceptionType e{ std::forward<ExceptionType>( exception_to_throw ) };
     
