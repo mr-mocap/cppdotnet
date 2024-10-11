@@ -1,13 +1,31 @@
 #include "System/Console.hpp"
 #include "System/IO/ConsoleStream.hpp"
 #include "System/IO/StreamWriter.hpp"
+#include "System/IO/StreamReader.hpp"
+#include "System/Exception.hpp"
 #include <mutex>
 
 
 namespace System
 {
 
-IO::TextWriter &Console::Out()
+static std::unique_ptr<IO::TextReader> &GetIn()
+{
+    static std::unique_ptr<IO::TextReader> StdInTextReader;
+    static std::unique_ptr<std::once_flag> InOnceFlag = std::make_unique<std::once_flag>();
+
+    std::call_once( *InOnceFlag,
+                    []
+                    {
+                        StdInTextReader = std::make_unique<IO::StreamReader>(
+                                                std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::In)
+                                                                             );
+                    } );
+
+    return StdInTextReader;
+}
+
+static std::unique_ptr<IO::TextWriter> &GetOut()
 {
     static std::unique_ptr<IO::TextWriter> StdOutTextWriter;
     static std::unique_ptr<std::once_flag> OutOnceFlag = std::make_unique<std::once_flag>();
@@ -19,11 +37,11 @@ IO::TextWriter &Console::Out()
                                                 std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::Out)
                                                                              );
                     } );
-
-    return *StdOutTextWriter;
+    
+    return StdOutTextWriter;
 }
 
-IO::TextWriter &Console::Error()
+static std::unique_ptr<IO::TextWriter> &GetError()
 {
     static std::unique_ptr<IO::TextWriter> StdErrTextWriter;
     static std::unique_ptr<std::once_flag> ErrOnceFlag = std::make_unique<std::once_flag>();
@@ -35,11 +53,11 @@ IO::TextWriter &Console::Error()
                                                 std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::Error)
                                                                              );
                     } );
-
-    return *StdErrTextWriter;
+    
+    return StdErrTextWriter;
 }
 
-IO::TextWriter &Console::Log()
+static std::unique_ptr<IO::TextWriter> &GetLog()
 {
     static std::unique_ptr<IO::TextWriter> StdLogTextWriter;
     static std::unique_ptr<std::once_flag> LogOnceFlag = std::make_unique<std::once_flag>();
@@ -52,7 +70,70 @@ IO::TextWriter &Console::Log()
                                                                              );
                     } );
 
-    return *StdLogTextWriter;
+    return StdLogTextWriter;
+}
+
+IO::TextReader &Console::In()
+{
+
+    return *GetIn();
+}
+
+IO::TextWriter &Console::Out()
+{
+
+    return *GetOut();
+}
+
+IO::TextWriter &Console::Error()
+{
+
+    return *GetError();
+}
+
+IO::TextWriter &Console::Log()
+{
+    return *GetLog();
+}
+
+void Console::SetIn(std::unique_ptr<IO::TextReader> &&new_input_reader)
+{
+    using namespace std::literals;
+
+    if ( !new_input_reader )
+        ThrowWithTarget( ArgumentNullException{ "new_input_reader"sv } );
+
+    GetIn() = std::move(new_input_reader);
+}
+
+void Console::SetOut(std::unique_ptr<IO::TextWriter> &&new_input_writer)
+{
+    using namespace std::literals;
+
+    if ( !new_input_writer )
+        ThrowWithTarget( ArgumentNullException{ "new_input_writer"sv } );
+
+    GetOut() = std::move(new_input_writer);
+}
+
+void Console::SetError(std::unique_ptr<IO::TextWriter> &&new_input_writer)
+{
+    using namespace std::literals;
+
+    if ( !new_input_writer )
+        ThrowWithTarget( ArgumentNullException{ "new_input_writer"sv } );
+
+    GetError() = std::move(new_input_writer);
+}
+
+void Console::SetLog(std::unique_ptr<IO::TextWriter> &&new_input_writer)
+{
+    using namespace std::literals;
+
+    if ( !new_input_writer )
+        ThrowWithTarget( ArgumentNullException{ "new_input_writer"sv } );
+
+    GetLog() = std::move(new_input_writer);
 }
 
 std::string Console::ReadLine()
@@ -61,6 +142,41 @@ std::string Console::ReadLine()
 }
 
 void Console::Write(bool value)
+{
+    Out().Write( value );
+}
+
+void Console::Write(char value)
+{
+    Out().Write( value );
+}
+
+void Console::Write(int32_t value)
+{
+    Out().Write( value );
+}
+
+void Console::Write(uint32_t value)
+{
+    Out().Write( value );
+}
+
+void Console::Write(int64_t value)
+{
+    Out().Write( value );
+}
+
+void Console::Write(uint64_t value)
+{
+    Out().Write( value );
+}
+
+void Console::Write(float value)
+{
+    Out().Write( value );
+}
+
+void Console::Write(double value)
 {
     Out().Write( value );
 }
@@ -76,6 +192,36 @@ void Console::WriteLine()
 }
 
 void Console::WriteLine(bool value)
+{
+    Out().WriteLine( value );
+}
+
+void Console::WriteLine(char value)
+{
+    Out().WriteLine( value );
+}
+
+void Console::WriteLine(int32_t value)
+{
+    Out().WriteLine( value );
+}
+
+void Console::WriteLine(uint32_t value)
+{
+    Out().WriteLine( value );
+}
+
+void Console::WriteLine(uint64_t value)
+{
+    Out().WriteLine( value );
+}
+
+void Console::WriteLine(float value)
+{
+    Out().WriteLine( value );
+}
+
+void Console::WriteLine(double value)
 {
     Out().WriteLine( value );
 }
