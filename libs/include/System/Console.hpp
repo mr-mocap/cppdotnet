@@ -2,6 +2,7 @@
 
 #include "System/IO/TextWriter.hpp"
 #include "System/IO/TextReader.hpp"
+#include "System/IO/ConsoleStream.hpp"
 #include <memory>
 
 namespace System
@@ -20,6 +21,11 @@ public:
     static void SetOut(std::unique_ptr<IO::TextWriter> &&new_input_writer);
     static void SetError(std::unique_ptr<IO::TextWriter> &&new_input_writer);
     static void SetLog(std::unique_ptr<IO::TextWriter> &&new_input_writer);
+
+    static std::unique_ptr<IO::ConsoleStream> OpenStandardInput();
+    static std::unique_ptr<IO::ConsoleStream> OpenStandardOutput();
+    static std::unique_ptr<IO::ConsoleStream> OpenStandardError();
+    static std::unique_ptr<IO::ConsoleStream> OpenStandardLog();
 
     static std::string ReadLine();
 

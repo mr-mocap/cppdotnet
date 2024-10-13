@@ -136,6 +136,26 @@ void Console::SetLog(std::unique_ptr<IO::TextWriter> &&new_input_writer)
     GetLog() = std::move(new_input_writer);
 }
 
+std::unique_ptr<IO::ConsoleStream> Console::OpenStandardInput()
+{
+    return std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::In);
+}
+
+std::unique_ptr<IO::ConsoleStream> Console::OpenStandardOutput()
+{
+    return std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::Out);
+}
+
+std::unique_ptr<IO::ConsoleStream> Console::OpenStandardError()
+{
+    return std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::Error);
+}
+
+std::unique_ptr<IO::ConsoleStream> Console::OpenStandardLog()
+{
+    return std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::Log);
+}
+
 std::string Console::ReadLine()
 {
     return {};
