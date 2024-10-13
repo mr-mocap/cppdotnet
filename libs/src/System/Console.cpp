@@ -11,64 +11,36 @@ namespace System
 
 static std::unique_ptr<IO::TextReader> &GetIn()
 {
-    static std::unique_ptr<IO::TextReader> StdInTextReader;
-    static std::unique_ptr<std::once_flag> InOnceFlag = std::make_unique<std::once_flag>();
-
-    std::call_once( *InOnceFlag,
-                    []
-                    {
-                        StdInTextReader = std::make_unique<IO::StreamReader>(
-                                                std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::In)
-                                                                             );
-                    } );
+    // This is guaranteed to be a thread-safe initialization by a
+    // standard-conforming compiler
+    static std::unique_ptr<IO::TextReader> StdInTextReader{ std::make_unique<IO::StreamReader>( Console::OpenStandardInput() ) };
 
     return StdInTextReader;
 }
 
 static std::unique_ptr<IO::TextWriter> &GetOut()
 {
-    static std::unique_ptr<IO::TextWriter> StdOutTextWriter;
-    static std::unique_ptr<std::once_flag> OutOnceFlag = std::make_unique<std::once_flag>();
-
-    std::call_once( *OutOnceFlag,
-                    []
-                    {
-                        StdOutTextWriter = std::make_unique<IO::StreamWriter>(
-                                                std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::Out)
-                                                                             );
-                    } );
+    // This is guaranteed to be a thread-safe initialization by a
+    // standard-conforming compiler
+    static std::unique_ptr<IO::TextWriter> StdOutTextWriter{ std::make_unique<IO::StreamWriter>( Console::OpenStandardOutput() ) };
     
     return StdOutTextWriter;
 }
 
 static std::unique_ptr<IO::TextWriter> &GetError()
 {
-    static std::unique_ptr<IO::TextWriter> StdErrTextWriter;
-    static std::unique_ptr<std::once_flag> ErrOnceFlag = std::make_unique<std::once_flag>();
+    // This is guaranteed to be a thread-safe initialization by a
+    // standard-conforming compiler
+    static std::unique_ptr<IO::TextWriter> StdErrTextWriter{ std::make_unique<IO::StreamWriter>( Console::OpenStandardError() ) };
 
-    std::call_once( *ErrOnceFlag,
-                    []
-                    {
-                        StdErrTextWriter = std::make_unique<IO::StreamWriter>(
-                                                std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::Error)
-                                                                             );
-                    } );
-    
     return StdErrTextWriter;
 }
 
 static std::unique_ptr<IO::TextWriter> &GetLog()
 {
-    static std::unique_ptr<IO::TextWriter> StdLogTextWriter;
-    static std::unique_ptr<std::once_flag> LogOnceFlag = std::make_unique<std::once_flag>();
-
-    std::call_once( *LogOnceFlag,
-                    []
-                    {
-                        StdLogTextWriter = std::make_unique<IO::StreamWriter>(
-                                                std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::Log)
-                                                                             );
-                    } );
+    // This is guaranteed to be a thread-safe initialization by a
+    // standard-conforming compiler
+    static std::unique_ptr<IO::TextWriter> StdLogTextWriter{ std::make_unique<IO::StreamWriter>( Console::OpenStandardLog() ) };
 
     return StdLogTextWriter;
 }
