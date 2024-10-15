@@ -68,6 +68,8 @@ public:
     const Exception *InnerException() const { return _innerException.get(); }
     const Exception &GetBaseException() const;
 
+    virtual std::string StackTrace() const;
+
     virtual std::string ToString() const;
 
     bool operator ==(const Exception &other) const;

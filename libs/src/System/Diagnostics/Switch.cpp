@@ -16,12 +16,8 @@ static std::mutex  GlobalSwitchesMutex;
 Switch::Switch(const std::string_view display_name,
                const std::string_view description)
     :
-    _displayName(display_name),
-    _description(description)
+    Switch(display_name, description, std::string_view{"0"})
 {
-    std::lock_guard<std::mutex> guard( GlobalSwitchesMutex );
-
-    GlobalSwitches.insert( this );
 }
 
 Switch::Switch(const std::string_view display_name,
@@ -97,7 +93,7 @@ catch (std::invalid_argument &ia)
     ;
 }
 
-const std::string_view Switch::Value()
+const std::string &Switch::Value()
 {
     Initialize();
     return _value;
@@ -116,10 +112,8 @@ void Switch::Value(const std::string_view new_value)
 int Switch::SwitchSetting()
 {
     if ( !_initialized )
-    {
-        if ( InitializeWithStatus() )
-            OnSwitchSettingChanged();
-    }
+        InitializeWithStatus();
+
     return _setting;
 }
 
@@ -145,9 +139,7 @@ void Switch::RefreshAll()
     std::lock_guard<std::mutex> global_switches_guard( GlobalSwitchesMutex );
 
     for (Switch *iCurrentSwitch : GlobalSwitches)
-    {
         iCurrentSwitch->Refresh();
-    }
 }
 
 }

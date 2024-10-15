@@ -66,6 +66,11 @@ void Exception::TargetSite(const std::string_view object_name)
     _targetSite = object_name;
 }
 
+std::string Exception::StackTrace() const
+{
+    return "NOT IMPLEMENTED";
+}
+
 std::string Exception::ToString() const
 {
     std::string s{ std::format("{}: '{}'", ClassName(), _message) };
