@@ -2,6 +2,7 @@
 
 #include "System/Exception.hpp"
 #include <span>
+#include <optional>
 
 namespace System
 {
@@ -37,9 +38,14 @@ public:
         return DerivedType::IsDefined(value_string);
     }
 
-    static value_type Parse(const std::string_view value)
+    static value_type Parse(const std::string_view value_string)
     {
-        return DerivedType::Parse(value);
+        return DerivedType::Parse(value_string);
+    }
+
+    static std::optional<value_type> TryParse(const std::string_view value_string)
+    {
+        return DerivedType::TryParse(value_string);
     }
 
     operator value_type () const { return _currentValue; }

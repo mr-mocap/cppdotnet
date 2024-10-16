@@ -56,6 +56,11 @@ public:
         return {};
     }
 
+    const std::string_view GetName() const
+    {
+        return GetName( static_cast<Values>(_currentValue) );
+    }
+
     static bool IsDefined(value_type value)
     {
         return std::ranges::find( _values, value ) != _values.end();
@@ -111,6 +116,38 @@ public:
         return static_cast<value_type>(converted);
     }
 
+    static std::optional<value_type> TryParse(const std::string_view string_value)
+    {
+        // First, check for a name...
+        for (auto &[k, v] : _name_value_map)
+            if ( k == string_value )
+                return v;
+        
+        int converted;
+
+        // We don't have a name, so let's convert to an integer type...
+        try
+        {
+            converted = std::stoi( std::string{string_value} );
+        }
+        catch(const std::invalid_argument &e)
+        {
+            return {};
+        }
+        catch(const std::out_of_range &e)
+        {
+            return {};
+        }
+        
+        // And don't forget to check if it can be represented in the value_type!
+
+        if ( converted < std::numeric_limits<value_type>::min() )
+            return {};
+        if ( converted > std::numeric_limits<value_type>::max() )
+            return {};
+
+        return std::optional<value_type>{ static_cast<value_type>(converted) };
+    }
 protected:
 
     static name_value_map_type _name_value_map;
@@ -181,6 +218,10 @@ void GetName()
     assert( MyTraceLevel::GetName( MyTraceLevel::Warning ) == "Warning" );
     assert( MyTraceLevel::GetName( MyTraceLevel::Info ) == "Info" );
     assert( MyTraceLevel::GetName( MyTraceLevel::Verbose ) == "Verbose" );
+
+    MyTraceLevel t{ MyTraceLevel::Error };
+
+    assert( t.GetName() == "Error" );
 }
 
 void Parse()
