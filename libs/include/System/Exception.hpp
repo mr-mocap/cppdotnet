@@ -49,6 +49,13 @@ public:
     Exception(const std::string_view message, const ExceptionType &inner_exception) = delete;
 
     template <class ExceptionType>
+    Exception(const char *message, ExceptionType &&inner_exception)
+        :
+        Exception( std::string_view{message}, std::move(inner_exception) )
+    {
+    }
+
+    template <class ExceptionType>
     Exception(const std::string_view message, ExceptionType &&inner_exception)
         :
         _message{ message },
@@ -110,6 +117,7 @@ public:
     }
     /// @}
 
+    SystemException(const char *message) : SystemException( std::string_view{message} ) { }
     SystemException(const std::string_view message)
         :
         Exception( message )
@@ -152,16 +160,26 @@ public:
     }
     /// @}
 
-    ArgumentException(const std::string_view message) : SystemException( message ) { }
-    ArgumentException(const std::string_view message, const std::string_view param_name)
+    explicit ArgumentException(const char *message) : ArgumentException( std::string_view{message} ) { }
+    explicit ArgumentException(const std::string_view message) : SystemException( message ) { }
+
+    explicit ArgumentException(const char *message, const char *param_name) : ArgumentException( std::string_view{message}, std::string_view{param_name} ) { }
+    explicit ArgumentException(const std::string_view message, const std::string_view param_name)
         :
         SystemException( message ),
         _paramName{ param_name }
     {
     }
-    ArgumentException(const std::string_view message,
-                      const std::string_view param_name,
-                      Exception &&inner_exception)
+    explicit ArgumentException(const char *message,
+                               const char *param_name,
+                               Exception &&inner_exception)
+        :
+        ArgumentException( std::string_view{message}, std::string_view{param_name}, std::move(inner_exception) )
+    {
+    }
+    explicit ArgumentException(const std::string_view message,
+                               const std::string_view param_name,
+                               Exception &&inner_exception)
         :
         SystemException( message, std::move(inner_exception) ),
         _paramName{ param_name }
@@ -202,7 +220,10 @@ public:
     }
     /// @}
 
+    ArgumentNullException(const char *param_name) : ArgumentNullException( std::string_view{param_name} ) { }
     ArgumentNullException(const std::string_view param_name);
+
+    ArgumentNullException(const char *param_name, const char *message) : ArgumentNullException( std::string_view{param_name}, std::string_view{message} ) { }
     ArgumentNullException(const std::string_view param_name, const std::string_view message)
         :
         ArgumentException( message, param_name )
@@ -239,7 +260,10 @@ public:
     }
     /// @}
 
+    ArgumentOutOfRangeException(const char *param_name) : ArgumentOutOfRangeException( std::string_view{param_name} ) { }
     ArgumentOutOfRangeException(const std::string_view param_name);
+
+    ArgumentOutOfRangeException(const char *param_name, const char *message) : ArgumentOutOfRangeException( std::string_view{param_name}, std::string_view{message} ) { }
     ArgumentOutOfRangeException(const std::string_view param_name, const std::string_view message)
         :
         ArgumentException( message, param_name )
@@ -276,6 +300,7 @@ public:
     }
     /// @}
 
+    NotSupportedException(const char *message) : NotSupportedException( std::string_view{message} ) { }
     NotSupportedException(const std::string_view message) : SystemException( message ) { }
 
     const std::string_view ClassName() const override;
@@ -308,6 +333,7 @@ public:
     }
     /// @}
 
+    InvalidOperationException(const char *message) : InvalidOperationException( std::string_view{message} ) { }
     InvalidOperationException(const std::string_view message) : SystemException( message ) { }
 
     const std::string_view ClassName() const override;
@@ -346,7 +372,10 @@ public:
     }
     /// @}
 
+    ObjectDisposedException(const char *disposed_object_name) : ObjectDisposedException( std::string_view{disposed_object_name} ) { }
     ObjectDisposedException(const std::string_view disposed_object_name);
+
+    ObjectDisposedException(const char *disposed_object_name, const char *message);
     ObjectDisposedException(const std::string_view disposed_object_name, const std::string_view message);
 
     const std::string ObjectName() const { return _objectName; }

@@ -37,7 +37,7 @@ public:
         return DerivedType::IsDefined(value_string);
     }
 
-    static value_type Parse(const std::string_view value, bool ignore_case = false)
+    static value_type Parse(const std::string_view value)
     {
         return DerivedType::Parse(value);
     }

@@ -74,13 +74,11 @@ public:
 
     static value_type Parse(const std::string_view string_value)
     {
-        using namespace std::literals;
-
         if ( string_value.empty() )
-            ThrowWithTarget( System::ArgumentException{ "Argument is empty"sv, "value"sv } );
+            ThrowWithTarget( System::ArgumentException{ "Argument is empty", "value" } );
 
         if ( !IsDefined(string_value) )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not name a defined constant"sv, "value"sv } );
+            ThrowWithTarget( System::ArgumentException{ "Argument does not name a defined constant", "value" } );
 
         // First, check for a name...
         for (auto &[k, v] : _name_value_map)
@@ -96,19 +94,19 @@ public:
         }
         catch(const std::invalid_argument &e)
         {
-            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information"sv, "string_value"sv } );
+            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "string_value" } );
         }
         catch(const std::out_of_range &e)
         {
-            ThrowWithTarget( System::ArgumentOutOfRangeException{ "string_value"sv } );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{ "string_value" } );
         }
 
         // And don't forget to check if it can be represented in the value_type!
 
         if ( converted < std::numeric_limits<value_type>::min() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{ "string_value"sv, "Converted value is less than the minimum for this type"sv } );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{ "string_value", "Converted value is less than the minimum for this type" } );
         if ( converted > std::numeric_limits<value_type>::max() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{ "string_value"sv, "Converted value is greater than the maximum for this type"sv } );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{ "string_value", "Converted value is greater than the maximum for this type" } );
 
         return static_cast<value_type>(converted);
     }
@@ -121,17 +119,17 @@ protected:
 };
 
 MyTraceLevel::value_array_type    MyTraceLevel::_values{ Off, Error, Warning, Info, Verbose };
-MyTraceLevel::name_array_type     MyTraceLevel::_names{ "Off"sv, "Error"sv, "Warning"sv, "Info"sv, "Verbose"sv };
+MyTraceLevel::name_array_type     MyTraceLevel::_names{ "Off", "Error", "Warning", "Info", "Verbose" };
 MyTraceLevel::name_value_map_type MyTraceLevel::_name_value_map{
-    { "Off"sv, Off },
-    { "Error"sv, Error },
-    { "Warning"sv, Warning },
-    { "Info"sv, Info },
-    { "Verbose"sv, Verbose }
+    { "Off", Off },
+    { "Error", Error },
+    { "Warning", Warning },
+    { "Info", Info },
+    { "Verbose", Verbose }
 };
 
 
-void OtherMisc()
+void CheckGetNames()
 {
     std::cout << __func__ << std::endl;
 
@@ -140,7 +138,14 @@ void OtherMisc()
     std::cout << "GetNames() = \n";
     std::ranges::copy( t.GetNames(), std::ostream_iterator<const std::string_view>(std::cout, "\t") );
     std::cout << std::endl;
-    
+}
+
+void CheckGetValues()
+{
+    std::cout << __func__ << std::endl;
+
+    MyTraceLevel t;
+
     std::cout << "GetValues() = \n";
     std::ranges::copy( t.GetValues(), std::ostream_iterator<MyTraceLevel::value_type>(std::cout, "\t") );
     std::cout << std::endl;
@@ -159,7 +164,7 @@ void IsDefined()
     assert( t.IsDefined( MyTraceLevel::Verbose ) );
     assert( !t.IsDefined( 92 ) );
 
-    assert( t.IsDefined( "Off"sv ) );
+    assert( t.IsDefined( "Off" ) );
     assert( t.IsDefined( "Error"sv ) );
     assert( t.IsDefined( "Warning"sv ) );
     assert( t.IsDefined( "Info"sv ) );
@@ -182,19 +187,30 @@ void Parse()
 {
     std::cout << __func__ << std::endl;
 
-    assert( MyTraceLevel::Parse("Off"sv) == MyTraceLevel::Off );
-    assert( MyTraceLevel::Parse("Error") == MyTraceLevel::Error );
-    assert( MyTraceLevel::Parse("Warning") == MyTraceLevel::Warning );
-    assert( MyTraceLevel::Parse("Info") == MyTraceLevel::Info );
-    assert( MyTraceLevel::Parse("Verbose") == MyTraceLevel::Verbose );
+    try
+    {
+        assert( MyTraceLevel::Parse("Off"sv) == MyTraceLevel::Off );
+        assert( MyTraceLevel::Parse("Error") == MyTraceLevel::Error );
+        assert( MyTraceLevel::Parse("Warning") == MyTraceLevel::Warning );
+        assert( MyTraceLevel::Parse("Info") == MyTraceLevel::Info );
+        assert( MyTraceLevel::Parse("Verbose") == MyTraceLevel::Verbose );
+    }
+    catch (const std::exception& e)
+    {
+        assert(false);
+    }
 
     try
     {
         MyTraceLevel::Parse("Fail");
     }
-    catch(const std::exception& e)
+    catch (const System::ArgumentException &e)
     {
         assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
     }
     
 }
@@ -257,12 +273,13 @@ void Run()
 {
     std::cout << "Running Enum Tests..." << std::endl;
 
+    CheckGetNames();
+    CheckGetValues();
     IsDefined();
     GetName();
     Parse();
     Construct();
     OperatorEquals();
-    OtherMisc();
 
     std::cout << "PASSED!" << std::endl;
 }
