@@ -8,6 +8,7 @@
 #include "TestVersion.hpp"
 #include "TestStringReader.hpp"
 #include "TestStringWriter.hpp"
+#include "TestEnum.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -16,7 +17,7 @@ int main(void)
 {
     std::cout << "Running Unit Tests!\n";
 
-#if 1
+#if 0
     TestDebug::Run();
     TestException::Run();
     TestEnvironment::Run();
@@ -24,11 +25,12 @@ int main(void)
 #endif
     TestStringReader::Run();
     TestStringWriter::Run();
-#if 1
+#if 0
     TestConsole::Run();
     TestDefaultTraceListener::Run();
     TestConsoleTraceListener::Run();
 #endif
+    TestEnum::Run();
 
     std::cout << "All tests passed!\n";
 

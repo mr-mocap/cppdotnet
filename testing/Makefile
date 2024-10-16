@@ -16,6 +16,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestVersion.o \
 	TestStringReader.o \
 	TestStringWriter.o \
+	TestEnum.o \
 	main.o
 
 CXXFLAGS=-std=c++20 -W -Wall -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
