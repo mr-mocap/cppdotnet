@@ -119,6 +119,9 @@ public:
         if ( converted > std::numeric_limits<value_type>::max() )
             ThrowWithTarget( System::ArgumentOutOfRangeException{ "string_value", "Converted value is greater than the maximum for this type" } );
 
+        if ( !IsDefined( static_cast<value_type>(converted) ) )
+            return {};
+
         return static_cast<value_type>(converted);
     }
 
@@ -152,6 +155,7 @@ public:
         if ( converted > std::numeric_limits<value_type>::max() )
             return {};
 
+        // Return the value, even if it is NOT within the list of values!
         return std::optional<value_type>{ static_cast<value_type>(converted) };
     }
 protected:
@@ -237,6 +241,10 @@ void GetName()
     assert( MyTraceLevel::GetName( MyTraceLevel::Info ) == "Info" );
     assert( MyTraceLevel::GetName( MyTraceLevel::Verbose ) == "Verbose" );
 
+    // Empty string when value not in GetValues()
+    assert( MyTraceLevel::GetName( static_cast<MyTraceLevel::Values>(MyTraceLevel::Verbose + 10) ).empty() );
+    assert( MyTraceLevel::GetName( static_cast<MyTraceLevel::Values>(-1) ).empty() );
+
     MyTraceLevel t{ MyTraceLevel::Error };
 
     assert( t.GetName() == "Error" );
@@ -272,6 +280,32 @@ void Parse()
         assert(false);
     }
     
+}
+
+void TryParse()
+{
+    std::cout << __func__ << std::endl;
+
+    // Success... using names
+    assert( MyTraceLevel::TryParse("Off") && (MyTraceLevel::TryParse("Off").value() == MyTraceLevel::Off) );
+    assert( MyTraceLevel::TryParse("Error") && (MyTraceLevel::TryParse("Error").value() == MyTraceLevel::Error) );
+    assert( MyTraceLevel::TryParse("Warning") && (MyTraceLevel::TryParse("Warning").value() == MyTraceLevel::Warning) );
+    assert( MyTraceLevel::TryParse("Info") && (MyTraceLevel::TryParse("Info").value() == MyTraceLevel::Info) );
+    assert( MyTraceLevel::TryParse("Verbose") && (MyTraceLevel::TryParse("Verbose").value() == MyTraceLevel::Verbose) );
+
+    // Success... using string representation of values
+    assert( MyTraceLevel::TryParse("0") && (MyTraceLevel::TryParse("0").value() == MyTraceLevel::Off) );
+    assert( MyTraceLevel::TryParse("1") && (MyTraceLevel::TryParse("1").value() == MyTraceLevel::Error) );
+    assert( MyTraceLevel::TryParse("2") && (MyTraceLevel::TryParse("2").value() == MyTraceLevel::Warning) );
+    assert( MyTraceLevel::TryParse("3") && (MyTraceLevel::TryParse("3").value() == MyTraceLevel::Info) );
+    assert( MyTraceLevel::TryParse("4") && (MyTraceLevel::TryParse("4").value() == MyTraceLevel::Verbose) );
+
+    // Failure... using name that isn't in the enumeration
+    assert( !MyTraceLevel::TryParse("SomeRandomString") );
+
+    // Failure... using number that isn't in the values
+    assert( MyTraceLevel::TryParse("-1").value() == -1 );
+    assert( MyTraceLevel::TryParse("5").value() == 5 );
 }
 
 void Construct()
@@ -349,6 +383,7 @@ void Run()
     IsDefined();
     GetName();
     Parse();
+    TryParse();
     Construct();
     OperatorEquals();
 
