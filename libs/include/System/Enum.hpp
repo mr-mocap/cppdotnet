@@ -13,14 +13,14 @@ class Enum
 public:
     using value_type = EnumImplementationType;
 
-    const std::span<const std::string_view> GetNames() const
+    static const std::span<const std::string_view> GetNames()
     {
-        return static_cast<const DerivedType *>(this)->GetNames();
+        return DerivedType::GetNames();
     }
 
-    const std::span<value_type> GetValues() const
+    static const std::span<value_type> GetValues()
     {
-        return static_cast<const DerivedType *>(this)->GetValues();
+        return DerivedType::GetValues();
     }
 
     const std::string_view GetName() const

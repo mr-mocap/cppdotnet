@@ -18,11 +18,7 @@ class MyTraceLevel : public System::Enum<MyTraceLevel, int>
 {
 public:
     using BaseType   = System::Enum<MyTraceLevel, int>;
-
     using BaseType::value_type;
-    using value_array_type = typename std::array<value_type, 5>;
-    using name_array_type  = std::array<const std::string_view, 5>;
-    using name_value_map_type = typename std::map<const std::string_view, value_type>;
 
     enum Values : value_type {
         Off = 0,
@@ -32,28 +28,38 @@ public:
         Verbose
     };
     
+    using value_array_type = typename std::array<value_type, 5>;
+    using name_array_type  = std::array<std::string_view, 5>;
+    using name_value_pair_type  = std::pair<const char *, enum Values>;
+    using name_value_array_type = std::array<name_value_pair_type, 5>;
+
     explicit MyTraceLevel(Values v = Values::Off) : Enum( v ) { }
 
-    static size_t ValueCount() { return _values.size(); }
-    static size_t NameCount()  { return _names.size(); }
-
-    const std::span<const std::string_view> GetNames() const
+    static const std::span<const std::string_view> GetNames()
     {
-        return std::span( _names );
+        static const name_array_type names{ MakeNames() };
+
+        return std::span( names );
     }
 
-    const std::span<value_type> GetValues() const
+    static const std::span<const value_type> GetValues()
     {
-        return std::span( _values );
+        static const value_array_type values{ MakeValues() };
+
+        return std::span( values );
     }
 
     static const std::string_view GetName(Values value)
     {
-        for (auto &[k, v] : _name_value_map)
-            if ( v == value )
-                return k;
+        auto found = std::ranges::find( _name_value_array,
+                                        value,
+                                        &name_value_pair_type::second
+                                      );
 
-        return {};
+        if ( found == _name_value_array.end() )
+            return {};
+
+        return found->first;
     }
 
     const std::string_view GetName() const
@@ -63,12 +69,12 @@ public:
 
     static bool IsDefined(value_type value)
     {
-        return std::ranges::find( _values, value ) != _values.end();
+        return std::ranges::find( GetValues(), value ) != GetValues().end();
     }
 
     static bool IsDefined(const std::string_view name)
     {
-        return std::ranges::find( _names, name ) != _names.end();
+        return std::ranges::find( GetNames(), name ) != GetNames().end();
     }
 
     MyTraceLevel &operator =(Values v)
@@ -86,9 +92,9 @@ public:
             ThrowWithTarget( System::ArgumentException{ "Argument does not name a defined constant", "value" } );
 
         // First, check for a name...
-        for (auto &[k, v] : _name_value_map)
-            if ( k == string_value )
-                return v;
+        for (const name_value_pair_type &i : _name_value_array)
+            if ( i.first == string_value )
+                return i.second;
         
         int converted;
 
@@ -119,9 +125,9 @@ public:
     static std::optional<value_type> TryParse(const std::string_view string_value)
     {
         // First, check for a name...
-        for (auto &[k, v] : _name_value_map)
-            if ( k == string_value )
-                return v;
+        for (const name_value_pair_type &i : _name_value_array)
+            if ( i.first == string_value )
+                return i.second;
         
         int converted;
 
@@ -150,20 +156,32 @@ public:
     }
 protected:
 
-    static name_value_map_type _name_value_map;
-    static value_array_type    _values;
-    static name_array_type     _names;
+    static name_array_type  MakeNames()
+    {
+        name_array_type array;
+
+        std::ranges::transform( _name_value_array, array.begin(), [](const auto &i) { return i.first; } );
+        return array;
+    }
+
+    static value_array_type MakeValues()
+    {
+        value_array_type array;
+
+        std::ranges::transform( _name_value_array, array.begin(), [](const auto &i) { return i.second; } );
+        return array;
+    }
+
+    static const name_value_array_type _name_value_array;
 };
 
-MyTraceLevel::value_array_type    MyTraceLevel::_values{ Off, Error, Warning, Info, Verbose };
-MyTraceLevel::name_array_type     MyTraceLevel::_names{ "Off", "Error", "Warning", "Info", "Verbose" };
-MyTraceLevel::name_value_map_type MyTraceLevel::_name_value_map{
-    { "Off", Off },
-    { "Error", Error },
-    { "Warning", Warning },
-    { "Info", Info },
-    { "Verbose", Verbose }
-};
+const MyTraceLevel::name_value_array_type MyTraceLevel::_name_value_array{ {
+    { "Off",     MyTraceLevel::Off     },
+    { "Error",   MyTraceLevel::Error   },
+    { "Warning", MyTraceLevel::Warning },
+    { "Info",    MyTraceLevel::Info    },
+    { "Verbose", MyTraceLevel::Verbose }
+} };
 
 
 void CheckGetNames()
@@ -308,6 +326,18 @@ void OperatorEquals()
     t = MyTraceLevel::Error;
 
     assert( t == MyTraceLevel::Error );
+}
+
+void GenericEnum()
+{
+    std::cout << __func__ << std::endl;
+#if 0
+    System::Enum t;
+
+    std::cout << "GetNames() = \n";
+    std::ranges::copy( t.GetNames(), std::ostream_iterator<const std::string_view>(std::cout, "\t") );
+    std::cout << std::endl;
+#endif
 }
 
 void Run()
