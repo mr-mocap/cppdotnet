@@ -229,7 +229,7 @@ try
 {
     using namespace std::literals;
 
-    static const std::map<Diagnostics::TraceLevel, const std::string_view> tracelevel_map{
+    static const std::map<Diagnostics::TraceLevel, const std::string_view> type_map{
         { Diagnostics::TraceLevel::Off,     "Off"sv     },
         { Diagnostics::TraceLevel::Error,   "Error"sv   },
         { Diagnostics::TraceLevel::Warning, "Warning"sv },
@@ -237,13 +237,38 @@ try
         { Diagnostics::TraceLevel::Verbose, "Verbose"sv }
     };
 
-    return tracelevel_map.at( tracelevel_value );
+    return type_map.at( tracelevel_value );
 }
 catch (const std::out_of_range &)
 {
     using namespace std::literals;
 
     ThrowWithTarget( ArgumentOutOfRangeException( "tracelevel_value"sv ) );
+    return {};
+}
+
+const std::string_view Convert::ToString(Diagnostics::TraceOptions traceoptions_value)
+try
+{
+    using namespace std::literals;
+
+    static const std::map<Diagnostics::TraceOptions, const std::string_view> type_map{
+        { Diagnostics::TraceOptions::None,      "None"sv      },
+        { Diagnostics::TraceOptions::LogicalOperationStack , "LogicalOperationsStack"sv   },
+        { Diagnostics::TraceOptions::DateTime,  "DateTime"sv  },
+        { Diagnostics::TraceOptions::Timestamp, "Timestamp"sv },
+        { Diagnostics::TraceOptions::ProcessId, "ProcessId"sv },
+        { Diagnostics::TraceOptions::ThreadId, "ThreadId"sv   },
+        { Diagnostics::TraceOptions::Callstack, "Callstack"sv }
+    };
+
+    return type_map.at( traceoptions_value );
+}
+catch (const std::out_of_range &)
+{
+    using namespace std::literals;
+
+    ThrowWithTarget( ArgumentOutOfRangeException( "traceoptions_value"sv ) );
     return {};
 }
 

@@ -30,8 +30,9 @@ public:
     static std::string      ToString(uint32_t value, Base toBase = Base::Decimal);
     static std::string      ToString(uint64_t value, Base toBase = Base::Decimal);
 
+    static const std::string_view ToString(Diagnostics::TraceLevel   value);
+    static const std::string_view ToString(Diagnostics::TraceOptions value);
     static const std::string_view ToString(Diagnostics::SourceLevels value);
-    static const std::string_view ToString(Diagnostics::TraceLevel value);
 
     static Diagnostics::TraceLevel   ToType(const std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
     static Diagnostics::TraceOptions ToType(const std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
