@@ -7,7 +7,7 @@
 namespace System
 {
 
-template <class DerivedType, class EnumImplementationType>
+template <class DerivedType, class EnumImplementationType = int>
 class Enum
 {
 public:
@@ -15,37 +15,42 @@ public:
 
     static const std::span<const std::string_view> GetNames()
     {
-        return DerivedType::GetNames();
+        return DerivedType::GetNamesImplementation();
     }
 
-    static const std::span<value_type> GetValues()
+    static const std::span<const value_type> GetValues()
     {
-        return DerivedType::GetValues();
+        return DerivedType::GetValuesImplementation();
     }
 
     const std::string_view GetName() const
     {
-        return static_cast<const DerivedType *>(this)->GetName();
+        return static_cast<const DerivedType *>(this)->GetNameImplementation();
     }
 
     static bool IsDefined(value_type value)
     {
-        return DerivedType::IsDefined(value);
+        return DerivedType::IsDefinedImplementation(value);
     }
 
     static bool IsDefined(const std::string_view value_string)
     {
-        return DerivedType::IsDefined(value_string);
+        return DerivedType::IsDefinedImplementation(value_string);
     }
 
     static value_type Parse(const std::string_view value_string)
     {
-        return DerivedType::Parse(value_string);
+        return DerivedType::ParseImplementation(value_string);
     }
 
     static std::optional<value_type> TryParse(const std::string_view value_string)
     {
-        return DerivedType::TryParse(value_string);
+        return DerivedType::TryParseImplementation(value_string);
+    }
+
+    bool HasFlag(value_type value) const
+    {
+        return (value & _currentValue) == value;
     }
 
     operator value_type () const { return _currentValue; }

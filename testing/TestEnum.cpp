@@ -14,11 +14,17 @@ using namespace std::literals;
 namespace TestEnum
 {
 
-class MyTraceLevel : public System::Enum<MyTraceLevel, int>
+
+class MyTraceLevel : public System::Enum<MyTraceLevel>
 {
 public:
+    enum Values : value_type;
+
     using BaseType   = System::Enum<MyTraceLevel, int>;
-    using BaseType::value_type;
+    using value_array_type = typename std::array<value_type, 5>;
+    using name_array_type  = std::array<std::string_view, 5>;
+    using name_value_pair_type  = std::pair<const char *, enum Values>;
+    using name_value_array_type = std::array<name_value_pair_type, 5>;
 
     enum Values : value_type {
         Off = 0,
@@ -28,25 +34,12 @@ public:
         Verbose
     };
     
-    using value_array_type = typename std::array<value_type, 5>;
-    using name_array_type  = std::array<std::string_view, 5>;
-    using name_value_pair_type  = std::pair<const char *, enum Values>;
-    using name_value_array_type = std::array<name_value_pair_type, 5>;
-
     explicit MyTraceLevel(Values v = Values::Off) : Enum( v ) { }
 
-    static const std::span<const std::string_view> GetNames()
+    MyTraceLevel &operator =(Values v)
     {
-        static const name_array_type names{ MakeNames() };
-
-        return std::span( names );
-    }
-
-    static const std::span<const value_type> GetValues()
-    {
-        static const value_array_type values{ MakeValues() };
-
-        return std::span( values );
+        BaseType::operator =(v);
+        return *this;
     }
 
     static const std::string_view GetName(Values value)
@@ -62,28 +55,40 @@ public:
         return found->first;
     }
 
-    const std::string_view GetName() const
+    using BaseType::GetName;
+
+    friend class System::Enum<MyTraceLevel, int>;
+protected:
+    static const std::span<const std::string_view> GetNamesImplementation()
     {
-        return GetName( static_cast<Values>(_currentValue) );
+        static const name_array_type names{ MakeNames() };
+
+        return std::span( names );
     }
 
-    static bool IsDefined(value_type value)
+    static const std::span<const value_type> GetValuesImplementation()
     {
-        return std::ranges::find( GetValues(), value ) != GetValues().end();
+        static const value_array_type values{ MakeValues() };
+
+        return std::span( values );
     }
 
-    static bool IsDefined(const std::string_view name)
+    const std::string_view GetNameImplementation() const
     {
-        return std::ranges::find( GetNames(), name ) != GetNames().end();
+        return MyTraceLevel::GetName( static_cast<Values>(_currentValue) );
     }
 
-    MyTraceLevel &operator =(Values v)
+    static bool IsDefinedImplementation(value_type value)
     {
-        BaseType::operator =(v);
-        return *this;
+        return std::ranges::find( GetValuesImplementation(), value ) != GetValuesImplementation().end();
     }
 
-    static value_type Parse(const std::string_view string_value)
+    static bool IsDefinedImplementation(const std::string_view name)
+    {
+        return std::ranges::find( GetNamesImplementation(), name ) != GetNamesImplementation().end();
+    }
+
+    static value_type ParseImplementation(const std::string_view string_value)
     {
         if ( string_value.empty() )
             ThrowWithTarget( System::ArgumentException{ "Argument is empty", "value" } );
@@ -125,7 +130,7 @@ public:
         return static_cast<value_type>(converted);
     }
 
-    static std::optional<value_type> TryParse(const std::string_view string_value)
+    static std::optional<value_type> TryParseImplementation(const std::string_view string_value)
     {
         // First, check for a name...
         for (const name_value_pair_type &i : _name_value_array)
@@ -158,7 +163,6 @@ public:
         // Return the value, even if it is NOT within the list of values!
         return std::optional<value_type>{ static_cast<value_type>(converted) };
     }
-protected:
 
     static name_array_type  MakeNames()
     {
