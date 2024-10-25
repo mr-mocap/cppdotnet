@@ -7,16 +7,27 @@
 #include <cassert>
 #include <limits>
 #include <string>
+#include <type_traits>
 
 using namespace std::literals;
 
 namespace TestEnum
 {
 
+enum Values {
+        Off = 0,
+        Error,
+        Warning,
+        Info,
+        Verbose
+};
 
+
+#if 0
 class MyTraceLevel : public System::Enum<MyTraceLevel>
 {
 public:
+#if 1
     enum Values : value_type {
         Off = 0,
         Error,
@@ -24,14 +35,18 @@ public:
         Info,
         Verbose
     };
+#else
+    using Values = TestEnum::Values;
+    using enum Values;
+#endif
 
     using BaseType         = System::Enum<MyTraceLevel, int>;
     using value_array_type = typename std::array<value_type, 5>;
     using name_array_type  = std::array<std::string_view, 5>;
-    using name_value_pair_type  = std::pair<const char *, enum Values>;
+    using name_value_pair_type  = std::pair<const char *, Values>;
     using name_value_array_type = std::array<name_value_pair_type, 5>;
 
-    MyTraceLevel(Values v = Values::Off) : Enum( v ) { }
+    MyTraceLevel(Values v = Values::Off) : Enum( static_cast<value_type>(v) ) { }
 
     friend class System::Enum<MyTraceLevel, int>;
 protected:
@@ -46,6 +61,42 @@ const MyTraceLevel::name_value_array_type MyTraceLevel::_name_value_array{ {
     { "Info",    MyTraceLevel::Info    },
     { "Verbose", MyTraceLevel::Verbose }
 } };
+#else
+class MyTraceLevelPolicy
+{
+public:
+    enum Values {
+        Off = 0,
+        Error,
+        Warning,
+        Info,
+        Verbose
+    };
+
+    using value_type = enum Values;
+    using underlying_type = std::underlying_type<Values>::type;
+    using name_array_type = std::array<std::string_view, 5>;
+    using value_array_type = std::array<value_type, 5>;
+    using name_value_pair_type = std::pair<const char *, value_type>;
+
+protected:
+
+    static std::span<name_value_pair_type> NameValueArray()
+    {
+        static name_value_pair_type array[] = {
+            { "Off",     Off     },
+            { "Error",   Error   },
+            { "Warning", Warning },
+            { "Info",    Info    },
+            { "Verbose", Verbose }
+        };
+
+        return std::span( array );
+    }
+};
+
+using MyTraceLevel = System::Enum<MyTraceLevelPolicy>;
+#endif
 
 
 void CheckGetNames()
@@ -54,7 +105,7 @@ void CheckGetNames()
 
     MyTraceLevel t;
 
-    std::cout << "GetNames() = \n";
+    std::cout << "GetNames() =\t";
     std::ranges::copy( t.GetNames(), std::ostream_iterator<const std::string_view>(std::cout, "\t") );
     std::cout << std::endl;
 }
@@ -65,7 +116,7 @@ void CheckGetValues()
 
     MyTraceLevel t;
 
-    std::cout << "GetValues() = \n";
+    std::cout << "GetValues() =\t";
     std::ranges::copy( t.GetValues(), std::ostream_iterator<MyTraceLevel::value_type>(std::cout, "\t") );
     std::cout << std::endl;
 }
@@ -84,11 +135,11 @@ void IsDefined()
     assert( !t.IsDefined( 92 ) );
 
     assert( t.IsDefined( "Off" ) );
-    assert( t.IsDefined( "Error"sv ) );
-    assert( t.IsDefined( "Warning"sv ) );
-    assert( t.IsDefined( "Info"sv ) );
-    assert( t.IsDefined( "Verbose"sv ) );
-    assert( !t.IsDefined( "Fail"sv ) );
+    assert( t.IsDefined( "Error" ) );
+    assert( t.IsDefined( "Warning" ) );
+    assert( t.IsDefined( "Info" ) );
+    assert( t.IsDefined( "Verbose" ) );
+    assert( !t.IsDefined( "Fail" ) );
 }
 
 void GetName()
@@ -116,7 +167,7 @@ void Parse()
 
     try
     {
-        assert( MyTraceLevel::Parse("Off"sv) == MyTraceLevel::Off );
+        assert( MyTraceLevel::Parse("Off") == MyTraceLevel::Off );
         assert( MyTraceLevel::Parse("Error") == MyTraceLevel::Error );
         assert( MyTraceLevel::Parse("Warning") == MyTraceLevel::Warning );
         assert( MyTraceLevel::Parse("Info") == MyTraceLevel::Info );
@@ -139,7 +190,6 @@ void Parse()
     {
         assert(false);
     }
-    
 }
 
 void TryParse()
@@ -209,7 +259,7 @@ void Construct()
     }
 }
 
-void OperatorEquals()
+void Assignment()
 {
     std::cout << __func__ << std::endl;
 
@@ -245,7 +295,7 @@ void Run()
     Parse();
     TryParse();
     Construct();
-    OperatorEquals();
+    Assignment();
 
     std::cout << "PASSED!" << std::endl;
 }
