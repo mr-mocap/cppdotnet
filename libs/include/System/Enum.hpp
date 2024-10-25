@@ -198,6 +198,11 @@ protected:
 template <class EnumPolicy>
 class Enum : public EnumPolicy
 {
+    // Let this be the largest type, signed or unsigned, that will be supported by this class
+    using max_matching_type = std::conditional<
+                                        std::is_signed<typename EnumPolicy::value_type>,
+                                        long,
+                                        unsigned long>;
 public:
     Enum() = default;
     Enum(EnumPolicy::value_type v) : _currentValue{ v } { }
@@ -262,12 +267,15 @@ public:
             if ( i.first == value_string )
                 return i.second;
         
-        typename EnumPolicy::underlying_type converted;
+        max_matching_type converted;
 
         // We don't have a name, so let's convert to an integer type...
         try
         {
-            converted = std::stoi( std::string{value_string} );
+            if constexpr ( std::is_signed<max_matching_type> )
+                converted = std::stol( std::string{value_string} );
+            else
+                converted = std::stoul( std::string{value_string} );
         }
         catch(const std::invalid_argument &e)
         {
@@ -298,12 +306,15 @@ public:
             if ( i.first == value_string )
                 return i.second;
         
-        typename EnumPolicy::underlying_type converted;
+        max_matching_type converted;
 
         // We don't have a name, so let's convert to an integer type...
         try
         {
-            converted = std::stoi( std::string{value_string} );
+            if constexpr ( std::is_signed<max_matching_type> )
+                converted = std::stol( std::string{value_string} );
+            else
+                converted = std::stoul( std::string{value_string} );
         }
         catch(const std::invalid_argument &e)
         {
