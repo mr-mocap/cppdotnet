@@ -299,10 +299,13 @@ public:
         if ( std::cmp_greater( converted, std::numeric_limits<typename EnumPolicy::underlying_type>::max() ) )
             ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string", "Converted value is greater than the maximum for this type" } );
 
-        if ( !IsDefined( static_cast<typename EnumPolicy::value_type>(converted) ) )
+        typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
+
+        if ( !IsDefined( casted ) )
             return {};
 
-        return static_cast<typename EnumPolicy::value_type>(converted);
+        // We have one of the valid values!
+        return casted;
     }
 
     static std::optional<typename EnumPolicy::value_type> TryParse(const std::string_view value_string)
@@ -338,8 +341,13 @@ public:
         if ( std::cmp_greater( converted, std::numeric_limits<typename EnumPolicy::underlying_type>::max() ) )
             return {};
 
-        // Return the value, even if it is NOT within the list of values!
-        return static_cast<typename EnumPolicy::value_type>(converted);
+        typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
+
+        if ( !IsDefined( casted ) )
+            return {};
+
+        // We have one of the valid values!
+        return casted;
     }
 
     operator typename EnumPolicy::value_type () const { return _currentValue; }

@@ -196,9 +196,6 @@ void TryParse()
 {
     std::cout << __func__ << std::endl;
 
-    std::cout << "MyTraceLevel::value_type = " << typeid(MyTraceLevel::value_type).name() << std::endl;
-    std::cout << "MyTraceLevel::underlying_type = " << typeid(MyTraceLevel::underlying_type).name() << std::endl;
-
     // Success... using names
     assert( MyTraceLevel::TryParse("Off") && (MyTraceLevel::TryParse("Off").value() == MyTraceLevel::Off) );
     assert( MyTraceLevel::TryParse("Error") && (MyTraceLevel::TryParse("Error").value() == MyTraceLevel::Error) );
@@ -217,10 +214,8 @@ void TryParse()
     assert( !MyTraceLevel::TryParse("SomeRandomString") );
 
     // Failure... using number that isn't in the values
-#if 0
-    assert( MyTraceLevel::TryParse("-1").value() == -1 );
-    assert( MyTraceLevel::TryParse("5").value() == 5 );
-#endif
+    assert( !MyTraceLevel::TryParse("-1") );
+    assert( !MyTraceLevel::TryParse("5") );
 }
 
 void Construct()
