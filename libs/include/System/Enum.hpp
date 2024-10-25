@@ -5,6 +5,7 @@
 #include <optional>
 #include <algorithm>
 #include <array>
+#include <utility>
 
 namespace System
 {
@@ -200,9 +201,9 @@ class Enum : public EnumPolicy
 {
     // Let this be the largest type, signed or unsigned, that will be supported by this class
     using max_matching_type = std::conditional<
-                                        std::is_signed<typename EnumPolicy::value_type>,
+                                        std::is_signed_v<typename EnumPolicy::underlying_type>,
                                         long,
-                                        unsigned long>;
+                                        unsigned long>::type;
 public:
     Enum() = default;
     Enum(EnumPolicy::value_type v) : _currentValue{ v } { }
@@ -254,6 +255,11 @@ public:
         return GetName( _currentValue );
     }
 
+    bool HasFlag(typename EnumPolicy::value_type value) const
+    {
+        return (static_cast<EnumPolicy::underlying_type>(value) & static_cast<EnumPolicy::underlying_type>(_currentValue)) == static_cast<EnumPolicy::underlying_type>(value);
+    }
+
     static typename EnumPolicy::value_type Parse(const std::string_view value_string)
     {
         if ( value_string.empty() )
@@ -272,7 +278,7 @@ public:
         // We don't have a name, so let's convert to an integer type...
         try
         {
-            if constexpr ( std::is_signed<max_matching_type> )
+            if constexpr ( std::is_signed_v<max_matching_type> )
                 converted = std::stol( std::string{value_string} );
             else
                 converted = std::stoul( std::string{value_string} );
@@ -288,9 +294,9 @@ public:
 
         // And don't forget to check if it can be represented in the value_type!
 
-        if ( converted < std::numeric_limits<typename EnumPolicy::underlying_type>::min() )
+        if ( std::cmp_less( converted, std::numeric_limits<typename EnumPolicy::underlying_type>::min() ) )
             ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string", "Converted value is less than the minimum for this type" } );
-        if ( converted > std::numeric_limits<typename EnumPolicy::underlying_type>::max() )
+        if ( std::cmp_greater( converted, std::numeric_limits<typename EnumPolicy::underlying_type>::max() ) )
             ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string", "Converted value is greater than the maximum for this type" } );
 
         if ( !IsDefined( static_cast<typename EnumPolicy::value_type>(converted) ) )
@@ -311,7 +317,7 @@ public:
         // We don't have a name, so let's convert to an integer type...
         try
         {
-            if constexpr ( std::is_signed<max_matching_type> )
+            if constexpr ( std::is_signed_v<max_matching_type> )
                 converted = std::stol( std::string{value_string} );
             else
                 converted = std::stoul( std::string{value_string} );
@@ -327,13 +333,13 @@ public:
         
         // And don't forget to check if it can be represented in the value_type!
 
-        if ( converted < std::numeric_limits<typename EnumPolicy::underlying_type>::min() )
+        if ( std::cmp_less( converted, std::numeric_limits<typename EnumPolicy::underlying_type>::min() ) )
             return {};
-        if ( converted > std::numeric_limits<typename EnumPolicy::underlying_type>::max() )
+        if ( std::cmp_greater( converted, std::numeric_limits<typename EnumPolicy::underlying_type>::max() ) )
             return {};
 
         // Return the value, even if it is NOT within the list of values!
-        return std::optional<typename EnumPolicy::value_type>{ static_cast<typename EnumPolicy::value_type>(converted) };
+        return static_cast<typename EnumPolicy::value_type>(converted);
     }
 
     operator typename EnumPolicy::value_type () const { return _currentValue; }
