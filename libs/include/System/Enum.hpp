@@ -1,6 +1,7 @@
 #pragma once
 
 #include "System/Exception.hpp"
+#include "System/TypeCode.hpp"
 #include <span>
 #include <optional>
 #include <algorithm>
@@ -208,6 +209,24 @@ public:
     Enum() = default;
     Enum(EnumPolicy::value_type v) : _currentValue{ v } { }
 
+    static enum TypeCode GetTypeCode()
+    {
+        if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, char> )
+            return TypeCode::Char;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int16_t> )
+            return TypeCode::Int16;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int32_t> )
+            return TypeCode::Int32;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int64_t> )
+            return TypeCode::Int64;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint16_t> )
+            return TypeCode::UInt16;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint32_t> )
+            return TypeCode::UInt32;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint64_t> )
+            return TypeCode::UInt64;
+    }
+
     static const std::span<const std::string_view> GetNames()
     {
         static const typename EnumPolicy::name_array_type names{ MakeNames() };
@@ -222,19 +241,12 @@ public:
         return std::span( values );
     }
 
-    static bool IsDefined(typename EnumPolicy::value_type value)
+    static typename EnumPolicy::underlying_value_array_type GetValuesAsUnderlyingType()
     {
-        return std::ranges::find( GetValues(), value ) != GetValues().end();
-    }
+        typename EnumPolicy::underlying_value_array_type array;
 
-    static bool IsDefined(typename EnumPolicy::underlying_type value)
-    {
-        return std::ranges::find( GetValues(), static_cast<typename EnumPolicy::value_type>(value) ) != GetValues().end();
-    }
-
-    static bool IsDefined(const std::string_view value_string)
-    {
-        return std::ranges::find( GetNames(), value_string ) != GetNames().end();
+        std::ranges::copy( GetValues(), array.begin() );
+        return array;
     }
 
     static const std::string_view GetName(typename EnumPolicy::value_type value)
@@ -253,6 +265,21 @@ public:
     const std::string_view GetName() const
     {
         return GetName( _currentValue );
+    }
+
+    static bool IsDefined(typename EnumPolicy::value_type value)
+    {
+        return std::ranges::find( GetValues(), value ) != GetValues().end();
+    }
+
+    static bool IsDefined(typename EnumPolicy::underlying_type value)
+    {
+        return std::ranges::find( GetValues(), static_cast<typename EnumPolicy::value_type>(value) ) != GetValues().end();
+    }
+
+    static bool IsDefined(const std::string_view value_string)
+    {
+        return std::ranges::find( GetNames(), value_string ) != GetNames().end();
     }
 
     bool HasFlag(typename EnumPolicy::value_type value) const

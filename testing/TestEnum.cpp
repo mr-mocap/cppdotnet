@@ -77,6 +77,7 @@ public:
     using underlying_type = std::underlying_type_t<value_type>;
     using name_array_type = std::array<std::string_view, 5>;
     using value_array_type = std::array<value_type, 5>;
+    using underlying_value_array_type = std::array<underlying_type, 5>;
     using name_value_pair_type = std::pair<const char *, value_type>;
 
 protected:
@@ -272,6 +273,26 @@ void Assignment()
     assert( t == MyTraceLevel::Error );
 }
 
+void GetValuesAsUnderlyingType()
+{
+    std::cout << __func__ << std::endl;
+
+    auto array{ MyTraceLevel::GetValuesAsUnderlyingType() };
+
+    assert( array[0] == 0 );
+    assert( array[1] == 1 );
+    assert( array[2] == 2 );
+    assert( array[3] == 3 );
+    assert( array[4] == 4 );
+}
+
+void GetTypeCode()
+{
+    std::cout << __func__ << std::endl;
+
+    assert( MyTraceLevel::GetTypeCode() == System::TypeCode::UInt32 );
+}
+
 void GenericEnum()
 {
     std::cout << __func__ << std::endl;
@@ -296,6 +317,8 @@ void Run()
     TryParse();
     Construct();
     Assignment();
+    GetValuesAsUnderlyingType();
+    GetTypeCode();
 
     std::cout << "PASSED!" << std::endl;
 }
