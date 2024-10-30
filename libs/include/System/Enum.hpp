@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <array>
 #include <utility>
+#include <ranges>
 
 namespace System
 {
@@ -227,26 +228,21 @@ public:
             return TypeCode::UInt64;
     }
 
-    static const std::span<const std::string_view> GetNames()
+    static const auto GetNames()
     {
-        static const typename EnumPolicy::name_array_type names{ MakeNames() };
-
-        return std::span( names );
+        return MakeNames();
     }
 
-    static const std::span<const typename EnumPolicy::value_type> GetValues()
+    static const auto GetValues()
     {
-        static const typename EnumPolicy::value_array_type values{ MakeValues() };
-
-        return std::span( values );
+        return MakeValues();
     }
 
-    static typename EnumPolicy::underlying_value_array_type GetValuesAsUnderlyingType()
+    static const auto GetValuesAsUnderlyingType()
     {
-        typename EnumPolicy::underlying_value_array_type array;
+        auto transform_fn = [](const typename EnumPolicy::value_type item) { return static_cast<typename EnumPolicy::underlying_type>(item); };
 
-        std::ranges::copy( GetValues(), array.begin() );
-        return array;
+        return MakeValues() | std::views::transform( transform_fn );
     }
 
     static const std::string_view GetName(typename EnumPolicy::value_type value)
@@ -388,20 +384,14 @@ public:
 protected:
     EnumPolicy::value_type  _currentValue{};
 
-    static typename EnumPolicy::name_array_type MakeNames()
+    static const auto MakeNames()
     {
-        typename EnumPolicy::name_array_type array;
-
-        std::ranges::transform( EnumPolicy::NameValueArray(), array.begin(), [](const auto &i) { return i.first; } );
-        return array;
+        return std::views::keys( EnumPolicy::NameValueArray() );
     }
 
-    static typename EnumPolicy::value_array_type MakeValues()
+    static const auto MakeValues()
     {
-        typename EnumPolicy::value_array_type array;
-
-        std::ranges::transform( EnumPolicy::NameValueArray(), array.begin(), [](const auto &i) { return i.second; } );
-        return array;
+        return std::views::values( EnumPolicy::NameValueArray() );
     }
 };
 #endif
