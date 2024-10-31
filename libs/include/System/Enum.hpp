@@ -299,21 +299,15 @@ public:
         max_matching_type converted;
 
         // We don't have a name, so let's convert to an integer type...
-        try
-        {
-            if constexpr ( std::is_signed_v<max_matching_type> )
-                converted = std::stol( std::string{value_string} );
-            else
-                converted = std::stoul( std::string{value_string} );
-        }
-        catch(const std::invalid_argument &e)
-        {
+        auto [ptr, ec] = std::from_chars( value_string.data(), value_string.data() + value_string.size(),
+                                            converted);
+        
+        if ( ec == std::errc::invalid_argument )
             ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
-        }
-        catch(const std::out_of_range &e)
-        {
+        else if ( ec == std::errc::out_of_range )
             ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string" } );
-        }
+        else if ( ec != std::errc() )
+            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
 
         // And don't forget to check if it can be represented in the value_type!
 
@@ -341,22 +335,18 @@ public:
         max_matching_type converted;
 
         // We don't have a name, so let's convert to an integer type...
-        try
-        {
-            if constexpr ( std::is_signed_v<max_matching_type> )
-                converted = std::stol( std::string{value_string} );
-            else
-                converted = std::stoul( std::string{value_string} );
-        }
-        catch(const std::invalid_argument &e)
-        {
-            return {};
-        }
-        catch(const std::out_of_range &e)
-        {
-            return {};
-        }
+        auto [ptr, ec] = std::from_chars( value_string.data(), value_string.data() + value_string.size(),
+                                            converted);
         
+        if ( ec == std::errc::invalid_argument )
+            return {};
+        else if ( ec == std::errc::out_of_range )
+            return {};
+        else if ( ec != std::errc() )
+            return {};
+        
+        assert( ec == std::errc() );
+
         // And don't forget to check if it can be represented in the value_type!
 
         if ( std::cmp_less( converted, std::numeric_limits<typename EnumPolicy::underlying_type>::min() ) )
