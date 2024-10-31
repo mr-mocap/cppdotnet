@@ -8,6 +8,7 @@
 #include <array>
 #include <utility>
 #include <ranges>
+#include <cassert>
 
 namespace System
 {
@@ -201,11 +202,6 @@ protected:
 template <class EnumPolicy>
 class Enum : public EnumPolicy
 {
-    // Let this be the largest type, signed or unsigned, that will be supported by this class
-    using max_matching_type = std::conditional<
-                                        std::is_signed_v<typename EnumPolicy::underlying_type>,
-                                        long,
-                                        unsigned long>::type;
 public:
     Enum() = default;
     Enum(EnumPolicy::value_type v) : _currentValue{ v } { }
@@ -296,25 +292,20 @@ public:
             if ( i.first == value_string )
                 return i.second;
         
-        max_matching_type converted;
+        typename EnumPolicy::underlying_type converted;
 
         // We don't have a name, so let's convert to an integer type...
         auto [ptr, ec] = std::from_chars( value_string.data(), value_string.data() + value_string.size(),
-                                            converted);
+                                          converted);
         
         if ( ec == std::errc::invalid_argument )
             ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
-        else if ( ec == std::errc::out_of_range )
+        else if ( ec == std::errc::result_out_of_range )
             ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string" } );
         else if ( ec != std::errc() )
             ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
 
-        // And don't forget to check if it can be represented in the value_type!
-
-        if ( std::cmp_less( converted, std::numeric_limits<typename EnumPolicy::underlying_type>::min() ) )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string", "Converted value is less than the minimum for this type" } );
-        if ( std::cmp_greater( converted, std::numeric_limits<typename EnumPolicy::underlying_type>::max() ) )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string", "Converted value is greater than the maximum for this type" } );
+        assert( ec == std::errc() );
 
         typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
 
@@ -332,27 +323,20 @@ public:
             if ( i.first == value_string )
                 return i.second;
         
-        max_matching_type converted;
+        typename EnumPolicy::underlying_type converted;
 
         // We don't have a name, so let's convert to an integer type...
         auto [ptr, ec] = std::from_chars( value_string.data(), value_string.data() + value_string.size(),
-                                            converted);
+                                          converted);
         
         if ( ec == std::errc::invalid_argument )
             return {};
-        else if ( ec == std::errc::out_of_range )
+        else if ( ec == std::errc::result_out_of_range )
             return {};
         else if ( ec != std::errc() )
             return {};
         
         assert( ec == std::errc() );
-
-        // And don't forget to check if it can be represented in the value_type!
-
-        if ( std::cmp_less( converted, std::numeric_limits<typename EnumPolicy::underlying_type>::min() ) )
-            return {};
-        if ( std::cmp_greater( converted, std::numeric_limits<typename EnumPolicy::underlying_type>::max() ) )
-            return {};
 
         typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
 
