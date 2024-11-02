@@ -84,6 +84,19 @@ void GetAndToAreInverses()
 
         assert( System::BitConverter::ToChar(bytes) == input );
     }
+
+    // float
+    {
+        float input = 3.14;
+        std::vector<std::byte> bytes = System::BitConverter::GetBytes(input);
+
+        assert( System::BitConverter::ToFloat(bytes) == input );
+
+        input = -1.776;
+        bytes = System::BitConverter::GetBytes(input);
+
+        assert( System::BitConverter::ToFloat(bytes) == input );
+    }
 }
 
 void Run()
