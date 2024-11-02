@@ -9,6 +9,7 @@
 #include "TestStringReader.hpp"
 #include "TestStringWriter.hpp"
 #include "TestEnum.hpp"
+#include "TestBitConverter.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -22,15 +23,14 @@ int main(void)
     TestException::Run();
     TestEnvironment::Run();
     TestVersion::Run();
-#endif
     TestStringReader::Run();
     TestStringWriter::Run();
-#if 0
     TestConsole::Run();
     TestDefaultTraceListener::Run();
     TestConsoleTraceListener::Run();
-#endif
     TestEnum::Run();
+#endif
+    TestBitConverter::Run();
 
     std::cout << "All tests passed!\n";
 
