@@ -10,6 +10,7 @@
 #include "TestStringWriter.hpp"
 #include "TestEnum.hpp"
 #include "TestBitConverter.hpp"
+#include "TestSpan.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -31,6 +32,7 @@ int main(void)
     TestEnum::Run();
 #endif
     TestBitConverter::Run();
+    TestSpan::Run();
 
     std::cout << "All tests passed!\n";
 
