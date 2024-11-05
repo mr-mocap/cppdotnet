@@ -2,6 +2,7 @@
 #include "System/Span.hpp"
 #include <iostream>
 #include <cassert>
+#include <format>
 
 
 namespace TestSpan
@@ -68,6 +69,12 @@ void MultipleObjectsFromStdArray()
         System::Span<int> span_a( a );
 
         assert( span_a.Length() == 6 );
+        assert( span_a[0] == 1 );
+        assert( span_a[1] == 2 );
+        assert( span_a[2] == 3 );
+        assert( span_a[3] == 4 );
+        assert( span_a[4] == 5 );
+        assert( span_a[5] == 6 );
     }
 
     // Const std::array to Span of const items
@@ -76,6 +83,9 @@ void MultipleObjectsFromStdArray()
         System::Span<const int> span_a( a );
 
         assert( span_a.Length() == 3 );
+        assert( span_a[0] == 1 );
+        assert( span_a[1] == 2 );
+        assert( span_a[2] == 3 );
     }
 #if 0
     // std::array of const items to const Span of items
@@ -90,9 +100,12 @@ void MultipleObjectsFromStdArray()
     // std::array of const items to Span of const items
     {
         std::array<const int, 3> a{ 1, 2, 3 };
-        System::Span<const int, 3> span_a( a );
+        System::Span<const int> span_a( a );
 
         assert( span_a.Length() == 3 );
+        assert( span_a[0] == 1 );
+        assert( span_a[1] == 2 );
+        assert( span_a[2] == 3 );
     }
 }
 
@@ -120,6 +133,75 @@ void Assignment()
     assert( one_item[0] == var );
 }
 
+void Clear()
+{
+    std::cout << __func__ << std::endl;
+
+    int a[] = { 1, 2, 3 };
+    System::Span<int> span_a( a );
+
+    assert( span_a[0] == 1 );
+    assert( span_a[1] == 2 );
+    assert( span_a[2] == 3 );
+
+    span_a.Clear();
+
+    assert( span_a[0] == 0 );
+    assert( span_a[1] == 0 );
+    assert( span_a[2] == 0 );
+}
+
+void Fill()
+{
+    std::cout << __func__ << std::endl;
+
+    int a[] = { 1, 2, 3 };
+    System::Span<int> span_a( a );
+
+    assert( span_a[0] == 1 );
+    assert( span_a[1] == 2 );
+    assert( span_a[2] == 3 );
+
+    span_a.Fill( 12 );
+
+    assert( span_a[0] == 12 );
+    assert( span_a[1] == 12 );
+    assert( span_a[2] == 12 );
+}
+
+void Slice()
+{
+    std::cout << __func__ << std::endl;
+
+    int a[] = { 1, 2, 3 };
+    System::Span<int> span_a( a );
+
+    assert( span_a[0] == 1 );
+    assert( span_a[1] == 2 );
+    assert( span_a[2] == 3 );
+
+    {
+        System::Span<int> span_b( span_a.Slice( 1 ) );
+
+        assert( span_b.Length() == 2 );
+        assert( span_b[0] == 2 );
+        assert( span_b[1] == 3 );
+    }
+    
+    try
+    {
+        System::Span<int> span_c( span_a.Slice( 99 ) );
+    }
+    catch (const System::ArgumentOutOfRangeException &e)
+    {
+        std::cout << std::format("{} at {}", e.Message(), e.TargetSite() ) << std::endl;
+    }
+    catch (...)
+    {
+        assert( false );
+    }
+}
+
 void Run()
 {
     std::cout << "Running Span Tests..." << std::endl;
@@ -129,6 +211,9 @@ void Run()
     SingleObject();
     MultipleObjectsFromBuiltInArray();
     Assignment();
+    Clear();
+    Fill();
+    Slice();
 
     std::cout << "PASSED!" << std::endl;
 }

@@ -1,7 +1,9 @@
 #pragma once
 
+#include "System/Exception.hpp"
 #include <span>
 #include <type_traits>
+#include <algorithm>
 
 namespace System
 {
@@ -74,6 +76,21 @@ public:
 
     constexpr size_t Length() const { return _data.size(); }
 
+    constexpr void Clear() { Fill( Type{} ); }
+
+    constexpr void Fill(const Type &value)
+    {
+        std::ranges::fill( _data, value );
+    }
+
+    Span Slice(std::size_t offset, std::size_t count = std::dynamic_extent)
+    {
+        if ( offset >= Length() )
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"offset"} );
+
+        return Span( _data.subspan( offset, count ) );
+    }
+
     constexpr const Type &operator [](size_t index) const
     {
         return _data[index];
@@ -84,7 +101,9 @@ public:
         return _data[index];
     }
 protected:
-    std::span<Type> _data;
+    std::span<Type, Extent> _data;
+
+    constexpr Span(std::span<Type, Extent> from) : _data{ from } { }
 };
 
 // Deduction guides
