@@ -25,7 +25,7 @@ struct BitConverter final
     static constexpr bool ToBoolean(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentNullException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
         if ( index > bytes.size() )
             ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
 
@@ -35,7 +35,7 @@ struct BitConverter final
     static constexpr char ToChar(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentNullException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
         if ( index > bytes.size() )
             ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
 
@@ -45,7 +45,7 @@ struct BitConverter final
     static constexpr std::int16_t ToInt16(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentNullException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
         if ( index > bytes.size() )
             ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
 
@@ -55,7 +55,7 @@ struct BitConverter final
     static constexpr std::int32_t ToInt32(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentNullException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
         if ( index > bytes.size() )
             ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
 
@@ -65,7 +65,7 @@ struct BitConverter final
     static constexpr std::int64_t ToInt64(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentNullException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
         if ( index > bytes.size() )
             ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
 
@@ -75,7 +75,7 @@ struct BitConverter final
     static constexpr std::uint16_t ToUInt16(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentNullException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
         if ( index > bytes.size() )
             ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
 
@@ -85,7 +85,7 @@ struct BitConverter final
     static constexpr std::uint32_t ToUInt32(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentNullException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
         if ( index > bytes.size() )
             ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
 
@@ -95,7 +95,7 @@ struct BitConverter final
     static constexpr std::uint64_t ToUInt64(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentNullException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
         if ( index > bytes.size() )
             ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
 
@@ -105,7 +105,7 @@ struct BitConverter final
     static constexpr float ToFloat(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentNullException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
         if ( index > bytes.size() )
             ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
 
@@ -115,7 +115,7 @@ struct BitConverter final
     static constexpr double ToDouble(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentNullException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
         if ( index > bytes.size() )
             ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
 
