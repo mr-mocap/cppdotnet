@@ -83,12 +83,31 @@ public:
         std::ranges::fill( _data, value );
     }
 
-    Span Slice(std::size_t offset, std::size_t count = std::dynamic_extent)
+    Span Slice(std::size_t start, std::size_t length = std::dynamic_extent)
     {
-        if ( offset >= Length() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"offset"} );
+        if ( start >= Length() )
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"start"} );
+        if ( (length != std::dynamic_extent) && ((start + length) >= Length()) )
+            ThrowWithTarget( System::ArgumentOutOfRangeException{"length"} );
 
-        return Span( _data.subspan( offset, count ) );
+        return Span( _data.subspan( start, length ) );
+    }
+
+    void CopyTo(Span destination) const
+    {
+        if ( destination.Length() < Length() )
+            ThrowWithTarget( System::ArgumentException{"Destination Span is shorter than the source Span", "destination"} );
+        
+        std::ranges::copy( _data, destination._data.begin() );
+    }
+
+    bool TryCopyTo(Span destination)
+    {
+        if ( destination.Length() < Length() )
+            return false;
+        
+        std::ranges::copy( _data, destination._data.begin() );
+        return true;
     }
 
     constexpr const Type &operator [](size_t index) const

@@ -188,6 +188,15 @@ void Slice()
         assert( span_b[1] == 3 );
     }
     
+    {
+        System::Span<int> span_b( span_a.Slice( 0, 2 ) );
+
+        assert( span_b.Length() == 2 );
+        assert( span_b[0] == 1 );
+        assert( span_b[1] == 2 );
+    }
+    
+    // Index past end
     try
     {
         System::Span<int> span_c( span_a.Slice( 99 ) );
@@ -200,6 +209,96 @@ void Slice()
     {
         assert( false );
     }
+
+    // Length past end
+    try
+    {
+        System::Span<int> span_d( span_a.Slice( 0, 99 ) );
+    }
+    catch (const System::ArgumentOutOfRangeException &e)
+    {
+        std::cout << std::format("{} at {}", e.Message(), e.TargetSite() ) << std::endl;
+    }
+    catch (...)
+    {
+        assert( false );
+    }
+}
+
+void CopyTo()
+{
+    std::cout << __func__ << std::endl;
+
+    int a[] = { 1, 2, 3 };
+    int b[] = { 5, 5, 5, 5, 5 };
+    System::Span<int> span_a( a );
+    System::Span<int> span_b( b );
+
+    assert( span_b[0] != span_a[0] );
+    assert( span_b[1] != span_a[1] );
+    assert( span_b[2] != span_a[2] );
+
+    assert( span_b[0] == 5 );
+    assert( span_b[1] == 5 );
+    assert( span_b[2] == 5 );
+    assert( span_b[3] == 5 );
+    assert( span_b[4] == 5 );
+
+    span_a.CopyTo(span_b);
+
+    assert( span_b[0] == span_a[0] );
+    assert( span_b[1] == span_a[1] );
+    assert( span_b[2] == span_a[2] );
+
+    assert( span_b[0] == 1 );
+    assert( span_b[1] == 2 );
+    assert( span_b[2] == 3 );
+    assert( span_b[3] == 5 );
+    assert( span_b[4] == 5 );
+
+    try
+    {
+        span_b.CopyTo( span_a );
+    }
+    catch(const System::ArgumentException &e)
+    {
+        std::cout << std::format("{} at {}", e.Message(), e.TargetSite() ) << std::endl;
+    }
+    
+}
+
+void TryCopyTo()
+{
+    std::cout << __func__ << std::endl;
+
+    int a[] = { 1, 2, 3 };
+    int b[] = { 5, 5, 5, 5, 5 };
+    System::Span<int> span_a( a );
+    System::Span<int> span_b( b );
+
+    assert( span_b[0] != span_a[0] );
+    assert( span_b[1] != span_a[1] );
+    assert( span_b[2] != span_a[2] );
+
+    assert( span_b[0] == 5 );
+    assert( span_b[1] == 5 );
+    assert( span_b[2] == 5 );
+    assert( span_b[3] == 5 );
+    assert( span_b[4] == 5 );
+
+    assert( span_a.TryCopyTo(span_b) == true );
+
+    assert( span_b[0] == span_a[0] );
+    assert( span_b[1] == span_a[1] );
+    assert( span_b[2] == span_a[2] );
+
+    assert( span_b[0] == 1 );
+    assert( span_b[1] == 2 );
+    assert( span_b[2] == 3 );
+    assert( span_b[3] == 5 );
+    assert( span_b[4] == 5 );
+
+    assert( span_b.TryCopyTo( span_a ) == false );
 }
 
 void Run()
@@ -214,6 +313,8 @@ void Run()
     Clear();
     Fill();
     Slice();
+    CopyTo();
+    TryCopyTo();
 
     std::cout << "PASSED!" << std::endl;
 }
