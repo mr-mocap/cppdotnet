@@ -21,7 +21,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestSpan.o \
 	main.o
 
-CXXFLAGS=-std=c++20 -W -Wall -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
+CXXFLAGS=-std=c++20 -W -Wall -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
 LDFLAGS=-L$(LIB_BUILD_DIR)
 
 #%.o: %.cpp
@@ -56,3 +56,5 @@ clean:
 .PHONY: cleanlib
 cleanlib:
 	cd .. && make cleanlib
+
+-include *.d
