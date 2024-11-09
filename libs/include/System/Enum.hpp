@@ -310,7 +310,7 @@ public:
         typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
 
         if ( !IsDefined( casted ) )
-            return {};
+            ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string" } );
 
         // We have one of the valid values!
         return casted;
@@ -367,6 +367,44 @@ protected:
     {
         return std::views::values( EnumPolicy::NameValueArray() );
     }
+
+    static typename EnumPolicy::value_type ParseCommon(const std::string_view value_string)
+    {
+        if ( value_string.empty() )
+            ThrowWithTarget( System::ArgumentException{ "Argument is empty", "value_string" } );
+
+        if ( !IsDefined(value_string) )
+            ThrowWithTarget( System::ArgumentException{ "Argument does not name a defined constant", "value_string" } );
+
+        // First, check for a name...
+        for (const typename EnumPolicy::name_value_pair_type &i : EnumPolicy::NameValueArray())
+            if ( i.first == value_string )
+                return i.second;
+        
+        typename EnumPolicy::underlying_type converted;
+
+        // We don't have a name, so let's convert to an integer type...
+        auto [ptr, ec] = std::from_chars( value_string.data(), value_string.data() + value_string.size(),
+                                          converted);
+        
+        if ( ec == std::errc::invalid_argument )
+            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
+        else if ( ec == std::errc::result_out_of_range )
+            ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string" } );
+        else if ( ec != std::errc() )
+            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
+
+        assert( ec == std::errc() );
+
+        typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
+
+        if ( !IsDefined( casted ) )
+            return {};
+
+        // We have one of the valid values!
+        return casted;
+    }
+
 };
 #endif
 }
