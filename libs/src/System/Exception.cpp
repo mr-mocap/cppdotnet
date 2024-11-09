@@ -158,6 +158,13 @@ const std::string_view InvalidOperationException::ClassName() const
     return "InvalidOperationException"sv;
 }
 
+const std::string_view FormatException::ClassName() const
+{
+    using namespace std::literals;
+
+    return "FormatException"sv;
+}
+
 ObjectDisposedException::ObjectDisposedException(const std::string_view disposed_object_name)
     :
     InvalidOperationException( std::format("Object '{}' already disposed", disposed_object_name) ),

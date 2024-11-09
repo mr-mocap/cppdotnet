@@ -1,11 +1,28 @@
 #include "System/Convert.hpp"
 #include "System/Boolean.hpp"
 #include "System/Exception.hpp"
-#include <format>
 #include <map>
+#include <charconv>
+#include <cassert>
+#include <cctype>
+#include <algorithm>
 
 namespace System
 {
+
+std::byte Convert::From2HexCharsToByte(const std::string_view input_string)
+{
+    assert(input_string.size() == 2);
+
+    uint8_t result;
+    auto [ptr, ec] = std::from_chars(input_string.data(), input_string.data() + input_string.size(), result, 16);
+
+    assert(ec != std::errc::invalid_argument);
+    assert(ec != std::errc::result_out_of_range);
+    assert(ec == std::errc()); // Good!
+
+    return static_cast<std::byte>(result);
+}
 
 const std::string_view Convert::ToString(bool value)
 {
@@ -22,12 +39,12 @@ std::string Convert::ToString(char value)
 
 std::string Convert::ToString(float value)
 {
-    return std::format("{}", value);
+    return ToChars(value);
 }
 
 std::string Convert::ToString(double value)
 {
-    return std::format("{}", value);
+    return ToChars(value);
 }
 
 std::string Convert::ToString(int8_t value, Base toBase)
@@ -37,17 +54,16 @@ std::string Convert::ToString(int8_t value, Base toBase)
     switch ( toBase )
     {
     case Base::Binary:
-        return std::format("{:b}", value);
+        return ToChars(value, 2);
     case Base::Octal:
-        return std::format("{:o}", value);
+        return ToChars(value, 8);
     case Base::Decimal:
-        return std::format("{}", value);
+        return ToChars(value);
     case Base::Hexadecimal:
-        return std::format("{:X}", value);
+        return ToChars(value, 16);
     default:
         break;
     }
-    ThrowWithTarget( ArgumentOutOfRangeException( "toBase"sv ) );
     return {};
 }
 
@@ -58,17 +74,16 @@ std::string Convert::ToString(int16_t value, Base toBase)
     switch ( toBase )
     {
     case Base::Binary:
-        return std::format("{:b}", value);
+        return ToChars(value, 2);
     case Base::Octal:
-        return std::format("{:o}", value);
+        return ToChars(value, 8);
     case Base::Decimal:
-        return std::format("{}", value);
+        return ToChars(value);
     case Base::Hexadecimal:
-        return std::format("{:X}", value);
+        return ToChars(value, 16);
     default:
         break;
     }
-    ThrowWithTarget( ArgumentOutOfRangeException( "toBase"sv ) );
     return {};
 }
 
@@ -79,13 +94,13 @@ std::string Convert::ToString(int32_t value, Base toBase)
     switch ( toBase )
     {
     case Base::Binary:
-        return std::format("{:b}", value);
+        return ToChars(value, 2);
     case Base::Octal:
-        return std::format("{:o}", value);
+        return ToChars(value, 8);
     case Base::Decimal:
-        return std::format("{}", value);
+        return ToChars(value);
     case Base::Hexadecimal:
-        return std::format("{:X}", value);
+        return ToChars(value, 16);
     default:
         break;
     }
@@ -100,17 +115,16 @@ std::string Convert::ToString(int64_t value, Base toBase)
     switch ( toBase )
     {
     case Base::Binary:
-        return std::format("{:b}", value);
+        return ToChars(value, 2);
     case Base::Octal:
-        return std::format("{:o}", value);
+        return ToChars(value, 8);
     case Base::Decimal:
-        return std::format("{}", value);
+        return ToChars(value);
     case Base::Hexadecimal:
-        return std::format("{:X}", value);
+        return ToChars(value, 16);
     default:
         break;
     }
-    ThrowWithTarget( ArgumentOutOfRangeException( "toBase"sv ) );
     return {};
 }
 
@@ -121,17 +135,16 @@ std::string Convert::ToString(uint8_t value, Base toBase)
     switch ( toBase )
     {
     case Base::Binary:
-        return std::format("{:b}", value);
+        return ToChars(value, 2);
     case Base::Octal:
-        return std::format("{:o}", value);
+        return ToChars(value, 8);
     case Base::Decimal:
-        return std::format("{}", value);
+        return ToChars(value);
     case Base::Hexadecimal:
-        return std::format("{:X}", value);
+        return ToChars(value, 16);
     default:
         break;
     }
-    ThrowWithTarget( ArgumentOutOfRangeException( "toBase"sv ) );
     return {};
 }
 
@@ -142,17 +155,16 @@ std::string Convert::ToString(uint16_t value, Base toBase)
     switch ( toBase )
     {
     case Base::Binary:
-        return std::format("{:b}", value);
+        return ToChars(value, 2);
     case Base::Octal:
-        return std::format("{:o}", value);
+        return ToChars(value, 8);
     case Base::Decimal:
-        return std::format("{}", value);
+        return ToChars(value);
     case Base::Hexadecimal:
-        return std::format("{:X}", value);
+        return ToChars(value, 16);
     default:
         break;
     }
-    ThrowWithTarget( ArgumentOutOfRangeException( "toBase"sv ) );
     return {};
 }
 
@@ -163,17 +175,16 @@ std::string Convert::ToString(uint32_t value, Base toBase)
     switch ( toBase )
     {
     case Base::Binary:
-        return std::format("{:b}", value);
+        return ToChars(value, 2);
     case Base::Octal:
-        return std::format("{:o}", value);
+        return ToChars(value, 8);
     case Base::Decimal:
-        return std::format("{}", value);
+        return ToChars(value);
     case Base::Hexadecimal:
-        return std::format("{:X}", value);
+        return ToChars(value, 16);
     default:
         break;
     }
-    ThrowWithTarget( ArgumentOutOfRangeException( "toBase"sv ) );
     return {};
 }
 
@@ -184,17 +195,16 @@ std::string Convert::ToString(uint64_t value, Base toBase)
     switch ( toBase )
     {
     case Base::Binary:
-        return std::format("{:b}", value);
+        return ToChars(value, 2);
     case Base::Octal:
-        return std::format("{:o}", value);
+        return ToChars(value, 8);
     case Base::Decimal:
-        return std::format("{}", value);
+        return ToChars(value);
     case Base::Hexadecimal:
-        return std::format("{:X}", value);
+        return ToChars(value, 16);
     default:
         break;
     }
-    ThrowWithTarget( ArgumentOutOfRangeException( "toBase"sv ) );
     return {};
 }
 
@@ -342,8 +352,28 @@ catch(const std::exception& e)
 {
     using namespace std::literals;
 
-    ThrowWithTarget( ArgumentOutOfRangeException( "string_value"sv ) );
+    ThrowWithTarget( ArgumentOutOfRangeException( "string_value" ) );
     return {};
+}
+
+std::vector<std::byte> Convert::FromHexString(const std::string_view input_string)
+{
+    std::vector<std::byte> result;
+
+    if (input_string.empty())
+        ThrowWithTarget( FormatException( "Input value is empty" ) );
+    else if (input_string.size() % 2 != 0)
+        ThrowWithTarget( FormatException( "Input value is not a multiple of 2" ) );
+    else if ( std::ranges::find_if_not( input_string, [](unsigned char c) { return std::isxdigit(c); } ) != input_string.end())
+        ThrowWithTarget( FormatException( "Input value contains non-hex characters" ) );
+    
+    result.reserve( input_string.size() / 2 );
+
+    // Proceed byte-by-byte
+    for (std::string_view input = input_string; !input.empty(); input.remove_prefix(2))
+        result.push_back( From2HexCharsToByte( input.substr(0, 2) ) );
+
+    return result; // This is LITTLE-ENDIAN now!
 }
 
 }

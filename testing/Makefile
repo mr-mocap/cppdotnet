@@ -18,6 +18,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestStringWriter.o \
 	TestEnum.o \
 	TestBitConverter.o \
+	TestConvert.o \
 	TestSpan.o \
 	main.o
 

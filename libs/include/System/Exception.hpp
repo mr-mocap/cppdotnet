@@ -385,6 +385,42 @@ protected:
     std::string _objectName;
 };
 
+class FormatException : public SystemException
+{
+public:
+    using SystemException::SystemException;
+
+    FormatException() = default;
+
+    explicit FormatException(const char *message) : FormatException( std::string_view{message} ) { }
+    explicit FormatException(const std::string_view message) : SystemException( message ) { }
+
+    explicit FormatException(const char *message, Exception &&inner_exception) : FormatException( std::string_view(message), std::move(inner_exception) ) { }
+    explicit FormatException(const std::string_view message, Exception &&inner_exception)
+        :
+        SystemException( message, std::move(inner_exception) )
+    {
+    }
+
+    /** Remove the ability to copy objects of this class
+     *
+     *  @{
+     */
+    FormatException(const FormatException &) = delete;
+    FormatException &operator =(const FormatException &) = delete;
+    /// @}
+
+    /** Define the ability to move objects of this class
+     *
+     *  @{
+     */
+    FormatException(FormatException &&other) = default;
+    FormatException &operator =(FormatException &&other) = default;
+    /// @}
+
+    const std::string_view ClassName() const override;
+};
+
 /** Throws the given exception and fills in the TargetSite()
  *
  *  @param exception_to_throw
