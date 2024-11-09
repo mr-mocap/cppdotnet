@@ -1,7 +1,7 @@
 #pragma once
 
 #include "System/IO/TextWriter.hpp"
-#include "System/IO/StringBuilder.hpp"
+#include "System/Text/StringBuilder.hpp"
 
 namespace System::IO
 {
@@ -12,7 +12,7 @@ public:
     StringWriter();
    ~StringWriter();
 
-    const StringBuilder &GetStringBuilder() const { return _builder; }
+    const System::Text::StringBuilder &GetStringBuilder() const { return _builder; }
 
     using TextWriter::Write;
 
@@ -20,7 +20,7 @@ public:
     void Write(const std::string_view message) override;
 
 protected:
-    StringBuilder _builder;
+    System::Text::StringBuilder _builder;
 };
 
 }

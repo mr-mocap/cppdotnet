@@ -24,7 +24,9 @@ int main(void)
     TestDebug::Run();
     TestException::Run();
     TestEnvironment::Run();
+#endif
     TestVersion::Run();
+#if 0
     TestStringReader::Run();
     TestStringWriter::Run();
     TestConsole::Run();

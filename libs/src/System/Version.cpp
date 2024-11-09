@@ -1,5 +1,7 @@
 #include "System/Version.hpp"
 #include "System/Exception.hpp"
+#include "System/Convert.hpp"
+#include "System/Text/StringBuilder.hpp"
 #include <string>
 #include <vector>
 #include <cstring>
@@ -65,13 +67,15 @@ Version Version::Parse(const std::string_view input)
 
 std::string Version::ToString() const
 {
-    std::string result{ std::format("{}.{}", Major(), Minor()) };
+    Text::StringBuilder result;
+
+    result.Append( Convert::ToChars(Major()) ).Append('.').Append( Convert::ToChars(Minor()) );
 
     if ( Build() != -1 )
-        result.append( std::format(".{}", Build() ) );
+        result.Append('.').Append( Build() );
 
     if ( Revision() != -1 )
-        result.append( std::format(".{}", Revision() ) );
+        result.Append('.').Append( Revision() );
     
     return result;
 }
@@ -87,17 +91,19 @@ std::string Version::ToString(int field_count) const
         return {};
 
     if ( field_count == 1 )
-        return std::format("{}", Major());
+        return Convert::ToChars( Major() );
 
     if ( field_count == 2 )
-        return std::format("{}.{}", Major(), Minor());
+        return Text::StringBuilder().Append( Convert::ToChars(Major()) ).Append('.').Append( Convert::ToChars(Minor()) );
 
     if ( field_count == 3 )
     {
         if ( Build() == -1 )
             ThrowWithTarget( ArgumentOutOfRangeException{ "field_count"sv, "Build() is not set"sv } );
 
-        return std::format("{}.{}.{}", Major(), Minor(), Build());
+        return Text::StringBuilder().Append( Convert::ToChars(Major()) ).Append('.')
+                                    .Append( Convert::ToChars(Minor()) ).Append('.')
+                                    .Append( Convert::ToChars(Build()) );
     }
 
     if ( field_count == 4 )
@@ -105,7 +111,10 @@ std::string Version::ToString(int field_count) const
         if ( Revision() == -1 )
             ThrowWithTarget( ArgumentOutOfRangeException{ "field_count"sv, "Revision() is not set"sv } );
 
-        return std::format("{}.{}.{}.{}", Major(), Minor(), Build(), Revision());
+        return Text::StringBuilder().Append( Convert::ToChars(Major()) ).Append('.')
+                                    .Append( Convert::ToChars(Minor()) ).Append('.')
+                                    .Append( Convert::ToChars(Build()) ).Append('.')
+                                    .Append( Convert::ToChars(Revision()) );
     }
 
     return {};

@@ -1,7 +1,7 @@
-#include "System/IO/StringBuilder.hpp"
+#include "System/Text/StringBuilder.hpp"
 
 
-namespace System::IO
+namespace System::Text
 {
 
 StringBuilder &StringBuilder::Append(char value)
