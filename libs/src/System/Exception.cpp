@@ -1,5 +1,4 @@
 #include "System/Exception.hpp"
-#include <format>
 #include <cstring>
 
 namespace System
@@ -73,7 +72,7 @@ std::string Exception::StackTrace() const
 
 std::string Exception::ToString() const
 {
-    std::string s{ std::format("{}: '{}'", ClassName(), _message) };
+    std::string s( std::string(ClassName()).append(": '").append(_message).append("'") );
 
     if ( InnerException() )
     {
@@ -118,7 +117,7 @@ const std::string_view ArgumentException::ClassName() const
 
 ArgumentNullException::ArgumentNullException(const std::string_view param_name)
     :
-    ArgumentException( std::format("Argument '{}' is null", param_name) )
+    ArgumentException( std::string("Argument '").append(param_name).append("' is null") )
 {
     _paramName = param_name;
 }
@@ -132,7 +131,7 @@ const std::string_view ArgumentNullException::ClassName() const
 
 ArgumentOutOfRangeException::ArgumentOutOfRangeException(const std::string_view param_name)
     :
-    ArgumentException( std::format("Argument '{}' is out-of-range", param_name) )
+    ArgumentException( std::string("Argument '").append(param_name).append("' is out-of-range") )
 {
     _paramName = param_name;
 }
@@ -167,7 +166,7 @@ const std::string_view FormatException::ClassName() const
 
 ObjectDisposedException::ObjectDisposedException(const std::string_view disposed_object_name)
     :
-    InvalidOperationException( std::format("Object '{}' already disposed", disposed_object_name) ),
+    InvalidOperationException( std::string("Object '").append(disposed_object_name).append("' already disposed") ),
     _objectName{ disposed_object_name }
 {
 }

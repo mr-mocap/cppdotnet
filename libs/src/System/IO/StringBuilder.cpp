@@ -10,6 +10,12 @@ StringBuilder &StringBuilder::Append(char value)
     return *this;
 }
 
+StringBuilder &StringBuilder::Append(const char *value)
+{
+    _string.append(value);
+    return *this;
+}
+
 StringBuilder &StringBuilder::Append(const std::string_view value)
 {
     _string.append( value );

@@ -2,7 +2,6 @@
 #include "System/Diagnostics/Debugger.hpp"
 #include "System/Convert.hpp"
 #include "System/IO/StreamWriter.hpp"
-#include <format>
 
 
 namespace System::Diagnostics
@@ -67,7 +66,7 @@ void TextWriterTraceListener::Write(const std::string_view message)
 void TextWriterTraceListener::Write(const std::string_view message, const std::string_view category)
 {
     Debugger::Log( message );
-    WriteRaw( std::format("[{}] {}", category, message ) );
+    WriteRaw( std::string("[").append(category).append("] ").append(message) );
 }
 
 void TextWriterTraceListener::WriteLine(const std::string_view message)
@@ -82,7 +81,7 @@ void TextWriterTraceListener::WriteLine(const std::string_view message, const st
 {
     Debugger::Log( message );
     WriteIndent();
-    WriteLineRaw( std::format("[{}] {}", category, message ) );
+    WriteLineRaw( std::string("[").append(category).append("] ").append(message) );
     SetNeedIndent();
 }
 
@@ -93,12 +92,12 @@ System::IO::TextWriter *TextWriterTraceListener::Writer()
 
 void TextWriterTraceListener::Fail(const std::string_view message)
 {
-    WriteLineRaw( std::format("{}: {}", "Fail", message ) );
+    WriteLineRaw( std::string("Fail: ").append(message) );
 }
 
 void TextWriterTraceListener::Fail(const std::string_view message, const std::string_view detail)
 {
-    WriteLineRaw( std::format("{}: {} [Detail: {}]", "Fail", message, detail) );
+    WriteLineRaw( std::string("Fail: ").append(message).append(" [Detail: ").append(detail).append("]") );
 }
 
 void TextWriterTraceListener::WriteRaw(const std::string_view data)

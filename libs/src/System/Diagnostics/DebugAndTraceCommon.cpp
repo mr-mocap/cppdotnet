@@ -4,7 +4,6 @@
 #include "System/Diagnostics/Debug.hpp"
 #include "System/Convert.hpp"
 #include <cstdlib>
-#include <format>
 
 
 namespace System::Diagnostics
@@ -20,46 +19,50 @@ std::string DebugAndTraceCommon::_indentString;
 
 static std::string FormatTraceType(TraceLevel level, std::string_view message)
 {
-    return std::format("[{}] [Message: \"{}\"]",
-                       Convert::ToString( level ),
-                       message);
+    return std::string("[").append( Convert::ToString(level) ).append("] [Message: ").append(message).append("\"]");
 }
 
 static std::string FormatAssert(const std::source_location location)
 {
-    return std::format("[Assert] [File: \"{}\"]\t[Function: \"{}\"]",
-                       location.file_name(),
-                       location.function_name());
+    std::string retval("[Assert] ");
+
+    retval.append("[File: \"").append(location.file_name()).append("\"]\t");
+    retval.append("[Function: \"").append(location.function_name()).append("\"]");
+    return retval;
 }
 
 static std::string FormatAssertMessage(const std::source_location location, const std::string_view message)
 {
-    return std::format("[Assert] [Message: \"{}\"]\t[File: \"{}\"]\t[Function: \"{}\"]",
-                       message,
-                       location.file_name(),
-                       location.function_name());
+    std::string retval("[Assert] ");
+
+    retval.append("[Message: \"").append(message).append("\"]\t");
+    retval.append("[File: \"").append(location.file_name()).append("\"]\t");
+    retval.append("[Function: \"").append(location.function_name()).append("\"]");
+    return retval;
 }
 
 static std::string FormatAssertMessageCategory(const std::source_location location,
                                                const std::string_view message,
                                                const std::string_view category)
 {
-    return std::format("[Assert] [Category: {}]\t[Message: \"{}\"]\t[File: \"{}\"]\t[Function: \"{}\"]",
-                       category,
-                       message,
-                       location.file_name(),
-                       location.function_name());
+    std::string retval("[Assert] ");
+
+    retval.append("[Category: ").append(category).append("]\t");
+    retval.append("[Message: \"").append(message).append("\"]\t");
+    retval.append("[File: \"").append(location.file_name()).append("\"]\t");
+    retval.append("[Function: \"").append(location.function_name()).append("\"]");
+    return retval;
 }
 
 static std::string FormatFailMessage(const std::string_view message)
 {
-    return std::format("[Fail] [Message: \"{}\"]", message);
+    return std::string("[Fail] [Message: \"").append(message).append("\"]");
 }
 
 static std::string FormatFailMessageCategory(const std::string_view message,
                                              const std::string_view category)
 {
-    return std::format("[Fail] [Message: \"{}\"]\t[Category: {}]", message, category);
+    return std::string("[Fail] [Message: \"").append(message).append("\"]\t[Category: ").append(category).append("]");
 }
 
 DebugAndTraceCommon::DebugAndTraceCommon()

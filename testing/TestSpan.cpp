@@ -2,7 +2,6 @@
 #include "System/Span.hpp"
 #include <iostream>
 #include <cassert>
-#include <format>
 
 
 namespace TestSpan
@@ -203,7 +202,7 @@ void Slice()
     }
     catch (const System::ArgumentOutOfRangeException &e)
     {
-        std::cout << std::format("{} at {}", e.Message(), e.TargetSite() ) << std::endl;
+        std::cout << std::string(e.Message()).append(" at ").append(e.TargetSite()) << std::endl;
     }
     catch (...)
     {
@@ -217,7 +216,7 @@ void Slice()
     }
     catch (const System::ArgumentOutOfRangeException &e)
     {
-        std::cout << std::format("{} at {}", e.Message(), e.TargetSite() ) << std::endl;
+        std::cout << std::string(e.Message()).append(" at ").append(e.TargetSite()) << std::endl;
     }
     catch (...)
     {
@@ -262,7 +261,7 @@ void CopyTo()
     }
     catch(const System::ArgumentException &e)
     {
-        std::cout << std::format("{} at {}", e.Message(), e.TargetSite() ) << std::endl;
+        std::cout << std::string(e.Message()).append(" at ").append(e.TargetSite()) << std::endl;
     }
     
 }

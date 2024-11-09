@@ -2,7 +2,6 @@
 #include "System/Diagnostics/Trace.hpp"
 #include "System/Diagnostics/Debugger.hpp"
 #include "System/Convert.hpp"
-#include <format>
 
 
 namespace System::Diagnostics
@@ -47,7 +46,7 @@ void DefaultTraceListener::Write(const std::string_view message)
 void DefaultTraceListener::Write(const std::string_view message, const std::string_view category)
 {
     Debugger::Log( message );
-    WriteRaw( std::format("[{}] {}", category, message ) );
+    WriteRaw( std::string("[").append(category).append("] ").append(message) );
 }
 
 void DefaultTraceListener::WriteLine(const std::string_view message)
@@ -62,7 +61,7 @@ void DefaultTraceListener::WriteLine(const std::string_view message, const std::
 {
     Debugger::Log( message );
     WriteIndent();
-    WriteLineRaw( std::format("[{}] {}", category, message ) );
+    WriteLineRaw( std::string("[").append(category).append("] ").append(message) );
     SetNeedIndent();
 }
 
@@ -75,7 +74,7 @@ void DefaultTraceListener::Fail(const std::string_view message)
 void DefaultTraceListener::Fail(const std::string_view message, const std::string_view detail)
 {
     Debugger::Log( message );
-    WriteLineRaw( std::format("Fail: {}", message) );
+    WriteLineRaw( std::string("Fail: ").append(message).append(" [Detail: ").append(detail).append("]") );
 }
 
 void DefaultTraceListener::WriteRaw(const std::string_view data)

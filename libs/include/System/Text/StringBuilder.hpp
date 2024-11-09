@@ -17,6 +17,7 @@ public:
     size_t Length() const { return _string.size(); }
 
     StringBuilder &Append(char value);
+    StringBuilder &Append(const char *value);
     StringBuilder &Append(const std::string_view value);
     StringBuilder &Append(const std::string &value);
 

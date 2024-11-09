@@ -41,7 +41,9 @@ void SetEnvironmentVariable()
         catch(const System::Exception &e)
         {
             threw = true;
-            System::Console::Out().WriteLine( std::format("Message=\"{}\"\tTargetSite=\"{}\"", e.Message(), e.TargetSite()) );
+            std::string m( std::string("Message=\"").append(e.Message()).append("\"\tTargetSite=\"").append(e.TargetSite()).append("'") );
+
+            System::Console::Out().WriteLine( m );
         }
         assert( threw );
     }
