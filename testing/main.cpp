@@ -12,6 +12,7 @@
 #include "TestBitConverter.hpp"
 #include "TestConvert.hpp"
 #include "TestSpan.hpp"
+#include "TestStringBuilder.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -33,6 +34,7 @@ int main(void)
     TestBitConverter::Run();
     TestConvert::Run();
     TestSpan::Run();
+    TestStringBuilder::Run();
 
     std::cout << "All tests passed!\n";
 
