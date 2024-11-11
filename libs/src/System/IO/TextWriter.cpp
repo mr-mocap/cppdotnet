@@ -6,10 +6,6 @@
 namespace System::IO
 {
 
-TextWriter::TextWriter()
-{
-}
-
 TextWriter::~TextWriter()
 {
 }

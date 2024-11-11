@@ -1,5 +1,6 @@
 #pragma once
 
+#include "System/Environment.hpp"
 #include <string>
 #include <string_view>
 #include <cstdint>
@@ -10,7 +11,7 @@ namespace System::IO
 class TextWriter
 {
 public:
-    TextWriter();
+    TextWriter() = default;
     virtual ~TextWriter();
 
     const std::string_view NewLine() const { return _newLine; }
@@ -44,7 +45,7 @@ public:
     virtual void WriteLine(const std::string_view message);
 
 protected:
-    std::string _newLine{"\n"};
+    std::string _newLine{ System::Environment::NewLine() };
 };
 
 }
