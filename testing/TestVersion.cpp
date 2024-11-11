@@ -63,7 +63,7 @@ void ConstructWithString()
     std::cout << __func__ << std::endl;
 
     {
-        System::Version v{ System::Version::Parse("3"sv) };
+        System::Version v{ System::Version::Parse("3") };
 
         assert( v.Major() == 3 );
         assert( v.Minor() == 0 );
@@ -73,7 +73,7 @@ void ConstructWithString()
 
     // Just Major
     {
-        System::Version v{ "3"sv };
+        System::Version v{ "3" };
 
         assert( v.Major() == 3 );
         assert( v.Minor() == 0 );
@@ -83,7 +83,7 @@ void ConstructWithString()
     
     // Major & minor
     {
-        System::Version v{ "3.6"sv };
+        System::Version v{ "3.6" };
 
         assert( v.Major() == 3 );
         assert( v.Minor() == 6 );
@@ -93,7 +93,7 @@ void ConstructWithString()
     
     // Major, minor, and build
     {
-        System::Version v{ "3.6.22"sv };
+        System::Version v{ "3.6.22" };
 
         assert( v.Major() == 3 );
         assert( v.Minor() == 6 );
@@ -103,7 +103,7 @@ void ConstructWithString()
     
     // Major, minor, build, and revision
     {
-        System::Version v{ "3.6.22.127"sv };
+        System::Version v{ "3.6.22.127" };
 
         assert( v.Major() == 3 );
         assert( v.Minor() == 6 );

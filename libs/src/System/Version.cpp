@@ -69,7 +69,7 @@ std::string Version::ToString() const
 {
     Text::StringBuilder result;
 
-    result.Append( Convert::ToChars(Major()) ).Append('.').Append( Convert::ToChars(Minor()) );
+    result.Append( Major() ).Append('.').Append( Minor() );
 
     if ( Build() != -1 )
         result.Append('.').Append( Build() );
@@ -94,16 +94,16 @@ std::string Version::ToString(int field_count) const
         return Convert::ToChars( Major() );
 
     if ( field_count == 2 )
-        return Text::StringBuilder().Append( Convert::ToChars(Major()) ).Append('.').Append( Convert::ToChars(Minor()) );
+        return Text::StringBuilder().Append( Major() ).Append('.').Append( Minor() );
 
     if ( field_count == 3 )
     {
         if ( Build() == -1 )
             ThrowWithTarget( ArgumentOutOfRangeException{ "field_count"sv, "Build() is not set"sv } );
 
-        return Text::StringBuilder().Append( Convert::ToChars(Major()) ).Append('.')
-                                    .Append( Convert::ToChars(Minor()) ).Append('.')
-                                    .Append( Convert::ToChars(Build()) );
+        return Text::StringBuilder().Append( Major() ).Append('.')
+                                    .Append( Minor() ).Append('.')
+                                    .Append( Build() );
     }
 
     if ( field_count == 4 )
@@ -111,10 +111,10 @@ std::string Version::ToString(int field_count) const
         if ( Revision() == -1 )
             ThrowWithTarget( ArgumentOutOfRangeException{ "field_count"sv, "Revision() is not set"sv } );
 
-        return Text::StringBuilder().Append( Convert::ToChars(Major()) ).Append('.')
-                                    .Append( Convert::ToChars(Minor()) ).Append('.')
-                                    .Append( Convert::ToChars(Build()) ).Append('.')
-                                    .Append( Convert::ToChars(Revision()) );
+        return Text::StringBuilder().Append( Major() ).Append('.')
+                                    .Append( Minor() ).Append('.')
+                                    .Append( Build() ).Append('.')
+                                    .Append( Revision() );
     }
 
     return {};
