@@ -2,6 +2,9 @@
 
 #include <string>
 #include <string_view>
+#if __cplusplus >= 202002L
+#include <format>
+#endif
 #include <cstdint>
 
 namespace System::Text
@@ -41,6 +44,15 @@ public:
 
     StringBuilder &AppendLine();
     StringBuilder &AppendLine(const std::string_view value);
+
+#ifdef __cpp_lib_format
+    template <typename ...Args>
+    StringBuilder &AppendFormat(const std::string_view fmt, Args&&... args)
+    {
+        Append( std::vformat(fmt, std::make_format_args(args...)) );
+        return *this;
+    }
+#endif
 
     StringBuilder &Replace(const std::string_view old_value, const std::string_view new_value);
 

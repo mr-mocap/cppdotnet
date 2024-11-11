@@ -24,11 +24,54 @@ void ReplaceSubstrings()
     }
 }
 
+void AppendFormat()
+{
+#ifdef __cpp_lib_format
+    std::cout << __func__ << std::endl;
+
+    {
+        System::Text::StringBuilder builder;
+
+        builder.AppendFormat("{}", "Test");
+        assert( builder.ToString() == "Test" );
+    }
+
+    {
+        System::Text::StringBuilder builder;
+
+        builder.AppendFormat("This is a {}", "Test");
+        assert( builder.ToString() == "This is a Test" );
+    }
+
+    try
+    {
+        System::Text::StringBuilder builder;
+
+        builder.AppendFormat("{} {}", "Test");
+        assert( false );
+    }
+    catch (std::format_error &e)
+    {
+        // We need as many arguments as markers
+        std::cout << e.what() << std::endl;
+        assert( true );
+    }
+
+    {
+        System::Text::StringBuilder builder;
+
+        builder.AppendFormat("{1} {0}", "a test", "This is");
+        assert( builder.ToString() == "This is a test" );
+    }
+#endif
+}
+
 void Run()
 {
     std::cout << "Running StringBuilder Tests..." << std::endl;
 
     ReplaceSubstrings();
+    AppendFormat();
 
     std::cout << "PASSED!" << std::endl;
 }
