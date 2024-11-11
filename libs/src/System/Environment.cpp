@@ -30,12 +30,10 @@ static std::string_view ContainsSurroundingTokens(const std::string_view input,
 
 static EnvironmentVariableReference ContainsEnvironmentVariableReference(const std::string_view input)
 {
-    using namespace std::literals;
-
     if ( !input.empty() )
     {
-        std::string_view begin_enclosed{ "${"sv };
-        std::string_view end_enclosed{ "}"sv };
+        std::string_view begin_enclosed{ "${" };
+        std::string_view end_enclosed{ "}" };
 
         if (std::string_view found = ContainsSurroundingTokens(input, begin_enclosed, end_enclosed); !found.empty())
             return std::make_tuple( found, found.substr(
@@ -45,7 +43,7 @@ static EnvironmentVariableReference ContainsEnvironmentVariableReference(const s
 
         if (std::string_view::size_type found_marker = input.find('$'); found_marker != std::string_view::npos)
         {
-            auto one_past_end = input.find_first_not_of( "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"sv, found_marker );
+            auto one_past_end = input.find_first_not_of( "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_", found_marker );
 
             if ( one_past_end == std::string_view::npos )
             {
@@ -66,10 +64,8 @@ static EnvironmentVariableReference ContainsEnvironmentVariableReference(const s
 
 const std::string_view Environment::GetEnvironmentVariable(const char *var_name)
 {
-    using namespace std::literals;
-
     if ( !var_name )
-        ThrowWithTarget( ArgumentNullException{ "variable"sv } );
+        ThrowWithTarget( ArgumentNullException{ "variable" } );
 
     auto result = std::getenv( var_name );
 
@@ -86,16 +82,14 @@ const std::string_view Environment::GetEnvironmentVariable(const std::string_vie
 
 void Environment::SetEnvironmentVariable(const char *variable, const char *value)
 {
-    using namespace std::literals;
-
     if ( !variable )
-        ThrowWithTarget( ArgumentNullException{ "variable"sv } );
+        ThrowWithTarget( ArgumentNullException{ "variable" } );
 
     if ( std::strlen(variable) == 0 )
-        ThrowWithTarget( ArgumentException{ "variable"sv } );
+        ThrowWithTarget( ArgumentException{ "variable" } );
 
     if ( std::strchr(variable, '=') )
-        ThrowWithTarget( ArgumentException{ "variable"sv } );
+        ThrowWithTarget( ArgumentException{ "variable" } );
 
     if ( variable && (std::strlen(variable) > 0) )
     {
@@ -115,10 +109,8 @@ void Environment::SetEnvironmentVariable(const char *variable, const char *value
 
 std::string Environment::ExpandEnvironmentVariables(const std::string_view input)
 {
-    using namespace std::literals;
-
     if ( input.empty() )
-        ThrowWithTarget( ArgumentNullException{ "input"sv } );
+        ThrowWithTarget( ArgumentNullException{ "input" } );
 
     std::string return_value{ input };
 
@@ -159,9 +151,7 @@ std::map<std::string, std::string> Environment::GetEnvironmentVariables()
 
 const std::string_view Environment::NewLine()
 {
-    using namespace std::literals;
-
-    return "\n"sv;
+    return "\n";
 }
 
 void Environment::Exit(int exit_code)
