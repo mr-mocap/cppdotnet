@@ -30,13 +30,12 @@ public:
       using reverse_iterator       = std::span<Type, Extent>::reverse_iterator;
 
     constexpr Span() noexcept
-        requires(Extent == std::dynamic_extent  ||  Extent == 0)
-    {
-    }
+        requires(Extent == std::dynamic_extent  ||  Extent == 0) = default;
     
     // Single object span
-    explicit constexpr Span(Type &object)
-        requires (Extent == std::dynamic_extent  ||  Extent == 1)
+    explicit constexpr Span(Type &object) noexcept
+        requires ((Extent == std::dynamic_extent  ||  Extent == 1) &&
+                  (std::is_arithmetic_v<Type> || std::is_enum_v<Type>))
         :
         _data{ &object, 1 }
     {
@@ -126,16 +125,16 @@ protected:
 };
 
 // Deduction guides
-template<typename Type>
-Span(Type &) -> Span<Type, 1>;
+template <typename Type, size_t Extent>
+Span(Type &) -> Span<Type, Extent>;
 
-template<typename Type, size_t Extent>
+template <typename Type, size_t Extent>
 Span(Type (&)[Extent]) -> Span<Type, Extent>;
 
-template<typename Type, size_t Extent>
-Span(std::array<Type, Extent> &) -> Span<Type, Extent>;
+template <typename Type, size_t ArrayExtent>
+Span(std::array<Type, ArrayExtent> &) -> Span<Type, ArrayExtent>;
 
-template<typename Type, size_t Extent>
-Span(const std::array<Type, Extent> &) -> Span<const Type, Extent>;
+template <typename Type, size_t ArrayExtent>
+Span(const std::array<Type, ArrayExtent> &) -> Span<const Type, ArrayExtent>;
 
 }

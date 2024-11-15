@@ -88,11 +88,236 @@ void FromHexString()
     }
 }
 
+void ToHexString()
+{
+    std::cout << __func__ << std::endl;
+
+    // Single byte string ()
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)0 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "00" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)1 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "01" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)2 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "02" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)3 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "03" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)4 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "04" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)5 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "05" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)6 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "06" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)7 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "07" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)8 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "08" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)9 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "09" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)10 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "0A" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)11 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "0B" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)12 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "0C" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)13 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "0D" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)14 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "0E" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)15 } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "0F" );
+    }
+
+    // Upper-Nybble
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 1) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "10" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 2) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "20" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 3) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "30" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 4) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "40" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 5) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "50" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 6) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "60" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 7) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "70" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 8) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "80" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 9) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "90" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 10) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "A0" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 11) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "B0" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 12) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "C0" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 13) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "D0" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 14) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "E0" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToHexString( { (std::byte)(16 * 15) } ) };
+
+        assert( tohex.size() == 2 );
+        assert( tohex == "F0" );
+    }
+}
+
 void Run()
 {
     std::cout << "Running Convert Tests..." << std::endl;
 
     FromHexString();
+    ToHexString();
 
     std::cout << "PASSED!" << std::endl;
 }

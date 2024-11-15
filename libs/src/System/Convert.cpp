@@ -24,6 +24,27 @@ std::byte Convert::From2HexCharsToByte(const std::string_view input_string)
     return static_cast<std::byte>(result);
 }
 
+std::array<char, 2> Convert::FromByteTo2HexChars(std::byte input_byte, bool uppercase)
+{
+    const uint8_t input_as_uint = static_cast<uint8_t>(input_byte);
+
+    std::array<char, 2> retval;
+
+    auto [ptr, ec] = std::to_chars(retval.begin(), retval.end(), input_as_uint, 16);
+
+    assert(ec == std::errc()); // Good!
+
+    if ( input_as_uint < 16 )
+    {
+        return { '0', (uppercase) ? std::toupper(retval.front()) : retval.front() };
+    }
+    
+    if ( uppercase )
+        return { std::toupper(retval[0]), std::toupper(retval[1]) };
+    else
+        return retval;
+}
+
 const std::string_view Convert::ToString(bool value)
 {
     if ( value )
@@ -49,8 +70,6 @@ std::string Convert::ToString(double value)
 
 std::string Convert::ToString(int8_t value, Base toBase)
 {
-    using namespace std::literals;
-
     switch ( toBase )
     {
     case Base::Binary:
@@ -69,8 +88,6 @@ std::string Convert::ToString(int8_t value, Base toBase)
 
 std::string Convert::ToString(int16_t value, Base toBase)
 {
-    using namespace std::literals;
-
     switch ( toBase )
     {
     case Base::Binary:
@@ -89,8 +106,6 @@ std::string Convert::ToString(int16_t value, Base toBase)
 
 std::string Convert::ToString(int32_t value, Base toBase)
 {
-    using namespace std::literals;
-
     switch ( toBase )
     {
     case Base::Binary:
@@ -104,14 +119,12 @@ std::string Convert::ToString(int32_t value, Base toBase)
     default:
         break;
     }
-    ThrowWithTarget( ArgumentOutOfRangeException( "toBase"sv ) );
+    ThrowWithTarget( ArgumentOutOfRangeException( "toBase" ) );
     return {};
 }
 
 std::string Convert::ToString(int64_t value, Base toBase)
 {
-    using namespace std::literals;
-
     switch ( toBase )
     {
     case Base::Binary:
@@ -130,8 +143,6 @@ std::string Convert::ToString(int64_t value, Base toBase)
 
 std::string Convert::ToString(uint8_t value, Base toBase)
 {
-    using namespace std::literals;
-
     switch ( toBase )
     {
     case Base::Binary:
@@ -150,8 +161,6 @@ std::string Convert::ToString(uint8_t value, Base toBase)
 
 std::string Convert::ToString(uint16_t value, Base toBase)
 {
-    using namespace std::literals;
-
     switch ( toBase )
     {
     case Base::Binary:
@@ -170,8 +179,6 @@ std::string Convert::ToString(uint16_t value, Base toBase)
 
 std::string Convert::ToString(uint32_t value, Base toBase)
 {
-    using namespace std::literals;
-
     switch ( toBase )
     {
     case Base::Binary:
@@ -190,8 +197,6 @@ std::string Convert::ToString(uint32_t value, Base toBase)
 
 std::string Convert::ToString(uint64_t value, Base toBase)
 {
-    using namespace std::literals;
-
     switch ( toBase )
     {
     case Base::Binary:
@@ -374,6 +379,22 @@ std::vector<std::byte> Convert::FromHexString(const std::string_view input_strin
         result.push_back( From2HexCharsToByte( input.substr(0, 2) ) );
 
     return result; // This is LITTLE-ENDIAN now!
+}
+
+std::string Convert::ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase)
+{
+    std::string hex_digits;
+
+    hex_digits.reserve(2 * input_bytes.size());
+
+    for (std::byte current_byte : input_bytes)
+    {
+        std::array<char, 2> hex_conversion{ FromByteTo2HexChars( current_byte, uppercase ) };
+
+        hex_digits.append( hex_conversion.begin(), hex_conversion.end() );
+    }
+
+    return hex_digits;
 }
 
 }
