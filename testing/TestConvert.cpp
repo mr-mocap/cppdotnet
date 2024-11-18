@@ -312,12 +312,47 @@ void ToHexString()
     }
 }
 
+void ToBase64String()
+{
+    std::cout << __func__ << std::endl;
+
+    {
+        std::string tohex{ System::Convert::ToBase64String( "Man" ) };
+
+        assert( tohex.size() == 4 );
+        assert( tohex == "TWFu" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToBase64String( "Ma" ) };
+
+        assert( tohex.size() == 4 );
+        assert( tohex == "TWE=" );
+    }
+
+    {
+        std::string tohex{ System::Convert::ToBase64String( "M" ) };
+
+        assert( tohex.size() == 4 );
+        assert( tohex == "TQ==" );
+    }
+
+    {
+        std::vector<uint8_t> bytes{ 0x4D, 0x61, 0x6e };
+        std::string tohex{ System::Convert::ToBase64String( std::as_bytes( std::span(bytes) ) ) };
+
+        assert( tohex.size() == 4 );
+        assert( tohex == "TWFu" );
+    }
+}
+
 void Run()
 {
     std::cout << "Running Convert Tests..." << std::endl;
 
     FromHexString();
     ToHexString();
+    ToBase64String();
 
     std::cout << "PASSED!" << std::endl;
 }

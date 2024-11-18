@@ -7,6 +7,7 @@
 #include "System/Base.hpp"
 #include <string>
 #include <string_view>
+#include <span>
 #include <vector>
 #include <array>
 #include <cstdint>
@@ -41,6 +42,13 @@ public:
     static const std::string_view ToString(Diagnostics::SourceLevels value);
 
     static std::vector<std::byte> FromHexString(const std::string_view input_string); // Returns sequence as LITTLE-ENDIAN
+    static std::string            ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase = true);
+
+    static std::string            ToBase64String(const std::string_view input_ascii_string)
+    {
+        return ToBase64String( std::as_bytes( std::span<const char>(input_ascii_string) ) );
+    }
+    static std::string            ToBase64String(std::span<const std::byte> input_bytes);
 
     // From IConvertable  (move there)
     static Diagnostics::TraceLevel   ToType(const std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
@@ -62,7 +70,8 @@ public:
         return { buffer.data(), result.ptr - buffer.data() };
     }
 
-    static std::byte From2HexCharsToByte(const std::string_view input_string);
+    static std::byte           From2HexCharsToByte(const std::string_view input_string);
+    static std::array<char, 2> FromByteTo2HexChars(std::byte input_byte, bool uppercase = true);
 };
 
 }

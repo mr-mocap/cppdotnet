@@ -2,13 +2,20 @@
 #include "System/Boolean.hpp"
 #include "System/Exception.hpp"
 #include <map>
+#include <span>
 #include <charconv>
 #include <cassert>
+#include <cstring>
 #include <cctype>
 #include <algorithm>
+#include <ranges>
 
 namespace System
 {
+
+// From RFC 4648
+static const std::string_view Base64Table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static const char             Base64PadChar = '=';
 
 std::byte Convert::From2HexCharsToByte(const std::string_view input_string)
 {
@@ -395,6 +402,77 @@ std::string Convert::ToHexString(const std::vector<std::byte> &input_bytes, bool
     }
 
     return hex_digits;
+}
+
+std::string Convert::ToBase64String(std::span<const std::byte> input_bytes)
+{
+    const uint8_t hi_sextet = 0b11111100;
+    const uint8_t hi_nybble = 0b11110000;
+    const uint8_t lo_nybble = 0b00001111;
+    const size_t chunk_size = 3;
+    std::string base64_string;
+
+    for (size_t chunk = 0; (chunk * chunk_size) < input_bytes.size(); ++chunk)
+    {
+        auto current_range{ std::views::drop( input_bytes, chunk * chunk_size ) };
+        auto bytes{ std::views::take( current_range, chunk_size ) };
+
+        if ( bytes.size() == chunk_size )
+        {
+            uint8_t first  = static_cast<uint8_t>( bytes[0] );
+            uint8_t second = static_cast<uint8_t>( bytes[1] );
+            uint8_t third  = static_cast<uint8_t>( bytes[2] );
+
+            uint8_t one = (first & hi_sextet) >> 2;
+            uint8_t two_h = (first & 0b00000011) << 4;
+            uint8_t two_l = (second & hi_nybble) >> 4;
+            uint8_t three_h = (second & lo_nybble) << 2;
+            uint8_t three_l = (third & 0b11000000) >> 6;
+
+            uint8_t two = two_h | two_l;
+            uint8_t three = three_h | three_l;
+            uint8_t four = third & 0b00111111;
+
+            base64_string += Base64Table[ one ];
+            base64_string += Base64Table[ two ];
+            base64_string += Base64Table[ three ];
+            base64_string += Base64Table[ four ];
+        }
+        else if ( bytes.size() == 2 )
+        {
+            uint8_t first  = static_cast<uint8_t>( bytes[0] );
+            uint8_t second = static_cast<uint8_t>( bytes[1] );
+
+            uint8_t one = (first & hi_sextet) >> 2;
+            uint8_t two_h = (first & 0b00000011) << 4;
+            uint8_t two_l = (second & hi_nybble) >> 4;
+            uint8_t three_h = (second & lo_nybble) << 2;
+
+            uint8_t two = two_h | two_l;
+            uint8_t three = three_h;
+
+            base64_string += Base64Table[ one ];
+            base64_string += Base64Table[ two ];
+            base64_string += Base64Table[ three ];
+            base64_string += Base64PadChar;
+        }
+        else if ( bytes.size() == 1 )
+        {
+            uint8_t first  = static_cast<uint8_t>( bytes[0] );
+
+            uint8_t one = (first & hi_sextet) >> 2;
+            uint8_t two_h = (first & 0b00000011) << 4;
+
+            uint8_t two = two_h;
+
+            base64_string += Base64Table[ one ];
+            base64_string += Base64Table[ two ];
+            base64_string += Base64PadChar;
+            base64_string += Base64PadChar;
+        }
+    }
+
+    return base64_string;
 }
 
 }
