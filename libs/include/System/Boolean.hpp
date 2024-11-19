@@ -18,7 +18,7 @@ public:
     static const std::string_view TrueString;
 
     bool Value() const { return _value; }
-    void Value(bool new_value) { new_value = value; }
+    void Value(bool new_value) { new_value = new_value; }
 protected:
     bool _value = false;
 };
