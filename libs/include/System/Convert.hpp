@@ -42,7 +42,11 @@ public:
     static const std::string_view ToString(Diagnostics::SourceLevels value);
 
     static std::vector<std::byte> FromHexString(const std::string_view input_string); // Returns sequence as LITTLE-ENDIAN
-    static std::string            ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase = true);
+    static std::string            ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase = true)
+    {
+        return ToHexString( std::span<const std::byte>{input_bytes}, uppercase );
+    }
+    static std::string            ToHexString(std::span<const std::byte> input_bytes, bool uppercase = true);
 
     static std::string            ToBase64String(const std::string_view input_ascii_string)
     {
