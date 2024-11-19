@@ -58,16 +58,20 @@ public:
     // C++ specific
     static std::string ToChars(auto ...format_args)
     {
+        using namespace std::literals;
+
         std::array<char, 32> buffer;
 
         std::to_chars_result result = std::to_chars(buffer.data(), buffer.data() + buffer.size(), format_args...);
 
         if (result.ec == std::errc::value_too_large)
-            ThrowWithTarget( ArgumentOutOfRangeException( "format_args" ) );
+            ThrowWithTarget( ArgumentOutOfRangeException( "format_args"sv ) );
 
         assert( result.ec == std::errc() );
 
-        return { buffer.data(), result.ptr - buffer.data() };
+        size_t length = result.ptr - buffer.data();
+
+        return { buffer.data(), length };
     }
 
     static std::byte           From2HexCharsToByte(const std::string_view input_string);

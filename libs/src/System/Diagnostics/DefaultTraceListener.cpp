@@ -2,6 +2,7 @@
 #include "System/Diagnostics/Trace.hpp"
 #include "System/Diagnostics/Debugger.hpp"
 #include "System/Convert.hpp"
+#include "System/private.hpp"
 
 
 namespace System::Diagnostics
@@ -79,10 +80,14 @@ void DefaultTraceListener::Fail(const std::string_view message, const std::strin
 
 void DefaultTraceListener::WriteRaw(const std::string_view data)
 {
+    UNUSED(data);
+    // TODO: Implement me
 }
 
 void DefaultTraceListener::WriteLineRaw(const std::string_view data)
 {
+    UNUSED(data);
+    // TODO: Implement me
 }
 
 void DefaultTraceListener::WriteIndent()

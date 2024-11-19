@@ -43,11 +43,11 @@ std::array<char, 2> Convert::FromByteTo2HexChars(std::byte input_byte, bool uppe
 
     if ( input_as_uint < 16 )
     {
-        return { '0', (uppercase) ? std::toupper(retval.front()) : retval.front() };
+        return { '0', (uppercase) ? static_cast<char>( std::toupper(retval.front()) ) : retval.front() };
     }
     
     if ( uppercase )
-        return { std::toupper(retval[0]), std::toupper(retval[1]) };
+        return { static_cast<char>( std::toupper(retval[0]) ), static_cast<char>( std::toupper(retval[1]) ) };
     else
         return retval;
 }

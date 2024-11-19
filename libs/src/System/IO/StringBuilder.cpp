@@ -171,6 +171,7 @@ try
 catch (const std::length_error &e)
 {
     ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+    return *this;
 }
 
 StringBuilder &StringBuilder::Clear()

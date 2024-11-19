@@ -1,4 +1,5 @@
 #include "System/Diagnostics/Debugger.hpp"
+#include "System/private.hpp"
 
 
 namespace System::Diagnostics
@@ -12,6 +13,8 @@ void Debugger::Log(int level, const std::string &category, const std::string &me
 #else
 void Debugger::Log(const std::string_view message)
 {
+    UNUSED(message);
+    // TODO: Implement me
 }
 #endif
 

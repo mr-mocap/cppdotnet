@@ -1,5 +1,6 @@
 #include "System/Environment.hpp"
 #include "System/Exception.hpp"
+#include "System/private.hpp"
 #include <tuple>
 #include <cstring>
 #include <stdlib.h>
@@ -100,8 +101,9 @@ void Environment::SetEnvironmentVariable(const char *variable, const char *value
         }
         else
         {
-            auto result = setenv( variable, value, true );
+            int result = setenv( variable, value, true );
 
+            UNUSED(result);
             // result == 0 is success, -1 is error
         }
     }
@@ -132,16 +134,19 @@ std::map<std::string, std::string> Environment::GetEnvironmentVariables()
 
     for (char **current_variable = environ; current_variable; ++current_variable)
     {
+        char *current_variable_ptr = *current_variable;
+
         // Are we at the end of the array?
-        if ( !*current_variable)
+        if ( !current_variable_ptr)
             break;
 
-        char *separator = std::strpbrk( *current_variable, "=" );
+        char *separator = std::strpbrk( current_variable_ptr, "=" );
 
         if ( !separator )
             break;
         
-        std::string name{ *current_variable, separator - *current_variable };
+        size_t length = separator - current_variable_ptr;
+        std::string name{ current_variable_ptr, length };
         std::string value{ separator + 1, strlen(separator + 1) };
 
         retval[ name ] = value;
