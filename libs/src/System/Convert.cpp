@@ -364,7 +364,7 @@ catch(const std::exception& e)
 {
     using namespace std::literals;
 
-    ThrowWithTarget( ArgumentOutOfRangeException( "string_value" ) );
+    ThrowWithTarget( ArgumentOutOfRangeException( "string_value"sv ) );
     return {};
 }
 
@@ -407,6 +407,9 @@ std::string Convert::ToHexString(const std::vector<std::byte> &input_bytes, bool
 std::string Convert::ToBase64String(std::span<const std::byte> input_bytes)
 {
     const uint8_t hi_sextet = 0b11111100;
+    const uint8_t not_hi_sextet = 0b00000011;
+    const uint8_t lo_sextet = 0b00111111;
+    const uint8_t not_lo_sextet = 0b11000000;
     const uint8_t hi_nybble = 0b11110000;
     const uint8_t lo_nybble = 0b00001111;
     const size_t chunk_size = 3;
@@ -419,19 +422,19 @@ std::string Convert::ToBase64String(std::span<const std::byte> input_bytes)
 
         if ( bytes.size() == chunk_size )
         {
-            uint8_t first  = static_cast<uint8_t>( bytes[0] );
-            uint8_t second = static_cast<uint8_t>( bytes[1] );
-            uint8_t third  = static_cast<uint8_t>( bytes[2] );
+            uint8_t first  = std::to_integer<uint8_t>( bytes[0] );
+            uint8_t second = std::to_integer<uint8_t>( bytes[1] );
+            uint8_t third  = std::to_integer<uint8_t>( bytes[2] );
 
             uint8_t one = (first & hi_sextet) >> 2;
-            uint8_t two_h = (first & 0b00000011) << 4;
+            uint8_t two_h = (first & not_hi_sextet) << 4;
             uint8_t two_l = (second & hi_nybble) >> 4;
             uint8_t three_h = (second & lo_nybble) << 2;
-            uint8_t three_l = (third & 0b11000000) >> 6;
+            uint8_t three_l = (third & not_lo_sextet) >> 6;
 
             uint8_t two = two_h | two_l;
             uint8_t three = three_h | three_l;
-            uint8_t four = third & 0b00111111;
+            uint8_t four = third & lo_sextet;
 
             base64_string += Base64Table[ one ];
             base64_string += Base64Table[ two ];
@@ -440,11 +443,11 @@ std::string Convert::ToBase64String(std::span<const std::byte> input_bytes)
         }
         else if ( bytes.size() == 2 )
         {
-            uint8_t first  = static_cast<uint8_t>( bytes[0] );
-            uint8_t second = static_cast<uint8_t>( bytes[1] );
+            uint8_t first  = std::to_integer<uint8_t>( bytes[0] );
+            uint8_t second = std::to_integer<uint8_t>( bytes[1] );
 
             uint8_t one = (first & hi_sextet) >> 2;
-            uint8_t two_h = (first & 0b00000011) << 4;
+            uint8_t two_h = (first & not_hi_sextet) << 4;
             uint8_t two_l = (second & hi_nybble) >> 4;
             uint8_t three_h = (second & lo_nybble) << 2;
 
@@ -458,10 +461,10 @@ std::string Convert::ToBase64String(std::span<const std::byte> input_bytes)
         }
         else if ( bytes.size() == 1 )
         {
-            uint8_t first  = static_cast<uint8_t>( bytes[0] );
+            uint8_t first  = std::to_integer<uint8_t>( bytes[0] );
 
             uint8_t one = (first & hi_sextet) >> 2;
-            uint8_t two_h = (first & 0b00000011) << 4;
+            uint8_t two_h = (first & not_hi_sextet) << 4;
 
             uint8_t two = two_h;
 
