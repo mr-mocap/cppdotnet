@@ -50,7 +50,7 @@ std::string StreamReader::ReadLine()
 
             if ( character == -1 )
                 break;
-            if ( character == '\n' )
+            if ( character == '\n' ) // TODO: Use a more general form
                 break;
             input_buffer.push_back( static_cast<std::string::value_type>(character) );
         }

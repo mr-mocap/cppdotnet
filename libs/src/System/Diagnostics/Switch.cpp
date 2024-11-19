@@ -84,6 +84,7 @@ void Switch::OnSwitchSettingChanged()
 void Switch::OnValueChanged()
 try
 {
+    // Assume a string that is convertable to an int
     int value_converted = std::stoi( _value );
 
     SwitchSetting( value_converted );
