@@ -1,6 +1,7 @@
 #include "System/Convert.hpp"
 #include "System/Boolean.hpp"
 #include "System/Exception.hpp"
+#include "System/private.hpp"
 #include <map>
 #include <span>
 #include <charconv>
@@ -17,9 +18,62 @@ namespace System
 static const std::string_view Base64Table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 static const char             Base64PadChar = '=';
 
+inline bool IsValidBase64(const char input)
+{
+    return Base64Table.find( input ) != std::string_view::npos;
+}
+
+inline char EncodeBase64(const uint8_t input)
+{
+    PRECONDITION( input < Base64Table.size() );
+
+    return Base64Table[ input ];
+}
+
+inline std::byte DecodeBase64(char input)
+{
+    PRECONDITION( IsValidBase64(input) );
+
+    return static_cast<std::byte>(Base64Table.find( input ));
+}
+
+static std::string From4Base64Chars(std::span<const char, 4> input)
+{
+    PRECONDITION( IsValidBase64(input[0]) );
+    PRECONDITION( IsValidBase64(input[1]) );
+    PRECONDITION( IsValidBase64(input[2]) || (input[2] == Base64PadChar) );
+    PRECONDITION( IsValidBase64(input[3]) || (input[3] == Base64PadChar) );
+
+    char first  = std::bit_cast<char>( DecodeBase64( input[0] ) );
+    char second = std::bit_cast<char>( DecodeBase64( input[1] ) );
+
+    char one = (first << 2) | (second >> 4);
+
+    if ( input[3] == Base64PadChar )
+    {
+        // There will be at most TWO bytes output...
+        if ( input[2] == Base64PadChar )
+            return std::string( 1, one ); // But only one in this case
+        
+        char third  = std::bit_cast<char>( DecodeBase64( input[2] ) );
+        char two = ((second & 0x0F) << 4) | (third >> 2);
+
+        return std::string().append(1, one).append(1, two); // ...aaaaand two bytes
+    }
+    char third  = std::bit_cast<char>( DecodeBase64( input[2] ) );
+    char fourth = std::bit_cast<char>( DecodeBase64( input[3] ) );
+
+    char two = ((second & 0x0F) << 4) | (third >> 2);
+    char three = ((third & 0b00000011) << 6) | fourth;
+
+    return std::string().append(1, one).append(1, two).append(1, three); // The full three bytes
+}
+
 std::byte Convert::From2HexCharsToByte(const std::string_view input_string)
 {
-    assert(input_string.size() == 2);
+    PRECONDITION(input_string.size() == 2);
+    PRECONDITION( std::isxdigit( input_string.front() ) );
+    PRECONDITION( std::isxdigit( input_string.back() ) );
 
     uint8_t result;
     auto [ptr, ec] = std::from_chars(input_string.data(), input_string.data() + input_string.size(), result, 16);
@@ -372,10 +426,8 @@ std::vector<std::byte> Convert::FromHexString(const std::string_view input_strin
 {
     std::vector<std::byte> result;
 
-    if (input_string.empty())
-        ThrowWithTarget( FormatException( "Input value is empty" ) );
-    else if (input_string.size() % 2 != 0)
-        ThrowWithTarget( FormatException( "Input value is not a multiple of 2" ) );
+    if (input_string.size() % 2 != 0)
+        ThrowWithTarget( FormatException( "Input value is not empty and not a multiple of 2" ) );
     else if ( std::ranges::find_if_not( input_string, [](unsigned char c) { return std::isxdigit(c); } ) != input_string.end())
         ThrowWithTarget( FormatException( "Input value contains non-hex characters" ) );
     
@@ -388,7 +440,8 @@ std::vector<std::byte> Convert::FromHexString(const std::string_view input_strin
     return result; // This is LITTLE-ENDIAN now!
 }
 
-std::string Convert::ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase)
+//std::string Convert::ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase)
+std::string Convert::ToHexString(std::span<const std::byte> input_bytes, bool uppercase)
 {
     std::string hex_digits;
 
@@ -436,10 +489,10 @@ std::string Convert::ToBase64String(std::span<const std::byte> input_bytes)
             uint8_t three = three_h | three_l;
             uint8_t four = third & lo_sextet;
 
-            base64_string += Base64Table[ one ];
-            base64_string += Base64Table[ two ];
-            base64_string += Base64Table[ three ];
-            base64_string += Base64Table[ four ];
+            base64_string += EncodeBase64( one );
+            base64_string += EncodeBase64( two );
+            base64_string += EncodeBase64( three );
+            base64_string += EncodeBase64( four );
         }
         else if ( bytes.size() == 2 )
         {
@@ -454,9 +507,9 @@ std::string Convert::ToBase64String(std::span<const std::byte> input_bytes)
             uint8_t two = two_h | two_l;
             uint8_t three = three_h;
 
-            base64_string += Base64Table[ one ];
-            base64_string += Base64Table[ two ];
-            base64_string += Base64Table[ three ];
+            base64_string += EncodeBase64( one );
+            base64_string += EncodeBase64( two );
+            base64_string += EncodeBase64( three );
             base64_string += Base64PadChar;
         }
         else if ( bytes.size() == 1 )
@@ -468,14 +521,38 @@ std::string Convert::ToBase64String(std::span<const std::byte> input_bytes)
 
             uint8_t two = two_h;
 
-            base64_string += Base64Table[ one ];
-            base64_string += Base64Table[ two ];
+            base64_string += EncodeBase64( one );
+            base64_string += EncodeBase64( two );
             base64_string += Base64PadChar;
             base64_string += Base64PadChar;
         }
     }
 
     return base64_string;
+}
+
+std::vector<std::byte> Convert::FromBase64String(std::span<const char> input_ascii_string)
+{
+    if ( input_ascii_string.size() % 4 != 0)
+        ThrowWithTarget( FormatException( "Input value length is not a multiple of 4" ) );
+
+    const size_t chunk_size = 4;
+    std::vector<std::byte> result_bytes;
+
+    result_bytes.reserve( (input_ascii_string.size() / 4) * 3 ); // Will be AT MOST this size!
+    for (size_t chunk = 0; (chunk * chunk_size) < input_ascii_string.size(); ++chunk)
+    {
+        auto current_range{ std::views::drop( input_ascii_string, chunk * chunk_size ) };
+        auto bytes{ std::views::take( current_range, chunk_size ) };
+
+        {
+            std::string converted{ From4Base64Chars( std::span<const char, 4>{ bytes.begin(), bytes.size() } ) };
+
+            std::ranges::transform( converted, std::back_inserter( result_bytes ), [](char input) { return static_cast<std::byte>(input); } );
+        }
+    }
+
+    return result_bytes;
 }
 
 }

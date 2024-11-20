@@ -54,6 +54,12 @@ public:
     }
     static std::string            ToBase64String(std::span<const std::byte> input_bytes);
 
+    static std::vector<std::byte> FromBase64String(const char *input_ascii_string)
+    {
+        return FromBase64String( std::string_view{input_ascii_string} );
+    }
+    static std::vector<std::byte> FromBase64String(std::span<const char> input_ascii_string);
+
     // From IConvertable  (move there)
     static Diagnostics::TraceLevel   ToType(const std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
     static Diagnostics::TraceOptions ToType(const std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
