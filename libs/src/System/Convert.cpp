@@ -106,12 +106,9 @@ std::array<char, 2> Convert::FromByteTo2HexChars(std::byte input_byte, bool uppe
         return retval;
 }
 
-const std::string_view Convert::ToString(bool value)
+const std::string_view Convert::ToString(Boolean value)
 {
-    if ( value )
-        return Boolean::TrueString;
-    else
-        return Boolean::FalseString;
+    return Boolean{value}.ToString();
 }
 
 std::string Convert::ToString(char value)

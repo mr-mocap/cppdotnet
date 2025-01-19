@@ -5,6 +5,7 @@
 #include "System/Diagnostics/TraceOptions.hpp"
 #include "System/Exception.hpp"
 #include "System/Base.hpp"
+#include "System/Boolean.hpp"
 #include <string>
 #include <string_view>
 #include <span>
@@ -22,7 +23,7 @@ class Convert
 {
 public:
 
-    static const std::string_view ToString(bool value);
+    static const std::string_view ToString(Boolean value);
     static std::string      ToString(char value);
     static std::string      ToString(float  value);
     static std::string      ToString(double value);
