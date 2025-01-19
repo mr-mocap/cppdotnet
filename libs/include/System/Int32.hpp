@@ -16,6 +16,7 @@ class Int32 : public IComparable<Int32>,
               public IEquatable<Int32>
 {
 public:
+    constexpr Int32() = default;
     constexpr Int32(const std::int32_t initial_value) : _value{ initial_value } { }
 
     static constexpr Int32 MaxValue() { return std::numeric_limits<std::int32_t>::max(); }
@@ -55,7 +56,10 @@ public:
     operator std::int32_t() const { return _value; }
 
     std::strong_ordering operator <=>(const Int32 other) const { return _value <=> other._value; }
+    std::strong_ordering operator <=>(const std::int32_t other) const { return _value <=> other; }
+
     bool operator ==(const Int32 other) const { return _value == other._value; }
+    bool operator ==(const std::int32_t other) const { return _value == other; }
 protected:
     std::int32_t _value = 0;
 };

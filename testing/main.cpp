@@ -13,6 +13,7 @@
 #include "TestConvert.hpp"
 #include "TestSpan.hpp"
 #include "TestStringBuilder.hpp"
+#include "TestInt32.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -35,6 +36,7 @@ int main(void)
     TestConvert::Run();
     TestSpan::Run();
     TestStringBuilder::Run();
+    TestInt32::Run();
 
     std::cout << "All tests passed!\n";
 
