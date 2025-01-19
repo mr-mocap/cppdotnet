@@ -290,7 +290,7 @@ void GetTypeCode()
 {
     std::cout << __func__ << std::endl;
 
-    assert( MyTraceLevel::GetTypeCode() == System::TypeCode::UInt32 );
+    assert( MyTraceLevel{}.GetTypeCode() == System::TypeCode::UInt32 );
 }
 
 void GenericEnum()

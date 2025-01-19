@@ -1,7 +1,7 @@
 #pragma once
 
 #include "System/Exception.hpp"
-#include "System/TypeCode.hpp"
+#include "System/IConvertible.hpp"
 #include <span>
 #include <optional>
 #include <algorithm>
@@ -200,29 +200,11 @@ protected:
 };
 #else
 template <class EnumPolicy>
-class Enum : public EnumPolicy
+class Enum : public EnumPolicy, public IConvertible
 {
 public:
     Enum() = default;
     Enum(EnumPolicy::value_type v) : _currentValue{ v } { }
-
-    static enum TypeCode GetTypeCode()
-    {
-        if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, char> )
-            return TypeCode::Char;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int16_t> )
-            return TypeCode::Int16;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int32_t> )
-            return TypeCode::Int32;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int64_t> )
-            return TypeCode::Int64;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint16_t> )
-            return TypeCode::UInt16;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint32_t> )
-            return TypeCode::UInt32;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint64_t> )
-            return TypeCode::UInt64;
-    }
 
     static const auto GetNames()
     {
@@ -355,6 +337,46 @@ public:
         return *this;
     }
 
+    // IConvertible Interface
+    TypeCode GetTypeCode() const override
+    {
+        if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, char> )
+            return TypeCode::Char;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int16_t> )
+            return TypeCode::Int16;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int32_t> )
+            return TypeCode::Int32;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int64_t> )
+            return TypeCode::Int64;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint16_t> )
+            return TypeCode::UInt16;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint32_t> )
+            return TypeCode::UInt32;
+        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint64_t> )
+            return TypeCode::UInt64;
+        else
+            static_assert("GetTypeCode() Not Implemented for this EnumPolicy::underlying_type");
+    }
+
+    bool ToBoolean() const override { return _currentValue; }
+
+    std::byte ToByte() const override { return std::byte{_currentValue}; }
+
+    char ToChar() const override { return {_currentValue}; }
+
+    std::int16_t ToInt16() const override { return {_currentValue}; }
+    std::int32_t ToInt32() const override { return {_currentValue}; }
+    std::int64_t ToInt64() const override { return {_currentValue}; }
+
+    std::uint16_t ToUInt16() const override { return {_currentValue}; }
+    std::uint32_t ToUInt32() const override { return {_currentValue}; }
+    std::uint64_t ToUInt64() const override { return {_currentValue}; }
+
+    float  ToSingle() const override { return static_cast<float>(_currentValue); }
+    double ToDouble() const override { return static_cast<double>(_currentValue); }
+
+    std::string ToString() const override { return std::string{ GetName() }; }
+
 protected:
     EnumPolicy::value_type  _currentValue{};
 
@@ -404,7 +426,6 @@ protected:
         // We have one of the valid values!
         return casted;
     }
-
 };
 #endif
 }
