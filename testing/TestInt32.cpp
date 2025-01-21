@@ -132,6 +132,36 @@ void ToString()
     assert( Int32{-1}.ToString() == "-1" );
 }
 
+void Equality()
+{
+    std::cout << __func__ << std::endl;
+
+    Int32 number{65536};
+
+    assert( number == 65536 );
+    assert( 65536 == number );
+
+    // With std::int16_t
+    {
+        std::int16_t int16 = 32767;
+
+        assert( number != int16 );
+        assert( int16 != number );
+        assert( number != 32767 );
+        assert( 32767 != number );
+    }
+
+    // With std::int8_t
+    {
+        std::int8_t int8 = 127;
+
+        assert( number != int8 );
+        assert( int8 != number );
+        assert( number != 127 );
+        assert( 127 != number );
+    }
+}
+
 void Run()
 {
     std::cout << "Running Int32 Tests..." << std::endl;
@@ -148,6 +178,7 @@ void Run()
     ToSingle();
     ToDouble();
     ToString();
+    Equality();
 
     std::cout << "PASSED!" << std::endl;
 }

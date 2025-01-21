@@ -22,9 +22,4 @@ int Int32::CompareTo(const Int32 &other) const
         return 1;
 }
 
-bool Int32::Equals(const Int32 &other) const
-{
-    return *this == other;
-}
-
 }

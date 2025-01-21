@@ -20,9 +20,4 @@ int Boolean::CompareTo(const Boolean &other) const
         return 1;
 }
 
-bool Boolean::Equals(const Boolean &other) const
-{
-    return *this == other;
-}
-
 }
