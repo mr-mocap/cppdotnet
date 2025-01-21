@@ -2,6 +2,7 @@
 
 #include "System/IComparable.hpp"
 #include "System/Numerics/INumberBase.hpp"
+#include "System/private.hpp"
 #include <cstdint>
 #include <algorithm>
 
@@ -34,8 +35,10 @@ struct INumber<bool> : public IComparable<INumber<bool>>,
         return std::clamp(value, min, max);
     }
 
-    static constexpr bool CopySign(bool /* value */, bool sign)
+    static constexpr bool CopySign(bool value, bool sign)
     {
+        UNUSED(value);
+        
         return sign;
     }
 
@@ -217,6 +220,8 @@ struct INumber<std::uint8_t> : public IComparable<INumber<std::uint8_t>>,
 
     static std::uint8_t CopySign(std::uint8_t value, std::uint8_t sign)
     {
+        UNUSED(sign);
+        
         return value;
     }
 
@@ -247,6 +252,8 @@ struct INumber<std::uint16_t> : public IComparable<INumber<std::uint16_t>>,
 
     static std::uint16_t CopySign(std::uint16_t value, std::uint16_t sign)
     {
+        UNUSED(sign);
+        
         return value;
     }
 
@@ -277,6 +284,8 @@ struct INumber<std::uint32_t> : public IComparable<INumber<std::uint32_t>>,
 
     static std::uint32_t CopySign(std::uint32_t value, std::uint32_t sign)
     {
+        UNUSED(sign);
+
         return value;
     }
 
@@ -307,6 +316,8 @@ struct INumber<std::uint64_t> : public IComparable<INumber<std::uint64_t>>,
 
     static std::uint64_t CopySign(std::uint64_t value, std::uint64_t sign)
     {
+        UNUSED(sign);
+
         return value;
     }
 
