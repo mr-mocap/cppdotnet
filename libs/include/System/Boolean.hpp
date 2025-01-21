@@ -57,7 +57,7 @@ public:
     static constexpr Boolean Zero() { return Numerics::INumberBase<bool>::Zero(); }
     static constexpr int   Radix = Numerics::INumberBase<bool>::Radix;
 
-    static constexpr Boolean Abs(Boolean input)
+    static Boolean Abs(Boolean input)
     {
         return Numerics::INumberBase<bool>::Abs(input);
     }
@@ -190,12 +190,12 @@ public:
         return Numerics::INumberBase<bool>::MultiplyAddEstimate(value1, value2);
     }
 
-    static constexpr Boolean Parse(const std::string_view value_string)
+    static Boolean Parse(const std::string_view value_string)
     {
         return Numerics::INumberBase<bool>::Parse(value_string);
     }
 
-    static constexpr Boolean TryParse(const std::string_view value_string)
+    static std::optional<Boolean> TryParse(const std::string_view value_string)
     {
         return Numerics::INumberBase<bool>::TryParse(value_string);
     }
@@ -246,5 +246,10 @@ public:
 protected:
     bool _value = false;
 };
+
+inline bool operator ==(const bool left, const Boolean right)
+{
+    return right == left;
+}
 
 }

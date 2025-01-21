@@ -1,8 +1,15 @@
 #pragma once
 
 #include "System/IEquatable.hpp"
+#include "System/Exception.hpp"
+#include "System/private.hpp"
 #include <cmath>
 #include <limits>
+#include <string>
+#include <stdexcept>
+#include <charconv>
+#include <optional>
+#include <type_traits>
 
 namespace System::Numerics
 {
@@ -69,9 +76,61 @@ struct INumberBase : public IEquatable<T>
 
     static constexpr T MultiplyAddEstimate(T value1, T value2);
 
-    static constexpr T Parse(const std::string_view value_string);
+    static           T Parse(const std::string_view s);
 
-    static constexpr T TryParse(const std::string_view value_string);
+    static std::optional<T> TryParse(const std::string_view s);
+};
+
+template <class T>
+struct CommonItems
+{
+    static T Parse(const std::string_view s)
+    {
+        using namespace std::literals;
+
+        if ( s.empty() )
+            ThrowWithTarget( ArgumentNullException("s"sv) );
+
+        if constexpr (std::is_integral_v<T>)
+        {
+            T converted;
+
+            auto [ptr, ec] = std::from_chars( s.data(), s.data() + s.size(), converted);
+            
+            if ( ec == std::errc::invalid_argument )
+                ThrowWithTarget( System::FormatException{ "Parameter 's' is not in the correct format"sv } );
+            else if ( ec == std::errc::result_out_of_range )
+                ThrowWithTarget( System::OverflowException{ "Parameter 's' is not representable by int32_t"sv } );
+            else if ( ec != std::errc() )
+                ThrowWithTarget( System::ArgumentException{ "Argument does not contain integer information", "s" } );
+
+            return converted;
+        }
+    }
+
+    static std::optional<T> TryParse(const std::string_view s)
+    {
+        if ( s.empty() )
+            return {};
+
+        if constexpr (std::is_integral_v<T>)
+        {
+            using namespace std::literals;
+
+            T converted;
+
+            auto [ptr, ec] = std::from_chars( s.data(), s.data() + s.size(), converted);
+            
+            if ( ec != std::errc() )
+                return {};
+
+            return converted;
+        }
+        else
+        {
+            return {};
+        }
+    }
 };
 
 template <>
@@ -81,7 +140,7 @@ struct INumberBase<bool> : public IEquatable<bool>
     static constexpr bool   Zero() { return false; }
     static constexpr int Radix = std::numeric_limits<bool>::radix;
 
-    static constexpr bool Abs(bool value) { return value; }
+    static           bool Abs(bool value) { return value; }
 
     template <class TOther>
     static constexpr bool CreateChecked(TOther ) { return bool{}; }
@@ -136,9 +195,9 @@ struct INumberBase<bool> : public IEquatable<bool>
 
     static constexpr bool MultiplyAddEstimate(bool value1, bool value2) { return MinMagnitude(value1, value2); }
 
-    static constexpr bool Parse(const std::string_view ) { return bool{}; }
+    static           bool Parse(const std::string_view s);
 
-    static constexpr bool TryParse(const std::string_view ) { return bool{}; }
+    static           std::optional<bool> TryParse(const std::string_view s);
 };
 
 
@@ -182,7 +241,7 @@ struct INumberBase<std::int8_t> : public IEquatable<std::int8_t>
 
     static constexpr bool IsNormal(std::int8_t ) { return false; }
 
-    static constexpr bool IsOddInteger(std::int8_t value) { return (value % 2) == 1; }
+    static constexpr bool IsOddInteger(std::int8_t value) { return (value % 2) != 0; }
 
     static constexpr bool IsPositive(std::int8_t value) { return value > 0; }
 
@@ -219,15 +278,9 @@ struct INumberBase<std::int8_t> : public IEquatable<std::int8_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static constexpr std::int8_t Parse(const std::string_view )
-    {
-        return std::int8_t{};
-    }
+    static std::int8_t Parse(const std::string_view s);
 
-    static constexpr std::int8_t TryParse(const std::string_view )
-    {
-        return std::int8_t{};
-    }
+    static std::optional<std::int8_t> TryParse(const std::string_view s);
 };
 
 template <>
@@ -270,7 +323,7 @@ struct INumberBase<std::int16_t> : public IEquatable<std::int16_t>
 
     static constexpr bool IsNormal(std::int16_t ) { return false; }
 
-    static constexpr bool IsOddInteger(std::int16_t value) { return (value % 2) == 1; }
+    static constexpr bool IsOddInteger(std::int16_t value) { return (value % 2) != 0; }
 
     static constexpr bool IsPositive(std::int16_t value) { return value > 0; }
 
@@ -307,20 +360,15 @@ struct INumberBase<std::int16_t> : public IEquatable<std::int16_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static constexpr std::int16_t Parse(const std::string_view )
-    {
-        return std::int16_t{};
-    }
+    static std::int16_t Parse(const std::string_view s);
 
-    static constexpr std::int16_t TryParse(const std::string_view )
-    {
-        return std::int16_t{};
-    }
+    static std::optional<std::int16_t> TryParse(const std::string_view s);
 };
 
 
 template <>
-struct INumberBase<std::int32_t> : public IEquatable<std::int32_t>
+struct INumberBase<std::int32_t> : public IEquatable<std::int32_t>,
+                                   protected CommonItems<std::int32_t>
 {
     static constexpr std::int32_t   One() { return 1; }
     static constexpr std::int32_t   Zero() { return 0; }
@@ -359,7 +407,7 @@ struct INumberBase<std::int32_t> : public IEquatable<std::int32_t>
 
     static constexpr bool IsNormal(std::int32_t ) { return false; }
 
-    static constexpr bool IsOddInteger(std::int32_t value) { return (value % 2) == 1; }
+    static constexpr bool IsOddInteger(std::int32_t value) { return (value % 2) != 0; }
 
     static constexpr bool IsPositive(std::int32_t value) { return value > 0; }
 
@@ -396,14 +444,14 @@ struct INumberBase<std::int32_t> : public IEquatable<std::int32_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static constexpr std::int32_t Parse(const std::string_view )
+    static std::int32_t Parse(const std::string_view s)
     {
-        return std::int32_t{};
+        return CommonItems<std::int32_t>::Parse(s);
     }
 
-    static constexpr std::int32_t TryParse(const std::string_view )
+    static std::optional<std::int32_t> TryParse(const std::string_view s)
     {
-        return std::int32_t{};
+        return CommonItems<std::int32_t>::TryParse(s);
     }
 };
 
@@ -448,7 +496,7 @@ struct INumberBase<std::int64_t> : public IEquatable<std::int64_t>
 
     static constexpr bool IsNormal(std::int64_t ) { return false; }
 
-    static constexpr bool IsOddInteger(std::int64_t value) { return (value % 2) == 1; }
+    static constexpr bool IsOddInteger(std::int64_t value) { return (value % 2) != 0; }
 
     static constexpr bool IsPositive(std::int64_t value) { return value > 0; }
 
@@ -485,15 +533,9 @@ struct INumberBase<std::int64_t> : public IEquatable<std::int64_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static constexpr std::int64_t Parse(const std::string_view )
-    {
-        return std::int64_t{};
-    }
+    static std::int64_t Parse(const std::string_view s);
 
-    static constexpr std::int64_t TryParse(const std::string_view )
-    {
-        return std::int64_t{};
-    }
+    static std::optional<std::int64_t> TryParse(const std::string_view s);
 };
 
 
@@ -537,7 +579,7 @@ struct INumberBase<std::uint8_t> : public IEquatable<std::uint8_t>
 
     static constexpr bool IsNormal(std::uint8_t ) { return false; }
 
-    static constexpr bool IsOddInteger(std::uint8_t value) { return (value % 2) == 1; }
+    static constexpr bool IsOddInteger(std::uint8_t value) { return (value % 2) != 0; }
 
     static constexpr bool IsPositive(std::uint8_t value) { return value > 0; }
 
@@ -574,15 +616,9 @@ struct INumberBase<std::uint8_t> : public IEquatable<std::uint8_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static constexpr std::uint8_t Parse(const std::string_view )
-    {
-        return std::uint8_t{};
-    }
+    static std::uint8_t Parse(const std::string_view s);
 
-    static constexpr std::uint8_t TryParse(const std::string_view )
-    {
-        return std::uint8_t{};
-    }
+    static std::optional<std::uint8_t> TryParse(const std::string_view s);
 };
 
 
@@ -626,7 +662,7 @@ struct INumberBase<std::uint16_t> : public IEquatable<std::uint16_t>
 
     static constexpr bool IsNormal(std::uint16_t ) { return false; }
 
-    static constexpr bool IsOddInteger(std::uint16_t value) { return (value % 2) == 1; }
+    static constexpr bool IsOddInteger(std::uint16_t value) { return (value % 2) != 0; }
 
     static constexpr bool IsPositive(std::uint16_t value) { return value > 0; }
 
@@ -663,15 +699,9 @@ struct INumberBase<std::uint16_t> : public IEquatable<std::uint16_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static constexpr std::uint16_t Parse(const std::string_view )
-    {
-        return std::uint16_t{};
-    }
+    static std::uint16_t Parse(const std::string_view s);
 
-    static constexpr std::uint16_t TryParse(const std::string_view )
-    {
-        return std::uint16_t{};
-    }
+    static std::optional<std::uint16_t> TryParse(const std::string_view s);
 };
 
 
@@ -715,7 +745,7 @@ struct INumberBase<std::uint32_t> : public IEquatable<std::uint32_t>
 
     static constexpr bool IsNormal(std::uint32_t ) { return false; }
 
-    static constexpr bool IsOddInteger(std::uint32_t value) { return (value % 2) == 1; }
+    static constexpr bool IsOddInteger(std::uint32_t value) { return (value % 2) != 0; }
 
     static constexpr bool IsPositive(std::uint32_t value) { return value > 0; }
 
@@ -752,15 +782,9 @@ struct INumberBase<std::uint32_t> : public IEquatable<std::uint32_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static constexpr std::uint32_t Parse(const std::string_view )
-    {
-        return std::uint32_t{};
-    }
+    static std::uint32_t Parse(const std::string_view s);
 
-    static constexpr std::uint32_t TryParse(const std::string_view )
-    {
-        return std::uint32_t{};
-    }
+    static std::optional<std::uint32_t> TryParse(const std::string_view s);
 };
 
 
@@ -804,7 +828,7 @@ struct INumberBase<std::uint64_t> : public IEquatable<std::uint64_t>
 
     static constexpr bool IsNormal(std::uint64_t ) { return false; }
 
-    static constexpr bool IsOddInteger(std::uint64_t value) { return (value % 2) == 1; }
+    static constexpr bool IsOddInteger(std::uint64_t value) { return (value % 2) != 0; }
 
     static constexpr bool IsPositive(std::uint64_t value) { return value > 0; }
 
@@ -841,15 +865,9 @@ struct INumberBase<std::uint64_t> : public IEquatable<std::uint64_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static constexpr std::uint64_t Parse(const std::string_view )
-    {
-        return std::uint64_t{};
-    }
+    static std::uint64_t Parse(const std::string_view s);
 
-    static constexpr std::uint64_t TryParse(const std::string_view )
-    {
-        return std::uint64_t{};
-    }
+    static std::optional<std::uint64_t> TryParse(const std::string_view s);
 };
 
 }

@@ -421,6 +421,78 @@ public:
     const std::string_view ClassName() const override;
 };
 
+class ArithmeticException : public SystemException
+{
+public:
+    using SystemException::SystemException;
+
+    ArithmeticException() = default;
+
+    explicit ArithmeticException(const char *message) : ArithmeticException( std::string_view{message} ) { }
+    explicit ArithmeticException(const std::string_view message) : SystemException( message ) { }
+
+    explicit ArithmeticException(const char *message, Exception &&inner_exception) : ArithmeticException( std::string_view(message), std::move(inner_exception) ) { }
+    explicit ArithmeticException(const std::string_view message, Exception &&inner_exception)
+        :
+        SystemException( message, std::move(inner_exception) )
+    {
+    }
+
+    /** Remove the ability to copy objects of this class
+     *
+     *  @{
+     */
+    ArithmeticException(const ArithmeticException &) = delete;
+    ArithmeticException &operator =(const ArithmeticException &) = delete;
+    /// @}
+
+    /** Define the ability to move objects of this class
+     *
+     *  @{
+     */
+    ArithmeticException(ArithmeticException &&other) = default;
+    ArithmeticException &operator =(ArithmeticException &&other) = default;
+    /// @}
+
+    const std::string_view ClassName() const override;
+};
+
+class OverflowException : public SystemException
+{
+public:
+    using SystemException::SystemException;
+
+    OverflowException() = default;
+
+    explicit OverflowException(const char *message) : OverflowException( std::string_view{message} ) { }
+    explicit OverflowException(const std::string_view message) : SystemException( message ) { }
+
+    explicit OverflowException(const char *message, Exception &&inner_exception) : OverflowException( std::string_view(message), std::move(inner_exception) ) { }
+    explicit OverflowException(const std::string_view message, Exception &&inner_exception)
+        :
+        SystemException( message, std::move(inner_exception) )
+    {
+    }
+
+    /** Remove the ability to copy objects of this class
+     *
+     *  @{
+     */
+    OverflowException(const OverflowException &) = delete;
+    OverflowException &operator =(const OverflowException &) = delete;
+    /// @}
+
+    /** Define the ability to move objects of this class
+     *
+     *  @{
+     */
+    OverflowException(OverflowException &&other) = default;
+    OverflowException &operator =(OverflowException &&other) = default;
+    /// @}
+
+    const std::string_view ClassName() const override;
+};
+
 /** Throws the given exception and fills in the TargetSite()
  *
  *  @param exception_to_throw

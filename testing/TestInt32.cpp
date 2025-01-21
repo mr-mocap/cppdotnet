@@ -1,7 +1,9 @@
 #include "TestInt32.hpp"
 #include "System/Int32.hpp"
+#include "System/private.hpp"
 #include <iostream>
 #include <cassert>
+#include <format>
 
 
 namespace TestInt32
@@ -162,6 +164,227 @@ void Equality()
     }
 }
 
+void TestINumberBase()
+{
+    std::cout << __func__ << std::endl;
+
+    using namespace std::literals;
+
+    assert( Int32::Zero() == 0 );
+    assert( Int32::One() == 1 );
+
+    assert( Int32::Abs(0) == 0 );
+    assert( Int32::Abs(27) == 27 );
+    assert( Int32::Abs(-1) == 1 );
+    assert( Int32::Abs(-27) == 27 );
+
+    assert(  Int32::IsEvenInteger(0) );
+    assert( !Int32::IsEvenInteger(1) );
+    assert(  Int32::IsEvenInteger(2) );
+    assert( !Int32::IsEvenInteger(3) );
+    assert(  Int32::IsEvenInteger(1000000) );
+    assert( !Int32::IsEvenInteger(-1) );
+    assert(  Int32::IsEvenInteger(-2) );
+
+    assert(  Int32::IsNegative(-1) );
+    assert( !Int32::IsNegative(0) );
+    assert( !Int32::IsNegative(1) );
+
+    assert( !Int32::IsOddInteger(0) );
+    assert(  Int32::IsOddInteger(1) );
+    assert( !Int32::IsOddInteger(2) );
+    assert(  Int32::IsOddInteger(3) );
+    assert(  Int32::IsOddInteger(-1) );
+    assert( !Int32::IsOddInteger(-2) );
+
+    assert( !Int32::IsPositive(0) );
+    assert(  Int32::IsPositive(1) );
+    assert( !Int32::IsPositive(-1) );
+
+    assert(  Int32::IsZero(0) );
+    assert( !Int32::IsZero(1) );
+    assert( !Int32::IsZero(-1) );
+}
+
+void Parse()
+{
+    std::cout << __func__ << std::endl;
+
+    using namespace std::literals;
+
+    assert( Int32::Parse("32"sv) == 32);
+    assert( Int32::Parse("32 "sv) == 32); // Trailing whitespace does not matter
+    
+    // Leading whitespace matters... (Not allowed)
+    try
+    {
+        std::int32_t result = Int32::Parse(" 32"sv);
+
+        UNUSED(result);
+    }
+    catch(const System::FormatException &e)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
+    
+    // Parsing an empty string...
+    try
+    {
+        std::int32_t result = Int32::Parse(""sv);
+
+        UNUSED(result);
+    }
+    catch(const System::ArgumentNullException &e)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
+    
+    // Parsing a non-integer...
+    try
+    {
+        std::int32_t result = Int32::Parse("salad"sv);
+
+        UNUSED(result);
+    }
+    catch(const System::FormatException &e)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
+    
+    // Parsing a float...
+    try
+    {
+        // TODO: Is this proper behavior?
+        std::int32_t result = Int32::Parse("3.14"sv);
+
+        assert( result == 3 );
+    }
+    catch (...)
+    {
+        assert(false);
+    }
+    
+    // Parsing One Greater than Int32::MaxValue()
+    try
+    {
+        std::int64_t max = Int32::MaxValue();
+        std::string  max_plus_one{ std::format("{}", max + 1) };
+        std::int32_t result = Int32::Parse( max_plus_one );
+
+        UNUSED(result);
+    }
+    catch(const System::OverflowException &e)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
+
+    // Parsing One Less than Int32::MinValue()
+    try
+    {
+        std::int64_t min = Int32::MinValue();
+        std::string  max_plus_one{ std::format("{}", min - 1) };
+        std::int32_t result = Int32::Parse( max_plus_one );
+
+        UNUSED(result);
+    }
+    catch(const System::OverflowException &e)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
+}
+
+void TryParse()
+{
+    std::cout << __func__ << std::endl;
+
+    using namespace std::literals;
+
+    {
+        auto result = Int32::TryParse("32"sv);
+
+        assert( result.has_value() );
+        assert( result.value() == 32 );
+    }
+
+    // Trailing whitespace does not matter
+    {
+        auto result = Int32::TryParse("32 "sv);
+
+        assert( result );
+        assert( result.has_value() );
+        assert( result.value() == 32 );
+    }
+    
+    // Leading whitespace matters... (Not allowed)
+    {
+        auto result = Int32::TryParse(" 32"sv);
+
+        assert( !result );
+    }
+    
+    // Parsing an empty string...
+    {
+        auto result = Int32::TryParse(""sv);
+
+        assert( !result );
+    }
+    
+    // Parsing a non-integer...
+    {
+        auto result = Int32::TryParse("salad"sv);
+
+        assert( !result );
+    }
+    
+    // Parsing a float...
+    {
+        // TODO: Is this proper behavior?
+        auto result = Int32::TryParse("3.14"sv);
+
+        // Gives us the number BEFORE the '.'
+        assert( result );
+        assert( result.value() == 3 );
+    }
+    
+    // Parsing One Greater than Int32::MaxValue()
+    {
+        std::int64_t max = Int32::MaxValue();
+        std::string  max_plus_one{ std::format("{}", max + 1) };
+        auto result = Int32::TryParse( max_plus_one );
+
+        assert( !result );
+    }
+
+    // Parsing One Less than Int32::MinValue()
+    {
+        std::int64_t min = Int32::MinValue();
+        std::string  max_plus_one{ std::format("{}", min - 1) };
+        auto result = Int32::TryParse( max_plus_one );
+
+        assert( !result );
+    }
+}
+
 void Run()
 {
     std::cout << "Running Int32 Tests..." << std::endl;
@@ -179,6 +402,9 @@ void Run()
     ToDouble();
     ToString();
     Equality();
+    TestINumberBase();
+    Parse();
+    TryParse();
 
     std::cout << "PASSED!" << std::endl;
 }

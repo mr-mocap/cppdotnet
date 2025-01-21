@@ -14,9 +14,11 @@ struct INumber : public IComparable<INumber<T>>,
                  public INumberBase<INumber<T>>
 {
     static constexpr T Clamp(T value, T min, T max);
+
     static constexpr T CopySign(T value, T sign);
 
     static constexpr T Max(T x, T y);
+
     static constexpr T MaxNumber(T x, T y);
 
     static constexpr T Min(T x, T y);
@@ -85,8 +87,14 @@ struct INumber<std::int8_t> : public IComparable<INumber<std::int8_t>>,
         return (sign < 0) ? 0 - a : a;
     }
 
-    static constexpr std::int8_t Max(std::int8_t x, std::int8_t y) { return std::max(x, y); }
-    static constexpr std::int8_t MaxNumber(std::int8_t x, std::int8_t y) { return Max(x, y); }
+    static constexpr std::int8_t Max(std::int8_t x, std::int8_t y)
+    {
+        return std::max(x, y);
+    }
+    static constexpr std::int8_t MaxNumber(std::int8_t x, std::int8_t y)
+    {
+        return Max(x, y);
+    }
 
     static constexpr std::int8_t Min(std::int8_t x, std::int8_t y) { return std::min(x, y); }
     static constexpr std::int8_t MinNumber(std::int8_t x, std::int8_t y) { return Min(x, y); }
@@ -120,8 +128,14 @@ struct INumber<std::int16_t> : public IComparable<INumber<std::int16_t>>,
         return (sign < 0) ? 0 - a : a;
     }
 
-    static constexpr std::int16_t Max(std::int16_t x, std::int16_t y) { return std::max(x, y); }
-    static constexpr std::int16_t MaxNumber(std::int16_t x, std::int16_t y) { return Max(x, y); }
+    static constexpr std::int16_t Max(std::int16_t x, std::int16_t y)
+    {
+        return std::max(x, y);
+    }
+    static constexpr std::int16_t MaxNumber(std::int16_t x, std::int16_t y)
+    {
+        return Max(x, y);
+    }
 
     static constexpr std::int16_t Min(std::int16_t x, std::int16_t y) { return std::min(x, y); }
     static constexpr std::int16_t MinNumber(std::int16_t x, std::int16_t y) { return Min(x, y); }
@@ -155,8 +169,14 @@ struct INumber<std::int32_t> : public IComparable<INumber<std::int32_t>>,
         return (sign < 0) ? 0 - a : a;
     }
 
-    static constexpr std::int32_t Max(std::int32_t x, std::int32_t y) { return std::max(x, y); }
-    static constexpr std::int32_t MaxNumber(std::int32_t x, std::int32_t y) { return Max(x, y); }
+    static constexpr std::int32_t Max(std::int32_t x, std::int32_t y)
+    {
+        return std::max(x, y);
+    }
+    static constexpr std::int32_t MaxNumber(std::int32_t x, std::int32_t y)
+    {
+        return Max(x, y);
+    }
 
     static constexpr std::int32_t Min(std::int32_t x, std::int32_t y) { return std::min(x, y); }
     static constexpr std::int32_t MinNumber(std::int32_t x, std::int32_t y) { return Min(x, y); }
@@ -190,8 +210,14 @@ struct INumber<std::int64_t> : public IComparable<INumber<std::int64_t>>,
         return (sign < 0) ? 0 - a : a;
     }
 
-    static constexpr std::int64_t Max(std::int64_t x, std::int64_t y) { return std::max(x, y); }
-    static constexpr std::int64_t MaxNumber(std::int64_t x, std::int64_t y) { return Max(x, y); }
+    static constexpr std::int64_t Max(std::int64_t x, std::int64_t y)
+    {
+        return std::max(x, y);
+    }
+    static constexpr std::int64_t MaxNumber(std::int64_t x, std::int64_t y)
+    {
+        return Max(x, y);
+    }
 
     static constexpr std::int64_t Min(std::int64_t x, std::int64_t y) { return std::min(x, y); }
     static constexpr std::int64_t MinNumber(std::int64_t x, std::int64_t y) { return Min(x, y); }
@@ -225,8 +251,14 @@ struct INumber<std::uint8_t> : public IComparable<INumber<std::uint8_t>>,
         return value;
     }
 
-    static constexpr std::uint8_t Max(std::uint8_t x, std::uint8_t y) { return std::max(x, y); }
-    static constexpr std::uint8_t MaxNumber(std::uint8_t x, std::uint8_t y) { return Max(x, y); }
+    static constexpr std::uint8_t Max(std::uint8_t x, std::uint8_t y)
+    {
+        return std::max(x, y);
+    }
+    static constexpr std::uint8_t MaxNumber(std::uint8_t x, std::uint8_t y)
+    {
+        return Max(x, y);
+    }
 
     static constexpr std::uint8_t Min(std::uint8_t x, std::uint8_t y) { return std::min(x, y); }
     static constexpr std::uint8_t MinNumber(std::uint8_t x, std::uint8_t y) { return Min(x, y); }
@@ -257,8 +289,14 @@ struct INumber<std::uint16_t> : public IComparable<INumber<std::uint16_t>>,
         return value;
     }
 
-    static constexpr std::uint16_t Max(std::uint16_t x, std::uint16_t y) { return std::max(x, y); }
-    static constexpr std::uint16_t MaxNumber(std::uint16_t x, std::uint16_t y) { return Max(x, y); }
+    static constexpr std::uint16_t Max(std::uint16_t x, std::uint16_t y)
+    {
+        return std::max(x, y);
+    }
+    static constexpr std::uint16_t MaxNumber(std::uint16_t x, std::uint16_t y)
+    {
+        return Max(x, y);
+    }
 
     static constexpr std::uint16_t Min(std::uint16_t x, std::uint16_t y) { return std::min(x, y); }
     static constexpr std::uint16_t MinNumber(std::uint16_t x, std::uint16_t y) { return Min(x, y); }
@@ -289,8 +327,14 @@ struct INumber<std::uint32_t> : public IComparable<INumber<std::uint32_t>>,
         return value;
     }
 
-    static constexpr std::uint32_t Max(std::uint32_t x, std::uint32_t y) { return std::max(x, y); }
-    static constexpr std::uint32_t MaxNumber(std::uint32_t x, std::uint32_t y) { return Max(x, y); }
+    static constexpr std::uint32_t Max(std::uint32_t x, std::uint32_t y)
+    {
+        return std::max(x, y);
+    }
+    static constexpr std::uint32_t MaxNumber(std::uint32_t x, std::uint32_t y)
+    {
+        return Max(x, y);
+    }
 
     static constexpr std::uint32_t Min(std::uint32_t x, std::uint32_t y) { return std::min(x, y); }
     static constexpr std::uint32_t MinNumber(std::uint32_t x, std::uint32_t y) { return Min(x, y); }
@@ -321,8 +365,14 @@ struct INumber<std::uint64_t> : public IComparable<INumber<std::uint64_t>>,
         return value;
     }
 
-    static constexpr std::uint64_t Max(std::uint64_t x, std::uint64_t y) { return std::max(x, y); }
-    static constexpr std::uint64_t MaxNumber(std::uint64_t x, std::uint64_t y) { return Max(x, y); }
+    static constexpr std::uint64_t Max(std::uint64_t x, std::uint64_t y)
+    {
+        return std::max(x, y);
+    }
+    static constexpr std::uint64_t MaxNumber(std::uint64_t x, std::uint64_t y)
+    {
+        return Max(x, y);
+    }
 
     static constexpr std::uint64_t Min(std::uint64_t x, std::uint64_t y) { return std::min(x, y); }
     static constexpr std::uint64_t MinNumber(std::uint64_t x, std::uint64_t y) { return Min(x, y); }

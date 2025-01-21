@@ -186,4 +186,18 @@ const std::string_view ObjectDisposedException::ClassName() const
     return "ObjectDisposedException"sv;
 }
 
+const std::string_view ArithmeticException::ClassName() const
+{
+    using namespace std::literals;
+
+    return "ArithmeticException"sv;
+}
+
+const std::string_view OverflowException::ClassName() const
+{
+    using namespace std::literals;
+
+    return "OverflowException"sv;
+}
+
 }
