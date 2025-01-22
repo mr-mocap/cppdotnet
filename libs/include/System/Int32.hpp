@@ -241,16 +241,189 @@ public:
     constexpr std::strong_ordering operator <=>(const Int32 other) const { return _value <=> other._value; }
     constexpr std::strong_ordering operator <=>(const std::int32_t other) const { return _value <=> other; }
 
-    constexpr bool operator ==(const Int32 other) const { return _value == other._value; }
+    constexpr bool operator ==(const Int32 &other) const { return _value == other._value; }
     constexpr bool operator ==(const std::int32_t other) const { return _value == other; }
 
+    // Basic Operations
+    constexpr Int32 &operator +=(const Int32 &other)
+    {
+        _value += other._value;
+        return *this;
+    }
+
+    constexpr Int32 &operator -=(const Int32 &other)
+    {
+        _value -= other._value;
+        return *this;
+    }
+
+    constexpr Int32 &operator *=(const Int32 &other)
+    {
+        _value *= other._value;
+        return *this;
+    }
+
+    constexpr Int32 &operator /=(const Int32 &other)
+    {
+        _value /= other._value;
+        return *this;
+    }
+
+    constexpr Int32 &operator %=(const Int32 &other)
+    {
+        _value %= other._value;
+        return *this;
+    }
+
+    constexpr Int32 &operator &=(const Int32 &other)
+    {
+        _value &= other._value;
+        return *this;
+    }
+
+    constexpr Int32 &operator |=(const Int32 &other)
+    {
+        _value |= other._value;
+        return *this;
+    }
+
+    constexpr Int32 &operator ^=(const Int32 &other)
+    {
+        _value ^= other._value;
+        return *this;
+    }
+
+    constexpr Int32 &operator <<=(const Int32 &other)
+    {
+        _value <<= other._value;
+        return *this;
+    }
+
+    constexpr Int32 &operator >>=(const Int32 &other)
+    {
+        _value >>= other._value;
+        return *this;
+    }
+
+    constexpr Int32 operator +(const Int32 &right) const
+    {
+        return Int32{ _value + right._value };
+    }
+
+    constexpr Int32 operator +(const std::int32_t right) const
+    {
+        return Int32{ _value + right };
+    }
+
+    constexpr Int32 operator -(const Int32 &right) const
+    {
+        return Int32{ _value - right._value };
+    }
+
+    constexpr Int32 operator -(const std::int32_t right) const
+    {
+        return Int32{ _value - right };
+    }
+
+    constexpr Int32 operator *(const Int32 &right) const
+    {
+        return Int32{ _value * right._value };
+    }
+
+    constexpr Int32 operator *(const std::int32_t right) const
+    {
+        return Int32{ _value * right };
+    }
+
+    constexpr Int32 operator /(const Int32 &right) const
+    {
+        return Int32{ _value / right._value };
+    }
+
+    constexpr Int32 operator /(const std::int32_t right) const
+    {
+        return Int32{ _value / right };
+    }
+
+    constexpr Int32 operator %(const Int32 &right) const
+    {
+        return Int32{ _value % right };
+    }
+
+    constexpr Int32 operator %(const std::int32_t right) const
+    {
+        return Int32{ _value % right };
+    }
+
+    constexpr Int32 operator +() const
+    {
+        return *this;
+    }
+
+    constexpr Int32 operator -() const
+    {
+        return Int32{ -_value };
+    }
+
+    constexpr Int32 operator ~() const
+    {
+        return Int32{ ~_value };
+    }
+
+    constexpr Int32 operator &(const Int32 &other)
+    {
+        return Int32{ _value & other._value };
+    }
+
+    constexpr Int32 operator |(const Int32 &other)
+    {
+        return Int32{ _value | other._value };
+    }
+
+    constexpr Int32 operator ^(const Int32 &other)
+    {
+        return Int32{ _value ^ other._value };
+    }
+
+    constexpr Int32 operator <<(const Int32 &other)
+    {
+        return Int32{ _value << other._value };
+    }
+
+    constexpr Int32 operator >>(const Int32 &other)
+    {
+        return Int32{ _value >> other._value };
+    }
+
+    // Increment/Decrement
+    constexpr Int32 &operator ++() // Pre-increment
+    {
+        ++_value;
+        return *this;
+    }
+
+    constexpr Int32 &operator --() // Pre-decrement
+    {
+        --_value;
+        return *this;
+    }
+
+    constexpr Int32 operator ++(int) // Post-increment
+    {
+        return Int32{ _value++ };
+    }
+
+    constexpr Int32 operator --(int) // Post-decrement
+    {
+        return Int32{ _value-- };
+    }
 protected:
     std::int32_t _value = 0;
 };
 
-inline bool operator ==(const std::int32_t left, const Int32 right)
+inline bool operator ==(const std::int32_t left, const Int32 &right)
 {
-    return right == left;
+    return left == std::int32_t(right);
 }
 
 }

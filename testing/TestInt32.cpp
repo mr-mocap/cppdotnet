@@ -385,6 +385,23 @@ void TryParse()
     }
 }
 
+void Addition()
+{
+    std::cout << __func__ << std::endl;
+
+    {
+        Int32 b{ 5 };
+        std::int32_t result = 3 + b;
+
+        assert( result == 8 );
+    }
+    {
+        Int32 b{ 5 };
+
+        assert( 5 == b );
+    }
+}
+
 void Run()
 {
     std::cout << "Running Int32 Tests..." << std::endl;
@@ -405,6 +422,7 @@ void Run()
     TestINumberBase();
     Parse();
     TryParse();
+    Addition();
 
     std::cout << "PASSED!" << std::endl;
 }
