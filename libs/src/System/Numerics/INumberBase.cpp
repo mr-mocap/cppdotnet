@@ -4,7 +4,6 @@
 namespace System::Numerics
 {
 
-
 bool INumberBase<bool>::Parse(const std::string_view s)
 {
     using namespace std::literals;
