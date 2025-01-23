@@ -2,6 +2,7 @@
 
 #include "System/Exception.hpp"
 #include "System/IConvertible.hpp"
+#include "System/IComparable.hpp"
 #include <span>
 #include <optional>
 #include <algorithm>
@@ -200,7 +201,7 @@ protected:
 };
 #else
 template <class EnumPolicy>
-class Enum : public EnumPolicy, public IConvertible
+class Enum : public EnumPolicy, public IComparable<Enum<EnumPolicy>>, public IConvertible
 {
 public:
     Enum() = default;
@@ -337,6 +338,19 @@ public:
         return *this;
     }
 
+    // IComparable Interface
+    int CompareTo(const Enum &other) const
+    {
+        auto result{ *this <=> other };
+
+        if ( result == std::strong_ordering::less )
+            return -1;
+        else if ( result == std::strong_ordering::equal )
+            return 0;
+        else
+            return 1;
+    }
+
     // IConvertible Interface
     TypeCode GetTypeCode() const override
     {
@@ -377,6 +391,14 @@ public:
 
     std::string ToString() const override { return std::string{ GetName() }; }
 
+    // C++ specific stuff.
+    // NOTE: We need the <=> AND == operators ONLY, if we want all the other relational
+    //       operators to be generated automatically for us.
+    constexpr std::strong_ordering operator <=>(const Enum &other) const { return _currentValue <=> other._currentValue; }
+    constexpr std::strong_ordering operator <=>(const typename EnumPolicy::value_type other) const { return _currentValue <=> other; }
+
+    constexpr bool operator ==(const Enum &other) const { return _currentValue == other._currentValue; }
+    constexpr bool operator ==(const typename EnumPolicy::value_type other) const { return _currentValue == other; }
 protected:
     EnumPolicy::value_type  _currentValue{};
 
@@ -427,5 +449,12 @@ protected:
         return casted;
     }
 };
+
+template <class EnumPolicy>
+inline bool operator ==(const typename EnumPolicy::value_type left, const Enum<EnumPolicy> &right)
+{
+    return left == std::int32_t(right);
+}
+
 #endif
 }
