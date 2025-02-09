@@ -68,6 +68,8 @@ public:
 
     Span(Type &&object) = delete;
 
+    constexpr Span(std::span<Type, Extent> from) : _data{ from } { }
+
 
     static constexpr Span<Type> Empty() { return Span<Type>(); }
 
@@ -120,13 +122,11 @@ public:
     }
 protected:
     std::span<Type, Extent> _data;
-
-    constexpr Span(std::span<Type, Extent> from) : _data{ from } { }
 };
 
 // Deduction guides
 template <typename Type, size_t Extent>
-Span(Type &) -> Span<Type, Extent>;
+Span(Type &) -> Span<Type, 1>;
 
 template <typename Type, size_t Extent>
 Span(Type (&)[Extent]) -> Span<Type, Extent>;

@@ -1,5 +1,4 @@
 #include "System/Span.hpp"
-#include "System/Span.hpp"
 #include <iostream>
 #include <cassert>
 
@@ -106,6 +105,44 @@ void MultipleObjectsFromStdArray()
         assert( span_a[1] == 2 );
         assert( span_a[2] == 3 );
     }
+
+    // std::span of items to Span of items
+    {
+        std::array<int, 3> a{ 1, 2, 3 };
+        std::span<int>     b{ a };
+        System::Span<int> span_a{ b };
+
+        assert( span_a.Length() == 3 );
+        assert( span_a[0] == 1 );
+        assert( span_a[1] == 2 );
+        assert( span_a[2] == 3 );
+    }
+
+    // std::span of const items to Span of const items
+    {
+        std::array<const int, 3> a{ 1, 2, 3 };
+        std::span<const int> b{ a };
+        System::Span<const int> span_a{ b };
+
+        assert( span_a.Length() == 3 );
+        assert( span_a[0] == 1 );
+        assert( span_a[1] == 2 );
+        assert( span_a[2] == 3 );
+    }
+
+#if 0
+    // std::span of const items to Span of const items
+    {
+        std::array<const int, 3> a{ 1, 2, 3 };
+        std::span<const int> b{ a };
+        const System::Span<int> span_a( b );
+
+        assert( span_a.Length() == 3 );
+        assert( span_a[0] == 1 );
+        assert( span_a[1] == 2 );
+        assert( span_a[2] == 3 );
+    }
+#endif
 }
 
 void Assignment()
