@@ -12,6 +12,7 @@
 #include "TestBitConverter.hpp"
 #include "TestConvert.hpp"
 #include "TestSpan.hpp"
+#include "TestReadOnlySpan.hpp"
 #include "TestStringBuilder.hpp"
 #include "TestInt32.hpp"
 #include <cstdlib>
@@ -35,6 +36,7 @@ int main(void)
     TestBitConverter::Run();
     TestConvert::Run();
     TestSpan::Run();
+    TestReadOnlySpan::Run();
     TestStringBuilder::Run();
     TestInt32::Run();
 

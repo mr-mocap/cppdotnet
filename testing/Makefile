@@ -20,6 +20,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestBitConverter.o \
 	TestConvert.o \
 	TestSpan.o \
+	TestReadOnlySpan.o \
 	TestStringBuilder.o \
 	TestInt32.o \
 	main.o
