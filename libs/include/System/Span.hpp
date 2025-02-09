@@ -75,7 +75,7 @@ public:
 
     constexpr bool IsEmpty() const { return _data.empty(); }
 
-    constexpr size_t Length() const { return _data.size(); }
+    constexpr size_type Length() const { return _data.size(); }
 
     constexpr void Clear() { Fill( Type{} ); }
 
@@ -111,15 +111,24 @@ public:
         return true;
     }
 
-    constexpr const Type &operator [](size_t index) const
+    constexpr const_reference operator [](size_t index) const
     {
         return _data[index];
     }
 
-    constexpr Type &operator [](size_t index)
+    constexpr reference operator [](size_t index)
     {
         return _data[index];
     }
+
+    // C++ specific pleasantries
+
+    // Make work with foreach
+    constexpr iterator begin() const noexcept { return _data.begin(); }
+    constexpr iterator end()   const noexcept { return _data.end();   }
+
+    constexpr iterator rbegin() const noexcept { return _data.rbegin(); }
+    constexpr iterator rend()   const noexcept { return _data.rend();   }
 protected:
     std::span<Type, Extent> _data;
 

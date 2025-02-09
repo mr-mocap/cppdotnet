@@ -25,7 +25,6 @@ public:
       using difference_type        = std::ptrdiff_t;
       using pointer                = Type*;
       using const_pointer          = const Type*;
-      using reference              = element_type&;
       using const_reference        = const element_type&;
       using iterator               = std::span<Type, Extent>::iterator;
       using reverse_iterator       = std::span<Type, Extent>::reverse_iterator;
@@ -105,11 +104,19 @@ public:
         return true;
     }
 
-    constexpr const Type &operator [](size_t index) const
+    constexpr const_reference operator [](size_t index) const
     {
         return _data[index];
     }
 
+    // C++ specific pleasantries
+
+    // Make work with foreach
+    constexpr iterator begin() const noexcept { return _data.begin(); }
+    constexpr iterator end()   const noexcept { return _data.end();   }
+
+    constexpr iterator rbegin() const noexcept { return _data.rbegin(); }
+    constexpr iterator rend()   const noexcept { return _data.rend();   }
 protected:
     std::span<Type, Extent> _data;
 };
