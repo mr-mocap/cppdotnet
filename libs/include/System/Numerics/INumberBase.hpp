@@ -8,8 +8,10 @@
 #include <string>
 #include <stdexcept>
 #include <charconv>
+#include <cstdint>
 #include <optional>
 #include <type_traits>
+#include <format>
 
 namespace System::Numerics
 {
@@ -87,6 +89,28 @@ namespace Private
 template <class T>
 struct CommonItems
 {
+    static const std::string_view TypeName()
+    {
+        if constexpr (std::is_same_v<T, bool>)
+            return std::string_view{"bool"};
+        else if constexpr (std::is_same_v<T, std::int8_t>)
+            return std::string_view{"int8_t"};
+        else if constexpr (std::is_same_v<T, std::int16_t>)
+            return std::string_view{"int16_t"};
+        else if constexpr (std::is_same_v<T, std::int32_t>)
+            return std::string_view{"int32_t"};
+        else if constexpr (std::is_same_v<T, std::int64_t>)
+            return std::string_view{"int64_t"};
+        else if constexpr (std::is_same_v<T, std::uint8_t>)
+            return std::string_view{"uint8_t"};
+        else if constexpr (std::is_same_v<T, std::uint16_t>)
+            return std::string_view{"uint16_t"};
+        else if constexpr (std::is_same_v<T, std::uint32_t>)
+            return std::string_view{"uint32_t"};
+        else if constexpr (std::is_same_v<T, std::uint64_t>)
+            return std::string_view{"uint64_t"};
+    }
+
     static T Parse(const std::string_view s)
     {
         using namespace std::literals;
@@ -96,18 +120,37 @@ struct CommonItems
 
         if constexpr (std::is_integral_v<T>)
         {
-            T converted;
+            if constexpr (std::is_same_v<T, bool>)
+            {
+                std::uint8_t converted;
 
-            auto [ptr, ec] = std::from_chars( s.data(), s.data() + s.size(), converted);
-            
-            if ( ec == std::errc::invalid_argument )
-                ThrowWithTarget( System::FormatException{ "Parameter 's' is not in the correct format"sv } );
-            else if ( ec == std::errc::result_out_of_range )
-                ThrowWithTarget( System::OverflowException{ "Parameter 's' is not representable by int32_t"sv } );
-            else if ( ec != std::errc() )
-                ThrowWithTarget( System::ArgumentException{ "Argument does not contain integer information", "s" } );
+                auto [ptr, ec] = std::from_chars( s.data(), s.data() + s.size(), converted, 2);
+                
+                if ( ec == std::errc::invalid_argument )
+                    ThrowWithTarget( System::FormatException{ "Parameter 's' is not in the correct format"sv } );
+                else if ( ec == std::errc::result_out_of_range )
+                    ThrowWithTarget( System::OverflowException{ "Parameter 's' is not representable by bool"sv } );
+                else if ( ec != std::errc() )
+                    ThrowWithTarget( System::ArgumentException{ "Argument does not contain bool information", "s" } );
 
-            return converted;
+                return converted;
+
+            }
+            else
+            {
+                T converted;
+
+                auto [ptr, ec] = std::from_chars( s.data(), s.data() + s.size(), converted);
+                
+                if ( ec == std::errc::invalid_argument )
+                    ThrowWithTarget( System::FormatException{ "Parameter 's' is not in the correct format"sv } );
+                else if ( ec == std::errc::result_out_of_range )
+                    ThrowWithTarget( System::OverflowException{ std::format("Parameter 's' is not representable by {}"sv, TypeName()) } );
+                else if ( ec != std::errc() )
+                    ThrowWithTarget( System::ArgumentException{ "Argument does not contain integer information", "s" } );
+
+                return converted;
+            }
         }
     }
 
@@ -118,16 +161,28 @@ struct CommonItems
 
         if constexpr (std::is_integral_v<T>)
         {
-            using namespace std::literals;
+            if constexpr (std::is_same_v<T, bool>)
+            {
+                std::uint8_t converted;
 
-            T converted;
+                auto [ptr, ec] = std::from_chars( s.data(), s.data() + s.size(), converted, 2);
+                
+                if ( ec != std::errc() )
+                    return {};
 
-            auto [ptr, ec] = std::from_chars( s.data(), s.data() + s.size(), converted);
-            
-            if ( ec != std::errc() )
-                return {};
+                return converted;
+            }
+            else
+            {
+                T converted;
 
-            return converted;
+                auto [ptr, ec] = std::from_chars( s.data(), s.data() + s.size(), converted);
+                
+                if ( ec != std::errc() )
+                    return {};
+
+                return converted;
+            }
         }
         else
         {
@@ -200,9 +255,15 @@ struct INumberBase<bool> : public IEquatable<bool>
 
     static constexpr bool MultiplyAddEstimate(bool value1, bool value2) { return MinMagnitude(value1, value2); }
 
-    static           bool Parse(const std::string_view s);
+    static           bool  Parse(const std::string_view s)
+    {
+        return Private::CommonItems<bool>::Parse(s);
+    }
 
-    static           std::optional<bool> TryParse(const std::string_view s);
+    static std::optional<bool> TryParse(const std::string_view s)
+    {
+        return Private::CommonItems<bool>::TryParse(s);
+    }
 };
 
 

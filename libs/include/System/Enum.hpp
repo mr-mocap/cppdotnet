@@ -10,6 +10,7 @@
 #include <utility>
 #include <ranges>
 #include <cassert>
+#include <charconv>
 
 namespace System
 {

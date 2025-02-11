@@ -5,7 +5,6 @@
 #include <string_view>
 #include <memory>
 #include <source_location>
-#include <format>
 
 namespace System
 {
