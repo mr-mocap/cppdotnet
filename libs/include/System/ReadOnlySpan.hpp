@@ -134,5 +134,4 @@ ReadOnlySpan(std::array<Type, ArrayExtent> &) -> ReadOnlySpan<Type, ArrayExtent>
 template <typename Type, size_t ArrayExtent>
 ReadOnlySpan(const std::array<Type, ArrayExtent> &) -> ReadOnlySpan<const Type, ArrayExtent>;
 
-
 }

@@ -3,7 +3,6 @@
 #include <iostream>
 #include <cassert>
 
-
 namespace TestReadOnlySpan
 {
 
@@ -135,11 +134,11 @@ void MultipleObjectsFromStdArray()
     }
 
 #if 0
-    // std::span of const items to Span of const items
+    // std::span of const items to Span of items
     {
         std::array<const int, 3> a{ 1, 2, 3 };
         std::span<const int> b{ a };
-        const System::ReadOnlySpan<int> span_a( b );
+        System::ReadOnlySpan<int> span_a( b );
 
         assert( span_a.Length() == 3 );
         assert( span_a[0] == 1 );
@@ -309,7 +308,19 @@ void TryCopyTo()
     assert( span_b.TryCopyTo( span_a ) == false );
 #endif
 }
+void AsBytes()
+{
+    std::cout << __func__ << std::endl;
 
+    // ReadOnlySpan of the underlying bytes is the correct size
+    {
+        std::array<const int, 3> a{ 1, 2, 3 };
+        std::span<const int> b{ a };
+        System::ReadOnlySpan span_a( std::as_bytes(b) );
+
+        assert( span_a.Length() == (b.size() * sizeof(int) ) );
+    }
+}
 
 void Run()
 {
@@ -324,6 +335,7 @@ void Run()
     Slice();
     CopyTo();
     TryCopyTo();
+    AsBytes();
 
     std::cout << "PASSED!" << std::endl;
 }
