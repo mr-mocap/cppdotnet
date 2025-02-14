@@ -380,6 +380,22 @@ void FromBase64StringAndToBase64StringAreInverses()
 
 }
 
+void ToBase85String()
+{
+    std::cout << __func__ << std::endl;
+
+    // Various 4-byte sequences
+    {
+        std::string str{ "hewk" };
+        std::span str_span{ str.data(), str.size() };
+        std::string base85_string{ System::Convert::ToBase85String( std::as_bytes( str_span ) ) };
+
+        assert( base85_string.size() == 5 );
+        assert( base85_string == "BOuC'" );
+    }
+
+}
+
 void Run()
 {
     std::cout << "Running Convert Tests..." << std::endl;
@@ -388,6 +404,7 @@ void Run()
     ToHexString();
     ToBase64String();
     FromBase64String();
+    ToBase85String();
 
     std::cout << "PASSED!" << std::endl;
 }

@@ -1,6 +1,7 @@
 #include "System/Convert.hpp"
 #include "System/Boolean.hpp"
 #include "System/Exception.hpp"
+#include "System/BitConverter.hpp"
 #include "System/private.hpp"
 #include <map>
 #include <span>
@@ -17,6 +18,12 @@ namespace System
 // From RFC 4648
 static const std::string_view Base64Table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 static const char             Base64PadChar = '=';
+
+static const std::string_view Base85Table = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstu";
+static const char             Base85SpecialCase1 = 'z';
+static const char             Base85SpecialCase2 = 'y';
+static const std::uint32_t    Base85SpacialCaseValue1 = 0u;
+static const std::uint32_t    Base85SpacialCaseValue2 = 0x20202020u; // All spaces
 
 inline bool IsValidBase64(const char input)
 {
@@ -35,6 +42,25 @@ inline std::byte DecodeBase64(char input)
     PRECONDITION( IsValidBase64(input) );
 
     return static_cast<std::byte>(Base64Table.find( input ));
+}
+
+inline bool IsValidBase85(const char input)
+{
+    return Base85Table.find( input ) != std::string_view::npos;
+}
+
+inline char EncodeBase85(const uint8_t input)
+{
+    PRECONDITION( input < Base85Table.size() );
+
+    return Base85Table[ input ];
+}
+
+inline std::byte DecodeBase85(char input)
+{
+    PRECONDITION( IsValidBase85(input) );
+
+    return static_cast<std::byte>(Base85Table.find( input ));
 }
 
 static std::string From4Base64Chars(std::span<const char, 4> input)
@@ -550,6 +576,85 @@ std::vector<std::byte> Convert::FromBase64String(std::span<const char> input_asc
     }
 
     return result_bytes;
+}
+
+std::string Convert::ToBase85String(std::span<const std::byte> input_bytes)
+{
+    const size_t chunk_size = 4;
+    std::string base85_string;
+
+    base85_string.reserve( 5 );
+    for (size_t chunk = 0; (chunk * chunk_size) < input_bytes.size(); ++chunk)
+    {
+        auto current_range{ std::views::drop( input_bytes, chunk * chunk_size ) };
+        auto bytes{ std::views::take( current_range, chunk_size ) };
+
+        if ( bytes.size() == chunk_size )
+        {
+            std::span<const std::byte, 4> s{ &bytes[0], bytes.size() };
+            std::uint32_t value = BitConverter::To<std::uint32_t, std::endian::big>(s);
+            const std::uint32_t upper_encoding_limit = 0b01111111111111111111111111111111u;
+
+            // Encoding error!  (Unrepresentable value)
+            // TODO: FIXME
+            if ( value > upper_encoding_limit )
+                continue; // Skip these 4 bytes
+
+            // All zeros encodes to 'z', so check for that...
+            if ( value == Base85SpacialCaseValue1 )
+            {
+                base85_string.push_back( Base85SpecialCase1 );
+                continue;
+            }
+            if ( value == Base85SpacialCaseValue2 )
+            {
+                base85_string.push_back( Base85SpecialCase2 );
+            }
+
+            for (; value; value /= 85)
+            {
+                base85_string.push_back( EncodeBase85( value % 85 ) );
+            }
+        }
+        else
+        {
+            std::ranges::reverse_view rv{ bytes };
+            std::span<const std::byte> s{ &rv[0], rv.size() };
+            std::uint32_t value = BitConverter::ToUInt32(s);
+
+            // All zeros encodes to 'z', so check for that...
+            if ( value == Base85SpacialCaseValue1 )
+            {
+                base85_string.push_back( Base85SpecialCase1 );
+                continue;
+            }
+            if ( value == Base85SpacialCaseValue2 )
+            {
+                base85_string.push_back( Base85SpecialCase2 );
+            }
+
+            for (; value; value /= 85)
+            {
+                base85_string.push_back( EncodeBase85( value % 85 ) );
+            }
+        }
+    }
+
+    return { base85_string.rbegin(), base85_string.rend() };
+}
+
+std::vector<std::byte> Convert::FromBase85String(const std::string_view input_ascii_string)
+{
+    UNUSED(input_ascii_string);
+
+    return {};
+}
+
+std::vector<std::byte> Convert::FromBase85String(std::span<const char> input_ascii_string)
+{
+    UNUSED(input_ascii_string);
+
+    return {};
 }
 
 }
