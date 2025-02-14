@@ -99,6 +99,50 @@ void GetAndToAreInverses()
     }
 }
 
+void ByteSwap()
+{
+    std::cout << __func__ << std::endl;
+
+    // bool
+    {
+        bool origin = true;
+        bool swapped = System::BitConverter::ByteSwap(origin);
+
+        assert( sizeof(bool) == 1 );
+        assert( origin == swapped );
+    }
+
+    // std::uint16_t
+    {
+        std::uint16_t origin = 0x0102;
+        std::uint16_t swapped = System::BitConverter::ByteSwap(origin);
+
+        assert( sizeof(origin) == 2 );
+        assert( origin == 0x0102 );
+        assert( swapped == 0x0201 );
+    }
+
+    // std::uint32_t
+    {
+        std::uint32_t origin = 0x01020304;
+        std::uint32_t swapped = System::BitConverter::ByteSwap(origin);
+
+        assert( sizeof(origin) == 4 );
+        assert( origin == 0x01020304 );
+        assert( swapped == 0x04030201 );
+    }
+
+    // std::uint64_t
+    {
+        std::uint64_t origin = 0x0102030405060708;
+        std::uint64_t swapped = System::BitConverter::ByteSwap(origin);
+
+        assert( sizeof(origin) == 8 );
+        assert( origin == 0x0102030405060708 );
+        assert( swapped == 0x0807060504030201 );
+    }
+}
+
 void Run()
 {
     std::cout << "Running BitConverter Tests..." << std::endl;
@@ -108,6 +152,8 @@ void Run()
     GetBytesFloat();
 
     GetAndToAreInverses();
+
+    ByteSwap();
 
     std::cout << "PASSED!" << std::endl;
 }
