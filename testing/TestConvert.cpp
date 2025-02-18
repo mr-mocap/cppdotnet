@@ -393,7 +393,94 @@ void ToBase85String()
         assert( base85_string.size() == 5 );
         assert( base85_string == "BOuC'" );
     }
+    {
+        std::string str{ "what" };
+        std::span str_span{ str.data(), str.size() };
+        std::string base85_string{ System::Convert::ToBase85String( std::as_bytes( str_span ) ) };
 
+        assert( base85_string.size() == 5 );
+        assert( base85_string == "GA(E," );
+    }
+    {
+        std::string str{ "Lots" };
+        std::span str_span{ str.data(), str.size() };
+        std::string base85_string{ System::Convert::ToBase85String( std::as_bytes( str_span ) ) };
+
+        assert( base85_string.size() == 5 );
+        assert( base85_string == "9Q,#o" );
+    }
+
+    // 4 zeros
+    {
+        std::array<const std::byte, 4> bytes{ std::byte{0}, std::byte{0}, std::byte{0}, std::byte{0} };
+        std::string base85_string{ System::Convert::ToBase85String( std::as_bytes( std::span{ bytes } ) ) };
+
+        assert( base85_string.size() == 1 );
+        assert( base85_string == "z" );
+    }
+
+    // 4 spaces
+    {
+        std::array<const std::byte, 4> bytes{ std::byte{0x20}, std::byte{0x20}, std::byte{0x20}, std::byte{0x20} };
+        std::string base85_string{ System::Convert::ToBase85String( std::as_bytes( std::span{ bytes } ) ) };
+
+        assert( base85_string.size() == 1 );
+        assert( base85_string == "y" );
+    }
+
+    // 1-byte sequences
+    {
+        std::string str{ "a" };
+        std::span str_span{ str.data(), str.size() };
+        std::string base85_string{ System::Convert::ToBase85String( std::as_bytes( str_span ) ) };
+
+        assert( base85_string.size() == 2 );
+        assert( base85_string == "@/" );
+    }
+    {
+        std::string str{ "b" };
+        std::span str_span{ str.data(), str.size() };
+        std::string base85_string{ System::Convert::ToBase85String( std::as_bytes( str_span ) ) };
+
+        assert( base85_string.size() == 2 );
+        assert( base85_string == "@K" );
+    }
+    {
+        std::string str{ "c" };
+        std::span str_span{ str.data(), str.size() };
+        std::string base85_string{ System::Convert::ToBase85String( std::as_bytes( str_span ) ) };
+
+        assert( base85_string.size() == 2 );
+        assert( base85_string == "@f" );
+    }
+    {
+        std::string str{ "d" };
+        std::span str_span{ str.data(), str.size() };
+        std::string base85_string{ System::Convert::ToBase85String( std::as_bytes( str_span ) ) };
+
+        assert( base85_string.size() == 2 );
+        assert( base85_string == "A," );
+    }
+
+    // 2-byte sequences
+    {
+        std::string str{ "qq" };
+        std::span str_span{ str.data(), str.size() };
+        std::string base85_string{ System::Convert::ToBase85String( std::as_bytes( str_span ) ) };
+
+        assert( base85_string.size() == 3 );
+        assert( base85_string == "EH(" );
+    }
+
+    // 3-byte sequences
+    {
+        std::string str{ "abc" };
+        std::span str_span{ str.data(), str.size() };
+        std::string base85_string{ System::Convert::ToBase85String( std::as_bytes( str_span ) ) };
+
+        assert( base85_string.size() == 4 );
+        assert( base85_string == "@:E^" );
+    }
 }
 
 void Run()

@@ -586,14 +586,13 @@ std::string Convert::ToBase85String(std::span<const std::byte> input_bytes)
     base85_string.reserve( 5 );
     for (size_t chunk = 0; (chunk * chunk_size) < input_bytes.size(); ++chunk)
     {
-        auto current_range{ std::views::drop( input_bytes, chunk * chunk_size ) };
-        auto bytes{ std::views::take( current_range, chunk_size ) };
+        std::span<const std::byte> current_range{ std::views::drop( input_bytes, chunk * chunk_size ) };
+        std::span<const std::byte> bytes{ std::views::take( current_range, chunk_size ) };
 
         if ( bytes.size() == chunk_size )
         {
-            std::span<const std::byte, 4> s{ &bytes[0], bytes.size() };
-            std::uint32_t value = BitConverter::To<std::uint32_t, std::endian::big>(s);
-            const std::uint32_t upper_encoding_limit = 0b01111111111111111111111111111111u;
+            std::uint32_t value = BitConverter::To<std::uint32_t, std::endian::big>(bytes);
+            const std::uint32_t upper_encoding_limit = 0b01111111111111111111111111111111u; // 2^32 - 1
 
             // Encoding error!  (Unrepresentable value)
             // TODO: FIXME
@@ -609,32 +608,31 @@ std::string Convert::ToBase85String(std::span<const std::byte> input_bytes)
             if ( value == Base85SpacialCaseValue2 )
             {
                 base85_string.push_back( Base85SpecialCase2 );
+                continue;
             }
 
-            for (; value; value /= 85)
+            for (;
+                    value;
+                    value /= 85)
             {
                 base85_string.push_back( EncodeBase85( value % 85 ) );
             }
+            continue;
         }
-        else
+
+        // Non-chunk-size ...
         {
-            std::ranges::reverse_view rv{ bytes };
-            std::span<const std::byte> s{ &rv[0], rv.size() };
-            std::uint32_t value = BitConverter::ToUInt32(s);
+            std::array<std::byte, 4> padded_chunk{ std::byte{0}, std::byte{0}, std::byte{0}, std::byte{0} };
 
-            // All zeros encodes to 'z', so check for that...
-            if ( value == Base85SpacialCaseValue1 )
-            {
-                base85_string.push_back( Base85SpecialCase1 );
-                continue;
-            }
-            if ( value == Base85SpacialCaseValue2 )
-            {
-                base85_string.push_back( Base85SpecialCase2 );
-            }
+            std::copy( bytes.begin(), bytes.end(), padded_chunk.begin() );
+            std::uint32_t value = BitConverter::To<std::uint32_t, std::endian::big>( padded_chunk );
+            std::size_t skip_first_n_items = 5 - (bytes.size() + 1);
 
-            for (; value; value /= 85)
+            for (std::size_t item_number = 1; value; ++item_number, value /= 85 )
             {
+                if ( item_number <= skip_first_n_items )
+                    continue;
+
                 base85_string.push_back( EncodeBase85( value % 85 ) );
             }
         }
