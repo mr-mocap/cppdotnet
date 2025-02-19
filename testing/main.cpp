@@ -15,6 +15,7 @@
 #include "TestReadOnlySpan.hpp"
 #include "TestStringBuilder.hpp"
 #include "TestInt32.hpp"
+#include "TestUtf8JsonReader.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -39,6 +40,7 @@ int main(void)
     TestReadOnlySpan::Run();
     TestStringBuilder::Run();
     TestInt32::Run();
+    TestUtf8JsonReader::Run();
 
     std::cout << "All tests passed!\n";
 
