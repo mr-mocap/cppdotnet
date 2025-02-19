@@ -27,6 +27,7 @@
 #include "TestDateTimeOffset.hpp"
 #include "TestDateOnly.hpp"
 #include "TestStack.hpp"
+#include "TestUtf8JsonReader.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -63,6 +64,7 @@ int main(void)
     TestDateTimeOffset::Run();
     TestDateOnly::Run();
     TestStack::Run();
+    TestUtf8JsonReader::Run();
 
     std::cout << "All tests passed!\n";
 
