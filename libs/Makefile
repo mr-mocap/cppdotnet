@@ -6,11 +6,13 @@ LIB_PATH = build/$(LIB_NAME)
 INC_PARAMS = $(INCLUDE_DIRS:%=-I%)
 DEBUG_FLAGS = -g3
 
-CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I . $(INC_PARAMS) $(DEBUG_FLAGS)
+MODULE_FLAGS=-fmodules-ts
 
-LIB_SRC  = $(wildcard *.cpp src/System/*.cpp src/System/Diagnostics/*.cpp src/System/IO/*.cpp)
+CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I . $(INC_PARAMS) $(DEBUG_FLAGS) $(MODULE_FLAGS)
+
+LIB_SRC  = $(wildcard *.cpp src/System/*.cpp src/System/Diagnostics/*.cpp src/System/IO/*.cpp src/System/Numerics/*.cpp)
 LIB_OBJS = $(patsubst %.cpp,build/%.o,${LIB_SRC})
-LIB_DEP  = $(LIB_PATH)/*.d $(LIB_PATH)/src/System/*.d $(LIB_PATH)/src/System/Diagnostics/*.d $(LIB_PATH)/src/System/IO/*.d
+LIB_DEP  = $(LIB_PATH)/*.d $(LIB_PATH)/src/System/*.d $(LIB_PATH)/src/System/Diagnostics/*.d $(LIB_PATH)/src/System/IO/*.d $(LIB_PATH)/src/System/Numerics/*.d $(LIB_PATH)/src/System/Text/Json/*.cpp
 
 build/%.o : %.cpp
 	echo Making build directory...
