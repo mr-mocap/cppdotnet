@@ -1,6 +1,6 @@
 #include "System/Diagnostics/TraceListenerCollection.hpp"
 #include "System/Diagnostics/TraceListener.hpp"
-#include "System/Diagnostics/DebugAndTraceCommon.hpp"
+#include "System/Diagnostics/Private/DebugAndTraceCommon.hpp"
 
 #include <iterator>
 
@@ -62,8 +62,8 @@ bool TraceListenerCollection::Contains(TraceListener *listener)
 
 void TraceListenerCollection::InitializeListener(TraceListener *listener)
 {
-    listener->IndentSize( DebugAndTraceCommon::IndentSize() );
-    listener->IndentLevel( DebugAndTraceCommon::IndentLevel() );
+    listener->IndentSize( Private::DebugAndTraceCommon::IndentSize() );
+    listener->IndentLevel( Private::DebugAndTraceCommon::IndentLevel() );
 }
 
 size_t TraceListenerCollection::IndexOf(TraceListener *listener)

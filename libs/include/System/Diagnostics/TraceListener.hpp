@@ -1,8 +1,11 @@
 #pragma once
 
 #include "System/Diagnostics/TraceOptions.hpp"
+#include "System/Diagnostics/TraceFilter.hpp"
+#include "System/Collections/Specialized/StringDictionary.hpp"
 #include <string>
 #include <string_view>
+#include <memory>
 
 
 namespace System::Diagnostics
@@ -13,11 +16,14 @@ class TraceListener
 public:
     TraceListener();
     TraceListener(const std::string_view name);
+    virtual ~TraceListener() = default;
 
     const std::string_view Name() const;
 
     TraceOptions TraceOutputOptions() const { return _options; }
     void         TraceOutputOptions(TraceOptions new_options) { _options = new_options; }
+
+    virtual bool IsThreadSafe() const;
 
     bool NeedIndent() const;
     void NeedIndent(bool new_value) { _needIndent = new_value; }
@@ -41,6 +47,13 @@ public:
     virtual void Fail(const std::string_view message, const std::string_view detail) = 0;
 
     virtual void WriteIndent() = 0;
+
+    const Collections::Specialized::StringDictionary &Attributes() const { return _attributes; }
+
+    const TraceFilter *Filter() const { return _filter.get(); }
+          TraceFilter *Filter()       { return _filter.get(); }
+    
+    void Filter(std::unique_ptr<TraceFilter> &&moved_ptr) { _filter = std::move(moved_ptr); }
 protected:
     std::string  _name;
     int          _indentLevel = 0;
@@ -48,6 +61,8 @@ protected:
     TraceOptions _options{ TraceOptions::None };
     bool         _needIndent = false;
     std::string  _indentString;
+    Collections::Specialized::StringDictionary _attributes;
+    std::unique_ptr<TraceFilter> _filter;
 
     void SetNeedIndent();
 };

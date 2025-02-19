@@ -14,9 +14,11 @@ void CommonUsage()
 
     std::unique_ptr<System::Diagnostics::ConsoleTraceListener> consoleListener = std::make_unique<System::Diagnostics::ConsoleTraceListener>();
 
-    assert( System::Diagnostics::Trace::Listeners().Count() == 0);
+    assert( System::Diagnostics::Trace::Listeners().Count() == 1);
     
     System::Diagnostics::Trace::Listeners().Add( consoleListener.get() );
+
+    assert( System::Diagnostics::Trace::Listeners().Count() == 2);
 
     consoleListener->WriteLine("This is a test!"sv);
     consoleListener->IndentSize(4);
@@ -34,7 +36,7 @@ void CommonUsage()
 
 void Run()
 {
-    std::cout << "Running DefaultTraceListener Tests..." << std::endl;
+    std::cout << "Running ConsoleTraceListener Tests..." << std::endl;
 
     CommonUsage();
 

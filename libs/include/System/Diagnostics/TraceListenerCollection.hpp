@@ -12,6 +12,8 @@ class TraceListener;
 class TraceListenerCollection
 {
 public:
+    using underlying_datatype = std::set<TraceListener *>;
+
     TraceListenerCollection() = default;
 
     TraceListener *operator [](size_t index);
@@ -31,10 +33,10 @@ public:
 
     // C++ iterator adaptation section
     using value_type             = TraceListener *;
-    using iterator               = std::set<TraceListener *>::iterator;
-    using const_iterator         = std::set<TraceListener *>::const_iterator;
-    using reverse_iterator       = std::set<TraceListener *>::reverse_iterator;
-    using const_reverse_iterator = std::set<TraceListener *>::const_reverse_iterator;
+    using iterator               = underlying_datatype::iterator;
+    using const_iterator         = underlying_datatype::const_iterator;
+    using reverse_iterator       = underlying_datatype::reverse_iterator;
+    using const_reverse_iterator = underlying_datatype::const_reverse_iterator;
 
     iterator       begin()       { return _list.begin(); }
     const_iterator begin() const { return _list.begin(); }

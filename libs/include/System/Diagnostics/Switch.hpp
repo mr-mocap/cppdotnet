@@ -25,8 +25,6 @@ public:
 
     static void RefreshAll();
 
-    virtual void OnSwitchSettingChanged();
-    virtual void OnValueChanged();
 protected:
     std::string _displayName;
     std::string _description;
@@ -45,6 +43,9 @@ protected:
 
     int  SwitchSetting();
     void SwitchSetting(int new_value);
+
+    virtual void OnSwitchSettingChanged();
+    virtual void OnValueChanged();
 private:
     bool InitializeWithStatus();
     void OnInitializing();

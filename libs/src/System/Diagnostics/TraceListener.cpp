@@ -1,4 +1,5 @@
 #include "System/Diagnostics/TraceListener.hpp"
+#include "System/Diagnostics/TraceEventCache.hpp"
 #include "System/Convert.hpp"
 
 
@@ -13,6 +14,11 @@ TraceListener::TraceListener(const std::string_view name)
     :
     _name{ name }
 {
+}
+
+bool TraceListener::IsThreadSafe() const
+{
+    return false;
 }
 
 const std::string_view TraceListener::Name() const

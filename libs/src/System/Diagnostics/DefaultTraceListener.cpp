@@ -12,86 +12,104 @@ DefaultTraceListener::DefaultTraceListener()
     :
     TraceListener("Default")
 {
-    Trace::Listeners().Add( this );
+    INVARIANT( Name() == "Default" );
 }
 
 DefaultTraceListener::~DefaultTraceListener()
 {
-    Trace::Listeners().Remove( this );
 }
 
 const std::string_view DefaultTraceListener::LogFileName() const
 {
+    INVARIANT( Name() == "Default" );
+
     return _logFileName;
 }
 
 void DefaultTraceListener::LogFileName(const std::string_view filename)
 {
+    INVARIANT( Name() == "Default" );
+
     _logFileName = filename;
 }
 
 void DefaultTraceListener::Close()
 {
+    INVARIANT( Name() == "Default" );
 }
 
 void DefaultTraceListener::Flush()
 {
+    INVARIANT( Name() == "Default" );
 }
 
 void DefaultTraceListener::Write(const std::string_view message)
 {
-    Debugger::Log( message );
+    INVARIANT( Name() == "Default" );
+    
     WriteRaw( message );
 }
 
 void DefaultTraceListener::Write(const std::string_view message, const std::string_view category)
 {
-    Debugger::Log( message );
+    INVARIANT( Name() == "Default" );
+
     WriteRaw( std::string("[").append(category).append("] ").append(message) );
 }
 
 void DefaultTraceListener::WriteLine(const std::string_view message)
 {
-    Debugger::Log( message );
-    WriteIndent();
+    INVARIANT( Name() == "Default" );
+
     WriteLineRaw( message );
-    SetNeedIndent();
 }
 
 void DefaultTraceListener::WriteLine(const std::string_view message, const std::string_view category)
 {
-    Debugger::Log( message );
-    WriteIndent();
+    INVARIANT( Name() == "Default" );
+
     WriteLineRaw( std::string("[").append(category).append("] ").append(message) );
-    SetNeedIndent();
 }
 
 void DefaultTraceListener::Fail(const std::string_view message)
 {
-    Debugger::Log( message );
+    INVARIANT( Name() == "Default" );
+
     WriteLineRaw( message );
 }
 
 void DefaultTraceListener::Fail(const std::string_view message, const std::string_view detail)
 {
-    Debugger::Log( message );
+    INVARIANT( Name() == "Default" );
+
     WriteLineRaw( std::string("Fail: ").append(message).append(" [Detail: ").append(detail).append("]") );
 }
 
 void DefaultTraceListener::WriteRaw(const std::string_view data)
 {
+    INVARIANT( Name() == "Default" );
+
     UNUSED(data);
-    // TODO: Implement me
+
+    Debugger::Log( data );
 }
 
 void DefaultTraceListener::WriteLineRaw(const std::string_view data)
 {
+    INVARIANT( Name() == "Default" );
+
     UNUSED(data);
-    // TODO: Implement me
+    
+    WriteIndent();
+    WriteRaw( data );
+    WriteRaw( "\n" );
+    SetNeedIndent();
 }
 
 void DefaultTraceListener::WriteIndent()
 {
+    INVARIANT( Name() == "Default" );
+
     if ( _needIndent )
     {
         WriteRaw( _indentString );

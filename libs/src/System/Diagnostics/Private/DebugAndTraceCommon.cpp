@@ -1,4 +1,4 @@
-#include "System/Diagnostics/DebugAndTraceCommon.hpp"
+#include "System/Diagnostics/Private/DebugAndTraceCommon.hpp"
 #include "System/Diagnostics/TraceListener.hpp"
 #include "System/Diagnostics/TraceLevel.hpp"
 #include "System/Diagnostics/Debug.hpp"
@@ -6,16 +6,20 @@
 #include <cstdlib>
 
 
-namespace System::Diagnostics
+namespace System::Diagnostics::Private
 {
-
-std::unique_ptr<DebugAndTraceCommon>  DebugAndTraceCommon::_SingletonInstance;
-std::unique_ptr<std::once_flag>       DebugAndTraceCommon::_OnceFlag = std::make_unique<std::once_flag>();
 
 int  DebugAndTraceCommon::_indentLevel = 0;
 int  DebugAndTraceCommon::_indentSize  = 4;
 bool DebugAndTraceCommon::_autoFlush   = false;
 std::string DebugAndTraceCommon::_indentString;
+
+static std::unique_ptr<DebugAndTraceCommon> &GetSingleton()
+{
+    static std::unique_ptr<DebugAndTraceCommon>  instance{ std::make_unique<DebugAndTraceCommon>() };
+
+    return instance;
+}
 
 static std::string FormatTraceType(TraceLevel level, std::string_view message)
 {
@@ -68,6 +72,11 @@ static std::string FormatFailMessageCategory(const std::string_view message,
 DebugAndTraceCommon::DebugAndTraceCommon()
 {
     _indentString.resize( _indentLevel * _indentSize, ' ' );
+
+    // Potential memory leak! TODO: FIXME
+    DefaultTraceListener *dtl = new DefaultTraceListener();
+
+    Listeners().Add( dtl );
 }
 
 DebugAndTraceCommon::~DebugAndTraceCommon()
@@ -76,19 +85,7 @@ DebugAndTraceCommon::~DebugAndTraceCommon()
 
 DebugAndTraceCommon &DebugAndTraceCommon::Instance()
 {
-    _init();
-    return *_SingletonInstance.get();
-}
-
-void DebugAndTraceCommon::_init()
-{
-    std::call_once( *_OnceFlag, [] { _SingletonInstance = std::make_unique<DebugAndTraceCommon>(); } );
-}
-
-void DebugAndTraceCommon::_reset()
-{
-    _OnceFlag = std::make_unique<std::once_flag>();
-    _SingletonInstance.reset();
+    return *GetSingleton();
 }
 
 bool DebugAndTraceCommon::UseGlobalLock()

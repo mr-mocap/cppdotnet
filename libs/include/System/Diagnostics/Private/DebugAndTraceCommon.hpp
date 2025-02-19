@@ -1,7 +1,8 @@
 #pragma once
 
 #include "System/Diagnostics/TraceListenerCollection.hpp"
-#include "System/Diagnostics/DebugAndTraceCommon.hpp"
+#include "System/Diagnostics/DefaultTraceListener.hpp"
+#include "System/Diagnostics/Private/DebugAndTraceCommon.hpp"
 #include <set>
 #include <string>
 #include <mutex>
@@ -9,7 +10,7 @@
 #include <source_location>
 
 
-namespace System::Diagnostics
+namespace System::Diagnostics::Private
 {
 
 class TraceListener;
@@ -21,7 +22,9 @@ public:
    ~DebugAndTraceCommon();
 
     DebugAndTraceCommon(const DebugAndTraceCommon &) = delete;
-    void operator =(const DebugAndTraceCommon &) = delete;
+    DebugAndTraceCommon operator =(const DebugAndTraceCommon &) = delete;
+    DebugAndTraceCommon(DebugAndTraceCommon &&) = delete;
+    DebugAndTraceCommon operator =(const DebugAndTraceCommon &&) = delete;
 
     static DebugAndTraceCommon &Instance();
 
@@ -79,15 +82,11 @@ protected:
     TraceListenerCollection _listeners;
     bool _useGlobalLock = true;
 
-    static std::unique_ptr<DebugAndTraceCommon> _SingletonInstance;
-    static std::unique_ptr<std::once_flag>      _OnceFlag;
     static int  _indentLevel;
     static int  _indentSize;
     static bool _autoFlush;
     static std::string _indentString;
 
-    static void _init();
-    static void _reset(); // This is not thread-safe
     static bool NeedIndent();
 };
 

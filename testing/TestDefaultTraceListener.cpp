@@ -11,11 +11,9 @@ void CommonUsage()
 {
     std::cout << __func__ << std::endl;
 
-    std::unique_ptr<System::Diagnostics::DefaultTraceListener> defaultListener = std::make_unique<System::Diagnostics::DefaultTraceListener>();
+    assert( System::Diagnostics::Debug::Listeners().Count() == 1 );
 
-    assert( System::Diagnostics::Debug::Listeners().Count() == 1);
-
-    defaultListener->WriteLine("This is a test!");
+    System::Diagnostics::Debug::WriteLine("This is a test!");
 }
 
 void Run()
