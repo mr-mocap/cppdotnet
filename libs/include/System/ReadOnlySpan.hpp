@@ -80,6 +80,7 @@ public:
 
     ReadOnlySpan(Type &&object) = delete;
 
+    static constexpr size_t extent = std::span<Type, Extent>::extent;
 
     static constexpr ReadOnlySpan<Type> Empty() { return ReadOnlySpan<Type>(); }
 
@@ -131,11 +132,11 @@ protected:
     std::span<const Type, Extent> _data;
 };
 
-template <typename SpecializedType>
-class ReadOnlySpan<const SpecializedType> : public ReadOnlySpan<SpecializedType>
+template <typename SpecializedType, std::size_t Extent>
+class ReadOnlySpan<const SpecializedType, Extent> : public ReadOnlySpan<SpecializedType, Extent>
 {
 public:
-    using ReadOnlySpan<SpecializedType>::ReadOnlySpan;
+    using ReadOnlySpan<SpecializedType, Extent>::ReadOnlySpan;
 };
 
 
@@ -150,6 +151,6 @@ template <typename Type, size_t ArrayExtent>
 ReadOnlySpan(std::array<Type, ArrayExtent> &) -> ReadOnlySpan<Type, ArrayExtent>;
 
 template <typename Type, size_t ArrayExtent>
-ReadOnlySpan(const std::array<Type, ArrayExtent> &) -> ReadOnlySpan<const Type, ArrayExtent>;
+ReadOnlySpan(const std::array<Type, ArrayExtent> &) -> ReadOnlySpan<Type, ArrayExtent>;
 
 }
