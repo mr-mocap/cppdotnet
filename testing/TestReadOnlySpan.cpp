@@ -25,12 +25,27 @@ void SingleObject()
 {
     std::cout << __func__ << std::endl;
 
-    float var = 3.3;
-    System::ReadOnlySpan<float> one_item{ var };
+    // Dynamic extent
+    {
+        float var = 3.3;
+        System::ReadOnlySpan<float> one_item{ var };
 
-    assert( !one_item.IsEmpty() );
-    assert( one_item.Length() == 1 );
-    assert( one_item[0] == var );
+        assert( !one_item.IsEmpty() );
+        assert( one_item.Length() == 1 );
+        assert( one_item.extent == std::dynamic_extent );
+        assert( one_item[0] == var );
+    }
+
+    // Extent of 1
+    {
+        float var = 3.3;
+        System::ReadOnlySpan one_item{ var };
+
+        assert( !one_item.IsEmpty() );
+        assert( one_item.Length() == 1 );
+        assert( one_item.extent == 1 );
+        assert( one_item[0] == var );
+    }
 }
 
 void MultipleObjectsFromBuiltInArray()

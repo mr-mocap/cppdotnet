@@ -141,7 +141,7 @@ public:
 
 
 // Deduction guides
-template <typename Type, size_t Extent>
+template <typename Type>
 ReadOnlySpan(Type &) -> ReadOnlySpan<Type, 1>;
 
 template <typename Type, size_t Extent>
