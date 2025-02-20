@@ -2,6 +2,7 @@
 #include "System/ReadOnlySpan.hpp"
 #include <iostream>
 #include <cassert>
+#include <algorithm>
 
 namespace TestReadOnlySpan
 {
@@ -52,27 +53,51 @@ void MultipleObjectsFromBuiltInArray()
 {
     std::cout << __func__ << std::endl;
 
-    int builtin_array[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    System::ReadOnlySpan<int> span_of_items( builtin_array );
+    // Dynamic extent
+    {
+        int builtin_array[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        System::ReadOnlySpan<int> span_of_items( builtin_array );
 
-    assert( span_of_items.Length() == 10 );
-    assert( span_of_items[0] == 1 );
-    assert( span_of_items[1] == 2 );
-    assert( span_of_items[2] == 3 );
-    assert( span_of_items[3] == 4 );
-    assert( span_of_items[4] == 5 );
-    assert( span_of_items[5] == 6 );
-    assert( span_of_items[6] == 7 );
-    assert( span_of_items[7] == 8 );
-    assert( span_of_items[8] == 9 );
-    assert( span_of_items[9] == 10 );
+        assert( span_of_items.extent == std::dynamic_extent );
+        assert( span_of_items.Length() == 10 );
+        assert( span_of_items[0] == 1 );
+        assert( span_of_items[1] == 2 );
+        assert( span_of_items[2] == 3 );
+        assert( span_of_items[3] == 4 );
+        assert( span_of_items[4] == 5 );
+        assert( span_of_items[5] == 6 );
+        assert( span_of_items[6] == 7 );
+        assert( span_of_items[7] == 8 );
+        assert( span_of_items[8] == 9 );
+        assert( span_of_items[9] == 10 );
 
 #if 0
-    // This line should FAIL TO COMPILE!
-    span_of_items[3] = 99;
+        // This line should FAIL TO COMPILE!
+        span_of_items[3] = 99;
 
-    assert( span_of_items[3] == 99 );
+        assert( span_of_items[3] == 99 );
 #endif
+    }
+
+    // Extent is size of the array
+    {
+        int builtin_array[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        System::ReadOnlySpan span_of_items( builtin_array );
+
+        assert( span_of_items.Length() == 10 );
+        assert( sizeof(builtin_array)/sizeof(builtin_array[0]) == span_of_items.extent );
+        assert( span_of_items.extent == 10 );
+        assert( span_of_items[0] == 1 );
+        assert( span_of_items[1] == 2 );
+        assert( span_of_items[2] == 3 );
+        assert( span_of_items[3] == 4 );
+        assert( span_of_items[4] == 5 );
+        assert( span_of_items[5] == 6 );
+        assert( span_of_items[6] == 7 );
+        assert( span_of_items[7] == 8 );
+        assert( span_of_items[8] == 9 );
+        assert( span_of_items[9] == 10 );
+    }
 }
 
 void MultipleObjectsFromStdArray()
@@ -80,11 +105,25 @@ void MultipleObjectsFromStdArray()
     std::cout << __func__ << std::endl;
 
     // Non-const
-    {
+    { // Dynamic extent
         std::array<int, 6> a{ 1, 2, 3, 4, 5, 6 };
         System::ReadOnlySpan<int> span_a( a );
 
         assert( span_a.Length() == 6 );
+        assert( span_a.extent == std::dynamic_extent );
+        assert( span_a[0] == 1 );
+        assert( span_a[1] == 2 );
+        assert( span_a[2] == 3 );
+        assert( span_a[3] == 4 );
+        assert( span_a[4] == 5 );
+        assert( span_a[5] == 6 );
+    }
+    { // Extent the same size as the array
+        std::array<int, 6> a{ 1, 2, 3, 4, 5, 6 };
+        System::ReadOnlySpan span_a( a );
+
+        assert( span_a.Length() == 6 );
+        assert( span_a.extent == a.size() );
         assert( span_a[0] == 1 );
         assert( span_a[1] == 2 );
         assert( span_a[2] == 3 );
@@ -94,69 +133,85 @@ void MultipleObjectsFromStdArray()
     }
 
     // Const std::array to Span of const items
-    {
+    { // Dynamic extent
         const std::array<int, 3> a{ 1, 2, 3 };
         System::ReadOnlySpan<const int> span_a( a );
 
         assert( span_a.Length() == 3 );
+        assert( span_a.extent == std::dynamic_extent );
+        assert( span_a[0] == 1 );
+        assert( span_a[1] == 2 );
+        assert( span_a[2] == 3 );
+    }
+    { // Extent the same size as the array
+        const std::array<int, 3> a{ 1, 2, 3 };
+        System::ReadOnlySpan span_a( a );
+
+        assert( span_a.Length() == 3 );
+        assert( span_a.extent == a.size() );
         assert( span_a[0] == 1 );
         assert( span_a[1] == 2 );
         assert( span_a[2] == 3 );
     }
 
     // std::array of const items to const Span of items
-    {
+    { // Dynamic extent
         std::array<const int, 3> a{ 1, 2, 3 };
         const System::ReadOnlySpan<int> span_a( a );
 
         assert( span_a.Length() == 3 );
+        assert( span_a.extent == std::dynamic_extent );
         assert( span_a[0] == 1 );
         assert( span_a[1] == 2 );
         assert( span_a[2] == 3 );
     }
 
     // std::array of const items to Span of const items
-    {
+    { // Dynamic extent
         std::array<const int, 3> a{ 1, 2, 3 };
         System::ReadOnlySpan<const int> span_a( a );
 
         assert( span_a.Length() == 3 );
+        assert( span_a.extent == std::dynamic_extent );
         assert( span_a[0] == 1 );
         assert( span_a[1] == 2 );
         assert( span_a[2] == 3 );
     }
 
     // std::span of items to Span of items
-    {
+    { // Dynamic extent
         std::array<int, 3> a{ 1, 2, 3 };
         std::span<int>     b{ a };
         System::ReadOnlySpan<int> span_a{ b };
 
         assert( span_a.Length() == 3 );
+        assert( span_a.extent == std::dynamic_extent );
         assert( span_a[0] == 1 );
         assert( span_a[1] == 2 );
         assert( span_a[2] == 3 );
     }
 
     // std::span of const items to Span of const items
-    {
+    { // Dynamic extent
         std::array<const int, 3> a{ 1, 2, 3 };
         std::span<const int> b{ a };
         System::ReadOnlySpan<const int> span_a{ b };
 
         assert( span_a.Length() == 3 );
+        assert( span_a.extent == std::dynamic_extent );
         assert( span_a[0] == 1 );
         assert( span_a[1] == 2 );
         assert( span_a[2] == 3 );
     }
 
     // std::span of const items to Span of items
-    {
+    { // Dynamic extent
         std::array<const int, 3> a{ 1, 2, 3 };
         std::span<const int> b{ a };
         System::ReadOnlySpan<int> span_a( b );
 
         assert( span_a.Length() == 3 );
+        assert( span_a.extent == std::dynamic_extent );
         assert( span_a[0] == 1 );
         assert( span_a[1] == 2 );
         assert( span_a[2] == 3 );
@@ -323,6 +378,7 @@ void TryCopyTo()
     assert( span_b.TryCopyTo( span_a ) == false );
 #endif
 }
+
 void AsBytes()
 {
     std::cout << __func__ << std::endl;
