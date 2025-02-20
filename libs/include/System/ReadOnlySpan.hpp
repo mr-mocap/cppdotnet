@@ -17,7 +17,7 @@ class ReadOnlySpan
 
     template <typename Tp, std::size_t ArrayExtent>
         requires (Extent == std::dynamic_extent || ArrayExtent == Extent)
-	using is_compatible_array = is_array_convertible<Type, Tp>;
+	using is_compatible_array = is_array_convertible<const Type, Tp>;
 public:
       using element_type           = const Type;
       using value_type             = std::remove_cv_t<Type>;
@@ -50,25 +50,35 @@ public:
     {
     }
 
-    template <typename Tp, std::size_t ArrayExtent>
-        requires is_compatible_array<Tp, ArrayExtent>::value
+    template <typename Tp, size_t ArrayExtent>
+        requires (is_compatible_array<Tp, ArrayExtent>::value)
     constexpr ReadOnlySpan(std::array<Tp, ArrayExtent> &arr) noexcept
         :
         _data{ arr }
     {
     }
 
-    template <typename Tp, std::size_t ArrayExtent>
-        requires is_compatible_array<const Tp, ArrayExtent>::value
-    constexpr ReadOnlySpan(const std::array<Tp, ArrayExtent> &arr) noexcept
+    template <typename Tp, size_t ArrayExtent>
+        requires (is_compatible_array<const Tp, ArrayExtent>::value)
+    explicit constexpr ReadOnlySpan(const std::array<Tp, ArrayExtent> &arr) noexcept
         :
         _data{ arr }
     {
     }
 
-    ReadOnlySpan(Type &&object) = delete;
+    constexpr ReadOnlySpan(std::span<Type, Extent> from)
+        :
+        _data{ from }
+    {
+    }
 
-    constexpr ReadOnlySpan(std::span<Type, Extent> from) : _data{ from } { }
+    constexpr ReadOnlySpan(std::span<const Type, Extent> from)
+        :
+        _data{ from }
+    {
+    }
+
+    ReadOnlySpan(Type &&object) = delete;
 
 
     static constexpr ReadOnlySpan<Type> Empty() { return ReadOnlySpan<Type>(); }
@@ -118,8 +128,16 @@ public:
     constexpr iterator rbegin() const noexcept { return _data.rbegin(); }
     constexpr iterator rend()   const noexcept { return _data.rend();   }
 protected:
-    std::span<Type, Extent> _data;
+    std::span<const Type, Extent> _data;
 };
+
+template <typename SpecializedType>
+class ReadOnlySpan<const SpecializedType> : public ReadOnlySpan<SpecializedType>
+{
+public:
+    using ReadOnlySpan<SpecializedType>::ReadOnlySpan;
+};
+
 
 // Deduction guides
 template <typename Type, size_t Extent>

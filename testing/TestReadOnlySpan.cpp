@@ -88,15 +88,17 @@ void MultipleObjectsFromStdArray()
         assert( span_a[1] == 2 );
         assert( span_a[2] == 3 );
     }
-#if 0
+
     // std::array of const items to const Span of items
     {
         std::array<const int, 3> a{ 1, 2, 3 };
         const System::ReadOnlySpan<int> span_a( a );
 
         assert( span_a.Length() == 3 );
+        assert( span_a[0] == 1 );
+        assert( span_a[1] == 2 );
+        assert( span_a[2] == 3 );
     }
-#endif
 
     // std::array of const items to Span of const items
     {
@@ -133,7 +135,6 @@ void MultipleObjectsFromStdArray()
         assert( span_a[2] == 3 );
     }
 
-#if 0
     // std::span of const items to Span of items
     {
         std::array<const int, 3> a{ 1, 2, 3 };
@@ -145,7 +146,6 @@ void MultipleObjectsFromStdArray()
         assert( span_a[1] == 2 );
         assert( span_a[2] == 3 );
     }
-#endif
 }
 
 void Assignment()
