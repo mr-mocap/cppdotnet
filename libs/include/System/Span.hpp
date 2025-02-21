@@ -137,7 +137,7 @@ protected:
 };
 
 // Deduction guides
-template <typename Type, size_t Extent>
+template <typename Type>
 Span(Type &) -> Span<Type, 1>;
 
 template <typename Type, size_t Extent>
