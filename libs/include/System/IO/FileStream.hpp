@@ -13,7 +13,8 @@ public:
     FileStream(const std::string_view filename, const FileMode mode);
    ~FileStream();
 
-    void Close() override;
+protected:
+    void _close() override;
 };
 
 }
