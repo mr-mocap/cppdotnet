@@ -15,6 +15,7 @@
 #include "TestReadOnlySpan.hpp"
 #include "TestStringBuilder.hpp"
 #include "TestInt32.hpp"
+#include "TestNullable.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -39,6 +40,7 @@ int main(void)
     TestReadOnlySpan::Run();
     TestStringBuilder::Run();
     TestInt32::Run();
+    TestNullable::Run();
 
     std::cout << "All tests passed!\n";
 
