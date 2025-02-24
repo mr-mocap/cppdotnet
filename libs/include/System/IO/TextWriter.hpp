@@ -4,6 +4,7 @@
 #include <string>
 #include <string_view>
 #include <cstdint>
+#include <format>
 
 namespace System::IO
 {
@@ -32,6 +33,13 @@ public:
     virtual void Write(double value);
     virtual void Write(const std::string_view message) = 0;
 
+    template <typename ...Args>
+    inline void Write(std::format_string<Args...> fmt, Args &&... args)
+    {
+        // Let's use the more primitive Write(const std::string_view) underneath
+        Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
+
     virtual void WriteLine(bool value);
     virtual void WriteLine(char value);
     virtual void WriteLine(int16_t value);
@@ -43,6 +51,13 @@ public:
     virtual void WriteLine(float value);
     virtual void WriteLine(double value);
     virtual void WriteLine(const std::string_view message);
+    
+    template <typename ...Args>
+    inline void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        // Let's use the more primitive Write(const std::string_view) underneath
+        WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
 
 protected:
     std::string _newLine{ System::Environment::NewLine() };

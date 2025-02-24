@@ -4,6 +4,7 @@
 #include "System/IO/TextReader.hpp"
 #include "System/IO/ConsoleStream.hpp"
 #include <memory>
+#include <format>
 
 namespace System
 {
@@ -39,6 +40,13 @@ public:
     static void Write(double value);
     static void Write(const std::string_view data);
 
+    template <typename ...Args>
+    static void Write(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        // Let's use the more primitive WriteLine(const std::string_view) underneath
+        Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
+
     static void WriteLine();
     static void WriteLine(bool value);
     static void WriteLine(char value);
@@ -49,6 +57,13 @@ public:
     static void WriteLine(float value);
     static void WriteLine(double value);
     static void WriteLine(const std::string_view line);
+
+    template <typename ...Args>
+    static void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        // Let's use the more primitive WriteLine(const std::string_view) underneath
+        WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
 };
 
 }
