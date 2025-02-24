@@ -43,7 +43,7 @@ public:
     template <typename ...Args>
     static void Write(std::format_string<Args...> &&fmt, Args &&... args)
     {
-        // Let's use the more primitive WriteLine(const std::string_view) underneath
+        // Let's use the more primitive Write(const std::string_view) underneath
         Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
 
