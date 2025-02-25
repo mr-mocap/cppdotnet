@@ -18,16 +18,23 @@ class Span
         requires (Extent == std::dynamic_extent || ArrayExtent == Extent)
 	using is_compatible_array = is_array_convertible<Type, Tp>;
 public:
-      using element_type           = Type;
-      using value_type             = std::remove_cv_t<Type>;
-      using size_type              = std::size_t;
-      using difference_type        = std::ptrdiff_t;
-      using pointer                = Type*;
-      using const_pointer          = const Type*;
-      using reference              = element_type&;
-      using const_reference        = const element_type&;
-      using iterator               = std::span<Type, Extent>::iterator;
-      using reverse_iterator       = std::span<Type, Extent>::reverse_iterator;
+    using element_type           = Type;
+    using value_type             = std::remove_cv_t<Type>;
+    using size_type              = std::size_t;
+    using difference_type        = std::ptrdiff_t;
+    using pointer                = Type*;
+    using const_pointer          = const Type*;
+    using reference              = element_type&;
+    using const_reference        = const element_type&;
+    using iterator               = std::span<Type, Extent>::iterator;
+    using reverse_iterator       = std::span<Type, Extent>::reverse_iterator;
+#if __cplusplus > 202002L
+    using const_iterator         = std::span<Type, Extent>::const_iterator;
+    using const_reverse_iterator = std::span<Type, Extent>::const_reverse_iterator;
+#else
+    using const_iterator         = std::span<const Type, Extent>::iterator;
+    using const_reverse_iterator = std::span<const Type, Extent>::reverse_iterator;
+#endif
 
     constexpr Span() noexcept
         requires(Extent == std::dynamic_extent  ||  Extent == 0) = default;
@@ -124,11 +131,21 @@ public:
     // C++ specific pleasantries
 
     // Make work with foreach
-    constexpr iterator begin() const noexcept { return _data.begin(); }
-    constexpr iterator end()   const noexcept { return _data.end();   }
+    constexpr const_iterator begin()  const noexcept { return _data.begin(); }
+    constexpr iterator       begin()        noexcept { return _data.begin(); }
+    constexpr const_iterator cbegin() const noexcept { return _data.cbegin(); }
 
-    constexpr iterator rbegin() const noexcept { return _data.rbegin(); }
-    constexpr iterator rend()   const noexcept { return _data.rend();   }
+    constexpr const_iterator end()  const noexcept { return _data.end();   }
+    constexpr iterator       end()         noexcept { return _data.end();   }
+    constexpr const_iterator cend() const noexcept { return _data.cend();   }
+
+    constexpr const_iterator rbegin()  const noexcept { return _data.rbegin(); }
+    constexpr iterator       rbegin()        noexcept { return _data.rbegin(); }
+    constexpr const_iterator crbegin() const noexcept { return _data.crbegin(); }
+
+    constexpr const_iterator rend()  const noexcept { return _data.rend();   }
+    constexpr iterator       rend()        noexcept { return _data.rend();   }
+    constexpr const_iterator crend() const noexcept { return _data.crend();   }
 protected:
     std::span<Type, Extent> _data;
 
