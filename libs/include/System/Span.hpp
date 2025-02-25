@@ -22,10 +22,10 @@ public:
     using value_type             = std::remove_cv_t<Type>;
     using size_type              = std::size_t;
     using difference_type        = std::ptrdiff_t;
-    using pointer                = Type*;
-    using const_pointer          = const Type*;
-    using reference              = element_type&;
-    using const_reference        = const element_type&;
+    using pointer                = Type *;
+    using const_pointer          = const Type *;
+    using reference              = element_type &;
+    using const_reference        = const element_type &;
     using iterator               = std::span<Type, Extent>::iterator;
     using reverse_iterator       = std::span<Type, Extent>::reverse_iterator;
 #if __cplusplus > 202002L
