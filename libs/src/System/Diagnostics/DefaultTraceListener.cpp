@@ -2,7 +2,7 @@
 #include "System/Diagnostics/Trace.hpp"
 #include "System/Diagnostics/Debugger.hpp"
 #include "System/Convert.hpp"
-#include "System/private.hpp"
+#include "System/Private/private.hpp"
 
 
 namespace System::Diagnostics

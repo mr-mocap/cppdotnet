@@ -1,6 +1,6 @@
 #include "System/Environment.hpp"
 #include "System/Exception.hpp"
-#include "System/private.hpp"
+#include "System/Private/private.hpp"
 #include <tuple>
 #include <cstring>
 #include <stdlib.h>

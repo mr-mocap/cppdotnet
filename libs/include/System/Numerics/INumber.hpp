@@ -2,7 +2,6 @@
 
 #include "System/IComparable.hpp"
 #include "System/Numerics/INumberBase.hpp"
-#include "System/private.hpp"
 #include <cstdint>
 #include <algorithm>
 

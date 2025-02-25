@@ -1,5 +1,5 @@
 #include "System/Diagnostics/Debugger.hpp"
-#include "System/private.hpp"
+#include "System/Private/private.hpp"
 
 
 namespace System::Diagnostics

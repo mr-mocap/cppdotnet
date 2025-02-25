@@ -1,6 +1,6 @@
 #include "TestInt32.hpp"
 #include "System/Int32.hpp"
-#include "System/private.hpp"
+#include "System/Private/private.hpp"
 #include <iostream>
 #include <cassert>
 #include <format>

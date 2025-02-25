@@ -2,7 +2,7 @@
 
 #include "System/IEquatable.hpp"
 #include "System/Exception.hpp"
-#include "System/private.hpp"
+#include "System/Private/private.hpp"
 #include <cmath>
 #include <limits>
 #include <string>

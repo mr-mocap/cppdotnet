@@ -2,7 +2,7 @@
 #include "System/Boolean.hpp"
 #include "System/Exception.hpp"
 #include "System/BitConverter.hpp"
-#include "System/private.hpp"
+#include "System/Private/private.hpp"
 #include <map>
 #include <span>
 #include <charconv>
@@ -24,6 +24,8 @@ static const char             Base85SpecialCase1 = 'z';
 static const char             Base85SpecialCase2 = 'y';
 static const std::uint32_t    Base85SpacialCaseValue1 = 0u;
 static const std::uint32_t    Base85SpacialCaseValue2 = 0x20202020u; // All spaces
+
+static const std::string_view Ascii85_RFC_1924 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~";
 
 inline bool IsValidBase64(const char input)
 {
