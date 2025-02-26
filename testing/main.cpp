@@ -16,6 +16,7 @@
 #include "TestStringBuilder.hpp"
 #include "TestInt32.hpp"
 #include "TestNullable.hpp"
+#include "TestDelegates.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -41,6 +42,7 @@ int main(void)
     TestStringBuilder::Run();
     TestInt32::Run();
     TestNullable::Run();
+    TestDelegates::Run();
 
     std::cout << "All tests passed!\n";
 

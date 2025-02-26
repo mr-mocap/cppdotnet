@@ -24,6 +24,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestStringBuilder.o \
 	TestInt32.o \
 	TestNullable.o \
+	TestDelegates.o \
 	main.o
 
 CXXFLAGS=-std=c++20 -W -Wall -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
