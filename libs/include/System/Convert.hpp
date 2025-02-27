@@ -6,6 +6,7 @@
 #include "System/Exception.hpp"
 #include "System/Base.hpp"
 #include "System/Boolean.hpp"
+#include "System/Private/private.hpp"
 #include <string>
 #include <string_view>
 #include <span>
@@ -22,7 +23,6 @@ namespace System
 class Convert
 {
 public:
-
     static const std::string_view ToString(Boolean value);
     static std::string      ToString(char value);
     static std::string      ToString(float  value);
@@ -92,6 +92,36 @@ public:
 
     static std::byte           From2HexCharsToByte(const std::string_view input_string);
     static std::array<char, 2> FromByteTo2HexChars(std::byte input_byte, bool uppercase = true);
+
+    /** A structure for storing the digits of a number in a particular base
+     * 
+     *  @note 
+     */
+    struct BaseConversion32Bit_t
+    {
+        explicit constexpr BaseConversion32Bit_t(std::array<std::byte, 32> &a, unsigned int d, unsigned int b)
+            :
+            number_of_digits(d),
+            base(b)
+        {
+            PRECONDITION( base >= 2 );
+            PRECONDITION( base <= 256 );
+
+            for (unsigned int i = 0; i < a.size(); ++i)
+                output_digits[i] = a[i];
+        }
+
+        std::array<std::byte, 32> output_digits; // Base 2 has the most digits, so use that for a 32-bit number
+        unsigned int number_of_digits = 0;
+        unsigned int base             = 10;
+    };
+
+    /** Converts the input number to a sequence of digits in a particular base
+     * 
+     *  @param input_number The number to convert
+     *  @param base The base you want the output in (defaults to base 10)
+     */
+    static BaseConversion32Bit_t ToBase(std::uint32_t input_number, unsigned int base = 10);
 };
 
 }

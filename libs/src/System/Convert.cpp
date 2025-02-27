@@ -2,7 +2,6 @@
 #include "System/Boolean.hpp"
 #include "System/Exception.hpp"
 #include "System/BitConverter.hpp"
-#include "System/Private/private.hpp"
 #include <map>
 #include <span>
 #include <charconv>
@@ -655,6 +654,25 @@ std::vector<std::byte> Convert::FromBase85String(std::span<const char> input_asc
     UNUSED(input_ascii_string);
 
     return {};
+}
+
+Convert::BaseConversion32Bit_t Convert::ToBase(std::uint32_t input_number, unsigned int base)
+{
+    PRECONDITION( base >= 2 );
+    PRECONDITION( base <= 256 );
+
+    std::array<std::byte, 32> output_array;
+    unsigned int num_digits = 0;
+
+    do
+    {
+        output_array[ num_digits ] = std::byte( input_number % base );
+
+        ++num_digits;
+        input_number /= base;
+    } while ( input_number );
+    
+    return BaseConversion32Bit_t( output_array, num_digits, base );
 }
 
 }

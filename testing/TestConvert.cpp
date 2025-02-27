@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cassert>
 #include <algorithm>
+#include <limits>
 
 namespace TestConvert
 {
@@ -483,6 +484,74 @@ void ToBase85String()
     }
 }
 
+void ToBase()
+{
+    std::cout << __func__ << std::endl;
+
+    {
+        System::Convert::BaseConversion32Bit_t result  = System::Convert::ToBase(3, 2);
+
+        assert( result.base == 2 );
+        assert( result.number_of_digits == 2 );
+        assert( result.output_digits[0] == std::byte(1) );
+        assert( result.output_digits[1] == std::byte(1) );
+    }
+    {
+        System::Convert::BaseConversion32Bit_t result = System::Convert::ToBase(4, 2);
+
+        assert( result.base == 2 );
+        assert( result.number_of_digits == 3 );
+        assert( result.output_digits[0] == std::byte(0) );
+        assert( result.output_digits[1] == std::byte(0) );
+        assert( result.output_digits[2] == std::byte(1) );
+    }
+    { // Minimum Value
+        System::Convert::BaseConversion32Bit_t result = System::Convert::ToBase(0, 2);
+
+        assert( result.base == 2 );
+        assert( result.number_of_digits == 1 );
+        assert( result.output_digits[0] == std::byte(0) );
+    }
+    { // Maximum Value
+        System::Convert::BaseConversion32Bit_t result = System::Convert::ToBase(std::numeric_limits<std::uint32_t>::max(), 2);
+
+        assert( result.base == 2 );
+        assert( result.number_of_digits == 32 );
+        assert( result.output_digits[0] == std::byte(1) );
+        assert( result.output_digits[1] == std::byte(1) );
+        assert( result.output_digits[2] == std::byte(1) );
+        assert( result.output_digits[3] == std::byte(1) );
+        assert( result.output_digits[4] == std::byte(1) );
+        assert( result.output_digits[5] == std::byte(1) );
+        assert( result.output_digits[6] == std::byte(1) );
+        assert( result.output_digits[7] == std::byte(1) );
+        assert( result.output_digits[8] == std::byte(1) );
+        assert( result.output_digits[9] == std::byte(1) );
+        assert( result.output_digits[10] == std::byte(1) );
+        assert( result.output_digits[11] == std::byte(1) );
+        assert( result.output_digits[12] == std::byte(1) );
+        assert( result.output_digits[13] == std::byte(1) );
+        assert( result.output_digits[14] == std::byte(1) );
+        assert( result.output_digits[15] == std::byte(1) );
+        assert( result.output_digits[16] == std::byte(1) );
+        assert( result.output_digits[17] == std::byte(1) );
+        assert( result.output_digits[18] == std::byte(1) );
+        assert( result.output_digits[19] == std::byte(1) );
+        assert( result.output_digits[20] == std::byte(1) );
+        assert( result.output_digits[21] == std::byte(1) );
+        assert( result.output_digits[22] == std::byte(1) );
+        assert( result.output_digits[23] == std::byte(1) );
+        assert( result.output_digits[24] == std::byte(1) );
+        assert( result.output_digits[25] == std::byte(1) );
+        assert( result.output_digits[26] == std::byte(1) );
+        assert( result.output_digits[27] == std::byte(1) );
+        assert( result.output_digits[28] == std::byte(1) );
+        assert( result.output_digits[29] == std::byte(1) );
+        assert( result.output_digits[30] == std::byte(1) );
+        assert( result.output_digits[31] == std::byte(1) );
+    }
+}
+
 void Run()
 {
     std::cout << "Running Convert Tests..." << std::endl;
@@ -492,6 +561,7 @@ void Run()
     ToBase64String();
     FromBase64String();
     ToBase85String();
+    ToBase();
 
     std::cout << "PASSED!" << std::endl;
 }
