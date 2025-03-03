@@ -208,6 +208,47 @@ void OperatorEquals()
     }
 }
 
+void OperatorEqualsEquals()
+{
+    std::cout << __func__ << std::endl;
+
+    // Both Null
+    {
+        System::Nullable<int> variable;
+        System::Nullable<int> othervariable;
+
+        assert( variable == othervariable );
+    }
+
+    // One is Null
+    {
+        System::Nullable<int> variable(2);
+        System::Nullable<int> othervariable;
+
+        assert( variable != othervariable );
+    }
+    {
+        System::Nullable<int> variable;
+        System::Nullable<int> othervariable(42);
+
+        assert( variable != othervariable );
+    }
+
+    // Both with a value
+    {
+        System::Nullable<int> variable(6);
+        System::Nullable<int> othervariable(6);
+
+        assert( variable == othervariable );
+    }
+    {
+        System::Nullable<int> variable(42);
+        System::Nullable<int> othervariable(6);
+
+        assert( variable != othervariable );
+    }
+}
+
 void Run()
 {
     std::cout << "Running Nullable Tests..." << std::endl;
@@ -221,6 +262,7 @@ void Run()
     GetValueOrDefaultWithNoParameters();
     ConversionOperator();
     OperatorEquals();
+    OperatorEqualsEquals();
 
     std::cout << "PASSED!" << std::endl;
 }

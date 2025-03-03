@@ -86,6 +86,17 @@ public:
         return *this;
     }
 
+    bool operator ==(const Nullable &other) const
+    {
+        return ( _data.has_value() == other._data.has_value() ) &&
+               ( !_data.has_value() || ( _data.value() == other._data.value() ) );
+    }
+
+    bool operator ==(const T &other) const
+    {
+        return  _data.has_value() && ( _data.value() == other );
+    }
+
     constexpr operator T() const
     {
         return GetValueOrDefault();
