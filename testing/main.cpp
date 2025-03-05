@@ -18,6 +18,7 @@
 #include "TestNullable.hpp"
 #include "TestDelegates.hpp"
 #include "TestLinkedList.hpp"
+#include "TestList.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -45,6 +46,7 @@ int main(void)
     TestNullable::Run();
     TestDelegates::Run();
     TestLinkedList::Run();
+    TestList::Run();
 
     std::cout << "All tests passed!\n";
 
