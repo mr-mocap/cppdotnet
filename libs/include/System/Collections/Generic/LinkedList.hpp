@@ -148,7 +148,7 @@ public:
         using namespace std::literals;
 
         if ( IsReadOnly() )
-            ThrowWithTarget( System::NotSupportedException( "List is read-only"sv ) );
+            ThrowWithTarget( System::NotSupportedException( "LinkedList is read-only"sv ) );
 
         auto iter_found = Find( item );
 
