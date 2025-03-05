@@ -2,6 +2,7 @@
 #include "System/Collections/Generic/LinkedList.hpp"
 #include <iostream>
 #include <cassert>
+#include <array>
 
 
 using namespace System;
@@ -16,6 +17,33 @@ void DefaultConstructsToEmpty()
     Collections::Generic::LinkedList<int> empty_list;
 
     assert( empty_list.Count() == 0 );
+}
+
+void ConstructWithExternalSequence()
+{
+    std::cout << __func__ << std::endl;
+
+    // From built-in array
+    {
+        int a[] = { 1, 2, 3 };
+        Collections::Generic::LinkedList<int> list( a );
+
+        assert( list.Count() == 3 );
+        assert( *list.Find( 1 ) == 1 );
+        assert( *list.Find( 2 ) == 2 );
+        assert( *list.Find( 3 ) == 3 );
+    }
+
+    // From std array
+    {
+        std::array<int, 3> a{ 1, 2, 3 };
+        Collections::Generic::LinkedList<int> list( std::begin(a), std::end(a) );
+
+        assert( list.Count() == 3 );
+        assert( *list.Find( 1 ) == 1 );
+        assert( *list.Find( 2 ) == 2 );
+        assert( *list.Find( 3 ) == 3 );
+    }
 }
 
 void AddFirstAddsItemToFirstPosition()
@@ -306,6 +334,7 @@ void Run()
     std::cout << "Running LinkedList Tests..." << std::endl;
 
     DefaultConstructsToEmpty();
+    ConstructWithExternalSequence();
     AddFirstAddsItemToFirstPosition();
     AddLastAddsItemToLastPosition();
     RemoveFirstRemovesTheFirstItem();

@@ -27,6 +27,19 @@ public:
 
     LinkedList() = default;
 
+    template <class InputIt>
+    LinkedList(InputIt first, InputIt last)
+        :
+        _list( first, last )
+    {
+    }
+
+    template <size_t ArraySize>
+    LinkedList(std::type_identity_t<T> (&arr)[ArraySize])
+        :
+        _list( std::begin(arr), std::end(arr) )
+    {
+    }
 
           reference First()       { return _list.front(); }
     const_reference First() const { return _list.front(); }
