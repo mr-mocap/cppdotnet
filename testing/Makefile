@@ -29,7 +29,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestList.o \
 	main.o
 
-CXXFLAGS=-std=c++20 -W -Wall -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
+CXXFLAGS=-std=c++20 -W -Wall -Wextra -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
 LDFLAGS=-L$(LIB_BUILD_DIR)
 
 #%.o: %.cpp
