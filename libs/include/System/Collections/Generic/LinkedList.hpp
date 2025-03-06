@@ -41,6 +41,12 @@ public:
     {
     }
 
+    LinkedList(const LinkedList &other) = default;
+    LinkedList(LinkedList &&other) = default;
+
+    LinkedList &operator =(const LinkedList &other) = default;
+    LinkedList &operator =(LinkedList &&other) = default;
+
           reference First()       { return _list.front(); }
     const_reference First() const { return _list.front(); }
 

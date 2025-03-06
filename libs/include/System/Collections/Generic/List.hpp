@@ -40,6 +40,12 @@ public:
         _list( std::begin(arr), std::end(arr) )
     {
     }
+  
+    List(const List &other) = default;
+    List(List &&other) = default;
+
+    List &operator =(const List &other) = default;
+    List &operator =(List &&other) = default;
 
     size_type Capacity() const { return _list.capacity(); }
     
