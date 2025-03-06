@@ -19,6 +19,7 @@
 #include "TestDelegates.hpp"
 #include "TestLinkedList.hpp"
 #include "TestList.hpp"
+#include "TestDateTime.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -47,6 +48,7 @@ int main(void)
     TestDelegates::Run();
     TestLinkedList::Run();
     TestList::Run();
+    TestDateTime::Run();
 
     std::cout << "All tests passed!\n";
 
