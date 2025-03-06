@@ -1,5 +1,7 @@
 #include "TestList.hpp"
 #include "System/Collections/Generic/List.hpp"
+#include "System/Collections/Generic/LinkedList.hpp"
+#include "System/Collections/Generic/ICollection.hpp"
 #include <iostream>
 #include <cassert>
 #include <array>
@@ -348,6 +350,31 @@ void Insert()
     }
 }
 
+System::Collections::Generic::ICollection<int> LifetimeTest()
+{
+    int array[] = { 1, 2, 3, 4 };
+    Collections::Generic::LinkedList<int> linked_list( array );
+    System::Collections::Generic::ICollection<int> collection( linked_list );
+
+    std::cout << "Blah = " << collection.Count() << std::endl;
+    return collection;
+}
+
+void GenericTest()
+{
+    int array[] = { 1, 2, 3, 4 };
+    Collections::Generic::List<int> list( array );
+    Collections::Generic::LinkedList<int> linked_list( array );
+    System::Collections::Generic::ICollection<int> collection( list );
+    System::Collections::Generic::ICollection<int> collection2( linked_list );
+    System::Collections::Generic::ICollection<int> collection3( LifetimeTest() );
+
+    std::cout << "Blah2 = " << collection3.Count() << std::endl;
+    std::cout << "collection.Count() = " << collection.Count() << std::endl;
+    std::cout << "collection2.Count() = " << collection2.Count() << std::endl;
+    std::cout << "collection3.Count() = " << collection3.Count() << std::endl;
+}
+
 void TestIListInterface()
 {
     std::cout << __func__ << std::endl;
@@ -363,6 +390,7 @@ void TestIListInterface()
     Remove();
     RemoveAt();
 
+    GenericTest();
     std::cout << "PASSED!" << std::endl;
 }
 
