@@ -21,8 +21,8 @@ static const char             Base64PadChar = '=';
 static const std::string_view Base85Table = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstu";
 static const char             Base85SpecialCase1 = 'z';
 static const char             Base85SpecialCase2 = 'y';
-static const std::uint32_t    Base85SpacialCaseValue1 = 0u;
-static const std::uint32_t    Base85SpacialCaseValue2 = 0x20202020u; // All spaces
+static const std::uint32_t    Base85SpecialCaseValue1 = 0u;
+static const std::uint32_t    Base85SpecialCaseValue2 = 0x20202020u; // All spaces
 
 static const std::string_view Ascii85_RFC_1924 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~";
 
@@ -601,12 +601,12 @@ std::string Convert::ToBase85String(std::span<const std::byte> input_bytes)
                 continue; // Skip these 4 bytes
 
             // All zeros encodes to 'z', so check for that...
-            if ( value == Base85SpacialCaseValue1 )
+            if ( value == Base85SpecialCaseValue1 )
             {
                 base85_string.push_back( Base85SpecialCase1 );
                 continue;
             }
-            if ( value == Base85SpacialCaseValue2 )
+            if ( value == Base85SpecialCaseValue2 )
             {
                 base85_string.push_back( Base85SpecialCase2 );
                 continue;

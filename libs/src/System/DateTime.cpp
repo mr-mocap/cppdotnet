@@ -42,7 +42,7 @@ int DateTime::Year() const
     POSTCONDITION( year_as_int >= 1 );
     POSTCONDITION( year_as_int <= 9999 );
 
-    return static_cast<int>(year_as_int);
+    return year_as_int;
 }
 
 int DateTime::Month() const
