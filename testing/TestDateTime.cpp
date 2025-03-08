@@ -145,6 +145,43 @@ void UnixEpoch()
     assert( unix_epoch.Second() == 0 );
 }
 
+void OperatorEquals()
+{
+    std::cout << __func__ << std::endl;
+
+    System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+    System::DateTime unix_epoch2 = unix_epoch;
+    System::DateTime now = System::DateTime::Now();
+
+    assert( unix_epoch == unix_epoch2 );
+    assert( unix_epoch != now );
+}
+
+void OperatorSpaceship()
+{
+    std::cout << __func__ << std::endl;
+
+    System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+    System::DateTime now = System::DateTime::Now();
+
+    assert( (unix_epoch <=> now) == std::strong_ordering::less );
+    assert( (now <=> now) == std::strong_ordering::equal );
+    assert( (now <=> unix_epoch) == std::strong_ordering::greater );
+}
+
+void RelationalOperators()
+{
+    std::cout << __func__ << std::endl;
+
+    System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+    System::DateTime now = System::DateTime::Now();
+
+    assert( unix_epoch < now );
+    assert( now <= now );
+    assert( now > unix_epoch );
+    assert( now >= unix_epoch );
+}
+
 void Run()
 {
     std::cout << "Running DateTime Tests..." << std::endl;
@@ -161,6 +198,9 @@ void Run()
     Minute();
     Second();
     UnixEpoch();
+    OperatorEquals();
+    OperatorSpaceship();
+    RelationalOperators();
 
     std::cout << "PASSED!" << std::endl;
 }

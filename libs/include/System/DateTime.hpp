@@ -8,6 +8,7 @@
 #include <cstddef>
 #include <chrono>
 #include <string>
+#include <compare>
 
 
 namespace System
@@ -58,9 +59,42 @@ public:
     static DateTime UnixEpoch();
 
     std::string ToString() const;
+
+    constexpr DateTime &operator +=(const DateTime &other)
+    {
+        _point_in_time += other._point_in_time;
+        return *this;
+    }
+
+    constexpr DateTime &operator -=(const DateTime &other)
+    {
+        _point_in_time -= other._point_in_time;
+        return *this;
+    }
 protected:
     std::chrono::system_clock::time_point _point_in_time;
     DateTimeKind _kind = DateTimeKind::Unspecified;
+    
+
+    friend constexpr bool operator ==(const DateTime &left, const DateTime &right)
+    {
+        return left._point_in_time == right._point_in_time;
+    }
+
+    friend constexpr std::strong_ordering operator <=>(const DateTime &left, const DateTime &right)
+    {
+        return left._point_in_time <=> right._point_in_time;
+    }
+
+    friend constexpr DateTime operator +(const DateTime &left, const DateTime &right)
+    {
+        return DateTime( left._point_in_time + right._point_in_time );
+    }
+
+    friend constexpr DateTime operator -(const DateTime &left, const DateTime &right)
+    {
+        return DateTime( left._point_in_time + right._point_in_time );
+    }
 };
 
 }
