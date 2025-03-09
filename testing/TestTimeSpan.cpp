@@ -378,7 +378,6 @@ void TotalDays()
         // One second worth
         System::TimeSpan t( 0, 0, 0, 1, 0 );
         double calc_ms_per_day = 1000.0 / System::TimeSpan::MillisecondsPerDay();
-        double total_days = t.TotalDays();
 
         assert( t.Seconds() == 1 );
         assert( t.Milliseconds() == 0 );
@@ -388,7 +387,6 @@ void TotalDays()
         // Half second worth
         System::TimeSpan t( 0, 0, 0, 0, 500 );
         double calc_ms_per_day = 500.0 / System::TimeSpan::MillisecondsPerDay();
-        double total_days = t.TotalDays();
 
         assert( t.Milliseconds() == 500 );
         assert( t.Seconds() == 0 );
@@ -398,7 +396,6 @@ void TotalDays()
         // One minute worth
         System::TimeSpan t( 0, 0, 1, 0, 0 );
         double calc_ms_per_day = 1.0 / System::TimeSpan::MinutesPerDay();
-        double total_days = t.TotalDays();
 
         assert( t.Minutes() == 1 );
         assert( t.TotalDays() == calc_ms_per_day );
@@ -406,11 +403,10 @@ void TotalDays()
     {
         System::TimeSpan t( 0, 0, 0, 1, -1 );
         double calc_ms_per_day = static_cast<double>(t.Milliseconds()) / System::TimeSpan::MillisecondsPerDay();
-        double total_days = t.TotalDays();
 
         assert( t.Days() == 0 );
         assert( t.Milliseconds() == 999 );
-        assert( total_days == calc_ms_per_day );
+        assert( t.TotalDays() == calc_ms_per_day );
     }
 }
 
