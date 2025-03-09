@@ -27,6 +27,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestDelegates.o \
 	TestLinkedList.o \
 	TestList.o \
+	TestTimeSpan.o \
 	TestDateTime.o \
 	main.o
 
