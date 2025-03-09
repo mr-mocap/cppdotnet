@@ -55,7 +55,9 @@ public:
     static constexpr TimeSpan MinValue()    { return TimeSpan( std::chrono::system_clock::duration::min() ); }
     static constexpr TimeSpan MaxValue()    { return TimeSpan( std::chrono::system_clock::duration::max() ); }
 
-    long Ticks() const { return _time_span.count() / NanosecondsPerTick(); }
+    constexpr long Ticks() const { return _time_span.count() / NanosecondsPerTick(); }
+
+    constexpr operator std::chrono::system_clock::duration() const { return _time_span; }
 
     int Days() const;
     int Hours() const;

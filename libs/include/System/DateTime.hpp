@@ -2,9 +2,7 @@
 
 #include "System/DayOfWeek.hpp"
 #include "System/DateTimeKind.hpp"
-#if 0
 #include "System/TimeSpan.hpp"
-#endif
 #include <cstddef>
 #include <chrono>
 #include <string>
@@ -60,17 +58,18 @@ public:
 
     std::string ToString() const;
 
-    constexpr DateTime &operator +=(const DateTime &other)
+    constexpr DateTime &operator +=(std::chrono::system_clock::duration time_span)
     {
-        _point_in_time += other._point_in_time;
+        _point_in_time += time_span;
         return *this;
     }
 
-    constexpr DateTime &operator -=(const DateTime &other)
+    constexpr DateTime &operator -=(std::chrono::system_clock::duration time_span)
     {
-        _point_in_time -= other._point_in_time;
+        _point_in_time -= time_span;
         return *this;
     }
+
 protected:
     std::chrono::system_clock::time_point _point_in_time;
     DateTimeKind _kind = DateTimeKind::Unspecified;
@@ -86,14 +85,14 @@ protected:
         return left._point_in_time <=> right._point_in_time;
     }
 
-    friend constexpr DateTime operator +(const DateTime &left, const DateTime &right)
+    friend DateTime operator +(const DateTime &left, const TimeSpan &right)
     {
-        return DateTime( left._point_in_time + right._point_in_time );
+        return DateTime( left ) += right;
     }
 
-    friend constexpr DateTime operator -(const DateTime &left, const DateTime &right)
+    friend DateTime operator -(const DateTime &left, const TimeSpan &right)
     {
-        return DateTime( left._point_in_time + right._point_in_time );
+        return DateTime( left ) -= right;
     }
 };
 
