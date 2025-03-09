@@ -28,11 +28,14 @@ DateTime DateTime::Date() const
 
     return td;
 }
-#if 0
-DateTime DateTime::TimeOfDay() const
+
+TimeSpan DateTime::TimeOfDay() const
 {
+    auto midnight_tp = floor<days>( _point_in_time );
+
+    return TimeSpan( _point_in_time - midnight_tp );
 }
-#endif
+
 int DateTime::Year() const
 {
     auto dp = floor<days>(_point_in_time);

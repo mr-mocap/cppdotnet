@@ -26,9 +26,7 @@ public:
     DateTime &operator =(DateTime &&) = default;
 
     DateTime Date() const;
-#if 0
     TimeSpan TimeOfDay() const;
-#endif
 
     DateTimeKind Kind() const { return _kind; }
 
