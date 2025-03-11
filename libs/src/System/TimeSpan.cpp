@@ -1,4 +1,5 @@
 #include "System/TimeSpan.hpp"
+#include "System/Exception.hpp"
 #include "System/Private/private.hpp"
 #include <cmath>
 
@@ -156,6 +157,25 @@ double TimeSpan::TotalMicroseconds() const
 double TimeSpan::TotalNanoseconds() const
 {
     return _time_span.count();
+}
+
+TimeSpan TimeSpan::Add(TimeSpan time_span) const
+{
+    using namespace std::literals;
+
+    // Detect a potential wrap-around...
+    if ( Ticks() >= 0 )
+    {
+        if ( MaxValue().Ticks() - Ticks() < time_span.Ticks() )
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting TimeSpan is greater than TimeSpan::MaxValue"sv) );
+    }
+    else
+    {
+        if ( time_span.Ticks() < MinValue().Ticks() - Ticks() )
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is less than DateTime::MinValue"sv) );
+        
+    }
+    return *this + time_span;
 }
 
 }

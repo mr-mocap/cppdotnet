@@ -74,8 +74,88 @@ public:
     double TotalMilliseconds() const;
     double TotalMicroseconds() const;
     double TotalNanoseconds() const;
+
+    constexpr TimeSpan &operator +=(std::chrono::system_clock::duration duration_to_add)
+    {
+        _time_span += duration_to_add;
+        return *this;
+    }
+
+    constexpr TimeSpan &operator -=(std::chrono::system_clock::duration duration_to_subtract)
+    {
+        _time_span -= duration_to_subtract;
+        return *this;
+    }
+
+    TimeSpan Add(TimeSpan time_span) const;
+
+    static constexpr int Compare(const TimeSpan &left, const TimeSpan &right)
+    {
+        auto result{ left <=> right };
+
+        if ( result == std::strong_ordering::less )
+            return -1;
+        else if ( result == std::strong_ordering::equal )
+            return 0;
+        else
+            return 1;
+    }
+
+    int CompareTo(const TimeSpan &other) const { return Compare( *this, other); }
+
+    static constexpr bool Equals(TimeSpan &left, TimeSpan &right) { return left == right; }
+
+    constexpr TimeSpan Duration() const { return TimeSpan( std::chrono::abs( _time_span ) ); }
+    constexpr TimeSpan Negate() const { return -*this; }
 protected:
     std::chrono::system_clock::duration _time_span{ std::chrono::system_clock::duration::zero() };
+
+
+    friend constexpr bool operator ==(const TimeSpan &left, const TimeSpan &right)
+    {
+        return left._time_span == right._time_span;
+    }
+
+    friend constexpr std::strong_ordering operator <=>(const TimeSpan &left, const TimeSpan &right)
+    {
+        return left._time_span <=> right._time_span;
+    }
+
+    friend constexpr TimeSpan operator +(const TimeSpan &left, const TimeSpan &right)
+    {
+        return TimeSpan( left._time_span + right._time_span );
+    }
+
+    friend constexpr TimeSpan operator -(const TimeSpan &left, const TimeSpan &right)
+    {
+        return TimeSpan( left._time_span - right._time_span );
+    }
+
+    friend constexpr TimeSpan operator *(const TimeSpan &left, const double right)
+    {
+        double ticks = left._time_span.count() * right;
+        long   truncated_ticks = static_cast<long>( ticks );
+
+        return TimeSpan( std::chrono::system_clock::duration( truncated_ticks ) );
+    }
+
+    friend constexpr TimeSpan operator /(const TimeSpan &left, const double right)
+    {
+        double ticks = left._time_span.count() / right;
+        long   truncated_ticks = static_cast<long>( ticks );
+
+        return TimeSpan( std::chrono::system_clock::duration( truncated_ticks ) );
+    }
+
+    friend constexpr TimeSpan operator -(const TimeSpan &ts)
+    {
+        return TimeSpan( std::chrono::system_clock::duration::zero() - ts._time_span );
+    }
+
+    friend constexpr TimeSpan operator +(const TimeSpan &ts)
+    {
+        return TimeSpan( ts );
+    }
 };
 
 }

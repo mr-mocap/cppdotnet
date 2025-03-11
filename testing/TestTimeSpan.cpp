@@ -15,6 +15,7 @@ void DefaultConstructed()
     System::TimeSpan t;
 
     assert( t.Ticks() == 0 );
+    assert( t == System::TimeSpan::Zero() );
 }
 
 void DifferentConstructors()
@@ -505,6 +506,147 @@ void TotalNanoseconds()
     }
 }
 
+void RelationalOperators()
+{
+    std::cout << __func__ << std::endl;
+
+    System::TimeSpan t;
+
+    // Equality
+    {
+        assert( System::TimeSpan() == System::TimeSpan::Zero() );
+        assert( System::TimeSpan::MinValue() == System::TimeSpan::MinValue() );
+    }
+
+    // Less than
+    {
+        assert( System::TimeSpan::Zero() < System::TimeSpan( 1, 0, 0 ) );
+        assert( System::TimeSpan( -12, 0, 0 ) < System::TimeSpan::Zero() );
+        assert( System::TimeSpan( -2, 0, 0 ) < System::TimeSpan( -1, 0, 0 ) );
+    }
+
+    // Greater than
+    {
+        assert( System::TimeSpan( 1, 0, 0 ) > System::TimeSpan::Zero() );
+        assert( System::TimeSpan::Zero() > System::TimeSpan( -12, 0, 0 ) );
+        assert( System::TimeSpan( -1, 0, 0 ) > System::TimeSpan( -2, 0, 0 ) );
+    }
+
+    // Less than equal to
+    {
+        assert( System::TimeSpan::Zero() <= System::TimeSpan( 1, 0, 0 ) );
+        assert( System::TimeSpan::Zero() <= System::TimeSpan::Zero() );
+
+        assert( System::TimeSpan( -12, 0, 0 ) <= System::TimeSpan::Zero() );
+
+        assert( System::TimeSpan( -2, 0, 0 ) <= System::TimeSpan( -2, 0, 0 ) );
+    }
+
+    // Greater than equal to
+    {
+        assert( System::TimeSpan( 1, 0, 0 ) >= System::TimeSpan::Zero() );
+        assert( System::TimeSpan::Zero() >= System::TimeSpan( -12, 0, 0 ) );
+        assert( System::TimeSpan( -1, 0, 0 ) >= System::TimeSpan( -2, 0, 0 ) );
+    }
+}
+
+void PlusEqualsOperator()
+{
+    std::cout << __func__ << std::endl;
+
+    // Add a std::chrono::duration
+    {
+        System::TimeSpan t;
+
+        assert( t.Hours() == 0 );
+        assert( t.Ticks() == 0 );
+
+        t += std::chrono::hours( 1 );
+
+        assert( t.Hours() == 1 );
+        assert( t.TotalHours() == 1 );
+        assert( t.Ticks() > 0 );
+    }
+
+    // Doesn't throw exception when rolling over
+    {
+        System::TimeSpan t = System::TimeSpan::MaxValue();
+        long ticks_before = t.Ticks();
+
+        t += std::chrono::seconds( 1 );
+
+        assert( t.Ticks() < ticks_before );
+    }
+
+    // Doesn't throw exception when rolling under
+    {
+        System::TimeSpan t = System::TimeSpan::MinValue();
+        long ticks_before = t.Ticks();
+
+        t += std::chrono::seconds( -1 );
+        
+        assert( t.Ticks() > ticks_before );
+    }
+}
+
+void MinusEqualsOperator()
+{
+    std::cout << __func__ << std::endl;
+
+    // Add a std::chrono::duration
+    {
+        System::TimeSpan t;
+
+        assert( t.Hours() == 0 );
+        assert( t.Ticks() == 0 );
+
+        t -= std::chrono::hours( 1 );
+
+        assert( t.Hours() == -1 );
+        assert( t.TotalHours() == -1 );
+        assert( t.Ticks() < 0 );
+    }
+
+    // Doesn't throw exception when rolling over
+    {
+        System::TimeSpan t = System::TimeSpan::MaxValue();
+        long ticks_before = t.Ticks();
+
+        t -= std::chrono::seconds( -1 );
+
+        assert( t.Ticks() < ticks_before );
+    }
+
+    // Doesn't throw exception when rolling under
+    {
+        System::TimeSpan t = System::TimeSpan::MinValue();
+        long ticks_before = t.Ticks();
+
+        t -= std::chrono::seconds( 1 );
+        
+        assert( t.Ticks() > ticks_before );
+    }
+}
+
+void NegationOperator()
+{
+    std::cout << __func__ << std::endl;
+
+    {
+        System::TimeSpan ts( 6 );
+
+        assert( ts.Ticks() == 6);
+        assert( (-ts).Ticks() == -6 );
+    }
+
+    {
+        System::TimeSpan ts( -1000 );
+
+        assert( ts.Ticks() == -1000);
+        assert( (-ts).Ticks() == 1000 );
+    }
+}
+
 void Run()
 {
     std::cout << "Running TimeSpan Tests..." << std::endl;
@@ -521,6 +663,10 @@ void Run()
     TotalDays();
     TotalHours();
     TotalNanoseconds();
+    RelationalOperators();
+    PlusEqualsOperator();
+    MinusEqualsOperator();
+    NegationOperator();
 
     std::cout << "PASSED!" << std::endl;
 }
