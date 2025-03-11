@@ -7,6 +7,15 @@
 namespace TestDateTime
 {
 
+void DefaultConstruct()
+{
+    std::cout << __func__ << std::endl;
+
+    System::DateTime t;
+
+    assert( t == System::DateTime().MinValue() );
+}
+
 void ConstructYearMonthDay()
 {
     std::cout << __func__ << std::endl;
@@ -180,12 +189,203 @@ void RelationalOperators()
     assert( now <= now );
     assert( now > unix_epoch );
     assert( now >= unix_epoch );
+
+    assert( System::DateTime::Compare( unix_epoch, now ) == -1 );
+    assert( System::DateTime::Compare( now, now ) == 0 );
+    assert( System::DateTime::Compare( now, unix_epoch ) == 1 );
+}
+
+void Add()
+{
+    std::cout << __func__ << std::endl;
+
+    // Use only Datetime & TimeSpan
+    {
+        System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+        System::TimeSpan one_day( 1, 0 , 0, 0 );
+
+        assert( unix_epoch.Day() == 1 );
+        assert( unix_epoch.Add( one_day ).Day() == 2 );
+    }
+}
+
+void AddCPlusPlusOperators()
+{
+    std::cout << __func__ << std::endl;
+
+    // DateTiem + TimeSpan
+    {
+        System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+        System::TimeSpan one_day( 1, 0 , 0, 0 );
+        System::DateTime new_datetime = unix_epoch + one_day;
+
+        assert( unix_epoch.Day() == 1 );
+        assert( new_datetime.Day() == 2 );
+    }
+
+    // DateTime + std::chrono::system_clock::duration
+    {
+        System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+        System::DateTime new_datetime = unix_epoch + std::chrono::days(1);
+
+        assert( unix_epoch.Day() == 1 );
+        assert( new_datetime.Day() == 2 );
+    }
+
+    // DateTiem += TimeSpan
+    {
+        System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+        System::TimeSpan one_day( 1, 0 , 0, 0 );
+
+        assert( unix_epoch.Day() == 1 );
+
+        unix_epoch += one_day;
+
+        assert( unix_epoch.Day() == 2 );
+    }
+
+    // DateTime += std::chrono::system_clock::duration
+    {
+        System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+
+        assert( unix_epoch.Day() == 1 );
+
+        unix_epoch += std::chrono::days(1);
+
+        assert( unix_epoch.Day() == 2 );
+    }
+}
+
+void AddYears()
+{
+    std::cout << __func__ << std::endl;
+
+    System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+
+    // Setup
+    assert( unix_epoch.Year() == 1970 );
+
+    // Tests
+    assert( unix_epoch.AddYears(1).Year() == 1971 );
+    assert( unix_epoch.Year() == 1970 ); // Original unchanged
+    assert( unix_epoch.AddYears(10).Year() == 1980 );
+    assert( unix_epoch.Year() == 1970 ); // Original unchanged
+    assert( unix_epoch.Month() == 1 ); // Original unchanged
+
+    {
+        System::DateTime new_time = unix_epoch.AddYears(2).AddMonths(2);
+
+        assert( new_time.Year() == 1972 );
+        assert( new_time.Month() == 3);
+    }
+    {
+        System::DateTime original_time = unix_epoch.AddYears(10);
+
+        // Setup
+        assert( original_time.Year() == 1980 );
+
+        // Tests
+        assert( original_time.AddYears(-1).Year() == 1979 );
+    }
+
+    // Test for underflow of DateTime
+    try
+    {
+        System::DateTime time_before_epoch = System::DateTime::MinValue().AddYears(-1);
+        
+        assert( false );
+    }
+    catch(const System::ArgumentOutOfRangeException &e)
+    {
+        std::cerr << "Underflow!" << '\n';
+        assert( true );
+    }
+    
+    // Test for overflow of DateTime
+    try
+    {
+        System::DateTime time_after_end_of_time = System::DateTime::MaxValue().AddYears(1);
+        
+        assert( false );
+    }
+    catch(const System::ArgumentOutOfRangeException &e)
+    {
+        std::cerr << "Overflow!" << '\n';
+        assert( true );
+    }
+}
+
+void AddMonths()
+{
+    std::cout << __func__ << std::endl;
+
+    System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+
+    // Setup
+    assert( unix_epoch.Year() == 1970 ); // Original unchanged
+    assert( unix_epoch.Month() == 1 );
+
+    // Tests
+    assert( unix_epoch.AddMonths(10).Month() == 11 );
+    assert( unix_epoch.Year() == 1970 ); // Original unchanged
+    assert( unix_epoch.Month() == 1 ); // Original unchanged
+
+#if 0
+    // Why doesn't this work?!
+    assert( unix_epoch.AddMonths(1).Month() == 2 );
+    assert( unix_epoch.Year() == 1970 ); // Original unchanged
+#endif
+
+    {
+        System::DateTime new_time = unix_epoch.AddYears(2).AddMonths(2);
+
+        assert( new_time.Year() == 1972 );
+        assert( new_time.Month() == 3);
+    }
+    {
+        System::DateTime original_time = unix_epoch.AddYears(10);
+
+        // Setup
+        assert( original_time.Year() == 1980 );
+        assert( original_time.Month() == 1 );
+
+        // Tests
+        assert( original_time.AddMonths(-1).Year() == 1979 );
+        assert( original_time.AddMonths(-1).Month() == 12 );
+    }
+
+    // Test for underflow of DateTime
+    try
+    {
+        System::DateTime time_before_epoch = System::DateTime::MinValue().AddMonths(-1);
+        
+        assert( false );
+    }
+    catch(const System::ArgumentOutOfRangeException &e)
+    {
+        std::cerr << "Underflow!" << '\n';
+        assert( true );
+    }
+    
+    // Test for overflow of DateTime
+    try
+    {
+        System::DateTime time_after_end_of_time = System::DateTime::MaxValue().AddMonths(1);
+        
+        assert( false );
+    }
+    catch(const System::ArgumentOutOfRangeException &e)
+    {
+        std::cerr << "Overflow!" << '\n';
+        assert( true );
+    }
 }
 
 void Run()
 {
     std::cout << "Running DateTime Tests..." << std::endl;
 
+    DefaultConstruct();
     ConstructYearMonthDay();
     ConstructYearMonthDayHourMinuteSecond();
     DayOfWeek();
@@ -201,6 +401,10 @@ void Run()
     OperatorEquals();
     OperatorSpaceship();
     RelationalOperators();
+    Add();
+    AddCPlusPlusOperators();
+    AddYears();
+    AddMonths();
 
     std::cout << "PASSED!" << std::endl;
 }

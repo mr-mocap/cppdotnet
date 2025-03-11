@@ -3,6 +3,7 @@
 #include "System/DayOfWeek.hpp"
 #include "System/DateTimeKind.hpp"
 #include "System/TimeSpan.hpp"
+#include "System/Exception.hpp"
 #include <cstddef>
 #include <chrono>
 #include <string>
@@ -15,9 +16,9 @@ namespace System
 class DateTime
 {
 public:
-    DateTime() = delete;
+    constexpr DateTime() = default;
     DateTime(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int milliseconds = 0);
-    DateTime(std::chrono::system_clock::time_point tp) : _point_in_time( tp ) { }
+    constexpr DateTime(std::chrono::system_clock::time_point tp) : _point_in_time( tp ) { }
 
     DateTime(const DateTime &) = default;
     DateTime(DateTime &&) = default;
@@ -50,9 +51,9 @@ public:
     static DateTime UtcNow();
     static DateTime Today();
 
-    static DateTime MaxValue();
-    static DateTime MinValue();
-    static DateTime UnixEpoch();
+    static constexpr DateTime MaxValue() { return DateTime( std::chrono::system_clock::time_point::max() ); }
+    static constexpr DateTime MinValue() { return DateTime( std::chrono::system_clock::time_point::min() ); }
+    static constexpr DateTime UnixEpoch() { return DateTime( std::chrono::system_clock::time_point() ); }
 
     std::string ToString() const;
 
@@ -68,8 +69,23 @@ public:
         return *this;
     }
 
+    DateTime Add(TimeSpan time_span) const;
+
+    DateTime AddYears(int y) const;
+    DateTime AddMonths(int m) const;
+    DateTime AddDays(double d) const;
+    DateTime AddHours(double h) const;
+    DateTime AddMinutes(double m) const;
+    DateTime AddSeconds(double s) const;
+    DateTime AddMilliseconds(double ms) const;
+    DateTime AddMicroseconds(double micro_seconds) const;
+    DateTime AddTicks(long ticks) const;
+
+    static int Compare(const DateTime &t1, const DateTime &t2);
+
+    int CompareTo(const DateTime &other) const { return Compare( *this, other); }
 protected:
-    std::chrono::system_clock::time_point _point_in_time;
+    std::chrono::system_clock::time_point _point_in_time = std::chrono::system_clock::time_point::min();
     DateTimeKind _kind = DateTimeKind::Unspecified;
     
 
@@ -88,7 +104,17 @@ protected:
         return DateTime( left ) += right;
     }
 
+    friend DateTime operator +(const DateTime &left, std::chrono::system_clock::duration right)
+    {
+        return DateTime( left ) += right;
+    }
+
     friend DateTime operator -(const DateTime &left, const TimeSpan &right)
+    {
+        return DateTime( left ) -= right;
+    }
+
+    friend DateTime operator -(const DateTime &left, std::chrono::system_clock::duration right)
     {
         return DateTime( left ) -= right;
     }

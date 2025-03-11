@@ -1,6 +1,7 @@
 #include "System/DateTime.hpp"
 #include "System/Private/private.hpp"
 #include <format>
+#include <cmath>
 
 using namespace std::chrono;
 
@@ -19,8 +20,7 @@ DateTime::DateTime(int y, int m, int d, int h, int min, int s, int ms)
 
 DateTime DateTime::Date() const
 {
-    auto tp = floor<days>( _point_in_time );
-    DateTime td( tp );
+    DateTime td( floor<days>( _point_in_time ) );
 
     POSTCONDITION( td.Hour() == 0 );
     POSTCONDITION( td.Minute() == 0 );
@@ -38,8 +38,7 @@ TimeSpan DateTime::TimeOfDay() const
 
 int DateTime::Year() const
 {
-    auto dp = floor<days>(_point_in_time);
-    year_month_day ymd{ dp };
+    year_month_day ymd{ floor<days>( _point_in_time ) };
     int year_as_int{ ymd.year() };
 
     POSTCONDITION( year_as_int >= 1 );
@@ -50,8 +49,7 @@ int DateTime::Year() const
 
 int DateTime::Month() const
 {
-    auto dp = floor<days>(_point_in_time);
-    year_month_day ymd{ dp };
+    year_month_day ymd{ floor<days>( _point_in_time ) };
     unsigned int month_as_unsigned_int{ ymd.month() };
 
     POSTCONDITION( month_as_unsigned_int >= 1 );
@@ -62,8 +60,7 @@ int DateTime::Month() const
 
 int DateTime::Day() const
 {
-    auto dp = floor<days>(_point_in_time);
-    year_month_day ymd{ dp };
+    year_month_day ymd{ floor<days>( _point_in_time ) };
     unsigned int day_as_unsigned_int{ ymd.day() };
 
     POSTCONDITION( day_as_unsigned_int >= 1 );
@@ -74,7 +71,7 @@ int DateTime::Day() const
 
 int DateTime::Hour() const
 {
-    auto tp = _point_in_time.time_since_epoch();
+    system_clock::duration tp = _point_in_time.time_since_epoch();
     days d = duration_cast<days>(tp);
 
     tp -= d;
@@ -205,7 +202,7 @@ int DateTime::Nanosecond() const
 
 long DateTime::Ticks() const
 {
-    return _point_in_time.time_since_epoch().count();
+    return _point_in_time.time_since_epoch().count() / TimeSpan::NanosecondsPerTick();
 }
 
 enum DayOfWeek DateTime::DayOfWeek() const
@@ -250,24 +247,107 @@ DateTime DateTime::Today()
     return td;
 }
 
-DateTime DateTime::MaxValue()
-{
-    return DateTime( system_clock::time_point::max() );
-}
-
-DateTime DateTime::MinValue()
-{
-    return DateTime( system_clock::time_point::min() );
-}
-
-DateTime DateTime::UnixEpoch()
-{
-    return DateTime( system_clock::time_point() );
-}
-
 std::string DateTime::ToString() const
 {
     return std::format("{}", _point_in_time);
+}
+
+DateTime DateTime::AddYears(int years_to_add) const
+{
+    TimeSpan ts{ std::chrono::years(years_to_add) };
+    DateTime new_value( *this );
+
+    return new_value.Add( ts );
+}
+
+DateTime DateTime::AddMonths(int months) const
+{
+    using namespace std::literals;
+
+    // First check that the parameter is within allowed bounds
+    if ( months < -120'000 )
+        ThrowWithTarget( ArgumentOutOfRangeException("months"sv, "Parameter is less than minimum allowed value"sv) );
+    if ( months > 120'000 )
+        ThrowWithTarget( ArgumentOutOfRangeException("months"sv, "Parameter is greater than minimum allowed value"sv) );
+
+    TimeSpan ts{ std::chrono::months(months) };
+    DateTime new_value( *this );
+
+    return new_value.Add( ts );
+}
+
+DateTime DateTime::AddDays(double d) const
+{
+    double ipart;
+    double fraction = std::modf( d, &ipart );
+    TimeSpan ts{ days{ static_cast<int>(ipart) } };
+    DateTime new_value( *this );
+
+    return new_value.Add( ts );
+}
+
+DateTime DateTime::AddHours(double h) const
+{
+    return UnixEpoch();
+}
+
+DateTime DateTime::AddMinutes(double m) const
+{
+    return UnixEpoch();
+}
+
+DateTime DateTime::AddSeconds(double s) const
+{
+    return UnixEpoch();
+}
+
+DateTime DateTime::AddMilliseconds(double ms) const
+{
+    return UnixEpoch();
+}
+
+DateTime DateTime::AddMicroseconds(double micro_seconds) const
+{
+    return UnixEpoch();
+}
+
+DateTime DateTime::AddTicks(long ticks) const
+{
+    return UnixEpoch();
+}
+
+DateTime DateTime::Add(TimeSpan time_span) const
+{
+    using namespace std::literals;
+
+    // Detect a potential wrap-around...
+    if ( Ticks() >= 0 )
+    {
+        //if ( MaxValue().Ticks() - Ticks() < std::chrono::system_clock::duration(time_span).count() )
+        if ( MaxValue().Ticks() - Ticks() < time_span.Ticks() )
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is greater than DateTime::MinValue"sv) );
+    }
+    else
+    {
+        //if ( std::chrono::system_clock::duration(time_span).count() < MinValue().Ticks() - Ticks() )
+        if ( time_span.Ticks() < MinValue().Ticks() - Ticks() )
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is less than DateTime::MinValue"sv) );
+        
+    }
+
+    return DateTime( *this ) += time_span;
+}
+
+int DateTime::Compare(const DateTime &t1, const DateTime &t2)
+{
+    auto result{ t1 <=> t2 };
+
+    if ( result == std::strong_ordering::less )
+        return -1;
+    else if ( result == std::strong_ordering::equal )
+        return 0;
+    else
+        return 1;
 }
 
 }
