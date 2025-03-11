@@ -270,10 +270,15 @@ DateTime DateTime::AddMonths(int months) const
     if ( months > 120'000 )
         ThrowWithTarget( ArgumentOutOfRangeException("months"sv, "Parameter is greater than minimum allowed value"sv) );
 
-    TimeSpan ts{ std::chrono::months(months) };
-    DateTime new_value( *this );
+    // First, let's convert to year_month_days...
+    year_month_day ymd{ floor<days>( _point_in_time ) };
+    year_month_day next_month = ymd + std::chrono::months{months}; // And add the input number of months
+    
+    // And convert back to sys_days...
+    sys_days new_month_in_days = sys_days( next_month );
 
-    return new_value.Add( ts );
+    // Now let's convert the difference between the two time points to a duration and initialize a TimeSpan and call Add()...
+    return DateTime( *this ).Add( new_month_in_days - _point_in_time );
 }
 
 DateTime DateTime::AddDays(double d) const

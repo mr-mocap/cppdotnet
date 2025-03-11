@@ -379,6 +379,31 @@ void AddMonths()
         std::cerr << "Overflow!" << '\n';
         assert( true );
     }
+
+    // Test for out-of-bounds months input
+    try
+    {
+        System::DateTime time_before_epoch = System::DateTime::Now().AddMonths(120'001);
+        
+        assert( false );
+    }
+    catch(const System::ArgumentOutOfRangeException &e)
+    {
+        std::cerr << "Tried to add too many months over!" << '\n';
+        assert( true );
+    }
+
+    try
+    {
+        System::DateTime time_before_epoch = System::DateTime::Now().AddMonths(-120'001);
+        
+        assert( false );
+    }
+    catch(const System::ArgumentOutOfRangeException &e)
+    {
+        std::cerr << "Tried to add too many months under!" << '\n';
+        assert( true );
+    }
 }
 
 void Run()
