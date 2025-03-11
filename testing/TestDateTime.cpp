@@ -403,6 +403,160 @@ void AddMonths()
     }
 }
 
+void AddDays()
+{
+    std::cout << __func__ << std::endl;
+
+    System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+
+    // Setup
+    assert( unix_epoch.Year() == 1970 ); // Original unchanged
+    assert( unix_epoch.Month() == 1 );
+    assert( unix_epoch.Day() == 1 );
+
+    // Tests
+    assert( unix_epoch.AddDays(10).Month() == 1 );
+    assert( unix_epoch.AddDays(10).Day() == 11 );
+    assert( unix_epoch.AddDays(10).Year() == 1970 );
+    assert( unix_epoch.Year() == 1970 ); // Original unchanged
+    assert( unix_epoch.Month() == 1 ); // Original unchanged
+    assert( unix_epoch.Day() == 1 ); // Original unchanged
+
+    {
+        System::DateTime new_time = unix_epoch.AddYears(2).AddMonths(2).AddDays(23);
+
+        assert( new_time.Year() == 1972 );
+        assert( new_time.Month() == 3);
+        assert( new_time.Day() == 24 );
+    }
+
+    {
+        System::DateTime original_time = unix_epoch.AddYears(10);
+
+        // Setup
+        assert( original_time.Year() == 1980 );
+        assert( original_time.Month() == 1 );
+        assert( original_time.Day() == 1 );
+
+        // Tests
+        assert( original_time.AddDays(-1).Year() == 1979 );
+        assert( original_time.AddDays(-1).Month() == 12 );
+        assert( original_time.AddDays(-1).Day() == 31 );
+    }
+
+    // Test for underflow of DateTime
+    try
+    {
+        System::DateTime time_before_epoch = System::DateTime::MinValue().AddDays(-1);
+        
+        assert( false );
+    }
+    catch(const System::ArgumentOutOfRangeException &e)
+    {
+        std::cerr << "Underflow!" << '\n';
+        assert( true );
+    }
+    
+    // Test for overflow of DateTime
+    try
+    {
+        System::DateTime time_after_end_of_time = System::DateTime::MaxValue().AddDays(1);
+        
+        assert( false );
+    }
+    catch(const System::ArgumentOutOfRangeException &e)
+    {
+        std::cerr << "Overflow!" << '\n';
+        assert( true );
+    }
+
+    // Now to test for fractional days being added
+    {
+        assert( unix_epoch.Hour() == 0 );
+        assert( unix_epoch.AddDays(3.5).Day() == 4 );
+        assert( unix_epoch.AddDays(3.5).Hour() == 12 );
+    }
+}
+
+void AddHours()
+{
+    std::cout << __func__ << std::endl;
+
+    System::DateTime unix_epoch = System::DateTime::UnixEpoch();
+
+    // Setup
+    assert( unix_epoch.Year() == 1970 ); // Original unchanged
+    assert( unix_epoch.Month() == 1 );
+    assert( unix_epoch.Day() == 1 );
+    assert( unix_epoch.Hour() == 0 );
+    // Tests
+    assert( unix_epoch.AddHours(10).Hour() == 10 );
+    assert( unix_epoch.AddHours(2).Hour() == 2 );
+    assert( unix_epoch.AddHours(2).Year() == 1970 );
+    assert( unix_epoch.Year() == 1970 ); // Original unchanged
+    assert( unix_epoch.Month() == 1 ); // Original unchanged
+    assert( unix_epoch.Day() == 1 ); // Original unchanged
+    assert( unix_epoch.Hour() == 0 ); // Original unchanged
+
+    {
+        System::DateTime new_time = unix_epoch.AddYears(2).AddMonths(2).AddDays(23).AddHours(16);
+
+        assert( new_time.Year() == 1972 );
+        assert( new_time.Month() == 3);
+        assert( new_time.Day() == 24 );
+        assert( new_time.Hour() == 16 );
+    }
+
+    {
+        System::DateTime original_time = unix_epoch.AddYears(10);
+
+        // Setup
+        assert( original_time.Year() == 1980 );
+        assert( original_time.Month() == 1 );
+        assert( original_time.Day() == 1 );
+
+        // Tests
+        assert( original_time.AddDays(-1).Year() == 1979 );
+        assert( original_time.AddDays(-1).Month() == 12 );
+        assert( original_time.AddDays(-1).Day() == 31 );
+    }
+
+    // Test for underflow of DateTime
+    try
+    {
+        System::DateTime time_before_epoch = System::DateTime::MinValue().AddHours(-1);
+        
+        assert( false );
+    }
+    catch(const System::ArgumentOutOfRangeException &e)
+    {
+        std::cerr << "Underflow!" << '\n';
+        assert( true );
+    }
+    
+    // Test for overflow of DateTime
+    try
+    {
+        System::DateTime time_after_end_of_time = System::DateTime::MaxValue().AddHours(1);
+        
+        assert( false );
+    }
+    catch(const System::ArgumentOutOfRangeException &e)
+    {
+        std::cerr << "Overflow!" << '\n';
+        assert( true );
+    }
+
+    // Now to test for fractional Hours being added
+    {
+        assert( unix_epoch.Hour() == 0 );
+        assert( unix_epoch.AddHours(30).Hour() == 6 );
+
+        assert( unix_epoch.AddHours(30.5).Hour() == 6 );
+        assert( unix_epoch.AddHours(30.5).Minute() == 30 );
+    }
+}
+
 void Run()
 {
     std::cout << "Running DateTime Tests..." << std::endl;
@@ -427,6 +581,8 @@ void Run()
     AddCPlusPlusOperators();
     AddYears();
     AddMonths();
+    AddDays();
+    AddHours();
 
     std::cout << "PASSED!" << std::endl;
 }
