@@ -285,40 +285,65 @@ DateTime DateTime::AddDays(double d) const
 {
     double ipart;
     double fraction = std::modf( d, &ipart );
-    TimeSpan ts{ days{ static_cast<int>(ipart) } };
-    DateTime new_value( *this );
+    TimeSpan ts_whole_days{ days{ static_cast<int>(ipart) } };
+    long fractional_day_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerDay());
 
-    return new_value.Add( ts );
+    return DateTime( *this ).Add( ts_whole_days ).Add( TimeSpan( fractional_day_in_ticks ) );
 }
 
 DateTime DateTime::AddHours(double h) const
 {
-    return UnixEpoch();
+    double ipart;
+    double fraction = std::modf( h, &ipart );
+    TimeSpan ts_whole_hours{ hours{ static_cast<int>(ipart) } };
+    long fractional_hours_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerHour());
+
+    return DateTime( *this ).Add( ts_whole_hours ).Add( TimeSpan( fractional_hours_in_ticks ) );
 }
 
 DateTime DateTime::AddMinutes(double m) const
 {
-    return UnixEpoch();
+    double ipart;
+    double fraction = std::modf( m, &ipart );
+    TimeSpan ts_whole_minutes{ minutes{ static_cast<int>(ipart) } };
+    long fractional_minutes_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerMinute());
+
+    return DateTime( *this ).Add( ts_whole_minutes ).Add( TimeSpan( fractional_minutes_in_ticks ) );
 }
 
 DateTime DateTime::AddSeconds(double s) const
 {
-    return UnixEpoch();
+    double ipart;
+    double fraction = std::modf( s, &ipart );
+    TimeSpan ts_whole_seconds{ seconds{ static_cast<int>(ipart) } };
+    long fractional_seconds_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerSecond());
+
+    return DateTime( *this ).Add( ts_whole_seconds ).Add( TimeSpan( fractional_seconds_in_ticks ) );
 }
 
 DateTime DateTime::AddMilliseconds(double ms) const
 {
-    return UnixEpoch();
+    double ipart;
+    double fraction = std::modf( ms, &ipart );
+    TimeSpan ts_whole_milliseconds{ milliseconds{ static_cast<int>(ipart) } };
+    long fractional_milliseconds_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerMillisecond());
+
+    return DateTime( *this ).Add( ts_whole_milliseconds ).Add( TimeSpan( fractional_milliseconds_in_ticks ) );
 }
 
 DateTime DateTime::AddMicroseconds(double micro_seconds) const
 {
-    return UnixEpoch();
+    double ipart;
+    double fraction = std::modf( micro_seconds, &ipart );
+    TimeSpan ts_whole_microseconds{ microseconds{ static_cast<int>(ipart) } };
+    long fractional_microseconds_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerMicrosecond());
+
+    return DateTime( *this ).Add( ts_whole_microseconds ).Add( TimeSpan( fractional_microseconds_in_ticks ) );
 }
 
 DateTime DateTime::AddTicks(long ticks) const
 {
-    return UnixEpoch();
+    return Add( TimeSpan(ticks) );
 }
 
 DateTime DateTime::Add(TimeSpan time_span) const
@@ -328,19 +353,17 @@ DateTime DateTime::Add(TimeSpan time_span) const
     // Detect a potential wrap-around...
     if ( Ticks() >= 0 )
     {
-        //if ( MaxValue().Ticks() - Ticks() < std::chrono::system_clock::duration(time_span).count() )
         if ( MaxValue().Ticks() - Ticks() < time_span.Ticks() )
-            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is greater than DateTime::MinValue"sv) );
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is greater than DateTime::MaxValue"sv) );
     }
     else
     {
-        //if ( std::chrono::system_clock::duration(time_span).count() < MinValue().Ticks() - Ticks() )
         if ( time_span.Ticks() < MinValue().Ticks() - Ticks() )
             ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is less than DateTime::MinValue"sv) );
         
     }
 
-    return DateTime( *this ) += time_span;
+    return *this + time_span;
 }
 
 int DateTime::Compare(const DateTime &t1, const DateTime &t2)
