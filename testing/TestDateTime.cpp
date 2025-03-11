@@ -291,7 +291,7 @@ void AddYears()
     // Test for underflow of DateTime
     try
     {
-        System::DateTime time_before_epoch = System::DateTime::MinValue().AddYears(-1);
+        System::DateTime::MinValue().AddYears(-1);
         
         assert( false );
     }
@@ -304,7 +304,7 @@ void AddYears()
     // Test for overflow of DateTime
     try
     {
-        System::DateTime time_after_end_of_time = System::DateTime::MaxValue().AddYears(1);
+        System::DateTime::MaxValue().AddYears(1);
         
         assert( false );
     }
@@ -354,7 +354,7 @@ void AddMonths()
     // Test for underflow of DateTime
     try
     {
-        System::DateTime time_before_epoch = System::DateTime::MinValue().AddMonths(-1);
+        System::DateTime::MinValue().AddMonths(-1);
         
         assert( false );
     }
@@ -367,7 +367,7 @@ void AddMonths()
     // Test for overflow of DateTime
     try
     {
-        System::DateTime time_after_end_of_time = System::DateTime::MaxValue().AddMonths(1);
+        System::DateTime::MaxValue().AddMonths(1);
         
         assert( false );
     }
@@ -380,7 +380,7 @@ void AddMonths()
     // Test for out-of-bounds months input
     try
     {
-        System::DateTime time_before_epoch = System::DateTime::Now().AddMonths(120'001);
+        System::DateTime::Now().AddMonths(120'001);
         
         assert( false );
     }
@@ -392,7 +392,7 @@ void AddMonths()
 
     try
     {
-        System::DateTime time_before_epoch = System::DateTime::Now().AddMonths(-120'001);
+        System::DateTime::Now().AddMonths(-120'001);
         
         assert( false );
     }
@@ -447,7 +447,7 @@ void AddDays()
     // Test for underflow of DateTime
     try
     {
-        System::DateTime time_before_epoch = System::DateTime::MinValue().AddDays(-1);
+        System::DateTime::MinValue().AddDays(-1);
         
         assert( false );
     }
@@ -460,7 +460,7 @@ void AddDays()
     // Test for overflow of DateTime
     try
     {
-        System::DateTime time_after_end_of_time = System::DateTime::MaxValue().AddDays(1);
+        System::DateTime::MaxValue().AddDays(1);
         
         assert( false );
     }
@@ -524,7 +524,7 @@ void AddHours()
     // Test for underflow of DateTime
     try
     {
-        System::DateTime time_before_epoch = System::DateTime::MinValue().AddHours(-1);
+        System::DateTime::MinValue().AddHours(-1);
         
         assert( false );
     }
@@ -537,7 +537,7 @@ void AddHours()
     // Test for overflow of DateTime
     try
     {
-        System::DateTime time_after_end_of_time = System::DateTime::MaxValue().AddHours(1);
+        System::DateTime::MaxValue().AddHours(1);
         
         assert( false );
     }
