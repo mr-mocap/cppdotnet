@@ -330,11 +330,8 @@ void AddMonths()
     assert( unix_epoch.Year() == 1970 ); // Original unchanged
     assert( unix_epoch.Month() == 1 ); // Original unchanged
 
-#if 0
-    // Why doesn't this work?!
     assert( unix_epoch.AddMonths(1).Month() == 2 );
-    assert( unix_epoch.Year() == 1970 ); // Original unchanged
-#endif
+    assert( unix_epoch.AddMonths(1).Year() == 1970 ); // Original unchanged
 
     {
         System::DateTime new_time = unix_epoch.AddYears(2).AddMonths(2);
