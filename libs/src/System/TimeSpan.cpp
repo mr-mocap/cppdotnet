@@ -178,4 +178,51 @@ TimeSpan TimeSpan::Add(TimeSpan time_span) const
     return *this + time_span;
 }
 
+TimeSpan TimeSpan::Subtract(TimeSpan time_span) const
+{
+    using namespace std::literals;
+
+    // Detect a potential wrap-around...
+    if ( Ticks() >= 0 )
+    {
+        if ( MinValue().Ticks() + Ticks() < time_span.Ticks() )
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is less than DateTime::MinValue"sv) );
+    }
+    else
+    {
+        if ( time_span.Ticks() < MaxValue().Ticks() - Ticks() )
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting TimeSpan is greater than TimeSpan::MaxValue"sv) );
+        
+    }
+    return *this - time_span;
+}
+
+TimeSpan TimeSpan::Multiply(double scalar) const
+{
+#if 0
+    using namespace std::literals;
+
+    // Detect a potential wrap-around...
+    long long this_count = _time_span.count();
+    long long other_count = time_span._time_span.count();
+    long long new_value = this_count * other_count;
+
+    if ( new_value > system_clock::duration( MaxValue() ).count() )
+        ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting TimeSpan is greater than TimeSpan::MaxValue"sv) );
+    else
+    {
+        if ( new_value < system_clock::duration( MinValue() ).count() )
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is less than DateTime::MinValue"sv) );
+    }
+#endif
+    // TODO: Implement Me Properly!
+    return *this * scalar;
+}
+
+TimeSpan TimeSpan::Divide(double scalar) const
+{
+    // TODO: Implement Me Properly!
+    return *this / scalar;
+}
+
 }

@@ -647,6 +647,99 @@ void NegationOperator()
     }
 }
 
+void Addition()
+{
+    std::cout << __func__ << std::endl;
+
+    {
+        System::TimeSpan ts;
+        System::TimeSpan new_ts = ts + std::chrono::hours( 2 );
+
+        assert( ts.Ticks() == 0 );
+        assert( ts.Hours() == 0 );
+        assert( new_ts.Hours() == 2 );
+    }
+
+    {
+        System::TimeSpan ts;
+        System::TimeSpan new_ts = ts + std::chrono::hours( -2 );
+
+        assert( ts.Ticks() == 0 );
+        assert( ts.Hours() == 0 );
+        assert( new_ts.Hours() == -2 );
+    }
+}
+
+void Subtraction()
+{
+    std::cout << __func__ << std::endl;
+
+    {
+        System::TimeSpan ts;
+        System::TimeSpan new_ts = ts - std::chrono::hours( 2 );
+
+        assert( ts.Ticks() == 0 );
+        assert( ts.Hours() == 0 );
+        assert( new_ts.Hours() == -2 );
+    }
+
+    {
+        System::TimeSpan ts;
+        System::TimeSpan new_ts = ts - std::chrono::hours( -2 );
+
+        assert( ts.Ticks() == 0 );
+        assert( ts.Hours() == 0 );
+        assert( new_ts.Hours() == 2 );
+    }
+}
+
+void Multiplication()
+{
+    std::cout << __func__ << std::endl;
+
+    {
+        System::TimeSpan ts;
+        System::TimeSpan new_ts = ts * 2;
+
+        assert( ts.Ticks() == 0 );
+        assert( ts.Hours() == 0 );
+        assert( new_ts.Hours() == 0 );
+        assert( new_ts.Ticks() == 0 );
+    }
+
+    {
+        System::TimeSpan ts;
+        System::TimeSpan new_ts = ts * -2.0;
+
+        assert( ts.Ticks() == 0 );
+        assert( ts.Hours() == 0 );
+        assert( new_ts.Hours() == 0 );
+        assert( new_ts.Ticks() == 0 );
+    }
+}
+
+void Division()
+{
+    std::cout << __func__ << std::endl;
+
+    {
+        System::TimeSpan ts( 2, 0, 0 );
+        System::TimeSpan new_ts = ts / 2;
+
+        assert( ts.Hours() == 2 );
+        assert( new_ts.Hours() == 1 );
+    }
+    {
+        System::TimeSpan ts( 1, 0, 0 );
+        System::TimeSpan new_ts = ts / 2.0;
+
+        assert( ts.Hours() == 1 );
+        assert( ts.Minutes() == 0 );
+        assert( new_ts.Hours() == 0 );
+        assert( new_ts.Minutes() == 30 );
+    }
+}
+
 void Run()
 {
     std::cout << "Running TimeSpan Tests..." << std::endl;
@@ -667,6 +760,10 @@ void Run()
     PlusEqualsOperator();
     MinusEqualsOperator();
     NegationOperator();
+    Addition();
+    Subtraction();
+    Multiplication();
+    Division();
 
     std::cout << "PASSED!" << std::endl;
 }

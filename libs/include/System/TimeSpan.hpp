@@ -21,6 +21,18 @@ public:
     TimeSpan &operator =(const TimeSpan &) = default;
     TimeSpan &operator =(TimeSpan &&) = default;
 
+    static constexpr TimeSpan FromTicks(long value) { return TimeSpan( value ); }
+    static constexpr TimeSpan FromMicroseconds(long value) { return TimeSpan( std::chrono::microseconds( value ) ); }
+    static constexpr TimeSpan FromMilliseconds(long milli, long micro)
+    {
+        return TimeSpan( std::chrono::milliseconds( milli ) + std::chrono::microseconds( micro ) );
+    }
+    static constexpr TimeSpan FromSeconds(long value) { return TimeSpan( std::chrono::seconds( value ) ); }
+    static constexpr TimeSpan FromMinutes(long value) { return TimeSpan( std::chrono::minutes( value ) ); }
+    static constexpr TimeSpan FromHours(int value)    { return TimeSpan( std::chrono::hours( value ) ); }
+    static constexpr TimeSpan FromDays(int value)     { return TimeSpan( std::chrono::days( value ) ); }
+
+
     static constexpr int  HoursPerDay() { return 24; }
     static constexpr long MinutesPerDay() { return 1'440; }
     static constexpr long SecondsPerDay() { return 86'400; }
@@ -88,6 +100,9 @@ public:
     }
 
     TimeSpan Add(TimeSpan time_span) const;
+    TimeSpan Subtract(TimeSpan time_span) const;
+    TimeSpan Multiply(double scalar) const;
+    TimeSpan Divide(double scalar) const;
 
     static constexpr int Compare(const TimeSpan &left, const TimeSpan &right)
     {
@@ -121,9 +136,21 @@ protected:
         return left._time_span <=> right._time_span;
     }
 
+    template <typename Rep, typename Period>
+    friend constexpr TimeSpan operator +(const TimeSpan &left, const std::chrono::duration<Rep, Period> &right_as_duration)
+    {
+        return TimeSpan( left._time_span + right_as_duration );
+    }
+
     friend constexpr TimeSpan operator +(const TimeSpan &left, const TimeSpan &right)
     {
         return TimeSpan( left._time_span + right._time_span );
+    }
+
+    template <typename Rep, typename Period>
+    friend constexpr TimeSpan operator -(const TimeSpan &left, const std::chrono::duration<Rep, Period> &right_as_duration)
+    {
+        return TimeSpan( left._time_span - right_as_duration );
     }
 
     friend constexpr TimeSpan operator -(const TimeSpan &left, const TimeSpan &right)
@@ -131,20 +158,22 @@ protected:
         return TimeSpan( left._time_span - right._time_span );
     }
 
-    friend constexpr TimeSpan operator *(const TimeSpan &left, const double right)
+    template <class Representation>
+    friend constexpr TimeSpan operator *(const TimeSpan &left, const Representation &right)
     {
-        double ticks = left._time_span.count() * right;
-        long   truncated_ticks = static_cast<long>( ticks );
-
-        return TimeSpan( std::chrono::system_clock::duration( truncated_ticks ) );
+        return TimeSpan( left._time_span * static_cast<std::chrono::system_clock::rep>( right ) );
     }
 
-    friend constexpr TimeSpan operator /(const TimeSpan &left, const double right)
+    template <class Representation>
+    friend constexpr TimeSpan operator *(const Representation &left, const TimeSpan &right)
     {
-        double ticks = left._time_span.count() / right;
-        long   truncated_ticks = static_cast<long>( ticks );
+        return TimeSpan( static_cast<std::chrono::system_clock::rep>( left ) * right._time_span );
+    }
 
-        return TimeSpan( std::chrono::system_clock::duration( truncated_ticks ) );
+    template <class Representation>
+    friend constexpr TimeSpan operator /(const TimeSpan &left, const Representation &right)
+    {
+        return TimeSpan( left._time_span / static_cast<std::chrono::system_clock::rep>( right ) );
     }
 
     friend constexpr TimeSpan operator -(const TimeSpan &ts)
