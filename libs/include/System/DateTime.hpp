@@ -114,6 +114,11 @@ protected:
         return DateTime( left ) -= right;
     }
 
+    friend TimeSpan operator -(const DateTime &left, const DateTime &right)
+    {
+        return { left._point_in_time.time_since_epoch() - right._point_in_time.time_since_epoch() };
+    }
+
     friend DateTime operator -(const DateTime &left, std::chrono::system_clock::duration right)
     {
         return DateTime( left ) -= right;
