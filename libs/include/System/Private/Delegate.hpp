@@ -41,6 +41,8 @@ public:
     {
         return _callable(args...);
     }
+
+    operator bool() const { return (bool)_callable; }
 protected:
     std::function<RetType (ArgTypes ...args)> _callable;
 };
