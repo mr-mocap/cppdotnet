@@ -99,6 +99,20 @@ public:
         return *this;
     }
 
+    template <class Representation>
+    constexpr TimeSpan operator *=(const Representation &right)
+    {
+        _time_span *= static_cast<std::chrono::system_clock::rep>( right );
+        return *this;
+    }
+
+    template <class Representation>
+    constexpr TimeSpan operator /=(const Representation &right)
+    {
+        _time_span /= static_cast<std::chrono::system_clock::rep>( right );
+        return *this;
+    }
+
     TimeSpan Add(TimeSpan time_span) const;
     TimeSpan Subtract(TimeSpan time_span) const;
     TimeSpan Multiply(double scalar) const;
