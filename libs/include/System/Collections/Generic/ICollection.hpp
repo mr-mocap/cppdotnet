@@ -24,6 +24,120 @@ class ICollection
         // TODO: Add CopyTo() ?
 
         virtual std::unique_ptr<InternalInterface> Clone() = 0;
+        virtual std::unique_ptr<InternalInterface> Empty() = 0;
+    };
+
+    template <typename DataType>
+    struct GeneralizedInterface : InternalInterface
+    {
+        GeneralizedInterface() = default;
+        GeneralizedInterface(DataType &input) : data( input ) { }
+        GeneralizedInterface(DataType &&input) : data( std::move(input) ) { }
+        ~GeneralizedInterface() override { }
+          
+        // Default copy and move
+        GeneralizedInterface(const GeneralizedInterface &other) = default;
+        GeneralizedInterface(GeneralizedInterface &&other) = default;
+
+        GeneralizedInterface &operator =(const GeneralizedInterface &) = default;
+        GeneralizedInterface &operator =(GeneralizedInterface &&) = default;
+
+        std::size_t Count() const override { return data.Count(); }
+
+        bool IsReadOnly() const override { return data.IsReadOnly(); }
+
+        void Add(const T &item) override { data.Add(item); }
+
+        bool Remove(const T &item) override { return data.Remove(item); }
+
+        void Clear() override { data.Clear(); }
+
+        bool Contains(const T &item) override { return data.Contains(item); }
+
+        std::unique_ptr<InternalInterface> Clone() override
+        {
+            return std::make_unique<GeneralizedInterface>(data);
+        }
+
+        std::unique_ptr<InternalInterface> Empty() override
+        {
+            return std::make_unique_for_overwrite<GeneralizedInterface>();
+        }
+
+        DataType data;
+    };
+
+public:
+    ICollection() = delete;
+
+    template <class DataType>
+    ICollection(DataType &input)
+      :
+      _data( std::make_unique<GeneralizedInterface<DataType>>(input) )
+    {
+    }
+
+    template <class DataType>
+    ICollection(DataType &&input)
+      :
+      _data( std::make_unique<GeneralizedInterface<DataType>>( std::move(input) ) )
+    {
+    }
+
+    ICollection(const ICollection &other)
+      :
+      _data( other._data->Clone() )
+    {
+    }
+    ICollection(ICollection &other)
+      :
+      _data( other._data->Clone() )
+    {
+    }
+    ICollection(ICollection &&other)
+      :
+      _data( other._data->Empty() )
+    {
+        std::swap( _data, other._data );
+    }
+
+    ICollection &operator =(const ICollection &other)
+    {
+        _data = other._data->Clone();
+    }
+
+    ICollection &operator =(ICollection &&other) = delete;
+
+    std::size_t Count() const      { return _data->Count(); }
+    bool        IsReadOnly() const { return _data->IsReadOnly(); }
+
+    void Add(const T &item)      { _data->Add(item); }
+    bool Remove(const T &item)   { return _data->Remove(item); }
+    void Clear()                 { _data->Clear(); }
+    bool Contains(const T &item) { return _data->Contains(item); }
+protected:
+    std::unique_ptr<InternalInterface> _data;
+};
+
+#if 0
+template <class T>
+class ICollectionRef
+{
+    struct InternalInterface
+    {
+        virtual ~InternalInterface() { }
+
+        virtual std::size_t Count() const = 0;
+        virtual bool        IsReadOnly() const = 0;
+
+        virtual void Add(const T &item) = 0;
+        virtual bool Remove(const T &item) = 0;
+        virtual void Clear() = 0;
+        virtual bool Contains(const T &item) = 0;
+
+        // TODO: Add CopyTo() ?
+
+        virtual std::unique_ptr<InternalInterface> Clone() = 0;
     };
 
     template <typename DataType>
@@ -63,67 +177,27 @@ class ICollection
         DataType *data = nullptr;
     };
 
-    template <typename DataType>
-    struct GeneralizedInterface : InternalInterface
-    {
-        GeneralizedInterface() = delete;
-        GeneralizedInterface(DataType &input) : data( input ) { }
-        ~GeneralizedInterface() override { }
-          
-        // Default copy and move
-        GeneralizedInterface(const GeneralizedInterface &other) = default;
-        GeneralizedInterface(GeneralizedInterface &&other) = default;
-
-        GeneralizedInterface &operator =(const GeneralizedInterface &) = default;
-        GeneralizedInterface &operator =(GeneralizedInterface &&) = default;
-
-        std::size_t Count() const override { return data.Count(); }
-
-        bool IsReadOnly() const override { return data.IsReadOnly(); }
-
-        void Add(const T &item) override { data.Add(item); }
-
-        bool Remove(const T &item) override { return data.Remove(item); }
-
-        void Clear() override { data.Clear(); }
-
-        bool Contains(const T &item) override { return data.Contains(item); }
-
-        std::unique_ptr<InternalInterface> Clone() override
-        {
-            return std::make_unique<GeneralizedInterface<DataType>>(data);
-        }
-
-        DataType data;
-    };
 public:
-    ICollection() = delete;
+    ICollectionRef() = delete;
 
     template <class DataType>
-    ICollection(DataType *input)
+    ICollectionRef(DataType *input)
       :
       _data( std::make_unique<GeneralizedInterfacePtr<DataType>>(input) )
     {
     }
 
-    template <class DataType>
-    ICollection(DataType &input)
-      :
-      _data( std::make_unique<GeneralizedInterface<DataType>>(input) )
-    {
-    }
-
-    ICollection(const ICollection &other)
+    ICollectionRef(const ICollectionRef &other)
       :
       _data( other._data->Clone() )
     {
     }
-    ICollection(ICollection &other)
+    ICollectionRef(ICollectionRef &other)
       :
       _data( other._data->Clone() )
     {
     }
-    ICollection(ICollection &&other) = default;
+    ICollectionRef(ICollectionRef &&other) = default;
 
     std::size_t Count() const      { return _data->Count(); }
     bool        IsReadOnly() const { return _data->IsReadOnly(); }
@@ -135,5 +209,5 @@ public:
 protected:
     std::unique_ptr<InternalInterface> _data;
 };
-
+#endif
 }
