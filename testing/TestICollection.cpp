@@ -174,6 +174,28 @@ void MovedFromFunction()
     assert( data.Contains(4) );
 }
 
+void ConstructWithLinkedListRef()
+{
+#if 0
+    std::cout << __func__ << std::endl;
+
+    int example_data[] = { 1, 2, 3 };
+    System::Collections::Generic::LinkedList<int>  linked_list(example_data);
+
+    assert( linked_list.Count() == 3 );
+    assert( linked_list.Contains(1) );
+    assert( linked_list.Contains(2) );
+    assert( linked_list.Contains(3) );
+
+    System::Collections::Generic::ICollectionRef<int> icollection(&linked_list);
+
+    assert( icollection.Count() == 3 );
+    assert( icollection.Contains(1) );
+    assert( icollection.Contains(2) );
+    assert( icollection.Contains(3) );
+#endif
+}
+
 void Run()
 {
     std::cout << "Running ICollection Tests..." << std::endl;
@@ -184,6 +206,8 @@ void Run()
     CopyConstructorMakesANewObject();
     MoveConstructorLeavesOldObjectEmpty();
     MovedFromFunction();
+
+    ConstructWithLinkedListRef();
 
     std::cout << "PASSED!" << std::endl;
 }
