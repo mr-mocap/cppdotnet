@@ -199,6 +199,34 @@ void TryGetValueReturnsFalseAndSetsValueToDefaultIfKeyIsNotFound()
     assert( retrieved_value == int{} );
 }
 
+void KeysReturnsTheKeysInTheDictionary()
+{
+    std::cout << __func__ << std::endl;
+
+    System::Collections::Generic::Dictionary<std::string, int> d;
+
+    d.Add("one", 1);
+    d.Add("two", 2);
+    d.Add("three", 3);
+
+    assert( d.ContainsKey("one") );
+    assert( d.ContainsKey("two") );
+    assert( d.ContainsKey("three") );
+    assert( d.Count() == 3 );
+
+    System::Collections::Generic::Dictionary<std::string, int>::KeyCollection kc;
+
+    assert( kc.Count() == 0 );
+
+    kc = d.Keys();
+
+    assert( kc.Count() == d.Count() );
+    assert( kc.Count() == 3 );
+    assert( kc.Contains("one") );
+    assert( kc.Contains("two") );
+    assert( kc.Contains("three") );
+}
+
 void Run()
 {
     std::cout << "Running Dictionary Tests..." << std::endl;
@@ -215,6 +243,7 @@ void Run()
     RemoveReturnsFalseIfKeyIsNotRemoved();
     TryGetValueReturnsTrueAndSetsValueIfKeyIsFound();
     TryGetValueReturnsFalseAndSetsValueToDefaultIfKeyIsNotFound();
+    KeysReturnsTheKeysInTheDictionary();
 
     std::cout << "PASSED!" << std::endl;
 }

@@ -1,12 +1,14 @@
 #pragma once
 
 #include "System/Collections/Generic/KeyNotFoundException.hpp"
+#include "System/Collections/Generic/List.hpp"
 #include "System/Exception.hpp"
 #include "System/Private/private.hpp"
 #include <map>
 #include <format>
 #include <ranges>
 #include <compare>
+#include <algorithm>
 
 namespace System::Collections::Generic
 {
@@ -32,6 +34,9 @@ public:
     using reverse_iterator       = std::map<TKey, TValue, Compare, Allocator>::reverse_iterator;
     using const_reverse_iterator = std::map<TKey, TValue, Compare, Allocator>::const_reverse_iterator;
 
+    using KeyCollection = List<key_type>;
+    using ValueCollection = List<mapped_type>;
+
     constexpr Dictionary() = default;
 
     constexpr Dictionary(const Dictionary &) = default;
@@ -42,6 +47,8 @@ public:
     constexpr key_compare Comparer() const { return _data.key_comp(); }
 
     constexpr size_type Count() const { return _data.size(); }
+
+    constexpr size_type Capacity() const { return Count(); }  // NOTE: This isn't really implementable, is it?
 
     constexpr mapped_type &operator[](const key_type &key)
     {
@@ -117,6 +124,24 @@ public:
             if ( v == value )
                 return true;
         return false;
+    }
+
+    KeyCollection Keys() const
+    {
+        std::vector<key_type> rv;
+
+        rv.reserve( Count() );
+        std::ranges::copy( std::views::keys( _data ), std::back_inserter( rv ) );
+        return rv;
+    }
+
+    ValueCollection Values() const
+    {
+        std::vector<mapped_type> rv;
+
+        rv.reserve( Count() );
+        std::ranges::copy( std::views::values( _data ), std::back_inserter( rv ) );
+        return rv;
     }
 
     // C++ speicfic stuff
