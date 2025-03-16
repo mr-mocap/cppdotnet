@@ -27,8 +27,20 @@ public:
 
     List() = default;
 
+    List(const std::vector<value_type> &init_value)
+        :
+        _list( init_value )
+    {
+    }
+
+    List(std::vector<value_type> &&init_value)
+        :
+        _list( std::move(init_value) )
+    {
+    }
+
     template <class InputIt>
-    List(InputIt first, InputIt last)
+    constexpr List(InputIt first, InputIt last)
         :
         _list( first, last )
     {
