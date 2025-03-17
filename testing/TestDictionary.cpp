@@ -16,6 +16,107 @@ void DefaultConstruction()
     assert( d.Count() == 0 );
 }
 
+void ConstructWithMap()
+{
+    std::cout << __func__ << std::endl;
+
+    // From a std::map
+    {
+        std::map<std::string, int> m{ { {"b", 1}, {"c", 2}, {"a", 3}, {"d", 4} } };
+
+        assert( m.size() == 4 );
+        assert( m["b"] == 1 );
+        assert( m["c"] == 2 );
+        assert( m["a"] == 3 );
+        assert( m["d"] == 4 );
+
+        // Directly
+        System::Collections::Generic::Dictionary<std::string, int> d( m );
+
+        // Should be in the same order
+        assert( d.Count() == 4 );
+        assert( d["b"] == 1 );
+        assert( d["c"] == 2 );
+        assert( d["a"] == 3 );
+        assert( d["d"] == 4 );
+    }
+
+    // From std::map using a specialized Comparison operator
+    {
+        std::map<std::string, int, std::greater<std::string>> m{ { {"a", 1}, {"b", 2}, {"c", 3}, {"d", 4} } };
+
+        for (auto [key, value] : m)
+            std::cout << "key: " << key << "\tvalue: " << value << std::endl;
+
+        // Verify that the items are in reverse order...
+        assert( m.size() == 4 );
+        assert( std::next(m.begin(), 0)->first == "d" );
+        assert( std::next(m.begin(), 1)->first == "c" );
+        assert( std::next(m.begin(), 2)->first == "b" );
+        assert( std::next(m.begin(), 3)->first == "a" );
+
+        // With a pair of iterators...
+        System::Collections::Generic::Dictionary<std::string, int> d( m.begin(), m.end() );
+
+        // Verify it is in < ordering (opposite from the std::map above, because we used the default Comparison)
+        assert( d.Count() == 4 );
+        assert( std::next(d.begin(), 0)->first == "a" );
+        assert( std::next(d.begin(), 1)->first == "b" );
+        assert( std::next(d.begin(), 2)->first == "c" );
+        assert( std::next(d.begin(), 3)->first == "d" );
+    }
+
+    // Test construction with an rvalue
+    {
+        std::map<std::string, int> m{ { {"b", 1}, {"c", 2}, {"a", 3}, {"d", 4} } };
+
+        assert( m.size() == 4 );
+        assert( m["b"] == 1 );
+        assert( m["c"] == 2 );
+        assert( m["a"] == 3 );
+        assert( m["d"] == 4 );
+
+        // Using an rvalue std::map
+        System::Collections::Generic::Dictionary<std::string, int> d( std::map<std::string, int>( { { "a", 1 },
+                                                                                                    { "b", 2 },
+                                                                                                    { "c", 3 },
+                                                                                                    { "d", 4 } } ) );
+
+        // Should be in the same order
+        assert( d.Count() == 4 );
+        assert( d["a"] == 1 );
+        assert( d["b"] == 2 );
+        assert( d["c"] == 3 );
+        assert( d["d"] == 4 );
+    }
+
+    // Test construction with a begin()/end() iterator pair...
+    {
+        std::pair<std::string, int> array[] = { {"a", 2}, {"b", 4}, {"c", 6} };
+
+        System::Collections::Generic::Dictionary<std::string, int> d{ std::begin(array), std::end(array) };
+
+        // Should be in the same order
+        assert( d.Count() == 3 );
+        assert( d["a"] == 2 );
+        assert( d["b"] == 4 );
+        assert( d["c"] == 6 );
+    }
+
+    // Test construction with a deduction guide...
+    {
+        std::map<std::string, int> m{ {"a", 1}, {"b", 2}, {"c", 3} };
+
+        System::Collections::Generic::Dictionary d{ m };
+
+        // Should be in the same order
+        assert( d.Count() == 3 );
+        assert( d["a"] == 1 );
+        assert( d["b"] == 2 );
+        assert( d["c"] == 3 );
+    }
+}
+
 void AddAddsNonexistingKey()
 {
     std::cout << __func__ << std::endl;
@@ -232,6 +333,7 @@ void Run()
     std::cout << "Running Dictionary Tests..." << std::endl;
 
     DefaultConstruction();
+    ConstructWithMap();
     AddAddsNonexistingKey();
     AddKeyThrowsExceptionWhenAddingIdenticalKey();
     ClearClearsAllItemsInDictionary();
