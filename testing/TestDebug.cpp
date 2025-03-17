@@ -22,12 +22,17 @@ void CommonUsage()
     Debug::Print("Debug::Print()"sv);
     Debug::Unindent();
 
+    Debug::Print("The number is {}", 6);
+
     Debug::Write("Debug::Write()"sv);
     Debug::WriteLine("Debug::Write()"sv);
 
     Debug::Assert(false);
+    Debug::Assert(false, "Assert with message");
+    Debug::Assert(false, "Assert with parameter in message: '{}'", "std::string");
 
     Debug::Fail("Debug::Fail()"sv);
+    Debug::Fail("Debug::Fail() #{}", 42);
 
     Debug::WriteLineIf(true, "Debug::WriteLineIf(true, ...)"sv);
     Debug::WriteLineIf(false, "Debug::WriteLineIf(false, ...)"sv);
