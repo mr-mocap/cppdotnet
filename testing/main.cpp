@@ -23,6 +23,7 @@
 #include "TestDateTime.hpp"
 #include "TestICollection.hpp"
 #include "TestDictionary.hpp"
+#include "TestTimeOnly.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -55,6 +56,7 @@ int main(void)
     TestDateTime::Run();
     TestICollection::Run();
     TestDictionary::Run();
+    TestTimeOnly::Run();
 
     std::cout << "All tests passed!\n";
 

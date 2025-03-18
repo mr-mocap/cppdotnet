@@ -31,6 +31,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestDateTime.o \
 	TestICollection.o \
 	TestDictionary.o \
+	TestTimeOnly.o \
 	main.o
 
 CXXFLAGS=-std=c++20 -W -Wall -Wextra -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
