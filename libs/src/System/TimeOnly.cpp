@@ -1,4 +1,5 @@
 #include "System/TimeOnly.hpp"
+#include "System/DateTime.hpp"
 #include <cmath>
 
 using namespace std::chrono;
@@ -45,6 +46,8 @@ TimeOnly TimeOnly::AddMinutes(double minutes) const
 
 TimeOnly TimeOnly::AddMinutes(double minutes_to_add, int &out_excess_minutes) const
 {
+    UNUSED(out_excess_minutes);
+
     double ipart;
     double fraction = std::modf( minutes_to_add, &ipart );
     TimeSpan ts_whole_minutes{ minutes{ static_cast<int>(ipart) } };
@@ -93,6 +96,11 @@ void TimeOnly::Deconstruct(int &hour, int &minute) const
 {
     hour = Hour();
     minute = Minute();
+}
+
+TimeOnly TimeOnly::FromDateTime(const System::DateTime &datetime)
+{
+    return TimeOnly( datetime.TimeOfDay() );
 }
 
 }

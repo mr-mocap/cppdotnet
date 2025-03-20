@@ -9,6 +9,8 @@
 namespace System
 {
 
+class DateTime;
+
 class TimeOnly
 {
 public:
@@ -66,11 +68,16 @@ public:
     void Deconstruct(int &hour, int &minute, int &second, int &millisecond) const;
     void Deconstruct(int &hour, int &minute, int &second) const;
     void Deconstruct(int &hour, int &minute) const;
+
+    static constexpr TimeOnly FromTimeSpan(const TimeSpan &timespan) { return TimeOnly( timespan ); }
+    static           TimeOnly FromDateTime(const DateTime &datetime);
+
+    const TimeSpan &ToTimeSpan() const { return _time_span; }
 protected:
     TimeSpan _time_span;
 
 
-    TimeOnly(const TimeSpan &init) : _time_span( init ) { }
+    constexpr TimeOnly(const TimeSpan &init) : _time_span( init ) { }
 
     friend bool operator ==(const TimeOnly &left, const TimeOnly &right)
     {

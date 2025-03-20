@@ -16,10 +16,10 @@ public:
     constexpr explicit TimeSpan(long ticks) : TimeSpan( ticks * std::chrono::nanoseconds( NanosecondsPerTick() ) ) { }
     constexpr TimeSpan(std::chrono::system_clock::duration value) : _time_span( value ) { }
 
-    TimeSpan(const TimeSpan &) = default;
-    TimeSpan(TimeSpan &&) = default;
-    TimeSpan &operator =(const TimeSpan &) = default;
-    TimeSpan &operator =(TimeSpan &&) = default;
+    constexpr TimeSpan(const TimeSpan &) = default;
+    constexpr TimeSpan(TimeSpan &&) = default;
+    constexpr TimeSpan &operator =(const TimeSpan &) = default;
+    constexpr TimeSpan &operator =(TimeSpan &&) = default;
 
     static constexpr TimeSpan FromTicks(long value) { return TimeSpan( value ); }
     static constexpr TimeSpan FromMicroseconds(long value) { return TimeSpan( std::chrono::microseconds( value ) ); }
