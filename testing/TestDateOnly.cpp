@@ -404,6 +404,15 @@ void Deconstruct()
     assert( d == 4 );
 }
 
+void ToString()
+{
+    std::cout << __func__ << std::endl;
+
+    System::DateOnly dateonly(1949, 8, 4);
+
+    std::cout << dateonly.ToString() << std::endl;
+}
+
 void Run()
 {
     std::cout << "Running DateOnly Tests..." << std::endl;
@@ -421,6 +430,7 @@ void Run()
     AddDays();
     FromDateTime();
     Deconstruct();
+    ToString();
 
     std::cout << "PASSED!" << std::endl;
 }

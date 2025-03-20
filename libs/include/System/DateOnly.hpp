@@ -84,6 +84,8 @@ public:
 
     void Deconstruct(int &year, int &month, int &day);
 
+    std::string ToString() const;
+
     operator std::chrono::sys_days() const { return _year_month_day; }
 protected:
     std::chrono::year_month_day _year_month_day;

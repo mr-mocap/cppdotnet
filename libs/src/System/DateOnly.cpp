@@ -85,4 +85,9 @@ void DateOnly::Deconstruct(int &year, int &month, int &day)
     day = Day();
 }
 
+std::string DateOnly::ToString() const
+{
+    return std::format("{}", _year_month_day);
+}
+
 }
