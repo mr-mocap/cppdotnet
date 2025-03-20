@@ -1,6 +1,6 @@
 #pragma once
 
-#include "System/DateTime.hpp"
+#include "System/DayOfWeek.hpp"
 #include "System/Private/private.hpp"
 #include <chrono>
 #include <compare>
@@ -9,21 +9,21 @@
 namespace System
 {
 
+class DateTime;
+
 class DateOnly
 {
 public:
     explicit constexpr DateOnly(int year, int month, int day)
         :
-        DateOnly( std::chrono::year(year), std::chrono::month(month), std::chrono::day(day) )
+        _year_month_day( std::chrono::year(year), std::chrono::month(month), std::chrono::day(day) )
     {
-    }
-
-    explicit constexpr DateOnly(const std::chrono::year &y, const std::chrono::month &m, const std::chrono::day &d)
-        :
-        _year_month_day( y, m, d )
-    {
-        POSTCONDITION( *this <= MaxValue() );
-        POSTCONDITION( *this >= MinValue() );
+        POSTCONDITION( year <= 9999 );
+        POSTCONDITION( year >= 1 );
+        POSTCONDITION( month >= 1 );
+        POSTCONDITION( month <= 12 );
+        POSTCONDITION( day >= 1 );
+        POSTCONDITION( day <= 31 );
     }
 
     constexpr DateOnly(const std::chrono::year_month_day &ymd)
@@ -51,9 +51,7 @@ public:
 
     constexpr int Year() const
     {
-        int temp{ _year_month_day.year() };
-
-        return temp;
+        return static_cast<int>( _year_month_day.year() );
     }
 
     constexpr int DayNumber() const
@@ -72,8 +70,8 @@ public:
 
     int DayOfYear() const;
 
-    static constexpr DateOnly MaxValue() { return DateOnly( std::chrono::year(1), std::chrono::month(1), std::chrono::day(1) ); }
-    static constexpr DateOnly MinValue() { return DateOnly( std::chrono::year(9999), std::chrono::month(12), std::chrono::day(31) ); }
+    static constexpr DateOnly MinValue() { return DateOnly( 1, 1, 1 ); }
+    static constexpr DateOnly MaxValue() { return DateOnly( 9999, 12, 31 ); }
 
     static DateOnly FromDateTime(const DateTime &dt);
 
@@ -85,6 +83,8 @@ public:
     bool Equals(const DateOnly &other) const { return *this == other; }
 
     void Deconstruct(int &year, int &month, int &day);
+
+    operator std::chrono::sys_days() const { return _year_month_day; }
 protected:
     std::chrono::year_month_day _year_month_day;
 

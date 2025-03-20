@@ -24,6 +24,8 @@
 #include "TestICollection.hpp"
 #include "TestDictionary.hpp"
 #include "TestTimeOnly.hpp"
+#include "TestDateTimeOffset.hpp"
+#include "TestDateOnly.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -57,6 +59,8 @@ int main(void)
     TestICollection::Run();
     TestDictionary::Run();
     TestTimeOnly::Run();
+    TestDateTimeOffset::Run();
+    TestDateOnly::Run();
 
     std::cout << "All tests passed!\n";
 
