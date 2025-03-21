@@ -38,6 +38,26 @@ public:
     using ValueCollection = List<mapped_type>;
 
     constexpr Dictionary() = default;
+    
+    Dictionary(const std::map<key_type, mapped_type> &init_value)
+        :
+        _data( init_value )
+    {
+    }
+
+    // This allows the use of either explicit iterator pairs OR the new range syntax
+    template <class InputIterator>
+    Dictionary(InputIterator first, InputIterator one_past_last)
+        :
+        _data( first, one_past_last)
+    {
+    }
+
+    Dictionary(std::map<key_type, mapped_type> &&init_value)
+        :
+        _data( std::move(init_value) )
+    {
+    }
 
     constexpr Dictionary(const Dictionary &) = default;
     constexpr Dictionary(Dictionary &&) = default;
@@ -169,5 +189,12 @@ public:
 protected:
     std::map<TKey, TValue, Compare, Allocator> _data;
 };
+
+// Deduction Guides
+template <typename KeyType, typename MappedType>
+Dictionary(const std::map<KeyType, MappedType> &) -> Dictionary<KeyType, MappedType>;
+
+template <typename KeyType, typename MappedType>
+Dictionary(std::map<KeyType, MappedType> &&) -> Dictionary<KeyType, MappedType>;
 
 }
