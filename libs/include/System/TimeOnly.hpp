@@ -51,8 +51,8 @@ public:
     int Microsecond() const { return _time_span.Microseconds(); }
     int Nanosecond() const { return _time_span.Nanoseconds(); }
 
-    static TimeOnly MaxValue() { return TimeOnly(23, 59, 59, 999, 999); }
-    static TimeOnly MinValue() { return TimeOnly(); }
+    static constexpr TimeOnly MaxValue() { return TimeOnly(23, 59, 59, 999, 999); }
+    static constexpr TimeOnly MinValue() { return TimeOnly(); }
 
     TimeOnly Add(const TimeSpan &value) const { return TimeOnly( *this ) + value; }
     TimeOnly Add(const TimeSpan &value, int &out_excess_days) const;
@@ -72,7 +72,11 @@ public:
     static constexpr TimeOnly FromTimeSpan(const TimeSpan &timespan) { return TimeOnly( timespan ); }
     static           TimeOnly FromDateTime(const DateTime &datetime);
 
-    const TimeSpan &ToTimeSpan() const { return _time_span; }
+    constexpr const TimeSpan &ToTimeSpan() const { return _time_span; }
+
+    constexpr long Ticks() const { return _time_span.Ticks(); }
+
+    std::string ToString() const;
 protected:
     TimeSpan _time_span;
 

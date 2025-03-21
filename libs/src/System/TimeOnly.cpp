@@ -1,6 +1,7 @@
 #include "System/TimeOnly.hpp"
 #include "System/DateTime.hpp"
 #include <cmath>
+#include <format>
 
 using namespace std::chrono;
 
@@ -12,7 +13,7 @@ TimeOnly TimeOnly::Add(const TimeSpan &value, int &out_excess_days) const
     TimeSpan ts = _time_span + value;
 
     out_excess_days = ts.Days();
-    return TimeOnly( ts.Ticks() % TimeSpan::TicksPerDay() );
+    return ts;
 }
 
 TimeOnly TimeOnly::AddHours(double hours_to_add) const
@@ -103,4 +104,8 @@ TimeOnly TimeOnly::FromDateTime(const System::DateTime &datetime)
     return TimeOnly( datetime.TimeOfDay() );
 }
 
+std::string TimeOnly::ToString() const
+{
+    return std::format("{}", "TODO: IMPLEMENT ME");
+}
 }

@@ -1,4 +1,6 @@
 #include "System/DateTime.hpp"
+#include "System/DateOnly.hpp"
+#include "System/TimeOnly.hpp"
 #include "System/Private/private.hpp"
 #include <format>
 #include <cmath>
@@ -8,237 +10,43 @@ using namespace std::chrono;
 namespace System
 {
 
-DateTime::DateTime(int y, int m, int d, int h, int min, int s, int ms)
-    :
-    _point_in_time( sys_days( year_month_day( year(y) / month(m) / day(d) ) ) )
-{
-    _point_in_time += hours(h);
-    _point_in_time += minutes(min);
-    _point_in_time += seconds(s);
-    _point_in_time += milliseconds(ms);
-}
-
-DateTime DateTime::Date() const
-{
-    DateTime td( floor<days>( _point_in_time ) );
-
-    POSTCONDITION( td.Hour() == 0 );
-    POSTCONDITION( td.Minute() == 0 );
-    POSTCONDITION( td.Second() == 0 );
-
-    return td;
-}
-
-TimeSpan DateTime::TimeOfDay() const
-{
-    auto midnight_tp = floor<days>( _point_in_time );
-
-    return TimeSpan( _point_in_time - midnight_tp );
-}
-
-int DateTime::Year() const
-{
-    year_month_day ymd{ floor<days>( _point_in_time ) };
-    int year_as_int{ ymd.year() };
-
-    POSTCONDITION( year_as_int >= 1 );
-    POSTCONDITION( year_as_int <= 9999 );
-
-    return year_as_int;
-}
-
-int DateTime::Month() const
-{
-    year_month_day ymd{ floor<days>( _point_in_time ) };
-    unsigned int month_as_unsigned_int{ ymd.month() };
-
-    POSTCONDITION( month_as_unsigned_int >= 1 );
-    POSTCONDITION( month_as_unsigned_int <= 12 );
-
-    return static_cast<int>(month_as_unsigned_int);
-}
-
-int DateTime::Day() const
-{
-    year_month_day ymd{ floor<days>( _point_in_time ) };
-    unsigned int day_as_unsigned_int{ ymd.day() };
-
-    POSTCONDITION( day_as_unsigned_int >= 1 );
-    POSTCONDITION( day_as_unsigned_int <= 31 );
-
-    return static_cast<int>(day_as_unsigned_int);
-}
-
-int DateTime::Hour() const
-{
-    system_clock::duration tp = _point_in_time.time_since_epoch();
-    days d = duration_cast<days>(tp);
-
-    tp -= d;
-    auto h = duration_cast<hours>(tp);
-
-    POSTCONDITION( h.count() >= 0 );
-    POSTCONDITION( h.count() <= 23 );
-
-    return static_cast<int>( h.count() );
-}
-
-int DateTime::Minute() const
-{
-    auto tp = _point_in_time.time_since_epoch();
-    days d = duration_cast<days>(tp);
-
-    tp -= d;
-    auto h = duration_cast<hours>(tp);
-
-    tp -= h;
-    auto m = duration_cast<minutes>(tp);
-
-    POSTCONDITION( m.count() >= 0 );
-    POSTCONDITION( m.count() <= 59 );
-
-    return static_cast<int>( m.count() );
-}
-
-int DateTime::Second() const
-{
-    auto tp = _point_in_time.time_since_epoch();
-    days d = duration_cast<days>(tp);
-
-    tp -= d;
-    auto h = duration_cast<hours>(tp);
-
-    tp -= h;
-    auto m = duration_cast<minutes>(tp);
-
-    tp -= m;
-    auto s = duration_cast<seconds>(tp);
-
-    POSTCONDITION( s.count() >= 0 );
-    POSTCONDITION( s.count() <= 59 );
-
-    return static_cast<int>( s.count() );
-}
-
-int DateTime::Millisecond() const
-{
-    auto tp = _point_in_time.time_since_epoch();
-    days d = duration_cast<days>(tp);
-
-    tp -= d;
-    auto h = duration_cast<hours>(tp);
-
-    tp -= h;
-    auto m = duration_cast<minutes>(tp);
-
-    tp -= m;
-    auto s = duration_cast<seconds>(tp);
-
-    tp -= s;
-    auto ms = duration_cast<milliseconds>(tp);
-
-    POSTCONDITION( ms.count() >= 0 );
-    POSTCONDITION( ms.count() <= 999 );
-
-    return static_cast<int>( ms.count() );
-}
-
-int DateTime::Microsecond() const
-{
-    auto tp = _point_in_time.time_since_epoch();
-    days d = duration_cast<days>(tp);
-
-    tp -= d;
-    auto h = duration_cast<hours>(tp);
-
-    tp -= h;
-    auto m = duration_cast<minutes>(tp);
-
-    tp -= m;
-    auto s = duration_cast<seconds>(tp);
-
-    tp -= s;
-    auto ms = duration_cast<milliseconds>(tp);
-
-    tp -= ms;
-    auto micro = duration_cast<microseconds>(tp);
-
-    POSTCONDITION( micro.count() >= 0 );
-    POSTCONDITION( micro.count() <= 999 );
-
-    return static_cast<int>( micro.count() );
-}
-
-int DateTime::Nanosecond() const
-{
-    auto tp = _point_in_time.time_since_epoch();
-    days d = duration_cast<days>(tp);
-
-    tp -= d;
-    auto h = duration_cast<hours>(tp);
-
-    tp -= h;
-    auto m = duration_cast<minutes>(tp);
-
-    tp -= m;
-    auto s = duration_cast<seconds>(tp);
-
-    tp -= s;
-    auto ms = duration_cast<milliseconds>(tp);
-
-    tp -= ms;
-    auto micro = duration_cast<microseconds>(tp);
-
-    tp -= micro;
-    auto nano = duration_cast<nanoseconds>(tp);
-
-    // nano should be in increments of 100 real nanoseconds
-
-    POSTCONDITION( nano.count() >= 0 );
-    POSTCONDITION( nano.count() <= 900 );
-
-    return static_cast<int>( micro.count() );
-}
-
 long DateTime::Ticks() const
 {
-    return _point_in_time.time_since_epoch().count() / TimeSpan::NanosecondsPerTick();
-}
+    sys_days time_point_in_days( _date_only );
+    sys_days origin( DateOnly::MinValue() );
+    sys_days difference = time_point_in_days - origin.time_since_epoch();
+    long     calculated_ticks = difference.time_since_epoch().count() * TimeSpan::TicksPerDay();
 
-enum DayOfWeek DateTime::DayOfWeek() const
-{
-    auto dp = floor<days>(_point_in_time);
-    year_month_day ymd{ dp };
-    weekday wd{ sys_days( ymd ) };
-
-    return static_cast<enum DayOfWeek>( wd.c_encoding() );
-}
-
-int DateTime::DayOfYear() const
-{
-    auto current_year = floor<years>(_point_in_time);
-    auto d = duration_cast<days>(_point_in_time - current_year);
-
-    // Let's add 1 since the subtraction puts us at a 0-based number
-    return static_cast<int>( d.count()  + 1 );
+    //return difference.time_since_epoch().count() / TimeSpan::NanosecondsPerTick();
+    return calculated_ticks + _time_only.Ticks();
 }
 
 DateTime DateTime::Now()
 {
+#if 0
     auto local_tp = current_zone()->to_local( system_clock::now() );
 
     return DateTime( sys_time( local_tp.time_since_epoch() ) );
+#else
+    system_clock::time_point now = system_clock::now();
+    year_month_day ymd{ floor<days>(now) };
+
+    return DateTime( DateOnly( ymd ), TimeOnly( now.time_since_epoch() ) );
+#endif
 }
 
 DateTime DateTime::UtcNow()
 {
-    return DateTime( clock_cast<system_clock, utc_clock>( utc_clock::now() ) );
+    system_clock::time_point now = clock_cast<system_clock, utc_clock>( utc_clock::now() );
+    year_month_day ymd{ floor<days>(now) };
+
+    return DateTime( DateOnly( ymd ), TimeOnly( now.time_since_epoch() ) );
 }
 
 DateTime DateTime::Today()
 {
-    auto tp = floor<days>( system_clock::now() );
-    DateTime td( tp );
+    year_month_day ymd{ floor<days>( system_clock::now() ) };
+    DateTime       td{ DateOnly( ymd ), TimeOnly() };
 
     POSTCONDITION( td.Hour() == 0 );
     POSTCONDITION( td.Minute() == 0 );
@@ -249,15 +57,86 @@ DateTime DateTime::Today()
 
 std::string DateTime::ToString() const
 {
-    return std::format("{}", _point_in_time);
+    return std::format("{} {}", _date_only.ToString(), _time_only.ToString() );
+}
+#if 0
+DateTime &DateTime::operator +=(std::chrono::system_clock::duration time_duration)
+{
+    // FIXME
+    system_clock::time_point tp( sys_days(_date_only) + system_clock::duration(_time_only.ToTimeSpan()) );
+
+    tp += time_duration;
+
+    {
+        sys_days new_time_point_at_start_of_day( floor<days>( tp.time_since_epoch() ) );
+
+        _date_only = DateOnly( new_time_point_at_start_of_day );
+        tp -= new_time_point_at_start_of_day.time_since_epoch(); // Subtract off the days so we will be left with the leftover day
+    }
+
+    _time_only = TimeOnly::FromTimeSpan( TimeSpan( tp.time_since_epoch() ) );
+    return *this;
 }
 
-DateTime DateTime::AddYears(int years_to_add) const
+DateTime &DateTime::operator -=(std::chrono::system_clock::duration time_duration)
 {
-    TimeSpan ts{ std::chrono::years(years_to_add) };
-    DateTime new_value( *this );
+    // FIXME
+    system_clock::time_point tp( sys_days(_date_only) + system_clock::duration(_time_only.ToTimeSpan()) );
 
-    return new_value.Add( ts );
+    tp -= time_duration;
+
+    {
+        sys_days new_time_point_at_start_of_day( floor<days>( tp.time_since_epoch() ) );
+
+        _date_only = DateOnly( new_time_point_at_start_of_day );
+        tp -= new_time_point_at_start_of_day.time_since_epoch(); // Subtract off the days so we will be left with the leftover day
+    }
+
+    _time_only = TimeOnly::FromTimeSpan( TimeSpan( tp.time_since_epoch() ) );
+    return *this;
+}
+#endif
+
+DateTime &DateTime::_accumulate(std::chrono::system_clock::duration time_duration)
+{
+    // First do the DateOnly part...
+    {
+        DateOnly result( _date_only );
+
+        {
+            days d = floor<days>( time_duration );
+
+            result = result.AddDays( d.count() );
+            time_duration -= d;
+        }
+        {
+            months m = floor<months>( time_duration );
+
+            result = result.AddMonths( m.count() );
+            time_duration -= m;
+        }
+        {
+            years y = floor<years>( time_duration );
+
+            result = result.AddYears( y.count() );
+            time_duration -= y;
+        }
+        _date_only = result;
+    }
+
+    // Then do the TimeOnly part
+    {
+        int excess_days;
+
+        _time_only = _time_only.Add( time_duration, excess_days );
+        _date_only = _date_only.AddDays( excess_days );
+    }
+    return *this;
+}
+
+DateTime DateTime::AddYears(int y) const
+{
+    return DateTime( _date_only.AddYears(y), _time_only );
 }
 
 DateTime DateTime::AddMonths(int months) const
@@ -270,15 +149,7 @@ DateTime DateTime::AddMonths(int months) const
     if ( months > 120'000 )
         ThrowWithTarget( ArgumentOutOfRangeException("months"sv, "Parameter is greater than minimum allowed value"sv) );
 
-    // First, let's convert to year_month_days...
-    year_month_day ymd{ floor<days>( _point_in_time ) };
-    year_month_day next_month = ymd + std::chrono::months{months}; // And add the input number of months
-    
-    // And convert back to sys_days...
-    sys_days new_month_in_days = sys_days( next_month );
-
-    // Now let's convert the difference between the two time points to a duration and initialize a TimeSpan and call Add()...
-    return DateTime( *this ).Add( new_month_in_days - _point_in_time );
+    return DateTime( _date_only.AddMonths( months ), _time_only );
 }
 
 DateTime DateTime::AddDays(double d) const
@@ -286,9 +157,10 @@ DateTime DateTime::AddDays(double d) const
     double ipart;
     double fraction = std::modf( d, &ipart );
     TimeSpan ts_whole_days{ days{ static_cast<int>(ipart) } };
-    long fractional_day_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerDay());
+    double   leftover_ticks = fraction * static_cast<double>(TimeSpan::TicksPerDay());
+    long fractional_day_in_ticks = static_cast<long>(leftover_ticks);
 
-    return DateTime( *this ).Add( ts_whole_days ).Add( TimeSpan( fractional_day_in_ticks ) );
+    return Add( ts_whole_days ).Add( TimeSpan( fractional_day_in_ticks ) );
 }
 
 DateTime DateTime::AddHours(double h) const
@@ -298,7 +170,7 @@ DateTime DateTime::AddHours(double h) const
     TimeSpan ts_whole_hours{ hours{ static_cast<int>(ipart) } };
     long fractional_hours_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerHour());
 
-    return DateTime( *this ).Add( ts_whole_hours ).Add( TimeSpan( fractional_hours_in_ticks ) );
+    return Add( ts_whole_hours ).Add( TimeSpan( fractional_hours_in_ticks ) );
 }
 
 DateTime DateTime::AddMinutes(double m) const
@@ -308,7 +180,7 @@ DateTime DateTime::AddMinutes(double m) const
     TimeSpan ts_whole_minutes{ minutes{ static_cast<int>(ipart) } };
     long fractional_minutes_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerMinute());
 
-    return DateTime( *this ).Add( ts_whole_minutes ).Add( TimeSpan( fractional_minutes_in_ticks ) );
+    return Add( ts_whole_minutes ).Add( TimeSpan( fractional_minutes_in_ticks ) );
 }
 
 DateTime DateTime::AddSeconds(double s) const
@@ -318,7 +190,7 @@ DateTime DateTime::AddSeconds(double s) const
     TimeSpan ts_whole_seconds{ seconds{ static_cast<int>(ipart) } };
     long fractional_seconds_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerSecond());
 
-    return DateTime( *this ).Add( ts_whole_seconds ).Add( TimeSpan( fractional_seconds_in_ticks ) );
+    return Add( ts_whole_seconds ).Add( TimeSpan( fractional_seconds_in_ticks ) );
 }
 
 DateTime DateTime::AddMilliseconds(double ms) const
@@ -328,7 +200,7 @@ DateTime DateTime::AddMilliseconds(double ms) const
     TimeSpan ts_whole_milliseconds{ milliseconds{ static_cast<int>(ipart) } };
     long fractional_milliseconds_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerMillisecond());
 
-    return DateTime( *this ).Add( ts_whole_milliseconds ).Add( TimeSpan( fractional_milliseconds_in_ticks ) );
+    return Add( ts_whole_milliseconds ).Add( TimeSpan( fractional_milliseconds_in_ticks ) );
 }
 
 DateTime DateTime::AddMicroseconds(double micro_seconds) const
@@ -338,7 +210,7 @@ DateTime DateTime::AddMicroseconds(double micro_seconds) const
     TimeSpan ts_whole_microseconds{ microseconds{ static_cast<int>(ipart) } };
     long fractional_microseconds_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerMicrosecond());
 
-    return DateTime( *this ).Add( ts_whole_microseconds ).Add( TimeSpan( fractional_microseconds_in_ticks ) );
+    return Add( ts_whole_microseconds ).Add( TimeSpan( fractional_microseconds_in_ticks ) );
 }
 
 DateTime DateTime::AddTicks(long ticks) const
@@ -346,10 +218,11 @@ DateTime DateTime::AddTicks(long ticks) const
     return Add( TimeSpan(ticks) );
 }
 
-DateTime DateTime::Add(TimeSpan time_span) const
+DateTime DateTime::Add(const TimeSpan &time_span) const
 {
     using namespace std::literals;
 
+#if 0
     // Detect a potential wrap-around...
     if ( Ticks() >= 0 )
     {
@@ -364,6 +237,35 @@ DateTime DateTime::Add(TimeSpan time_span) const
     }
 
     return *this + time_span;
+#else
+    // Detect a potential wrap-around...
+    if ( Ticks() >= 0 )
+    {
+        // Overflow a long...
+        if ( MaxValue().Ticks() - Ticks() < time_span.Ticks() )
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is greater than DateTime::MaxValue"sv) );
+    }
+    else
+    {
+        if ( time_span.Ticks() < MinValue().Ticks() - Ticks() )
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is less than DateTime::MinValue"sv) );
+        
+    }
+        
+    // We won't overflow the long, but we still might go out-of-bounds for a DateTime...
+    DateTime result( *this );
+
+    result._accumulate( time_span );
+    if ( result < MinValue() )
+        ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is less than DateTime::MinValue"sv) );
+    else
+    {
+        if ( result > MaxValue() )
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is greater than DateTime::MaxValue"sv) );
+    }
+
+    return result;
+#endif
 }
 
 int DateTime::Compare(const DateTime &t1, const DateTime &t2)
@@ -376,6 +278,13 @@ int DateTime::Compare(const DateTime &t1, const DateTime &t2)
         return 0;
     else
         return 1;
+}
+
+DateTime DateTime::UnixEpoch()
+{
+    year_month_day ymd{ floor<days>( system_clock::time_point() ) };
+
+    return DateTime( DateOnly( ymd ), TimeOnly::MinValue() );
 }
 
 }

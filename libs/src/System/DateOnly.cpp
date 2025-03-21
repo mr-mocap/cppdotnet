@@ -17,7 +17,7 @@ int DateOnly::DayOfYear() const
     return static_cast<int>( d.count() + 1 );
 }
 
-DateOnly DateOnly::AddDays(int num_days)
+DateOnly DateOnly::AddDays(int num_days) const
 {
     using namespace std::literals;
 
@@ -33,30 +33,30 @@ DateOnly DateOnly::AddDays(int num_days)
     return new_date_only;
 }
 
-DateOnly DateOnly::AddMonths(int num_months)
+DateOnly DateOnly::AddMonths(int num_months) const
 {
     using namespace std::literals;
 
     DateOnly new_date_only( _year_month_day + std::chrono::months( num_months ) );
 
     if ( new_date_only <= MinValue() )
-        ThrowWithTarget( ArgumentOutOfRangeException( "num_days"sv, "Parameter is less than minimum allowed value"sv ) );
+        ThrowWithTarget( ArgumentOutOfRangeException( "num_months"sv, "Parameter is less than minimum allowed value"sv ) );
     else if ( new_date_only >= MaxValue() )
-        ThrowWithTarget( ArgumentOutOfRangeException( "num_days"sv, "Parameter is greater than minimum allowed value"sv ) );
+        ThrowWithTarget( ArgumentOutOfRangeException( "num_months"sv, "Parameter is greater than minimum allowed value"sv ) );
     
     return new_date_only;
 }
 
-DateOnly DateOnly::AddYears(int num_years)
+DateOnly DateOnly::AddYears(int num_years) const
 {
     using namespace std::literals;
 
     DateOnly new_date_only( _year_month_day + years( num_years ) );
 
     if ( new_date_only <= MinValue() )
-        ThrowWithTarget( ArgumentOutOfRangeException( "num_days"sv, "Parameter is less than minimum allowed value"sv ) );
+        ThrowWithTarget( ArgumentOutOfRangeException( "num_years"sv, "Parameter is less than minimum allowed value"sv ) );
     else if ( new_date_only >= MaxValue() )
-        ThrowWithTarget( ArgumentOutOfRangeException( "num_days"sv, "Parameter is greater than minimum allowed value"sv ) );
+        ThrowWithTarget( ArgumentOutOfRangeException( "num_years"sv, "Parameter is greater than minimum allowed value"sv ) );
     
     return new_date_only;
 }

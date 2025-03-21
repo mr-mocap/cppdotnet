@@ -225,4 +225,9 @@ TimeSpan TimeSpan::Divide(double scalar) const
     return *this / scalar;
 }
 
+std::string TimeSpan::ToString() const
+{
+    return std::format("{}", _time_span);
+}
+
 }

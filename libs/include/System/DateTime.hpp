@@ -3,6 +3,8 @@
 #include "System/DayOfWeek.hpp"
 #include "System/DateTimeKind.hpp"
 #include "System/TimeSpan.hpp"
+#include "System/DateOnly.hpp"
+#include "System/TimeOnly.hpp"
 #include "System/Exception.hpp"
 #include <cstddef>
 #include <chrono>
@@ -17,59 +19,63 @@ class DateTime
 {
 public:
     constexpr DateTime() = default;
-    DateTime(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int milliseconds = 0);
-    constexpr DateTime(std::chrono::system_clock::time_point tp) : _point_in_time( tp ) { }
+    constexpr DateTime(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int milliseconds = 0)
+                  :
+                  _date_only( year, month, day ),
+                  _time_only( hour, minute, second, milliseconds )
+              {
+              }
+    constexpr DateTime(const DateOnly &date_only, const TimeOnly &time_only)
+                  :
+                  _date_only( date_only ),
+                  _time_only( time_only)
+              {
+              }
+    //constexpr DateTime(std::chrono::system_clock::time_point tp) : _point_in_time( tp ) { }
 
-    DateTime(const DateTime &) = default;
-    DateTime(DateTime &&) = default;
+    constexpr DateTime(const DateTime &) = default;
+    constexpr DateTime(DateTime &&) = default;
 
-    DateTime &operator =(const DateTime &) = default;
-    DateTime &operator =(DateTime &&) = default;
+    constexpr DateTime &operator =(const DateTime &) = default;
+    constexpr DateTime &operator =(DateTime &&) = default;
 
-    DateTime Date() const;
-    TimeSpan TimeOfDay() const;
+    constexpr DateTime Date() const { return DateTime( _date_only, TimeOnly() ); }
+    constexpr TimeSpan TimeOfDay() const { return _time_only.ToTimeSpan(); }
 
-    DateTimeKind Kind() const { return _kind; }
+    constexpr DateTimeKind Kind() const { return _kind; }
 
-    int Year() const;
-    int Month() const;
-    int Day() const;
+    constexpr int Year() const  { return _date_only.Year(); }
+    constexpr int Month() const { return _date_only.Month(); }
+    constexpr int Day() const   { return _date_only.Day(); }
 
-    int Hour() const;
-    int Minute() const;
-    int Second() const;
-    int Millisecond() const;
-    int Microsecond() const;
-    int Nanosecond() const;
+    int Hour() const { return _time_only.Hour(); }
+    int Minute() const { return _time_only.Minute(); }
+    int Second() const { return _time_only.Second(); }
+    int Millisecond() const { return _time_only.Millisecond(); }
+    int Microsecond() const { return _time_only.Microsecond(); }
+    int Nanosecond() const { return _time_only.Nanosecond(); }
 
     long Ticks() const;
 
-    enum DayOfWeek DayOfWeek() const;
-               int DayOfYear() const;
+    constexpr enum DayOfWeek DayOfWeek() const { return _date_only.DayOfWeek(); }
+               int DayOfYear() const { return _date_only.DayOfYear(); }
 
     static DateTime Now();
     static DateTime UtcNow();
     static DateTime Today();
+    static DateTime UnixEpoch();
 
-    static constexpr DateTime MaxValue() { return DateTime( std::chrono::system_clock::time_point::max() ); }
-    static constexpr DateTime MinValue() { return DateTime( std::chrono::system_clock::time_point::min() ); }
-    static constexpr DateTime UnixEpoch() { return DateTime( std::chrono::system_clock::time_point() ); }
+    static constexpr DateTime MinValue()  { return DateTime( DateOnly::MinValue(), TimeOnly::MinValue() ); }
+    static constexpr DateTime MaxValue()  { return DateTime( DateOnly::MaxValue(), TimeOnly::MaxValue() ); }
 
     std::string ToString() const;
 
-    constexpr DateTime &operator +=(std::chrono::system_clock::duration time_span)
-    {
-        _point_in_time += time_span;
-        return *this;
-    }
+    DateTime &operator +=(const TimeSpan &time_span) { return _accumulate( time_span ); }
+    DateTime &operator -=(const TimeSpan &time_span) { return _accumulate( -time_span ); }
+    DateTime &operator +=(std::chrono::system_clock::duration time_duration) { return _accumulate( time_duration ); }
+    DateTime &operator -=(std::chrono::system_clock::duration time_duration) { return _accumulate( -time_duration ); }
 
-    constexpr DateTime &operator -=(std::chrono::system_clock::duration time_span)
-    {
-        _point_in_time -= time_span;
-        return *this;
-    }
-
-    DateTime Add(TimeSpan time_span) const;
+    DateTime Add(const TimeSpan &time_span) const;
 
     DateTime AddYears(int y) const;
     DateTime AddMonths(int m) const;
@@ -85,18 +91,25 @@ public:
 
     int CompareTo(const DateTime &other) const { return Compare( *this, other); }
 protected:
-    std::chrono::system_clock::time_point _point_in_time = std::chrono::system_clock::time_point::min();
+    DateOnly     _date_only{ DateOnly::MinValue() };
+    TimeOnly     _time_only{ TimeOnly::MinValue() };
     DateTimeKind _kind = DateTimeKind::Unspecified;
     
+    DateTime &_accumulate(std::chrono::system_clock::duration time_duration);
 
     friend constexpr bool operator ==(const DateTime &left, const DateTime &right)
     {
-        return left._point_in_time == right._point_in_time;
+        return (left._date_only == right._date_only) && (left._time_only == right._time_only);
     }
 
     friend constexpr std::strong_ordering operator <=>(const DateTime &left, const DateTime &right)
     {
-        return left._point_in_time <=> right._point_in_time;
+        auto result = left._date_only <=> right._date_only;
+
+        if ( result != std::strong_ordering::equal )
+            return result; // The date's aren't equal so just use that
+        
+        return left._time_only <=> right._time_only; // Use the time since they are the same day
     }
 
     friend DateTime operator +(const DateTime &left, const TimeSpan &right)
@@ -116,7 +129,8 @@ protected:
 
     friend TimeSpan operator -(const DateTime &left, const DateTime &right)
     {
-        return { left._point_in_time.time_since_epoch() - right._point_in_time.time_since_epoch() };
+        // FIXME
+        return TimeSpan();
     }
 
     friend DateTime operator -(const DateTime &left, std::chrono::system_clock::duration right)

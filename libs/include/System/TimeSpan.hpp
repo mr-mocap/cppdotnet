@@ -9,7 +9,7 @@ namespace System
 class TimeSpan
 {
 public:
-    TimeSpan() = default;
+    constexpr TimeSpan() = default;
     explicit TimeSpan(int hours, int minutes, int seconds) : TimeSpan(0, hours, minutes, seconds) { }
     explicit TimeSpan(int days, int hours, int minutes, int seconds);
     explicit TimeSpan(int days, int hours, int minutes, int seconds, int milliseconds);
@@ -136,6 +136,8 @@ public:
 
     constexpr TimeSpan Duration() const { return TimeSpan( std::chrono::abs( _time_span ) ); }
     constexpr TimeSpan Negate() const { return -*this; }
+
+    std::string ToString() const;
 protected:
     std::chrono::system_clock::duration _time_span{ std::chrono::system_clock::duration::zero() };
 
@@ -192,12 +194,12 @@ protected:
 
     friend constexpr TimeSpan operator -(const TimeSpan &ts)
     {
-        return TimeSpan( std::chrono::system_clock::duration::zero() - ts._time_span );
+        return TimeSpan( -ts._time_span );
     }
 
     friend constexpr TimeSpan operator +(const TimeSpan &ts)
     {
-        return TimeSpan( ts );
+        return TimeSpan( +ts );
     }
 };
 

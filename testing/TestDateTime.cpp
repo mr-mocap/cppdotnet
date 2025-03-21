@@ -16,6 +16,20 @@ void DefaultConstruct()
     assert( t == System::DateTime().MinValue() );
 }
 
+void MinValueIsJanuaryFirstOnYearZeroAtMidnight()
+{
+    std::cout << __func__ << std::endl;
+
+    System::DateTime t = System::DateTime::MinValue();
+
+    assert( t.Year() == 1 );
+    assert( t.Month() == 1 );
+    assert( t.Day() == 1 );
+    assert( t.Hour() == 0 );
+    assert( t.Minute() == 0 );
+    assert( t.Second() == 0 );
+}
+
 void ConstructYearMonthDay()
 {
     std::cout << __func__ << std::endl;
@@ -31,14 +45,16 @@ void ConstructYearMonthDayHourMinuteSecond()
 {
     std::cout << __func__ << std::endl;
 
-    System::DateTime t( 1980, 1, 1, 9, 30, 2 );
+    {
+        System::DateTime t( 1980, 1, 1, 9, 30, 2 );
 
-    assert( t.Year() == 1980 );
-    assert( t.Month() == 1 );
-    assert( t.Day() == 1 );
-    assert( t.Hour() == 9 );
-    assert( t.Minute() == 30 );
-    assert( t.Second() == 2 );
+        assert( t.Year() == 1980 );
+        assert( t.Month() == 1 );
+        assert( t.Day() == 1 );
+        assert( t.Hour() == 9 );
+        assert( t.Minute() == 30 );
+        assert( t.Second() == 2 );
+    }
 }
 
 void DayOfWeek()
@@ -562,6 +578,7 @@ void Run()
     std::cout << "Running DateTime Tests..." << std::endl;
 
     DefaultConstruct();
+    MinValueIsJanuaryFirstOnYearZeroAtMidnight();
     ConstructYearMonthDay();
     ConstructYearMonthDayHourMinuteSecond();
     DayOfWeek();

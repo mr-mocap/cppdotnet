@@ -1,6 +1,7 @@
 #pragma once
 
 #include "System/DayOfWeek.hpp"
+#include "System/TimeSpan.hpp"
 #include "System/Private/private.hpp"
 #include <chrono>
 #include <compare>
@@ -14,6 +15,7 @@ class DateTime;
 class DateOnly
 {
 public:
+    constexpr DateOnly() = default;
     explicit constexpr DateOnly(int year, int month, int day)
         :
         _year_month_day( std::chrono::year(year), std::chrono::month(month), std::chrono::day(day) )
@@ -27,13 +29,21 @@ public:
     }
 
     constexpr DateOnly(const std::chrono::year_month_day &ymd)
-        :
-        _year_month_day( ymd )
-    {
-    }
+                  :
+                  _year_month_day( ymd )
+              {
+              }
+
+    constexpr DateOnly(const std::chrono::sys_days &d)
+                  :
+                  _year_month_day( std::chrono::year_month_day( d ) )
+                  {
+                  }
 
     DateOnly(const DateOnly &) = default;
     DateOnly &operator =(const DateOnly &) = default;
+    DateOnly(DateOnly &&) = default;
+    DateOnly &operator =(DateOnly &&) = default;
 
     constexpr int Day() const
     {
@@ -61,7 +71,7 @@ public:
         return static_cast<int>( num_days.time_since_epoch().count() );
     }
 
-    enum DayOfWeek DayOfWeek() const
+    constexpr enum DayOfWeek DayOfWeek() const
     {
         std::chrono::weekday wd{ std::chrono::sys_days( _year_month_day ) };
 
@@ -75,9 +85,9 @@ public:
 
     static DateOnly FromDateTime(const DateTime &dt);
 
-    DateOnly AddDays(int num_days);
-    DateOnly AddMonths(int num_months);
-    DateOnly AddYears(int num_years);
+    DateOnly AddDays(int num_days) const;
+    DateOnly AddMonths(int num_months) const;
+    DateOnly AddYears(int num_years) const;
 
     int CompareTo(const DateOnly &other) const;
     bool Equals(const DateOnly &other) const { return *this == other; }
@@ -99,6 +109,15 @@ protected:
     friend constexpr std::strong_ordering operator <=>(const DateOnly &left, const DateOnly &right)
     {
         return left._year_month_day <=> right._year_month_day;
+    }
+
+    friend constexpr TimeSpan operator -(const DateOnly &left, const DateOnly &right)
+    {
+        std::chrono::sys_days left_days = left._year_month_day;
+        std::chrono::sys_days right_days = right._year_month_day;
+        std::chrono::sys_days result = left_days - right_days.time_since_epoch();
+
+        return TimeSpan( result.time_since_epoch() );
     }
 };
 
