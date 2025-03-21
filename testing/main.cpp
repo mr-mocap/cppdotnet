@@ -26,6 +26,7 @@
 #include "TestTimeOnly.hpp"
 #include "TestDateTimeOffset.hpp"
 #include "TestDateOnly.hpp"
+#include "TestStack.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -61,6 +62,7 @@ int main(void)
     TestTimeOnly::Run();
     TestDateTimeOffset::Run();
     TestDateOnly::Run();
+    TestStack::Run();
 
     std::cout << "All tests passed!\n";
 
