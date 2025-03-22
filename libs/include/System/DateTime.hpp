@@ -76,6 +76,8 @@ public:
     DateTime &operator -=(std::chrono::system_clock::duration time_duration) { return _accumulate( -time_duration ); }
 
     DateTime Add(const TimeSpan &time_span) const;
+    TimeSpan Subtract(const DateTime &other_date) const;
+    DateTime Subtract(const TimeSpan &other_time_span) const;
 
     DateTime AddYears(int y) const;
     DateTime AddMonths(int m) const;
@@ -124,13 +126,12 @@ protected:
 
     friend DateTime operator -(const DateTime &left, const TimeSpan &right)
     {
-        return DateTime( left ) -= right;
+        return left.Subtract( right );
     }
 
     friend TimeSpan operator -(const DateTime &left, const DateTime &right)
     {
-        // FIXME
-        return TimeSpan();
+        return left.Subtract( right );
     }
 
     friend DateTime operator -(const DateTime &left, std::chrono::system_clock::duration right)

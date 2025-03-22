@@ -159,7 +159,7 @@ double TimeSpan::TotalNanoseconds() const
     return _time_span.count();
 }
 
-TimeSpan TimeSpan::Add(TimeSpan time_span) const
+TimeSpan TimeSpan::Add(const TimeSpan &time_span) const
 {
     using namespace std::literals;
 
@@ -178,7 +178,7 @@ TimeSpan TimeSpan::Add(TimeSpan time_span) const
     return *this + time_span;
 }
 
-TimeSpan TimeSpan::Subtract(TimeSpan time_span) const
+TimeSpan TimeSpan::Subtract(const TimeSpan &time_span) const
 {
     using namespace std::literals;
 

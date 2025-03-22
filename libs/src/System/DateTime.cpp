@@ -59,43 +59,6 @@ std::string DateTime::ToString() const
 {
     return std::format("{} {}", _date_only.ToString(), _time_only.ToString() );
 }
-#if 0
-DateTime &DateTime::operator +=(std::chrono::system_clock::duration time_duration)
-{
-    // FIXME
-    system_clock::time_point tp( sys_days(_date_only) + system_clock::duration(_time_only.ToTimeSpan()) );
-
-    tp += time_duration;
-
-    {
-        sys_days new_time_point_at_start_of_day( floor<days>( tp.time_since_epoch() ) );
-
-        _date_only = DateOnly( new_time_point_at_start_of_day );
-        tp -= new_time_point_at_start_of_day.time_since_epoch(); // Subtract off the days so we will be left with the leftover day
-    }
-
-    _time_only = TimeOnly::FromTimeSpan( TimeSpan( tp.time_since_epoch() ) );
-    return *this;
-}
-
-DateTime &DateTime::operator -=(std::chrono::system_clock::duration time_duration)
-{
-    // FIXME
-    system_clock::time_point tp( sys_days(_date_only) + system_clock::duration(_time_only.ToTimeSpan()) );
-
-    tp -= time_duration;
-
-    {
-        sys_days new_time_point_at_start_of_day( floor<days>( tp.time_since_epoch() ) );
-
-        _date_only = DateOnly( new_time_point_at_start_of_day );
-        tp -= new_time_point_at_start_of_day.time_since_epoch(); // Subtract off the days so we will be left with the leftover day
-    }
-
-    _time_only = TimeOnly::FromTimeSpan( TimeSpan( tp.time_since_epoch() ) );
-    return *this;
-}
-#endif
 
 DateTime &DateTime::_accumulate(std::chrono::system_clock::duration time_duration)
 {
@@ -222,22 +185,6 @@ DateTime DateTime::Add(const TimeSpan &time_span) const
 {
     using namespace std::literals;
 
-#if 0
-    // Detect a potential wrap-around...
-    if ( Ticks() >= 0 )
-    {
-        if ( MaxValue().Ticks() - Ticks() < time_span.Ticks() )
-            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is greater than DateTime::MaxValue"sv) );
-    }
-    else
-    {
-        if ( time_span.Ticks() < MinValue().Ticks() - Ticks() )
-            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is less than DateTime::MinValue"sv) );
-        
-    }
-
-    return *this + time_span;
-#else
     // Detect a potential wrap-around...
     if ( Ticks() >= 0 )
     {
@@ -265,7 +212,22 @@ DateTime DateTime::Add(const TimeSpan &time_span) const
     }
 
     return result;
-#endif
+}
+
+TimeSpan DateTime::Subtract(const DateTime &other_date) const
+{
+    std::chrono::sys_days left_days = _date_only;
+    std::chrono::sys_days other_days = other_date._date_only;
+    std::chrono::sys_days days_sub = left_days - other_days.time_since_epoch();
+    TimeSpan difference( days_sub.time_since_epoch() );
+    TimeSpan diff_time = _time_only.ToTimeSpan() - other_date._time_only.ToTimeSpan();
+
+    return difference + diff_time;
+}
+
+DateTime DateTime::Subtract(const TimeSpan &other_time_span) const
+{
+    return DateTime( *this ) -= other_time_span;
 }
 
 int DateTime::Compare(const DateTime &t1, const DateTime &t2)

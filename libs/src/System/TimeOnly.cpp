@@ -106,6 +106,9 @@ TimeOnly TimeOnly::FromDateTime(const System::DateTime &datetime)
 
 std::string TimeOnly::ToString() const
 {
-    return std::format("{}", "TODO: IMPLEMENT ME");
+    system_clock::duration d = _time_span;
+    hh_mm_ss<seconds> tod( duration_cast<seconds>(d) );
+
+    return std::format("{}", tod);
 }
 }

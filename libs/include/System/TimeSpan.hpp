@@ -113,8 +113,8 @@ public:
         return *this;
     }
 
-    TimeSpan Add(TimeSpan time_span) const;
-    TimeSpan Subtract(TimeSpan time_span) const;
+    TimeSpan Add(const TimeSpan &time_span) const;
+    TimeSpan Subtract(const TimeSpan &time_span) const;
     TimeSpan Multiply(double scalar) const;
     TimeSpan Divide(double scalar) const;
 

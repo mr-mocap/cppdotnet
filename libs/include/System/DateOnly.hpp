@@ -2,6 +2,9 @@
 
 #include "System/DayOfWeek.hpp"
 #include "System/TimeSpan.hpp"
+#if 0
+#include "System/DateTime.hpp"
+#endif
 #include "System/Private/private.hpp"
 #include <chrono>
 #include <compare>
@@ -84,6 +87,7 @@ public:
     static constexpr DateOnly MaxValue() { return DateOnly( 9999, 12, 31 ); }
 
     static DateOnly FromDateTime(const DateTime &dt);
+    static DateOnly FromDayNumber(int day_number);
 
     DateOnly AddDays(int num_days) const;
     DateOnly AddMonths(int num_months) const;
@@ -95,6 +99,12 @@ public:
     void Deconstruct(int &year, int &month, int &day);
 
     std::string ToString() const;
+#if 0
+    DateTime ToDateTime(const TimeOnly &time_only) const
+    {
+        return DateTime( *this, time_only );
+    }
+#endif
 
     operator std::chrono::sys_days() const { return _year_month_day; }
 protected:
@@ -109,15 +119,6 @@ protected:
     friend constexpr std::strong_ordering operator <=>(const DateOnly &left, const DateOnly &right)
     {
         return left._year_month_day <=> right._year_month_day;
-    }
-
-    friend constexpr TimeSpan operator -(const DateOnly &left, const DateOnly &right)
-    {
-        std::chrono::sys_days left_days = left._year_month_day;
-        std::chrono::sys_days right_days = right._year_month_day;
-        std::chrono::sys_days result = left_days - right_days.time_since_epoch();
-
-        return TimeSpan( result.time_since_epoch() );
     }
 };
 

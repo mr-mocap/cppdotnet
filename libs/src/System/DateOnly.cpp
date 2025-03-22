@@ -78,6 +78,11 @@ DateOnly DateOnly::FromDateTime(const DateTime &dt)
     return DateOnly{ dt.Year(), dt.Month(), dt.Day() };
 }
 
+DateOnly DateOnly::FromDayNumber(int day_number)
+{
+    return DateOnly::MinValue().AddDays( day_number );
+}
+
 void DateOnly::Deconstruct(int &year, int &month, int &day)
 {
     year = Year();

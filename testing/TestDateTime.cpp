@@ -573,6 +573,121 @@ void AddHours()
     }
 }
 
+void SubtractingTwoDateTimesReturnsATimeSpan()
+{
+    std::cout << __func__ << std::endl;
+
+    // A single day...
+    {
+        System::TimeSpan result = System::DateTime(1980, 1, 2) - System::DateTime(1980, 1, 1);
+
+        assert( result.Days() == 1 );
+        assert( result.Hours() == 0 );
+        assert( result.Minutes() == 0 );
+        assert( result.Seconds() == 0 );
+    }
+
+    // A bunch of days...
+    {
+        System::TimeSpan result = System::DateTime(1980, 1, 31) - System::DateTime(1980, 1, 1);
+
+        assert( result.Days() == 30 );
+        assert( result.Hours() == 0 );
+        assert( result.Minutes() == 0 );
+        assert( result.Seconds() == 0 );
+    }
+
+    // A bunch of days BACKWARDS...
+    {
+        System::TimeSpan result = System::DateTime(1980, 1, 1) - System::DateTime(1980, 1, 31);
+
+        assert( result.Days() == -30 );
+        assert( result.Hours() == 0 );
+        assert( result.Minutes() == 0 );
+        assert( result.Seconds() == 0 );
+    }
+
+    // A single month...
+    {
+        System::TimeSpan result = System::DateTime(2025, 7, 5) - System::DateTime(2025, 6, 5);
+
+        assert( result.Days() == 30 );
+        assert( result.Hours() == 0 );
+        assert( result.Minutes() == 0 );
+        assert( result.Seconds() == 0 );
+    }
+
+    // A single month... BACKWARD
+    {
+        System::TimeSpan result = System::DateTime(2025, 6, 5) - System::DateTime(2025, 7, 5);
+
+        assert( result.Days() == -30 );
+        assert( result.Hours() == 0 );
+        assert( result.Minutes() == 0 );
+        assert( result.Seconds() == 0 );
+    }
+
+    // A single year...
+    {
+        System::TimeSpan result = System::DateTime(2025, 7, 5) - System::DateTime(2024, 7, 5);
+
+        assert( result.Days() == 365 );
+        assert( result.Hours() == 0 );
+        assert( result.Minutes() == 0 );
+        assert( result.Seconds() == 0 );
+    }
+
+    // A single year... BACKWARDS
+    {
+        System::TimeSpan result = System::DateTime(2024, 7, 5) - System::DateTime(2025, 7, 5);
+
+        assert( result.Days() == -365 );
+        assert( result.Hours() == 0 );
+        assert( result.Minutes() == 0 );
+        assert( result.Seconds() == 0 );
+    }
+
+    // Full on...
+    {
+        System::DateTime date1( 1996, 6, 3, 22, 15, 0 );
+        System::DateTime date2( 1996, 12, 6, 13, 2, 0 );
+        System::DateTime date3( 1996, 10, 12, 8, 42, 0 );
+
+        {
+            System::TimeSpan diff1 = date2 - date1;
+
+            assert( diff1.Days() == 185 );
+            assert( diff1.Hours() == 14 );
+            assert( diff1.Minutes() == 47 );
+
+            System::DateTime date4 = date3 - diff1;
+
+            assert( date4.Year() == 1996 );
+            assert( date4.Month() == 4 );
+            assert( date4.Day() == 9 );
+            assert( date4.Hour() == 17 );
+            assert( date4.Minute() == 55 );
+            assert( date4.Second() == 0 );
+
+            System::TimeSpan diff2 = date2 - date3;
+
+            assert( diff2.Days() == 55 );
+            assert( diff2.Hours() == 4 );
+            assert( diff2.Minutes() == 20 );
+
+            System::DateTime date5 = date1 - diff2;
+
+            assert( date5.Year() == 1996 );
+            assert( date5.Month() == 4 );
+            assert( date5.Day() == 9 );
+            assert( date5.Hour() == 17 );
+            assert( date5.Minute() == 55 );
+            assert( date5.Second() == 0 );
+        }
+    }
+
+}
+
 void Run()
 {
     std::cout << "Running DateTime Tests..." << std::endl;
@@ -600,6 +715,7 @@ void Run()
     AddMonths();
     AddDays();
     AddHours();
+    SubtractingTwoDateTimesReturnsATimeSpan();
 
     std::cout << "PASSED!" << std::endl;
 }
