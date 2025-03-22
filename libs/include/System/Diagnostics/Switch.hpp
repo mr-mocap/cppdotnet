@@ -1,5 +1,6 @@
 #pragma once
 
+#include "System/Collections/Specialized/StringDictionary.hpp"
 #include <set>
 #include <string>
 #include <string_view>
@@ -20,6 +21,8 @@ public:
 
     const std::string &Value();
           void         Value(const std::string_view new_value);
+    
+    const Collections::Specialized::StringDictionary &Attributes() const { return _attributes; }
 
     void Refresh();
 
@@ -34,6 +37,7 @@ protected:
     bool        _initializing = false;
     bool        _initialized = false;
     std::mutex  _initializedLock;
+    Collections::Specialized::StringDictionary _attributes;
 
     Switch(const std::string_view display_name,
            const std::string_view description);
