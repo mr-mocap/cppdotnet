@@ -20,19 +20,21 @@ template <class TKey,
 class Dictionary
 {
 public:
+    using underlying_datatype = std::map<TKey, TValue, Compare, Allocator>;
+
     using key_type = TKey;
     using mapped_type = TValue;
-    using value_type  = std::map<TKey, TValue, Compare, Allocator>::value_type;
+    using value_type  = underlying_datatype::value_type;
     using size_type   = std::size_t;
-    using difference_type = std::map<TKey, TValue, Compare, Allocator>::difference_type;
+    using difference_type = underlying_datatype::difference_type;
     using key_compare = Compare;
     using allocator_type = Allocator;
-    using reference       = std::map<TKey, TValue, Compare, Allocator>::reference;
-    using const_reference = std::map<TKey, TValue, Compare, Allocator>::const_reference;
-    using iterator               = std::map<TKey, TValue, Compare, Allocator>::iterator;
-    using const_iterator         = std::map<TKey, TValue, Compare, Allocator>::const_iterator;
-    using reverse_iterator       = std::map<TKey, TValue, Compare, Allocator>::reverse_iterator;
-    using const_reverse_iterator = std::map<TKey, TValue, Compare, Allocator>::const_reverse_iterator;
+    using reference       = underlying_datatype::reference;
+    using const_reference = underlying_datatype::const_reference;
+    using iterator               = underlying_datatype::iterator;
+    using const_iterator         = underlying_datatype::const_iterator;
+    using reverse_iterator       = underlying_datatype::reverse_iterator;
+    using const_reverse_iterator = underlying_datatype::const_reverse_iterator;
 
     using KeyCollection = List<key_type>;
     using ValueCollection = List<mapped_type>;
