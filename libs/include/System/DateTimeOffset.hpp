@@ -11,8 +11,8 @@ class DateTimeOffset
 {
 public:
     constexpr DateTimeOffset() = default;
-    DateTimeOffset(const DateTime &dt) : _date_time( dt ) { }
-    DateTimeOffset(const DateTime &dt, const TimeSpan &offset) : _date_time( dt ), _offset_from_utc( offset ) { }
+    constexpr DateTimeOffset(const DateTime &dt) : _date_time( dt ) { }
+    constexpr DateTimeOffset(const DateTime &dt, const TimeSpan &offset) : _date_time( dt ), _offset_from_utc( offset ) { }
 
     const System::DateTime &DateTime() const { return _date_time; }
     const TimeSpan &Offset() const { return _offset_from_utc; }
@@ -36,7 +36,7 @@ public:
 
     static constexpr DateTimeOffset MinValue()  { return DateTimeOffset( DateTime::MinValue() ); }
     static constexpr DateTimeOffset MaxValue()  { return DateTimeOffset( DateTime::MaxValue() ); }
-    static constexpr DateTimeOffset UnixEpoch() { return DateTimeOffset( DateTime::UnixEpoch() ); }
+    static           DateTimeOffset UnixEpoch() { return DateTimeOffset( DateTime::UnixEpoch() ); }
 
     static           DateTimeOffset Now();
     static           DateTimeOffset UtcNow();

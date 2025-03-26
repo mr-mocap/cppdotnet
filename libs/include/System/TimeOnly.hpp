@@ -14,7 +14,7 @@ class DateTime;
 class TimeOnly
 {
 public:
-    TimeOnly() = default;
+    constexpr TimeOnly() = default;
     constexpr explicit TimeOnly(int h, int m, int s = 0, int ms = 0, int micros = 0)
         :
         _time_span( std::chrono::hours(h) +
@@ -41,8 +41,8 @@ public:
     constexpr explicit TimeOnly(long ticks) : _time_span( ticks ) { }
     constexpr TimeOnly(std::chrono::system_clock::duration value) : _time_span( value ) { }
 
-    TimeOnly(const TimeOnly &) = default;
-    TimeOnly &operator =(const TimeOnly &) = default;
+    constexpr TimeOnly(const TimeOnly &) = default;
+    constexpr TimeOnly &operator =(const TimeOnly &) = default;
 
     int Hour() const { return _time_span.Hours(); }
     int Minute() const { return _time_span.Minutes(); }
