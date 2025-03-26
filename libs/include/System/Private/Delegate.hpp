@@ -35,6 +35,18 @@ public:
     {
     }
 
+    Delegate &operator =(const std::function<RetType (ArgTypes ...)> &fn)
+    {
+        _callable = fn;
+        return *this;
+    }
+
+    Delegate &operator =(std::function<RetType (ArgTypes ...)> &&other)
+    {
+        _callable = std::move(other);
+        return *this;
+    }
+
     bool HasSingleTarget() const { return true; }
 
     RetType operator()(ArgTypes ...args) const
