@@ -34,6 +34,12 @@ public:
     {
     }
 
+    LinkedList(std::initializer_list<T> il)
+        :
+        _list( il )
+    {
+    }
+
     template <size_t ArraySize>
     LinkedList(std::type_identity_t<T> (&arr)[ArraySize])
         :

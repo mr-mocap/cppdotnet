@@ -54,6 +54,16 @@ void ConstructWithExternalSequence()
         assert( list[1] == 2 );
         assert( list[2] == 3 );
     }
+
+    // From initializer_list
+    {
+        Collections::Generic::List<int> list( { 1, 2, 3 } );
+
+        assert( list.Count() == 3 );
+        assert( list[0] == 1 );
+        assert( list[1] == 2 );
+        assert( list[2] == 3 );
+    }
 }
 
 void ClearEmptiesTheList()

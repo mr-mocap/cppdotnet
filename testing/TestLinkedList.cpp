@@ -44,6 +44,16 @@ void ConstructWithExternalSequence()
         assert( *list.Find( 2 ) == 2 );
         assert( *list.Find( 3 ) == 3 );
     }
+
+    // From initializer_list
+    {
+        Collections::Generic::LinkedList<int> list( { 1, 2, 3 } );
+
+        assert( list.Count() == 3 );
+        assert( *list.Find( 1 ) == 1 );
+        assert( *list.Find( 2 ) == 2 );
+        assert( *list.Find( 3 ) == 3 );
+    }
 }
 
 void AddFirstAddsItemToFirstPosition()

@@ -3,6 +3,7 @@
 #include "System/Exception.hpp"
 #include "System/Predicate.hpp"
 #include <vector>
+#include <initializer_list>
 #include <string_view>
 #include <algorithm>
 
@@ -25,15 +26,15 @@ public:
     using const_reverse_iterator = std::vector<T>::const_reverse_iterator;
     using predicate       = System::Predicate<T>;
 
-    List() = default;
+    constexpr List() = default;
 
-    List(const std::vector<value_type> &init_value)
+    constexpr List(const std::vector<value_type> &init_value)
         :
         _list( init_value )
     {
     }
 
-    List(std::vector<value_type> &&init_value)
+    constexpr List(std::vector<value_type> &&init_value)
         :
         _list( std::move(init_value) )
     {
@@ -43,6 +44,12 @@ public:
     constexpr List(InputIt first, InputIt last)
         :
         _list( first, last )
+    {
+    }
+
+    constexpr List(std::initializer_list<T> il)
+        :
+        _list( il )
     {
     }
 
