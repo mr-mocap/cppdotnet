@@ -119,7 +119,7 @@ protected:
     std::unique_ptr<InternalInterface> _data;
 };
 
-#if 0
+
 template <class T>
 class ICollectionRef
 {
@@ -209,5 +209,5 @@ public:
 protected:
     std::unique_ptr<InternalInterface> _data;
 };
-#endif
+
 }

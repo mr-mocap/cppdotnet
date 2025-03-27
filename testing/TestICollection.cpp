@@ -176,7 +176,6 @@ void MovedFromFunction()
 
 void ConstructWithLinkedListRef()
 {
-#if 0
     std::cout << __func__ << std::endl;
 
     int example_data[] = { 1, 2, 3 };
@@ -193,7 +192,26 @@ void ConstructWithLinkedListRef()
     assert( icollection.Contains(1) );
     assert( icollection.Contains(2) );
     assert( icollection.Contains(3) );
-#endif
+}
+
+void ConstructWithListRef()
+{
+    std::cout << __func__ << std::endl;
+
+    int example_data[] = { 1, 2, 3 };
+    System::Collections::Generic::List<int>  list(example_data);
+
+    assert( list.Count() == 3 );
+    assert( list.Contains(1) );
+    assert( list.Contains(2) );
+    assert( list.Contains(3) );
+
+    System::Collections::Generic::ICollectionRef<int> icollection(&list);
+
+    assert( icollection.Count() == 3 );
+    assert( icollection.Contains(1) );
+    assert( icollection.Contains(2) );
+    assert( icollection.Contains(3) );
 }
 
 void Run()
@@ -208,6 +226,7 @@ void Run()
     MovedFromFunction();
 
     ConstructWithLinkedListRef();
+    ConstructWithListRef();
 
     std::cout << "PASSED!" << std::endl;
 }
