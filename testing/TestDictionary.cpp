@@ -16,6 +16,27 @@ void DefaultConstruction()
     assert( d.Count() == 0 );
 }
 
+void ConstructWithInitializerList()
+{
+    std::cout << __func__ << std::endl;
+
+    // Directly
+    System::Collections::Generic::Dictionary<std::string, int> d
+    {
+        {"b", 1},
+        {"c", 2},
+        {"a", 3},
+        {"d", 4}
+    };
+
+    // Should be in the same order
+    assert( d.Count() == 4 );
+    assert( d["b"] == 1 );
+    assert( d["c"] == 2 );
+    assert( d["a"] == 3 );
+    assert( d["d"] == 4 );
+}
+
 void ConstructWithMap()
 {
     std::cout << __func__ << std::endl;
@@ -333,6 +354,7 @@ void Run()
     std::cout << "Running Dictionary Tests..." << std::endl;
 
     DefaultConstruction();
+    ConstructWithInitializerList();
     ConstructWithMap();
     AddAddsNonexistingKey();
     AddKeyThrowsExceptionWhenAddingIdenticalKey();

@@ -55,6 +55,12 @@ public:
     {
     }
 
+    Dictionary(std::initializer_list<value_type> il, const Compare &comp = Compare(), const Allocator &alloc = Allocator())
+        :
+        _data( il, comp, alloc )
+    {
+    }
+
     Dictionary(std::map<key_type, mapped_type> &&init_value)
         :
         _data( std::move(init_value) )
