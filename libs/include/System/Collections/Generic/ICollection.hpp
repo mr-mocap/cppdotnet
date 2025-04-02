@@ -15,6 +15,8 @@ class ICollection
 
         virtual std::size_t Count() const = 0;
         virtual bool        IsReadOnly() const = 0;
+        virtual bool        IsReadOnly()       = 0;
+        virtual bool        IsSynchronized() const = 0;
 
         virtual void Add(const T &item) = 0;
         virtual bool Remove(const T &item) = 0;
@@ -45,6 +47,9 @@ class ICollection
         std::size_t Count() const override { return data.Count(); }
 
         bool IsReadOnly() const override { return data.IsReadOnly(); }
+        bool IsReadOnly()       override { return data.IsReadOnly(); }
+
+        bool IsSynchronized() const { return data.IsSynchronized(); }
 
         void Add(const T &item) override { data.Add(item); }
 
@@ -110,6 +115,8 @@ public:
 
     std::size_t Count() const      { return _data->Count(); }
     bool        IsReadOnly() const { return _data->IsReadOnly(); }
+    bool        IsReadOnly()       { return _data->IsReadOnly(); }
+    bool        IsSynchronized() const { return _data->IsSynchronized(); }
 
     void Add(const T &item)      { _data->Add(item); }
     bool Remove(const T &item)   { return _data->Remove(item); }
@@ -129,6 +136,8 @@ class ICollectionRef
 
         virtual std::size_t Count() const = 0;
         virtual bool        IsReadOnly() const = 0;
+        virtual bool        IsReadOnly()       = 0;
+        virtual bool        IsSynchronized() const = 0;
 
         virtual void Add(const T &item) = 0;
         virtual bool Remove(const T &item) = 0;
@@ -160,6 +169,9 @@ class ICollectionRef
         std::size_t Count() const override { return data->Count(); }
 
         bool IsReadOnly() const override { return data->IsReadOnly(); }
+        bool IsReadOnly()       override { return data->IsReadOnly(); }
+
+        bool IsSynchronized() const override { return data->IsSynchronized(); }
 
         void Add(const T &item) override { data->Add(item); }
 
@@ -201,6 +213,8 @@ public:
 
     std::size_t Count() const      { return _data->Count(); }
     bool        IsReadOnly() const { return _data->IsReadOnly(); }
+    bool        IsReadOnly()       { return _data->IsReadOnly(); }
+    bool        IsSynchronized() const { return _data->IsSynchronized(); }
 
     void Add(const T &item)      { _data->Add(item); }
     bool Remove(const T &item)   { return _data->Remove(item); }

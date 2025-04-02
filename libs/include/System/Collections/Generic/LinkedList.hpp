@@ -138,8 +138,6 @@ public:
         return most_recently_found;
     }
 
-    bool IsSynchronized() const { return false; }
-
     // ICollection interface
     size_type Count() const { return _list.size(); }
 
@@ -175,7 +173,10 @@ public:
         return Find( item ) != _list.end();
     }
 
-    bool IsReadOnly() const { return false; }
+    bool IsReadOnly() const { return true; }
+    bool IsReadOnly()       { return false; }
+
+    bool IsSynchronized() const { return false; }
 
     //void CopyTo(Array dest_array, size_t starting_at_index) { }
 

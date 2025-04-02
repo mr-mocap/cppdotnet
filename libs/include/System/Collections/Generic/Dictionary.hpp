@@ -2,6 +2,7 @@
 
 #include "System/Collections/Generic/KeyNotFoundException.hpp"
 #include "System/Collections/Generic/List.hpp"
+#include "System/Collections/Generic/KeyValuePair.hpp"
 #include "System/Exception.hpp"
 #include "System/Private/private.hpp"
 #include <map>
@@ -74,8 +75,6 @@ public:
 
     constexpr key_compare Comparer() const { return _data.key_comp(); }
 
-    constexpr size_type Count() const { return _data.size(); }
-
     constexpr size_type Capacity() const { return Count(); }  // NOTE: This isn't really implementable, is it?
 
     constexpr mapped_type &operator[](const key_type &key)
@@ -94,18 +93,6 @@ public:
             ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
         }
         return mapped_type(); // We should NEVER get here!  Is this correct?
-    }
-
-    constexpr void Add(const key_type &key, const mapped_type &value)
-    {
-        using namespace std::literals;
-
-        if ( _data.contains( key ) )
-            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the Dictionary", key), "key"sv ) );
-        else
-            _data[ key ] = value;
-        
-        POSTCONDITION( ContainsKey(key) );
     }
 
     constexpr bool TryAdd(const key_type &key, const mapped_type &value)
@@ -132,13 +119,6 @@ public:
     constexpr bool Remove(const key_type &key)
     {
         return _data.erase( key );
-    }
-
-    constexpr void Clear()
-    {
-        _data.clear();
-
-        POSTCONDITION( _data.empty() );
     }
 
     constexpr bool ContainsKey(const key_type &key) const
@@ -170,6 +150,43 @@ public:
         rv.reserve( Count() );
         std::ranges::copy( std::views::values( _data ), std::back_inserter( rv ) );
         return rv;
+    }
+
+    // ICollection interface
+    constexpr size_type Count() const { return _data.size(); }
+
+    bool IsReadOnly() const { return true; }
+    bool IsReadOnly()       { return false; }
+
+    bool IsSynchronized() const { return false; }
+
+    constexpr void Add(const key_type &key, const mapped_type &value)
+    {
+        using namespace std::literals;
+
+        if ( _data.contains( key ) )
+            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the Dictionary", key), "key"sv ) );
+        else
+            _data[ key ] = value;
+        
+        POSTCONDITION( ContainsKey(key) );
+    }
+
+    constexpr void Clear()
+    {
+        _data.clear();
+
+        POSTCONDITION( _data.empty() );
+    }
+
+    constexpr bool Contains(const KeyValuePair<TKey, TValue> &key_value_pair) const
+    {
+        for (const std::pair<const TKey, TValue> &iCurrentIteration : _data)
+        {
+            if ( iCurrentIteration == key_value_pair )
+                return true;
+        }
+        return false;
     }
 
     // C++ speicfic stuff

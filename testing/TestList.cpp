@@ -215,7 +215,7 @@ void IsReadOnly()
     {
         const Collections::Generic::List<int> list;
 
-        assert( !list.IsReadOnly() );
+        assert( list.IsReadOnly() );
     }
 }
 

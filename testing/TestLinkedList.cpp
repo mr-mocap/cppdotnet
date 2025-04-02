@@ -222,7 +222,7 @@ void IsReadOnly()
     {
         const Collections::Generic::LinkedList<int> list;
 
-        assert( !list.IsReadOnly() );
+        assert( list.IsReadOnly() );
     }
 }
 

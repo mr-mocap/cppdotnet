@@ -10,28 +10,29 @@ namespace System::Collections::Generic
 template <class TKey, class TValue>
 struct KeyValuePair : std::pair<const TKey, TValue>
 {
-    KeyValuePair(const TKey &k, const TValue &v)
-        :
-        std::pair( k, v )
-    {
-    }
+    using std::pair<const TKey, TValue>::pair;
 
     std::string ToString() const
     {
         // NOTE: Use Key.ToString() & Value.ToString() in the future
-        return std::format("[{}, {}]", Key, Value);
+        return std::format("[{}, {}]", Key(), Value());
     }
 
-    const TKey &Key() const { return first; }
-    const TKey &Key()       { return first; }
+    const TKey &Key() const { return this->first; }
+    const TKey &Key()       { return this->first; }
 
-    const TValue &Value() const { return second; }
-          TValue &Value()       { return second; }
+    const TValue &Value() const { return this->second; }
+          TValue &Value()       { return this->second; }
     
     void Deconstruct(TKey &key_out, TValue &value_out)
     {
         key_out = Key();
         value_out = Value();
+        
+        // TODO: RE-setting the object does destroy the old one, but now we have a new one.
+        //       Is this really what is wanted?
+        this->first = TKey{};
+        this->second = TValue{};
     }
 };
 

@@ -224,7 +224,10 @@ public:
         return std::find( begin(), end(), item ) != _list.end();
     }
 
-    bool IsReadOnly() const { return false; }
+    bool IsReadOnly() const { return true; }
+    bool IsReadOnly()       { return false; }
+
+    bool IsSynchronized() const { return false; }
 
     // Range-for compatibility
           iterator  begin()       { return _list.begin(); }
