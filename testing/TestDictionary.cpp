@@ -349,6 +349,27 @@ void KeysReturnsTheKeysInTheDictionary()
     assert( kc.Contains("three") );
 }
 
+void IteratingAsKeyValuePair()
+{
+    std::cout << __func__ << std::endl;
+
+    System::Collections::Generic::Dictionary<std::string, int> d
+    {
+        {"one", 1},
+        {"two", 2},
+        {"three", 3},
+        {"four", 4}
+    };
+
+    // As underlying type...
+    for (const std::pair<const std::string, int> &iCurrent : d)
+        std::cout << "pair [" << iCurrent.first << ", " << iCurrent.second << "]" << std::endl;
+
+    // Entire object...
+    for (const System::Collections::Generic::KeyValuePair<std::string, int> iCurrent : d)
+        std::cout << iCurrent.ToString() << std::endl;
+}
+
 void Run()
 {
     std::cout << "Running Dictionary Tests..." << std::endl;
@@ -368,6 +389,7 @@ void Run()
     TryGetValueReturnsTrueAndSetsValueIfKeyIsFound();
     TryGetValueReturnsFalseAndSetsValueToDefaultIfKeyIsNotFound();
     KeysReturnsTheKeysInTheDictionary();
+    IteratingAsKeyValuePair();
 
     std::cout << "PASSED!" << std::endl;
 }
