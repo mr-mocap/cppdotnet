@@ -1,4 +1,5 @@
 #include "System/IO/Stream.hpp"
+#include "System/IO/NullStream.hpp"
 #include "System/IO/IOException.hpp"
 
 
@@ -12,6 +13,13 @@ Stream::Stream(std::unique_ptr<std::iostream> &&stream, bool can_read, bool can_
     _canWrite{ can_write },
     _canSeek{ can_seek }
 {
+}
+
+Stream *Stream::Null()
+{
+    static std::unique_ptr<NullStream> NullSingleton;
+
+    return NullSingleton.get();
 }
 
 void Stream::Close()
@@ -30,7 +38,20 @@ void Stream::Write(const std::string_view bytes)
         _stream->write( bytes.data(), bytes.size() );
 }
 
-void Stream::WriteByte(const uint8_t byte)
+void Stream::Write(ReadOnlySpan<std::byte> bytes)
+{
+    if ( _stream && CanWrite() )
+        _stream->write( reinterpret_cast<const char *>(bytes.data()), bytes.Length() );
+}
+
+void Stream::WriteByte(std::byte value)
+{
+    if ( _stream && CanWrite() )
+        _stream->put( std::bit_cast<char>(value) );
+
+}
+
+void Stream::WriteByte(uint8_t byte)
 {
     if ( _stream && CanWrite() )
         _stream->put( byte );
@@ -64,18 +85,6 @@ size_t Stream::Length()
 
 size_t Stream::Position()
 {
-    // Factor out the most common behavior
-    using namespace std::literals;
-
-    if ( !CanSeek() )
-    {
-        ThrowWithTarget( NotSupportedException("Finding the Position is not supported (Unable to Seek for this stream type)"sv) );
-    }
-
-    if ( _stream->fail() )
-    {
-        ThrowWithTarget( IO::IOException("Stream is in a fail state"sv) );
-    }
     return _position(); // Now, call the virtual method
 }
 
@@ -101,6 +110,39 @@ size_t Stream::_length()
 
 size_t Stream::_position()
 {
+    // Factor out the most common behavior
+    using namespace std::literals;
+
+    if ( !CanSeek() )
+    {
+        ThrowWithTarget( NotSupportedException("Finding the Position is not supported (Unable to Seek for this stream type)"sv) );
+    }
+
+    if ( _stream->fail() )
+    {
+        ThrowWithTarget( IO::IOException("Stream is in a fail state"sv) );
+    }
+    return 0;
+}
+
+long Stream::Seek(long offset, SeekOrigin origin)
+{
+    if ( _stream )
+    {
+        switch ( origin )
+        {
+        case SeekOrigin::Begin:
+            _stream->seekp( offset, std::ios::beg );
+            break;
+        case SeekOrigin::Current:
+            _stream->seekp( offset, std::ios::cur );
+            break;
+        case SeekOrigin::End:
+            _stream->seekp( offset, std::ios::end );
+            break;
+        }
+        return _stream->tellp();
+    }
     return 0;
 }
 

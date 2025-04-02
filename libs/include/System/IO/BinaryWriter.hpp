@@ -1,0 +1,48 @@
+#pragma once
+
+#include "System/IO/Stream.hpp"
+#include "System/IO/SeekOrigin.hpp"
+#include "System/ReadOnlySpan.hpp"
+#include <cstdint>
+
+
+namespace System::IO
+{
+
+class BinaryWriter
+{
+public:
+    BinaryWriter() : BinaryWriter( Stream::Null() ) { }
+    BinaryWriter(System::IO::Stream  *output) : _stream( output ) { }
+
+    static BinaryWriter Null() { return BinaryWriter(); }
+
+    const System::IO::Stream *OutStream() const { return _stream; }
+          System::IO::Stream *OutStream()       { return _stream; }
+
+    virtual void Close();
+
+    virtual void Flush();
+
+    virtual long Seek(long offset, SeekOrigin origin);
+
+    virtual void Write(std::byte value);
+    virtual void Write(ReadOnlySpan<std::byte> values);
+    virtual void Write(char value);
+    virtual void Write(bool value);
+
+    virtual void Write(std::int16_t value);
+    virtual void Write(std::int32_t value);
+    virtual void Write(std::int64_t value);
+
+    virtual void Write(std::uint16_t value);
+    virtual void Write(std::uint32_t value);
+    virtual void Write(std::uint64_t value);
+
+    virtual void Write(float value);
+    virtual void Write(double value);
+protected:
+    System::IO::Stream *_stream = nullptr;
+};
+
+}

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "System/IO/SeekOrigin.hpp"
+#include "System/ReadOnlySpan.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -13,6 +15,8 @@ class Stream
 public:
     virtual ~Stream() = default;
 
+    static Stream *Null();
+
     bool CanRead() const { return _canRead; }
     bool CanWrite() const { return _canWrite; }
     bool CanSeek() const { return _canSeek; }
@@ -24,11 +28,14 @@ public:
     size_t Position();
 
     virtual void Write(const std::string_view bytes);
-    virtual void WriteByte(const uint8_t byte);
+    virtual void Write(ReadOnlySpan<std::byte> bytes);
+    virtual void WriteByte(std::byte value);
+    virtual void WriteByte(uint8_t byte);
 
     virtual std::string Read(int number_of_bytes);
     virtual int         ReadByte();
 
+    virtual long Seek(long offset, SeekOrigin origin);
 protected:
     std::unique_ptr<std::iostream> _stream;
     bool _canRead = false;

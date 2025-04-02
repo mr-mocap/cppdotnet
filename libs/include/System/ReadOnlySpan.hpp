@@ -125,6 +125,10 @@ public:
     }
 
     // C++ specific pleasantries
+    constexpr const_pointer data() const { return _data.data(); }
+    constexpr size_type size_bytes() const { return _data.size_bytes(); }
+
+    ReadOnlySpan<std::byte> as_bytes() const { return ReadOnlySpan<std::byte>{ std::as_bytes( _data ) }; }
 
     // Make work with foreach
     constexpr const_iterator begin()  const noexcept { return _data.begin(); }
