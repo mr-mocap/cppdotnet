@@ -35,6 +35,7 @@ public:
     using pointer         =       KeyValuePair<TKey, TValue> *;
     using const_pointer   = const KeyValuePair<TKey, TValue> *;
 
+    // NOTE: Key Assumption!
     static_assert( sizeof(KeyValuePair<TKey, TValue>) == sizeof(std::pair<const TKey, TValue>) );
 
     struct SpecializedIterator : public underlying_datatype::iterator
@@ -135,107 +136,10 @@ public:
         }
     };
 
-    struct SpecializedReverseIterator : public underlying_datatype::reverse_iterator
-    {
-        using Base = underlying_datatype::reverse_iterator;
-        using underlying_datatype::reverse_iterator::iterator;
-
-        SpecializedReverseIterator(Base i) : Base( i ) { }
-
-        Dictionary::reference operator*() const _GLIBCXX_NOEXCEPT
-        {
-            return reinterpret_cast<Dictionary::reference>( Base::operator *() );
-        }
-
-        Dictionary::pointer operator->() const _GLIBCXX_NOEXCEPT
-        {
-            return reinterpret_cast<Dictionary::pointer>( Base::operator ->() );
-        }
-        SpecializedReverseIterator &operator++() _GLIBCXX_NOEXCEPT
-        {
-            Base::operator++();
-            return *this;
-        }
-
-        SpecializedReverseIterator operator++(int) _GLIBCXX_NOEXCEPT
-        {
-            SpecializedReverseIterator tmp = Base::operator++(1);
-
-            return tmp;
-        }
-
-        SpecializedReverseIterator &operator--() _GLIBCXX_NOEXCEPT
-        {
-            Base::operator--();
-            return *this;
-        }
-
-        SpecializedReverseIterator operator--(int) _GLIBCXX_NOEXCEPT
-        {
-            SpecializedReverseIterator tmp = Base::operator--(1);
-
-            return tmp;
-        }
-
-        friend bool operator==(const SpecializedReverseIterator &left, const SpecializedReverseIterator &right) _GLIBCXX_NOEXCEPT
-        {
-            return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
-        }
-    };
-
-    struct SpecializedConstReverseIterator : public underlying_datatype::const_reverse_iterator
-    {
-        using Base = underlying_datatype::const_reverse_iterator;
-        using underlying_datatype::const_reverse_iterator::iterator;
-
-        SpecializedConstReverseIterator(Base i) : Base( i ) { }
-
-        Dictionary::const_reference operator*() const _GLIBCXX_NOEXCEPT
-        {
-            return reinterpret_cast<Dictionary::const_reference>( Base::operator *() );
-        }
-
-        Dictionary::const_pointer operator->() const _GLIBCXX_NOEXCEPT
-        {
-            return reinterpret_cast<Dictionary::const_pointer>( Base::operator ->() );
-        }
-
-        SpecializedConstReverseIterator &operator++() _GLIBCXX_NOEXCEPT
-        {
-            Base::operator++();
-            return *this;
-        }
-
-        SpecializedConstReverseIterator operator++(int) _GLIBCXX_NOEXCEPT
-        {
-            SpecializedConstReverseIterator tmp = Base::operator++(1);
-
-            return tmp;
-        }
-
-        SpecializedConstReverseIterator &operator--() _GLIBCXX_NOEXCEPT
-        {
-            Base::operator--();
-            return *this;
-        }
-
-        SpecializedConstReverseIterator operator--(int) _GLIBCXX_NOEXCEPT
-        {
-            SpecializedConstReverseIterator tmp = Base::operator--(1);
-
-            return tmp;
-        }
-
-        friend bool operator==(const SpecializedConstReverseIterator &left, const SpecializedConstReverseIterator &right) _GLIBCXX_NOEXCEPT
-        {
-            return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
-        }
-    };
-
     using iterator               = SpecializedIterator;
     using const_iterator         = SpecializedConstIterator;
-    using reverse_iterator       = SpecializedReverseIterator;
-    using const_reverse_iterator = SpecializedConstReverseIterator;
+    using reverse_iterator       = std::reverse_iterator<SpecializedIterator>;
+    using const_reverse_iterator = std::reverse_iterator<SpecializedConstIterator>;
 
     using KeyCollection = List<key_type>;
     using ValueCollection = List<mapped_type>;
