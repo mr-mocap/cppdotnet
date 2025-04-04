@@ -15,7 +15,7 @@ class Stream
 public:
     virtual ~Stream() = default;
 
-    static Stream *Null();
+    static std::unique_ptr<Stream> Null();
 
     bool CanRead() const { return _canRead; }
     bool CanWrite() const { return _canWrite; }

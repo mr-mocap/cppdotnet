@@ -15,11 +15,9 @@ Stream::Stream(std::unique_ptr<std::iostream> &&stream, bool can_read, bool can_
 {
 }
 
-Stream *Stream::Null()
+std::unique_ptr<Stream> Stream::Null()
 {
-    static std::unique_ptr<NullStream> NullSingleton;
-
-    return NullSingleton.get();
+    return std::make_unique<NullStream>();
 }
 
 void Stream::Close()

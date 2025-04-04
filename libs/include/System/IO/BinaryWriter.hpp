@@ -3,7 +3,7 @@
 #include "System/IO/Stream.hpp"
 #include "System/IO/SeekOrigin.hpp"
 #include "System/ReadOnlySpan.hpp"
-#include <cstdint>
+#include <type_traits>
 
 
 namespace System::IO
@@ -13,12 +13,13 @@ class BinaryWriter
 {
 public:
     BinaryWriter() : BinaryWriter( Stream::Null() ) { }
-    BinaryWriter(System::IO::Stream  *output) : _stream( output ) { }
+    BinaryWriter(std::unique_ptr<Stream> &&output) : _stream( std::move(output) ) { }
+    BinaryWriter(std::shared_ptr<Stream> p) : _stream( p ) { }
 
     static BinaryWriter Null() { return BinaryWriter(); }
 
-    const System::IO::Stream *OutStream() const { return _stream; }
-          System::IO::Stream *OutStream()       { return _stream; }
+    const System::IO::Stream &OutStream() const { return *_stream; }
+          System::IO::Stream &OutStream()       { return *_stream; }
 
     virtual void Close();
 
@@ -27,7 +28,17 @@ public:
     virtual long Seek(long offset, SeekOrigin origin);
 
     virtual void Write(std::byte value);
+
+    // @{
     virtual void Write(ReadOnlySpan<std::byte> values);
+
+    template <std::size_t ArrayExtent>
+    void Write(std::byte (&arr)[ArrayExtent])
+    {
+        Write( ReadOnlySpan<std::byte>( arr ) );
+    }
+    // @}
+
     virtual void Write(char value);
     virtual void Write(bool value);
 
@@ -42,7 +53,7 @@ public:
     virtual void Write(float value);
     virtual void Write(double value);
 protected:
-    System::IO::Stream *_stream = nullptr;
+    std::shared_ptr<System::IO::Stream> _stream;
 };
 
 }

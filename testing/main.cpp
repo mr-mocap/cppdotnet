@@ -29,6 +29,7 @@
 #include "TestStack.hpp"
 #include "TestPath.hpp"
 #include "TestValueTuple.hpp"
+#include "TestBinaryWriter.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -66,6 +67,7 @@ int main(void)
     TestStack::Run();
     TestPath::Run();
     TestValueTuple::Run();
+    TestBinaryWriter::Run();
     std::cout << "All tests passed!\n";
 
     return EXIT_SUCCESS;
