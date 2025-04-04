@@ -28,6 +28,7 @@
 #include "TestDateOnly.hpp"
 #include "TestStack.hpp"
 #include "TestPath.hpp"
+#include "TestValueTuple.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -35,7 +36,6 @@
 int main(void)
 {
     std::cout << "Running Unit Tests!\n";
-
     TestDebug::Run();
     TestException::Run();
     TestEnvironment::Run();
@@ -65,7 +65,7 @@ int main(void)
     TestDateOnly::Run();
     TestStack::Run();
     TestPath::Run();
-
+    TestValueTuple::Run();
     std::cout << "All tests passed!\n";
 
     return EXIT_SUCCESS;

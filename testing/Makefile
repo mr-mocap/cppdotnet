@@ -36,6 +36,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestDateOnly.o \
 	TestStack.o \
 	TestPath.o \
+	TestValueTuple.o \
 	main.o
 
 CXXFLAGS=-std=c++20 -W -Wall -Wextra -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
