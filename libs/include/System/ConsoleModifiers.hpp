@@ -4,7 +4,7 @@
 namespace System
 {
 
-enum class consoleModifiers
+enum class ConsoleModifiers
 {
     None    = 0,
     Alt     = 1, ///@< The left or right ALT modifier key
