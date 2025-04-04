@@ -12,7 +12,7 @@ struct KeyValuePair : std::pair<const TKey, TValue>
 {
     using std::pair<const TKey, TValue>::pair;
 
-    KeyValuePair(const std::pair<const TKey, TValue> &p) : std::pair<const TKey, TValue>( p ) { }
+    //KeyValuePair(const std::pair<const TKey, TValue> &p) : std::pair<const TKey, TValue>( p ) { }
 
     std::string ToString() const
     {

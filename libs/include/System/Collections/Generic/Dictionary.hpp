@@ -23,19 +23,219 @@ class Dictionary
 public:
     using underlying_datatype = std::map<TKey, TValue, Compare, Allocator>;
 
-    using key_type = TKey;
+    using key_type    = TKey;
     using mapped_type = TValue;
-    using value_type  = underlying_datatype::value_type;
+    using value_type  = KeyValuePair<TKey, TValue>;
     using size_type   = std::size_t;
     using difference_type = underlying_datatype::difference_type;
-    using key_compare = Compare;
-    using allocator_type = Allocator;
-    using reference       = underlying_datatype::reference;
-    using const_reference = underlying_datatype::const_reference;
-    using iterator               = underlying_datatype::iterator;
-    using const_iterator         = underlying_datatype::const_iterator;
-    using reverse_iterator       = underlying_datatype::reverse_iterator;
-    using const_reverse_iterator = underlying_datatype::const_reverse_iterator;
+    using key_compare     = Compare;
+    using allocator_type  = Allocator;
+    using reference       =       value_type &;
+    using const_reference = const value_type &;
+    using pointer         =       KeyValuePair<TKey, TValue> *;
+    using const_pointer   = const KeyValuePair<TKey, TValue> *;
+
+    static_assert( sizeof(KeyValuePair<TKey, TValue>) == sizeof(std::pair<const TKey, TValue>) );
+
+    struct SpecializedIterator : public underlying_datatype::iterator
+    {
+        using Base = underlying_datatype::iterator;
+        using underlying_datatype::iterator::iterator;
+
+        SpecializedIterator(Base i) : Base( i ) { }
+
+        Dictionary::reference operator*() const _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<Dictionary::reference>( Base::operator *() );
+        }
+
+        Dictionary::pointer operator->() const _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<Dictionary::pointer>( Base::operator ->() );
+        }
+
+        SpecializedIterator &operator++() _GLIBCXX_NOEXCEPT
+        {
+            Base::operator++();
+            return *this;
+        }
+
+        SpecializedIterator operator++(int) _GLIBCXX_NOEXCEPT
+        {
+            SpecializedIterator tmp = Base::operator++(1);
+
+            return tmp;
+        }
+
+        SpecializedIterator &operator--() _GLIBCXX_NOEXCEPT
+        {
+            Base::operator--();
+            return *this;
+        }
+
+        SpecializedIterator operator--(int) _GLIBCXX_NOEXCEPT
+        {
+            SpecializedIterator tmp = Base::operator--(1);
+
+            return tmp;
+        }
+
+        friend bool operator==(const SpecializedIterator &left, const SpecializedIterator &right) _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
+        }
+    };
+
+    struct SpecializedConstIterator : public underlying_datatype::const_iterator
+    {
+        using Base = underlying_datatype::const_iterator;
+        using underlying_datatype::const_iterator::const_iterator;
+
+        SpecializedConstIterator(Base i) : Base( i ) { }
+
+        Dictionary::const_reference operator*() const _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<Dictionary::const_reference>( Base::operator *() );
+        }
+
+        Dictionary::const_pointer operator->() const _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<Dictionary::const_pointer>( Base::operator ->() );
+        }
+
+        SpecializedConstIterator &operator++() _GLIBCXX_NOEXCEPT
+        {
+            Base::operator++();
+            return *this;
+        }
+
+        SpecializedConstIterator operator++(int) _GLIBCXX_NOEXCEPT
+        {
+            SpecializedConstIterator tmp = Base::operator++(1);
+
+            return tmp;
+        }
+
+        SpecializedConstIterator &operator--() _GLIBCXX_NOEXCEPT
+        {
+            Base::operator--();
+            return *this;
+        }
+
+        SpecializedConstIterator operator--(int) _GLIBCXX_NOEXCEPT
+        {
+            SpecializedConstIterator tmp = Base::operator--(1);
+
+            return tmp;
+        }
+
+        friend bool operator==(const SpecializedConstIterator &left, const SpecializedConstIterator &right) _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
+        }
+    };
+
+    struct SpecializedReverseIterator : public underlying_datatype::reverse_iterator
+    {
+        using Base = underlying_datatype::reverse_iterator;
+        using underlying_datatype::reverse_iterator::iterator;
+
+        SpecializedReverseIterator(Base i) : Base( i ) { }
+
+        Dictionary::reference operator*() const _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<Dictionary::reference>( Base::operator *() );
+        }
+
+        Dictionary::pointer operator->() const _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<Dictionary::pointer>( Base::operator ->() );
+        }
+        SpecializedReverseIterator &operator++() _GLIBCXX_NOEXCEPT
+        {
+            Base::operator++();
+            return *this;
+        }
+
+        SpecializedReverseIterator operator++(int) _GLIBCXX_NOEXCEPT
+        {
+            SpecializedReverseIterator tmp = Base::operator++(1);
+
+            return tmp;
+        }
+
+        SpecializedReverseIterator &operator--() _GLIBCXX_NOEXCEPT
+        {
+            Base::operator--();
+            return *this;
+        }
+
+        SpecializedReverseIterator operator--(int) _GLIBCXX_NOEXCEPT
+        {
+            SpecializedReverseIterator tmp = Base::operator--(1);
+
+            return tmp;
+        }
+
+        friend bool operator==(const SpecializedReverseIterator &left, const SpecializedReverseIterator &right) _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
+        }
+    };
+
+    struct SpecializedConstReverseIterator : public underlying_datatype::const_reverse_iterator
+    {
+        using Base = underlying_datatype::const_reverse_iterator;
+        using underlying_datatype::const_reverse_iterator::iterator;
+
+        SpecializedConstReverseIterator(Base i) : Base( i ) { }
+
+        Dictionary::const_reference operator*() const _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<Dictionary::const_reference>( Base::operator *() );
+        }
+
+        Dictionary::const_pointer operator->() const _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<Dictionary::const_pointer>( Base::operator ->() );
+        }
+
+        SpecializedConstReverseIterator &operator++() _GLIBCXX_NOEXCEPT
+        {
+            Base::operator++();
+            return *this;
+        }
+
+        SpecializedConstReverseIterator operator++(int) _GLIBCXX_NOEXCEPT
+        {
+            SpecializedConstReverseIterator tmp = Base::operator++(1);
+
+            return tmp;
+        }
+
+        SpecializedConstReverseIterator &operator--() _GLIBCXX_NOEXCEPT
+        {
+            Base::operator--();
+            return *this;
+        }
+
+        SpecializedConstReverseIterator operator--(int) _GLIBCXX_NOEXCEPT
+        {
+            SpecializedConstReverseIterator tmp = Base::operator--(1);
+
+            return tmp;
+        }
+
+        friend bool operator==(const SpecializedConstReverseIterator &left, const SpecializedConstReverseIterator &right) _GLIBCXX_NOEXCEPT
+        {
+            return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
+        }
+    };
+
+    using iterator               = SpecializedIterator;
+    using const_iterator         = SpecializedConstIterator;
+    using reverse_iterator       = SpecializedReverseIterator;
+    using const_reverse_iterator = SpecializedConstReverseIterator;
 
     using KeyCollection = List<key_type>;
     using ValueCollection = List<mapped_type>;
@@ -52,11 +252,13 @@ public:
     template <class InputIterator>
     Dictionary(InputIterator first, InputIterator one_past_last)
         :
-        _data( first, one_past_last)
+        _data( first, one_past_last )
     {
     }
 
-    Dictionary(std::initializer_list<value_type> il, const Compare &comp = Compare(), const Allocator &alloc = Allocator())
+    Dictionary(std::initializer_list<std::pair<const TKey, TValue>> il,
+               const Compare   &comp = Compare(),
+               const Allocator &alloc = Allocator())
         :
         _data( il, comp, alloc )
     {
@@ -82,7 +284,25 @@ public:
         return _data[key];
     }
 
+    constexpr const mapped_type &operator[](const key_type &key) const
+    {
+        return _data[key];
+    }
+
     constexpr mapped_type &at(const key_type &key)
+    {
+        try
+        {
+            return _data.at( key );
+        }
+        catch(const std::out_of_range &)
+        {
+            ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
+        }
+        return mapped_type(); // We should NEVER get here!  Is this correct?
+    }
+
+    constexpr const mapped_type &at(const key_type &key) const
     {
         try
         {
@@ -196,9 +416,9 @@ public:
     }
 
     // Range-for compatibility
-          iterator  begin()       { return _data.begin(); }
-    const_iterator  begin() const { return _data.begin(); }
-    const_iterator cbegin() const noexcept { return _data.cbegin(); }
+          iterator  begin()       { return iterator{ _data.begin() }; }
+    const_iterator  begin() const { return const_iterator{ _data.begin() }; }
+    const_iterator cbegin() const noexcept { return const_iterator{ _data.cbegin() }; }
 
           iterator  end()        { return _data.end(); }
     const_iterator  end()  const { return _data.end(); }
@@ -216,10 +436,10 @@ protected:
 };
 
 // Deduction Guides
-template <typename KeyType, typename MappedType>
-Dictionary(const std::map<KeyType, MappedType> &) -> Dictionary<KeyType, MappedType>;
+template <class TKey, class TValue>
+Dictionary(const std::map<TKey, TValue> &) -> Dictionary<TKey, TValue>;
 
-template <typename KeyType, typename MappedType>
-Dictionary(std::map<KeyType, MappedType> &&) -> Dictionary<KeyType, MappedType>;
+template <class TKey, class TValue>
+Dictionary(std::map<TKey, TValue> &&) -> Dictionary<TKey, TValue>;
 
 }

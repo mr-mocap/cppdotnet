@@ -81,10 +81,25 @@ void ConstructWithMap()
 
         // Verify it is in < ordering (opposite from the std::map above, because we used the default Comparison)
         assert( d.Count() == 4 );
+
+        // access like a std::pair
         assert( std::next(d.begin(), 0)->first == "a" );
         assert( std::next(d.begin(), 1)->first == "b" );
         assert( std::next(d.begin(), 2)->first == "c" );
         assert( std::next(d.begin(), 3)->first == "d" );
+
+        // access like a KeyValuePair
+        assert( std::next(d.begin(), 0)->Key() == "a" );
+        assert( std::next(d.begin(), 0)->Value() == 1 );
+
+        assert( std::next(d.begin(), 1)->Key() == "b" );
+        assert( std::next(d.begin(), 1)->Value() == 2 );
+
+        assert( std::next(d.begin(), 2)->Key() == "c" );
+        assert( std::next(d.begin(), 2)->Value() == 3 );
+
+        assert( std::next(d.begin(), 3)->Key() == "d" );
+        assert( std::next(d.begin(), 3)->Value() == 4 );
     }
 
     // Test construction with an rvalue
@@ -366,8 +381,12 @@ void IteratingAsKeyValuePair()
         std::cout << "pair [" << iCurrent.first << ", " << iCurrent.second << "]" << std::endl;
 
     // Entire object...
-    for (const System::Collections::Generic::KeyValuePair<std::string, int> iCurrent : d)
+    for (const System::Collections::Generic::KeyValuePair<std::string, int> &iCurrent : d)
         std::cout << iCurrent.ToString() << std::endl;
+
+    // Underlying type...
+    for (const auto &iCurrent : d)
+        std::cout << "pair [" << iCurrent.first << ", " << iCurrent.second << "]" << std::endl;
 }
 
 void Run()
