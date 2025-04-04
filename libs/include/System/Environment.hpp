@@ -1,5 +1,6 @@
 #pragma once
 
+#include "System/Collections/Generic/Dictionary.hpp"
 #include <string>
 #include <string_view>
 #include <map>
@@ -16,7 +17,7 @@ public:
 
     static void SetEnvironmentVariable(const char *var_name, const char *value);
 
-    static std::map<std::string, std::string> GetEnvironmentVariables();
+    static Collections::Generic::Dictionary<std::string, std::string> GetEnvironmentVariables();
 
     static std::string ExpandEnvironmentVariables(const std::string_view input);
 

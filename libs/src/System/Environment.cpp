@@ -128,10 +128,11 @@ std::string Environment::ExpandEnvironmentVariables(const std::string_view input
     return return_value;
 }
 
-std::map<std::string, std::string> Environment::GetEnvironmentVariables()
+Collections::Generic::Dictionary<std::string, std::string> Environment::GetEnvironmentVariables()
 {
     std::map<std::string, std::string> retval;
 
+    // "environ" is a UNIX standard (POSIX?) variable containing the process environment variables
     for (char **current_variable = environ; current_variable; ++current_variable)
     {
         char *current_variable_ptr = *current_variable;
