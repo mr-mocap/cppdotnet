@@ -51,6 +51,7 @@ public:
     virtual void WriteLine(float value);
     virtual void WriteLine(double value);
     virtual void WriteLine(const std::string_view message);
+    virtual void WriteLine(const char *message);
     
     template <typename ...Args>
     inline void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)

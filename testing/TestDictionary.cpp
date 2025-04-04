@@ -1,7 +1,9 @@
 #include "TestDictionary.hpp"
 #include "System/Collections/Generic/Dictionary.hpp"
+#include "System/Console.hpp"
 #include <iostream>
 #include <cassert>
+#include <algorithm>
 
 
 namespace TestDictionary
@@ -370,10 +372,10 @@ void IteratingAsKeyValuePair()
 
     System::Collections::Generic::Dictionary<std::string, int> d
     {
-        {"one", 1},
-        {"two", 2},
-        {"three", 3},
-        {"four", 4}
+        {"a", 1},
+        {"b", 2},
+        {"c", 3},
+        {"d", 4}
     };
 
     // As underlying type...
@@ -387,6 +389,11 @@ void IteratingAsKeyValuePair()
     // Underlying type...
     for (const auto &iCurrent : d)
         std::cout << "pair [" << iCurrent.first << ", " << iCurrent.second << "]" << std::endl;
+
+    // Backward...
+    System::Console::Out().WriteLine("Backwards...");
+    for (const auto &iCurrent : d | std::views::reverse)
+        System::Console::Out().WriteLine("{}", iCurrent.ToString());
 }
 
 void Run()

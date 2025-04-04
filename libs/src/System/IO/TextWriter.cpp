@@ -69,6 +69,11 @@ void TextWriter::WriteLine(const std::string_view message)
     Write( NewLine() );
 }
 
+void TextWriter::WriteLine(const char *message)
+{
+    WriteLine( std::string_view( message ) );
+}
+
 void TextWriter::WriteLine(bool value)
 {
     Write( value );
