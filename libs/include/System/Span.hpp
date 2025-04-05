@@ -129,6 +129,8 @@ public:
     }
 
     // C++ specific pleasantries
+    constexpr const_pointer data() const { return _data.data(); }
+    constexpr pointer       data()       { return _data.data(); }
 
     // Make work with foreach
     constexpr const_iterator begin()  const noexcept { return _data.begin(); }
