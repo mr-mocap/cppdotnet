@@ -12,19 +12,19 @@ ConsoleStream::ConsoleStream(Which which)
     switch ( which )
     {
     case Which::In:
-        _stream.reset( new std::iostream( std::cin.rdbuf() ) );
+        _stream = std::make_unique<std::iostream>( std::cin.rdbuf() );
         _canRead = true;
         break;
     case Which::Out:
-        _stream.reset( new std::iostream( std::cout.rdbuf() ) );
+        _stream = std::make_unique<std::iostream>( std::cout.rdbuf() );
         _canWrite = true;
         break;
     case Which::Error:
-        _stream.reset( new std::iostream( std::cerr.rdbuf() ) );
+        _stream = std::make_unique<std::iostream>( std::cerr.rdbuf() );
         _canWrite = true;
         break;
     case Which::Log:
-        _stream.reset( new std::iostream( std::clog.rdbuf() ) );
+        _stream = std::make_unique<std::iostream>( std::clog.rdbuf() );
         _canWrite = true;
         break;
     }
