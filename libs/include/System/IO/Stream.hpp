@@ -2,6 +2,7 @@
 
 #include "System/IO/SeekOrigin.hpp"
 #include "System/ReadOnlySpan.hpp"
+#include "System/Span.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -33,6 +34,7 @@ public:
     virtual void WriteByte(uint8_t byte);
 
     virtual std::string Read(int number_of_bytes);
+    virtual int         Read(Span<std::byte> buffer);
     virtual int         ReadByte();
 
     virtual long Seek(long offset, SeekOrigin origin);

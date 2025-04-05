@@ -68,6 +68,16 @@ std::string Stream::Read(int number_of_bytes)
     return {};
 }
 
+int Stream::Read(Span<std::byte> buffer)
+{
+    if ( _stream && CanRead() )
+    {
+        _stream->read( reinterpret_cast<char *>(buffer.data()), buffer.Length() );
+        return buffer.Length(); // TODO: REALLY check the read byte count!
+    }
+    return 0;
+}
+
 int Stream::ReadByte()
 {
     if ( _stream && CanRead() )
