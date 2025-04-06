@@ -19,6 +19,8 @@ public:
     virtual ~TraceListener() = default;
 
     const std::string_view Name() const;
+    void Name(const std::string &new_name) { _name = new_name; }
+    void Name(const std::string_view new_name) { _name = new_name; }
 
     TraceOptions TraceOutputOptions() const { return _options; }
     void         TraceOutputOptions(TraceOptions new_options) { _options = new_options; }
