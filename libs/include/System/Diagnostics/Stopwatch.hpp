@@ -2,6 +2,7 @@
 
 #include "System/TimeSpan.hpp"
 #include <chrono>
+#include <format>
 
 
 namespace System::Diagnostics
@@ -12,9 +13,9 @@ class Stopwatch
 public:
     using clock_type = std::chrono::steady_clock;
 
-    Stopwatch();
+    Stopwatch() = default;
 
-    static long Frequency() { return 0; } // Ticks per second
+    static long Frequency() { return clock_type::rep; }
     static bool IsHighResolution() { return false; }
 
     static Stopwatch StartNew()
@@ -65,16 +66,16 @@ public:
         return clock_type::now().time_since_epoch().count();
     }
 
-    static TimeSpan GetElapsedTime(long starting_time_stamp, long ending_time_stamp)
+    static TimeSpan GetElapsedTime(long starting_time_stamp)
     {
-        clock_type::duration difference( ending_time_stamp - starting_time_stamp ):
+        clock_type::duration difference( clock_type::now().time_since_epoch().count() - starting_time_stamp ):
 
         return { difference };
     }
 
-    static TimeSpan GetElapsedTime(long starting_time_stamp)
+    static TimeSpan GetElapsedTime(long starting_time_stamp, long ending_time_stamp)
     {
-        clock_type::duration difference( clock_type::now().time_since_epoch().count() - starting_time_stamp ):
+        clock_type::duration difference( ending_time_stamp - starting_time_stamp ):
 
         return { difference };
     }
@@ -108,6 +109,10 @@ public:
         return d.count();
     }
 
+    std::string ToString() const
+    {
+        return std::format("{}", _accumulated_time);
+    }
 protected:
     clock_type::time_point _start_time;
     clock_type::duration   _accumulated_time;
