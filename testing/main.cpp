@@ -30,6 +30,7 @@
 #include "TestPath.hpp"
 #include "TestValueTuple.hpp"
 #include "TestBinaryWriter.hpp"
+#include "TestStopwatch.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -68,6 +69,7 @@ int main(void)
     TestPath::Run();
     TestValueTuple::Run();
     TestBinaryWriter::Run();
+    TestStopwatch::Run();
     std::cout << "All tests passed!\n";
 
     return EXIT_SUCCESS;
