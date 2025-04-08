@@ -1,6 +1,7 @@
 #include "TestValueTuple.hpp"
 #include "System/Console.hpp"
 #include "System/ValueTuple.hpp"
+#include "System/Private/private.hpp"
 #include <cassert>
 
 
@@ -14,6 +15,7 @@ void DefaultConstructed()
     {
         System::ValueTuple<> t;
 
+        UNUSED(t);
     }
     {
         System::ValueTuple<int> t;
