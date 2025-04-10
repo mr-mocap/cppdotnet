@@ -1,6 +1,7 @@
 #pragma once
 
 #include "System/TimeSpan.hpp"
+#include "System/Private/private.hpp"
 #include <chrono>
 #include <format>
 #include <cstdint>
@@ -35,6 +36,8 @@ public:
             return;
         _start_time = clock_type::now();
         _is_running = true;
+        
+        POSTCONDITION( IsRunning() );
     }
 
     void Stop()
@@ -44,6 +47,8 @@ public:
         _accumulated_time += n - _start_time;
         _is_running = false;
         _start_time = n;
+
+        POSTCONDITION( !IsRunning() );
     }
 
     void Restart()
@@ -54,12 +59,17 @@ public:
 
         _accumulated_time = clock_type::duration::zero();
         Start();
+
+        POSTCONDITION( IsRunning() );
     }
 
     void Reset()
     {
         _is_running = false;
         _accumulated_time = clock_type::duration::zero();
+
+        POSTCONDITION( !IsRunning() );
+        POSTCONDITION( _accumulated_time == clock_type::duration::zero() );
     }
 
     bool IsRunning() const
@@ -117,7 +127,10 @@ public:
 
     std::string ToString() const
     {
-        return std::format("{}", _accumulated_time);
+        if ( _is_running )
+            return std::format("{} and running", _accumulated_time);
+        else
+            return std::format("{}", _accumulated_time);
     }
 protected:
     clock_type::time_point _start_time;
@@ -133,3 +146,18 @@ protected:
 };
 
 }
+
+template <>
+struct std::formatter<System::Diagnostics::Stopwatch>
+{
+    constexpr auto parse(std::format_parse_context &ctx)
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const System::Diagnostics::Stopwatch &object, FormatContext &ctx) const
+    {
+        return std::format_to( ctx.out(), "{}", object.ToString());
+    }
+};

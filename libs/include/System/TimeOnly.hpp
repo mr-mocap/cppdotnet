@@ -100,3 +100,21 @@ protected:
 };
 
 }
+
+template <>
+struct std::formatter<System::TimeOnly>
+{
+    constexpr auto parse(std::format_parse_context &ctx)
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const System::TimeOnly &object, FormatContext &ctx) const
+    {
+        std::chrono::system_clock::duration d = object.ToTimeSpan();
+        std::chrono::hh_mm_ss<std::chrono::seconds> tod( duration_cast<std::chrono::seconds>(d) );
+
+        return std::format_to( ctx.out(), "{}", tod);
+    }
+};

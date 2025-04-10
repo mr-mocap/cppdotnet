@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <format>
 
 
 namespace System
@@ -204,3 +205,18 @@ protected:
 };
 
 }
+
+template <>
+struct std::formatter<System::TimeSpan>
+{
+    constexpr auto parse(std::format_parse_context &ctx)
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const System::TimeSpan &object, FormatContext &ctx) const
+    {
+        return std::format_to( ctx.out(), "{}", std::chrono::system_clock::duration(object) );
+    }
+};
