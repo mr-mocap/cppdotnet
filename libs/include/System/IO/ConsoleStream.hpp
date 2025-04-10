@@ -14,6 +14,7 @@ public:
     ConsoleStream(Which which);
    ~ConsoleStream();
 
+    Which Type() const { return _which; }
 protected:
     Which _which;
 };

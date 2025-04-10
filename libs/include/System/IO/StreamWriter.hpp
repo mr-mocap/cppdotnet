@@ -20,6 +20,7 @@ public:
     void Write(char value) override;
     void Write(const std::string_view message) override;
 
+    Stream *BaseStream() const { return _stream.get(); }
 protected:
     std::unique_ptr<Stream> _stream;
 };

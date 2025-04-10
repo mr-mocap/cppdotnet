@@ -6,8 +6,13 @@
 #include <mutex>
 
 
+
 namespace System
 {
+
+static bool InputRedirected  = false;
+static bool OutputRedirected = false;
+static bool ErrorRedirected  = false;
 
 static std::unique_ptr<IO::TextReader> &GetIn()
 {
@@ -76,26 +81,86 @@ void Console::SetIn(std::unique_ptr<IO::TextReader> &&new_input_reader)
         ThrowWithTarget( ArgumentNullException{ "new_input_reader"sv } );
 
     GetIn() = std::move(new_input_reader);
+    InputRedirected = true;
+
+    // Check to see if we are really setting back to the original.  If so, undo the InputRedirected.
+    IO::StreamReader *specific_type = dynamic_cast<IO::StreamReader *>( GetIn().get() );
+
+    if ( specific_type )
+    {
+        if ( specific_type->BaseStream() )
+        {
+            IO::ConsoleStream *specific_stream_type = dynamic_cast<IO::ConsoleStream *>(specific_type->BaseStream());
+
+            if ( specific_stream_type->Type() == IO::ConsoleStream::In )
+                InputRedirected = false;
+        }
+    }
 }
 
-void Console::SetOut(std::unique_ptr<IO::TextWriter> &&new_input_writer)
+void Console::SetOut(std::unique_ptr<IO::TextWriter> &&new_output_writer)
 {
     using namespace std::literals;
 
-    if ( !new_input_writer )
-        ThrowWithTarget( ArgumentNullException{ "new_input_writer"sv } );
+    if ( !new_output_writer )
+        ThrowWithTarget( ArgumentNullException{ "new_output_writer"sv } );
 
-    GetOut() = std::move(new_input_writer);
+    GetOut() = std::move(new_output_writer);
+    OutputRedirected = true;
+
+    // Check to see if we are really setting back to the original.  If so, undo the OutputRedirected.
+    IO::StreamWriter *specific_type = dynamic_cast<IO::StreamWriter *>( GetOut().get() );
+
+    if ( specific_type )
+    {
+        if ( specific_type->BaseStream() )
+        {
+            IO::ConsoleStream *specific_stream_type = dynamic_cast<IO::ConsoleStream *>(specific_type->BaseStream());
+
+            if ( specific_stream_type->Type() == IO::ConsoleStream::Out )
+                OutputRedirected = false;
+        }
+    }
 }
 
-void Console::SetError(std::unique_ptr<IO::TextWriter> &&new_input_writer)
+void Console::SetError(std::unique_ptr<IO::TextWriter> &&new_output_writer)
 {
     using namespace std::literals;
 
-    if ( !new_input_writer )
-        ThrowWithTarget( ArgumentNullException{ "new_input_writer"sv } );
+    if ( !new_output_writer )
+        ThrowWithTarget( ArgumentNullException{ "new_output_writer"sv } );
 
-    GetError() = std::move(new_input_writer);
+    GetError() = std::move(new_output_writer);
+    ErrorRedirected = true;
+
+    // Check to see if we are really setting back to the original.  If so, undo the ErrorRedirected.
+    IO::StreamWriter *specific_type = dynamic_cast<IO::StreamWriter *>( GetError().get() );
+
+    if ( specific_type )
+    {
+        if ( specific_type->BaseStream() )
+        {
+            IO::ConsoleStream *specific_stream_type = dynamic_cast<IO::ConsoleStream *>(specific_type->BaseStream());
+
+            if ( specific_stream_type->Type() == IO::ConsoleStream::Error )
+                ErrorRedirected = false;
+        }
+    }
+}
+
+bool Console::IsInputRedirected()
+{
+    return InputRedirected;
+}
+
+bool Console::IsOutputRedirected()
+{
+    return OutputRedirected;
+}
+
+bool Console::IsErrorRedirected()
+{
+    return ErrorRedirected;
 }
 
 void Console::SetLog(std::unique_ptr<IO::TextWriter> &&new_input_writer)
@@ -130,7 +195,7 @@ std::unique_ptr<IO::ConsoleStream> Console::OpenStandardLog()
 
 std::string Console::ReadLine()
 {
-    return {};
+    return In().ReadLine();
 }
 
 void Console::Write(bool value)

@@ -20,6 +20,7 @@ public:
 
     std::string ReadLine() override;
 
+    Stream *BaseStream() const { return _stream.get(); }
 protected:
     std::unique_ptr<Stream> _stream;
 };

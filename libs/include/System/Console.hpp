@@ -28,6 +28,10 @@ public:
     static std::unique_ptr<IO::ConsoleStream> OpenStandardError();
     static std::unique_ptr<IO::ConsoleStream> OpenStandardLog();
 
+    static bool IsInputRedirected();
+    static bool IsOutputRedirected();
+    static bool IsErrorRedirected();
+
     static std::string ReadLine();
 
     static void Write(bool value);
