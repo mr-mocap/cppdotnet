@@ -107,6 +107,7 @@ public:
 #endif
 
     operator std::chrono::sys_days() const { return _year_month_day; }
+    operator std::chrono::year_month_day() const { return _year_month_day; }
 protected:
     std::chrono::year_month_day _year_month_day;
 
@@ -123,3 +124,18 @@ protected:
 };
 
 }
+
+template <>
+struct std::formatter<System::DateOnly>
+{
+    constexpr auto parse(std::format_parse_context &ctx)
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const System::DateOnly &object, FormatContext &ctx) const
+    {
+        return std::format_to( ctx.out(), "{}", std::chrono::year_month_day(object) );
+    }
+};
