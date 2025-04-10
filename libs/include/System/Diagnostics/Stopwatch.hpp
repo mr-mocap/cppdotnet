@@ -3,6 +3,7 @@
 #include "System/TimeSpan.hpp"
 #include <chrono>
 #include <format>
+#include <cstdint>
 
 
 namespace System::Diagnostics
@@ -14,9 +15,14 @@ public:
     using clock_type = std::chrono::steady_clock;
 
     Stopwatch() = default;
+    Stopwatch(const Stopwatch &) = default;
+    Stopwatch(Stopwatch &&) = default;
 
-    static long Frequency() { return clock_type::rep; }
-    static bool IsHighResolution() { return false; }
+    Stopwatch &operator =(const Stopwatch &) = default;
+    Stopwatch &operator =(Stopwatch &&) = default;
+
+    static constexpr long Frequency()        { return clock_type::period::den; }
+    static constexpr bool IsHighResolution() { return false; }
 
     static Stopwatch StartNew()
     {
@@ -46,14 +52,14 @@ public:
         // (i.e. pretend that we are stopped right now and then call Start())
         _is_running = false;
 
-        _accumulated_time = 0;
+        _accumulated_time = clock_type::duration::zero();
         Start();
     }
 
     void Reset()
     {
         _is_running = false;
-        _accumulated_time = 0;
+        _accumulated_time = clock_type::duration::zero();
     }
 
     bool IsRunning() const
@@ -68,26 +74,26 @@ public:
 
     static TimeSpan GetElapsedTime(long starting_time_stamp)
     {
-        clock_type::duration difference( clock_type::now().time_since_epoch().count() - starting_time_stamp ):
+        clock_type::duration difference( clock_type::now().time_since_epoch().count() - starting_time_stamp );
 
         return { difference };
     }
 
     static TimeSpan GetElapsedTime(long starting_time_stamp, long ending_time_stamp)
     {
-        clock_type::duration difference( ending_time_stamp - starting_time_stamp ):
+        clock_type::duration difference( ending_time_stamp - starting_time_stamp );
 
         return { difference };
     }
 
-    TimeSpan Elapsed() const
+    TimeSpan Elapsed()
     {
         if ( _is_running )
         {
             auto n = clock_type::now();
 
             // Capture the current time difference...
-            _accumulated_time += n - _start_time;
+            _accumulated_time += (n - _start_time);
             
             // Reset the start time
             _start_time = n;
@@ -95,14 +101,14 @@ public:
         return { _accumulated_time };
     }
 
-    long ElapsedMilliseconds() const
+    long ElapsedMilliseconds()
     {
         clock_type::duration d = Elapsed();
 
         return std::chrono::floor<std::chrono::milliseconds>(d).count();
     }
 
-    long GetElapsedTicks() const
+    long ElapsedTicks()
     {
         clock_type::duration d = Elapsed();
 
@@ -115,7 +121,7 @@ public:
     }
 protected:
     clock_type::time_point _start_time;
-    clock_type::duration   _accumulated_time;
+    clock_type::duration   _accumulated_time = clock_type::duration::zero();
     bool                   _is_running = false;
 
     Stopwatch(bool startnow)
