@@ -92,7 +92,7 @@ void Console::SetIn(std::unique_ptr<IO::TextReader> &&new_input_reader)
         {
             IO::ConsoleStream *specific_stream_type = dynamic_cast<IO::ConsoleStream *>(specific_type->BaseStream());
 
-            if ( specific_stream_type->Type() == IO::ConsoleStream::In )
+            if ( specific_stream_type && (specific_stream_type->Type() == IO::ConsoleStream::In) )
                 InputRedirected = false;
         }
     }
@@ -117,7 +117,7 @@ void Console::SetOut(std::unique_ptr<IO::TextWriter> &&new_output_writer)
         {
             IO::ConsoleStream *specific_stream_type = dynamic_cast<IO::ConsoleStream *>(specific_type->BaseStream());
 
-            if ( specific_stream_type->Type() == IO::ConsoleStream::Out )
+            if ( specific_stream_type && (specific_stream_type->Type() == IO::ConsoleStream::Out) )
                 OutputRedirected = false;
         }
     }
@@ -142,7 +142,7 @@ void Console::SetError(std::unique_ptr<IO::TextWriter> &&new_output_writer)
         {
             IO::ConsoleStream *specific_stream_type = dynamic_cast<IO::ConsoleStream *>(specific_type->BaseStream());
 
-            if ( specific_stream_type->Type() == IO::ConsoleStream::Error )
+            if ( specific_stream_type && (specific_stream_type->Type() == IO::ConsoleStream::Error) )
                 ErrorRedirected = false;
         }
     }
