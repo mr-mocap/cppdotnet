@@ -38,6 +38,7 @@
 int main(void)
 {
     std::cout << "Running Unit Tests!\n";
+
     TestDebug::Run();
     TestException::Run();
     TestEnvironment::Run();
@@ -70,6 +71,7 @@ int main(void)
     TestValueTuple::Run();
     TestBinaryWriter::Run();
     TestStopwatch::Run();
+
     std::cout << "All tests passed!\n";
 
     return EXIT_SUCCESS;
