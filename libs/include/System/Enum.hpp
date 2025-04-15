@@ -7,6 +7,7 @@
 #include <optional>
 #include <algorithm>
 #include <array>
+#include <format>
 #include <utility>
 #include <ranges>
 #include <cassert>
@@ -272,3 +273,18 @@ protected:
 };
 
 }
+
+template <class T>
+struct std::formatter<System::Enum<T>>
+{
+    constexpr auto parse(std::format_parse_context &ctx)
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const System::Enum<T> &object, FormatContext &ctx) const
+    {
+        return std::format_to( ctx.out(), "{}", object.GetName() );
+    }
+};
