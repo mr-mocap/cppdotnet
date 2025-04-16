@@ -9,9 +9,9 @@ class IObserver
 {
 public:
 
-    void OnNext(T value);
-    void OnError(Exception &error);
-    void OnCompleted();
+    virtual void OnNext(const T &value) = 0;
+    virtual void OnError(Exception &error) = 0;
+    virtual void OnCompleted() = 0;
 };
 
 }

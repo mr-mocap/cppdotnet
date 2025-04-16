@@ -1,5 +1,6 @@
 #pragma once
 
+#include "System/IObserver.hpp"
 
 namespace System
 {
@@ -8,8 +9,7 @@ template <class T>
 class IObservable
 {
 public:
-
-    void Subscribe();
+    virtual void Subscribe(IObserver<T> &observer) = 0;
 protected:
 };
 
