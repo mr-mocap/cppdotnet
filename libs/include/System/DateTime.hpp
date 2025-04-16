@@ -141,3 +141,18 @@ protected:
 };
 
 }
+
+template <>
+struct std::formatter<System::DateTime>
+{
+    constexpr auto parse(std::format_parse_context &ctx)
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const System::DateTime &object, FormatContext &ctx) const
+    {
+        return std::format_to( ctx.out(), "{}", object.ToString());
+    }
+};
