@@ -1,7 +1,6 @@
 default: all
 
-all: 
-	cd libs && $(MAKE) run_test
+all: run_test
 
 lib:
 	cd libs && $(MAKE) lib
