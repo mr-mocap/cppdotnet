@@ -45,43 +45,43 @@ public:
 
         SpecializedIterator(Base i) : Base( i ) { }
 
-        Dictionary::reference operator*() const _GLIBCXX_NOEXCEPT
+        Dictionary::reference operator*() const noexcept
         {
             return reinterpret_cast<Dictionary::reference>( Base::operator *() );
         }
 
-        Dictionary::pointer operator->() const _GLIBCXX_NOEXCEPT
+        Dictionary::pointer operator->() const noexcept
         {
             return reinterpret_cast<Dictionary::pointer>( Base::operator ->() );
         }
 
-        SpecializedIterator &operator++() _GLIBCXX_NOEXCEPT
+        SpecializedIterator &operator++() noexcept
         {
             Base::operator++();
             return *this;
         }
 
-        SpecializedIterator operator++(int) _GLIBCXX_NOEXCEPT
+        SpecializedIterator operator++(int) noexcept
         {
             SpecializedIterator tmp = Base::operator++(1);
 
             return tmp;
         }
 
-        SpecializedIterator &operator--() _GLIBCXX_NOEXCEPT
+        SpecializedIterator &operator--() noexcept
         {
             Base::operator--();
             return *this;
         }
 
-        SpecializedIterator operator--(int) _GLIBCXX_NOEXCEPT
+        SpecializedIterator operator--(int) noexcept
         {
             SpecializedIterator tmp = Base::operator--(1);
 
             return tmp;
         }
 
-        friend bool operator==(const SpecializedIterator &left, const SpecializedIterator &right) _GLIBCXX_NOEXCEPT
+        friend bool operator==(const SpecializedIterator &left, const SpecializedIterator &right) noexcept
         {
             return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
         }
@@ -94,43 +94,43 @@ public:
 
         SpecializedConstIterator(Base i) : Base( i ) { }
 
-        Dictionary::const_reference operator*() const _GLIBCXX_NOEXCEPT
+        Dictionary::const_reference operator*() const noexcept
         {
             return reinterpret_cast<Dictionary::const_reference>( Base::operator *() );
         }
 
-        Dictionary::const_pointer operator->() const _GLIBCXX_NOEXCEPT
+        Dictionary::const_pointer operator->() const noexcept
         {
             return reinterpret_cast<Dictionary::const_pointer>( Base::operator ->() );
         }
 
-        SpecializedConstIterator &operator++() _GLIBCXX_NOEXCEPT
+        SpecializedConstIterator &operator++() noexcept
         {
             Base::operator++();
             return *this;
         }
 
-        SpecializedConstIterator operator++(int) _GLIBCXX_NOEXCEPT
+        SpecializedConstIterator operator++(int) noexcept
         {
             SpecializedConstIterator tmp = Base::operator++(1);
 
             return tmp;
         }
 
-        SpecializedConstIterator &operator--() _GLIBCXX_NOEXCEPT
+        SpecializedConstIterator &operator--() noexcept
         {
             Base::operator--();
             return *this;
         }
 
-        SpecializedConstIterator operator--(int) _GLIBCXX_NOEXCEPT
+        SpecializedConstIterator operator--(int) noexcept
         {
             SpecializedConstIterator tmp = Base::operator--(1);
 
             return tmp;
         }
 
-        friend bool operator==(const SpecializedConstIterator &left, const SpecializedConstIterator &right) _GLIBCXX_NOEXCEPT
+        friend bool operator==(const SpecializedConstIterator &left, const SpecializedConstIterator &right) noexcept
         {
             return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
         }
