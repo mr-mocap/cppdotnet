@@ -109,6 +109,7 @@ public:
     ICollection &operator =(const ICollection &other)
     {
         _data = other._data->Clone();
+        return *this;
     }
 
     ICollection &operator =(ICollection &&other) = delete;
