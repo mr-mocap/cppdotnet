@@ -3,6 +3,7 @@
 #include <string>
 #include <string_view>
 #include <memory>
+#include <any>
 
 namespace System::Diagnostics::Metrics
 {
@@ -67,7 +68,7 @@ public:
         {
         }
 
-        void RecordMeasurement(const T &measurement)
+        void RecordMeasurement(T measurement)
         {
         }
 
@@ -134,10 +135,6 @@ protected:
         std::unique_ptr<InternalInterface> Empty() override
         {
             return std::make_unique_for_overwrite<GeneralizedInterface>();
-        }
-
-        void RecordMeasurement(T measurement)
-        {
         }
 
         SpecificInstrument<SpecificInstrumentType> specific_instrument;

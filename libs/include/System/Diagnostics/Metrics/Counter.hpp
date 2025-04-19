@@ -30,9 +30,9 @@ class Counter : public Instrument::SpecificInstrument<T>
 public:
     Counter() = delete;
 
-    void Add(const T &delta)
+    void Add(T delta)
     {
-        RecordMeasurement( delta );
+        this->RecordMeasurement( delta );
     }
 
 protected:

@@ -8,11 +8,11 @@ void MeterListener::Start()
 {
 }
 
-void MeterListener::DisableMeasurement(Instrument &instrument)
+void MeterListener::DisableMeasurement(Instrument &)
 {
 }
 
-void MeterListener::EnableMeasurementEvents(Instrument &instrument)
+void MeterListener::EnableMeasurementEvents(Instrument &)
 {
 }
 
