@@ -9,7 +9,7 @@ namespace System::Concepts
 {
 
 template <typename T>
-concept HasValueType = requires { T::value_type; };
+concept HasValueType = requires { typename T::value_type; };
 
 template <typename T>
 concept IComparable = requires(T Object, T OtherObject) {

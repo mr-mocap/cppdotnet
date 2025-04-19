@@ -10,6 +10,7 @@ namespace System::Collections::Generic::Concepts
 
 template <typename ContainerT, typename ValueT>
 concept ICollection = requires(ContainerT Object, ContainerT OtherObject) {
+    typename ContainerT::value_type;
     { ContainerT::value_type } -> std::same_as<ValueT>;
 
     { Object.Count() } -> std::same_as<int>; // Must return -1, 0, or 1 ( for <, ==, > )
@@ -28,11 +29,14 @@ concept IComparer = requires(T Object, T OtherObject) {
 
 template <typename T, typename KeyT, typename ValueT>
 concept IDictionaryOnly = requires(T Object, const KeyT &key) {
+    typename T::value_type;
+    typename T::key_type;
+    typename T::mapped_type;
     { T::value_type } -> std::same_as< KeyValuePair<KeyT, ValueT> >;
     { T::key_type } -> std::same_as<KeyT>;
     { T::mapped_type } -> std::same_as<ValueT>;
-    T::KeyCollection;
-    T::ValueCollection;
+    typename T::KeyCollection;
+    typename T::ValueCollection;
 
     { Object.Count() } -> std::same_as<int>;
     { Object.IsReadOnly() } -> std::same_as<bool>;
