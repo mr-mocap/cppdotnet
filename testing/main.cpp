@@ -31,6 +31,7 @@
 #include "TestValueTuple.hpp"
 #include "TestBinaryWriter.hpp"
 #include "TestStopwatch.hpp"
+#include "TestCounter.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -38,7 +39,6 @@
 int main(void)
 {
     std::cout << "Running Unit Tests!\n";
-
     TestDebug::Run();
     TestException::Run();
     TestEnvironment::Run();
@@ -71,6 +71,7 @@ int main(void)
     TestValueTuple::Run();
     TestBinaryWriter::Run();
     TestStopwatch::Run();
+    TestCounter::Run();
 
     std::cout << "All tests passed!\n";
 
