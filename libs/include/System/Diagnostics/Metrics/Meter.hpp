@@ -2,6 +2,7 @@
 
 
 #include "System/Diagnostics/Metrics/MeterOptions.hpp"
+#include "System/Diagnostics/Metrics/Counter.hpp"
 
 
 namespace System::Diagnostics::Metrics
@@ -10,6 +11,7 @@ namespace System::Diagnostics::Metrics
 class Meter
 {
 public:
+    Meter() = delete;
     Meter(const std::string_view name)
         :
         _name{ name }
@@ -31,6 +33,11 @@ public:
     const std::string_view Name() const { return _name; }
     const std::string_view Version() const { return _version; }
 
+    template <class T>
+    Counter<T> CreateCounter(std::string_view name, std::string_view unit, std::string_view description)
+    {
+        return Counter<T>(*this, name, unit, description);
+    }
 protected:
     std::string _name;
     std::string _version;
