@@ -324,29 +324,6 @@ catch (const std::out_of_range &)
     return {};
 }
 
-const std::string_view Convert::ToString(Diagnostics::TraceLevel tracelevel_value)
-try
-{
-    using namespace std::literals;
-
-    static const std::map<Diagnostics::TraceLevel, const std::string_view> type_map{
-        { Diagnostics::TraceLevel::Off,     "Off"sv     },
-        { Diagnostics::TraceLevel::Error,   "Error"sv   },
-        { Diagnostics::TraceLevel::Warning, "Warning"sv },
-        { Diagnostics::TraceLevel::Info,    "Info"sv    },
-        { Diagnostics::TraceLevel::Verbose, "Verbose"sv }
-    };
-
-    return type_map.at( tracelevel_value );
-}
-catch (const std::out_of_range &)
-{
-    using namespace std::literals;
-
-    ThrowWithTarget( ArgumentOutOfRangeException( "tracelevel_value"sv ) );
-    return {};
-}
-
 const std::string_view Convert::ToString(Diagnostics::TraceOptions traceoptions_value)
 try
 {

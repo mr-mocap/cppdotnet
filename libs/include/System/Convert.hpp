@@ -38,7 +38,6 @@ public:
     static std::string      ToString(uint32_t value, Base toBase = Base::Decimal);
     static std::string      ToString(uint64_t value, Base toBase = Base::Decimal);
 
-    static const std::string_view ToString(Diagnostics::TraceLevel   value);
     static const std::string_view ToString(Diagnostics::TraceOptions value);
     static const std::string_view ToString(Diagnostics::SourceLevels value);
 

@@ -11,6 +11,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestConsoleTraceListener.o \
 	TestConsole.o \
 	TestDebug.o \
+	TestTrace.o \
 	TestException.o \
 	TestEnvironment.o \
 	TestVersion.o \

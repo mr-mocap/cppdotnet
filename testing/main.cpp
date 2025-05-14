@@ -2,6 +2,7 @@
 #include "TestDefaultTraceListener.hpp"
 #include "TestConsoleTraceListener.hpp"
 #include "TestConsole.hpp"
+#include "TestTrace.hpp"
 #include "TestDebug.hpp"
 #include "TestException.hpp"
 #include "TestEnvironment.hpp"
@@ -40,6 +41,7 @@ int main(void)
 {
     std::cout << "Running Unit Tests!\n";
     TestDebug::Run();
+    TestTrace::Run();
     TestException::Run();
     TestEnvironment::Run();
     TestVersion::Run();
