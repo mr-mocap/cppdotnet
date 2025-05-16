@@ -1,5 +1,6 @@
 #include "TestTrace.hpp"
 #include "System/Diagnostics/Trace.hpp"
+#include "System/Diagnostics/TraceLevel.hpp"
 #include "System/Diagnostics/ConsoleTraceListener.hpp"
 #include <memory>
 #include <iostream>
@@ -174,6 +175,17 @@ void IndentLevel()
     System::Diagnostics::Trace::WriteLine("Back to Indent Level 0");
 }
 
+void TestTraceLevel()
+{
+    std::cout << __func__ << std::endl;
+
+    System::Diagnostics::Trace::WriteLine( std::format("As string \"{:s}\"", System::Diagnostics::TraceLevel::Off) );
+    System::Diagnostics::Trace::WriteLine( std::format("As int \"{:i}\"", System::Diagnostics::TraceLevel::Off) );
+
+    System::Diagnostics::Trace::WriteLine( std::format("As string \"{:s*<10}\"", System::Diagnostics::TraceLevel::Off) );
+    System::Diagnostics::Trace::WriteLine( std::format("As int \"{:i#6x}\"", System::Diagnostics::TraceLevel::Off) );
+}
+
 void Run()
 {
     std::cout << "Running Trace Tests..." << std::endl;
@@ -197,6 +209,7 @@ void Run()
         TraceWarning();
         TraceInformation();
         IndentLevel();
+        TestTraceLevel();
     }
     TestTeardown();
 
