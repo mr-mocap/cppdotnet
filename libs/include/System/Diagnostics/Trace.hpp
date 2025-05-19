@@ -2,6 +2,7 @@
 
 #include "System/Diagnostics/TraceListenerCollection.hpp"
 #include <string>
+#include <format>
 #include <source_location>
 
 namespace System::Diagnostics
@@ -28,14 +29,38 @@ public:
     static void Write(const std::string_view message);
     static void Write(const std::string_view message, const std::string_view category);
 
+    template <typename ...Args>
+    static void Write(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
+
     static void WriteIf(bool condition, const std::string_view message);
     static void WriteIf(bool condition, const std::string_view message, const std::string_view category);
+
+    template <typename ...Args>
+    static void WriteIf(bool condition, std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        WriteIf( condition, std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
 
     static void WriteLine(const std::string_view message);
     static void WriteLine(const std::string_view message, const std::string_view category);
 
+    template <typename ...Args>
+    static void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
+
     static void WriteLineIf(bool condition, const std::string_view message);
     static void WriteLineIf(bool condition, const std::string_view message, const std::string_view category);
+
+    template <typename ...Args>
+    static void WriteLineIf(bool condition, std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        WriteLineIf( condition, std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
 
     
 
@@ -47,6 +72,12 @@ public:
 
     static void Fail(const std::string_view message);
     static void Fail(const std::string_view message, const std::string_view category);
+
+    template <typename ...Args>
+    static void Fail(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        Fail( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
 
     static void TraceError(const std::string_view message);
     static void TraceWarning(const std::string_view message);
