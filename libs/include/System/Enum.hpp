@@ -277,14 +277,56 @@ protected:
 template <class T>
 struct std::formatter<System::Enum<T>>
 {
+    // Use {} to print the string form (default)
+    // Use {:s} to print the string form and forward to the standard string formatting
+    // Use {:i} to print the integer value and forward to the standard integer formatting
+    using int_fmt         = std::formatter<int>;
+    using string_view_fmt = std::formatter<std::string_view>;
+    using underlying_formatter_type = std::variant<string_view_fmt, int_fmt>;
+
     constexpr auto parse(std::format_parse_context &ctx)
     {
-        return ctx.begin();
+        auto fmt_end = std::find( ctx.begin(), ctx.end(), '}' );
+
+        if ( fmt_end != ctx.begin() )
+        {
+            // The FIRST character tells us how to format it
+            char representation = *ctx.begin();
+
+            if ( representation == 's' )
+            {
+                ctx.advance_to( std::next( ctx.begin() ) );
+                underlying_formatter = string_view_fmt{};
+                return std::get<string_view_fmt>(underlying_formatter).parse(ctx);
+            }
+            else if ( representation == 'i' )
+            {
+                ctx.advance_to( std::next( ctx.begin() ) );
+                underlying_formatter = int_fmt{};
+                return std::get<int_fmt>(underlying_formatter).parse(ctx);
+            }
+        }
+
+        return fmt_end;
     }
 
     template <typename FormatContext>
     auto format(const System::Enum<T> &object, FormatContext &ctx) const
     {
-        return std::format_to( ctx.out(), "{}", object.GetName() );
+        if ( std::holds_alternative<int_fmt>(underlying_formatter) )
+        {
+            ctx.advance_to( std::get<int_fmt>(underlying_formatter).format( static_cast<int>(object), ctx) );
+        }
+        else if ( std::holds_alternative<string_view_fmt>(underlying_formatter) )
+        {
+            std::string buffer;
+
+            buffer.append( object.GetName() );
+            ctx.advance_to( std::get<string_view_fmt>(underlying_formatter).format(buffer, ctx) );
+        }
+        return ctx.out();
     }
+
+protected:
+    underlying_formatter_type underlying_formatter{ string_view_fmt{} };
 };
