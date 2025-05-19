@@ -2,6 +2,7 @@
 
 #include "System/Diagnostics/TraceListenerCollection.hpp"
 #include <string>
+#include <string_view>
 #include <format>
 #include <source_location>
 
@@ -82,6 +83,22 @@ public:
     static void TraceError(const std::string_view message);
     static void TraceWarning(const std::string_view message);
     static void TraceInformation(const std::string_view message);
+
+    template <typename ...Args>
+    static void TraceError(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        TraceError( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
+    template <typename ...Args>
+    static void TraceWarning(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        TraceWarning( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
+    template <typename ...Args>
+    static void TraceInformation(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        TraceInformation( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
 
     static TraceListenerCollection &Listeners();
 };
