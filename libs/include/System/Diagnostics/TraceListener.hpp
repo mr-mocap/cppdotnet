@@ -4,6 +4,7 @@
 #include "System/Diagnostics/TraceFilter.hpp"
 #include "System/Collections/Specialized/StringDictionary.hpp"
 #include <string>
+#include <format>
 #include <string_view>
 #include <memory>
 
@@ -42,8 +43,20 @@ public:
     virtual void Write(const std::string_view message) = 0;
     virtual void Write(const std::string_view message, const std::string_view category) = 0;
 
+    template <typename ...Args>
+    static void Write(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
+
     virtual void WriteLine(const std::string_view message) = 0;
     virtual void WriteLine(const std::string_view message, const std::string_view category) = 0;
+
+    template <typename ...Args>
+    static void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
 
     virtual void Fail(const std::string_view message) = 0;
     virtual void Fail(const std::string_view message, const std::string_view detail) = 0;
