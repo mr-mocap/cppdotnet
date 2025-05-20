@@ -1,5 +1,6 @@
 #pragma once
 
+#include "System/Private/private.hpp"
 #include <string>
 #include <string_view>
 #include <memory>
@@ -70,6 +71,7 @@ public:
 
         void RecordMeasurement(T measurement)
         {
+            UNUSED(measurement);
         }
 
         friend class Instrument;
