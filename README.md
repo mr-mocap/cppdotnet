@@ -45,7 +45,7 @@ I also plan on writing better unit tests for this so I can practice doing that a
       should help enforce not being able to modify it easily.
     * **Return std::string in cases where I actually generate a temporary
       string in a function.**
-      Returning a std::string_view would be asking for trouble here.Unfortunately, this means that there is an inconsistency
+      Returning a std::string_view would be asking for trouble here.  Unfortunately, this means that there is an inconsistency
       in return value types for strings as it will depend upon the implementation
       of the function as to what to return (string_view vs string).
       String-like objects can be constructed from either a string_view or string, so it should be fairly transparent.
@@ -64,3 +64,24 @@ I also plan on writing better unit tests for this so I can practice doing that a
           to std::source_location().
     * Debug/Trace classes
         * Use to automatically have access to the current source state at the callsite.
+* Creating your own std::format()-like functions that take variable, compile-time checked arguments
+    * You can see this in the System::Trace & System::Debug classes.  Easy to do.  Just follow the method template and enjoy!
+* Adding your own formatting code that integrates with std::format()
+    * Specialize std::formatter<> for the type you want to affect
+* Type Erasure!
+    * Currently only used in the ICollection/ICollectionRef classes.
+* Experimenting with an "enum traits" type of templated class (System/Private/enum.hpp)
+    * Specialize for each enum type you want to implement
+    * Basically used as a reflection mechanism to allow retrieving the names/values of the enum type
+    * Combine with std::formatter<> specialization to allow direct formatting of language enum types!
+        * Currently allows to print as either an integer or a string
+        * If you want to print as an integer, begin your format string with ":i".  At that point
+          you can use all of the standard-library integer formatting options.
+          (ex: std::format("value is {:i}", SomeEnumType::AnEnumerationWithinTheEnum))
+          (ex: std::format("value is {:i10}", SomeEnumType::AnEnumerationWithinTheEnum) will print the value within a 10 character
+          width field)
+        * If you want to print as a string, begin your format string with ":s".  At that point
+          you can use all of the standard-library string formatting options.
+          (ex: std::format("value is {:s}", SomeEnumType::AnEnumerationWithinTheEnum))
+          (ex: std::format("value is {:s10}", SomeEnumType::AnEnumerationWithinTheEnum) will print the value within a 10 character
+          width field)
