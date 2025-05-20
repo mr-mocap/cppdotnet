@@ -44,7 +44,7 @@ public:
     virtual void Write(const std::string_view message, const std::string_view category) = 0;
 
     template <typename ...Args>
-    static void Write(std::format_string<Args...> &&fmt, Args &&... args)
+    void Write(std::format_string<Args...> &&fmt, Args &&... args)
     {
         Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
@@ -53,7 +53,7 @@ public:
     virtual void WriteLine(const std::string_view message, const std::string_view category) = 0;
 
     template <typename ...Args>
-    static void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
+    void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
     {
         WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
