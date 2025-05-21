@@ -4,9 +4,11 @@
 #include "System/EventArgs.hpp"
 #include "System/EventHandler.hpp"
 #include "System/DateTime.hpp"
+#include "System/Diagnostics/ActivitySource.hpp"
 #include <array>
 #include <string>
 #include <cstddef>
+#include <concepts>
 
 
 namespace System::Diagnostics
@@ -32,6 +34,13 @@ enum class ActivityKind
     Client   = 2, ///@< Outgoing request to the external component
     Producer = 3, ///@< Output provided to external components
     Consumer = 4  ///@< Output received from an external component
+};
+
+enum class ActivityIdFormat
+{
+    Unknown      = 0,
+    Hierarchical = 1,
+    W3C          = 2
 };
 
 struct ActivityTraceId
@@ -172,6 +181,21 @@ public:
 protected:
     Activity *_current  = nullptr;
     Activity *_previous = nullptr;
+};
+
+template <class T>
+    requires ( std::same_as<T, std::string> || std::same_as<T, ActivityContext> )
+struct ActivityCreationOptions
+{
+    ActivityKind    Kind = ActivityKind::Internal;
+    std::string     Name;
+#if 0
+    T            Parent;
+    ActivityTagsCollection SamplingTags;
+#endif
+    ActivitySource  Source;
+    ActivityTraceId TraceId;
+    std::string     TraceState;
 };
 
 class Activity
