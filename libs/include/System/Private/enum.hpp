@@ -17,25 +17,27 @@ struct EnumTraitTypes
 {
     using value_type           = T;
     using underlying_type      = std::underlying_type_t<T>;
-    using name_value_pair_type = std::pair<const std::string_view, const T>;
+    using name_value_pair_type = std::pair<std::string_view, T>;
 };
 
 template <class T>
     requires std::is_enum_v<T>
 struct EnumTraits
 {
+    // You MUST implement the following for the specialization!
+#if 0
     using value_type           = T;
     using underlying_type      = std::underlying_type_t<T>;
-    using name_value_pair_type = std::pair<const std::string_view, const T>;
+    using name_value_pair_type = std::pair<std::string_view, T>;
 
-    static auto EnumName() -> const std::string_view { return { }; }
+    static constexpr auto EnumName() -> const std::string_view { return { }; }
 
-    static std::span<name_value_pair_type> NameValuePairs()
+    static constexpr std::span<name_value_pair_type> NameValuePairs()
     {
         return {};
     }
 
-    static auto Count() -> std::size_t { return 0; }
+    static auto Count() -> std::size_t { return NameValuePairs().size(); }
 
     static auto Names() -> std::ranges::keys_view<std::span<name_value_pair_type>>
     {
@@ -69,6 +71,7 @@ struct EnumTraits
 
     static constexpr value_type min() { return value_type{}; }
     static constexpr value_type max() { return value_type{}; }
+#endif
 };
 
 template <class T>
@@ -78,6 +81,7 @@ struct EnumFormatter
     // Use {} to print the string form (default)
     // Use {:s} to print the string form and forward to the standard string formatting
     // Use {:i} to print the integer value and forward to the standard integer formatting
+    using formatter_type  = std::formatter<T>;
     using int_fmt         = std::formatter<int>;
     using string_view_fmt = std::formatter<std::string_view>;
     using underlying_formatter_type = std::variant<string_view_fmt, int_fmt>;
@@ -129,3 +133,12 @@ protected:
 };
 
 }
+
+template <typename T>
+requires
+requires {
+    typename System::EnumFormatter<T>::formatter_type;
+}
+struct std::formatter<T> : System::EnumFormatter<T>
+{
+};
