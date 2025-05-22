@@ -5,9 +5,7 @@
 #include "System/Private/enum.hpp"
 #include <string_view>
 #include <variant>
-#include <optional>
 #include <algorithm>
-#include <limits>
 
 namespace System::Diagnostics
 {
