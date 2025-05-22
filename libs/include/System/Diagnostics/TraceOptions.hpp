@@ -1,5 +1,7 @@
 #pragma once
 
+#include "System/Private/enum.hpp"
+
 namespace System::Diagnostics
 {
 
@@ -60,13 +62,9 @@ struct EnumTraits<Diagnostics::TraceOptions> : EnumTraitTypes<Diagnostics::Trace
 
     static constexpr bool IsDefined(value_type value)
     {
-        // Is it out-of-range?
-        if ( (value < min()) || (value > max()) )
-            return false;
-
         return std::ranges::find( NameValuePairs(),
-                                  value_string,
-                                  &name_value_pair_type::first
+                                  value,
+                                  &name_value_pair_type::second
                                 ) != NameValuePairs().end();
     }
 
