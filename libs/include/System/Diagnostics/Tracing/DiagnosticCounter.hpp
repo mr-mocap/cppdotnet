@@ -1,5 +1,6 @@
 #pragma once
 
+#include "System/Diagnostics/Tracing/EventSource.hpp"
 #include <string>
 
 namespace System::Diagnostics::Tracing
@@ -21,7 +22,7 @@ protected:
     std::string _name;
     std::string _display_name;
     std::string _display_units;
-    //EventSource _event_source;
+    EventSource _event_source;
 };
 
 }
