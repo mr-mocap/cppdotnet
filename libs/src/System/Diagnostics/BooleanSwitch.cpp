@@ -5,16 +5,16 @@
 namespace System::Diagnostics
 {
 
-BooleanSwitch::BooleanSwitch(const std::string_view display_name,
-                             const std::string_view description,
-                             const std::string_view default_value)
+BooleanSwitch::BooleanSwitch(std::string_view display_name,
+                             std::string_view description,
+                             std::string_view default_value)
     :
     Switch( display_name, description, default_value )
 {
 }
 
-BooleanSwitch::BooleanSwitch(const std::string_view display_name,
-                             const std::string_view description)
+BooleanSwitch::BooleanSwitch(std::string_view display_name,
+                             std::string_view description)
     :
     Switch( display_name, description, "0" )
 {

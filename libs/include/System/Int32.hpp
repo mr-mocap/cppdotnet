@@ -187,12 +187,12 @@ public:
         return Numerics::INumberBase<std::int32_t>::MultiplyAddEstimate(value1, value2);
     }
 
-    static Int32 Parse(const std::string_view value_string)
+    static Int32 Parse(std::string_view value_string)
     {
         return Numerics::INumberBase<std::int32_t>::Parse(value_string);
     }
 
-    static std::optional<Int32> TryParse(const std::string_view value_string)
+    static std::optional<Int32> TryParse(std::string_view value_string)
     {
         return Numerics::INumberBase<std::int32_t>::TryParse(value_string);
     }

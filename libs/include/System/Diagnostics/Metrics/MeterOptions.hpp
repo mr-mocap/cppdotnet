@@ -9,7 +9,7 @@ namespace System::Diagnostics::Metrics
 
 struct MeterOptions
 {
-    MeterOptions(const std::string_view name) : Name( name ) { }
+    MeterOptions(std::string_view name) : Name( name ) { }
 
     std::string Name;
     std::string Version;

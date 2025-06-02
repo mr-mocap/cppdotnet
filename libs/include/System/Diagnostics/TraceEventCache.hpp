@@ -17,7 +17,7 @@ public:
 
     long Timestamp() const { return _timestamp; }
 
-    const std::string_view ThreadId() const;
+    std::string_view ThreadId() const;
 
     int ProcessId() const;
 

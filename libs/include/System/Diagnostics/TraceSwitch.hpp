@@ -10,13 +10,13 @@ namespace System::Diagnostics
 class TraceSwitch : public Switch
 {
 public:
-    TraceSwitch(const std::string_view display_name, const std::string_view description)
+    TraceSwitch(std::string_view display_name, std::string_view description)
         :
         Switch( display_name, description )
     {
     }
 
-    TraceSwitch(const std::string_view display_name, const std::string_view description, const std::string_view default_switch_value);
+    TraceSwitch(std::string_view display_name, std::string_view description, std::string_view default_switch_value);
         :
         Switch( display_name, description, default_switch_value )
     {

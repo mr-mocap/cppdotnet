@@ -12,12 +12,12 @@ class Meter
 {
 public:
     Meter() = delete;
-    Meter(const std::string_view name)
+    Meter(std::string_view name)
         :
         _name{ name }
     {
     }
-    Meter(const std::string_view name, const std::string_view version)
+    Meter(std::string_view name, std::string_view version)
         :
         _name{ name },
         _version{ version }
@@ -30,8 +30,8 @@ public:
     {
     }
 
-    const std::string_view Name() const { return _name; }
-    const std::string_view Version() const { return _version; }
+    std::string_view Name() const { return _name; }
+    std::string_view Version() const { return _version; }
 
     template <class T>
     Counter<T> CreateCounter(std::string_view name, std::string_view unit, std::string_view description)

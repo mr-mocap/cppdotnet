@@ -9,7 +9,7 @@ namespace System
 template <class ImplementationType>
 struct IFormattable
 {
-    std::string ToString(const std::string_view format) const;
+    std::string ToString(std::string_view format) const;
 };
 
 }

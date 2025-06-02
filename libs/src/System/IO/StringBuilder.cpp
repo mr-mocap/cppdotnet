@@ -8,7 +8,7 @@
 namespace System::Text
 {
 
-static size_t NumberOfTimesOccursIn(const std::string &origin, const std::string_view substring)
+static size_t NumberOfTimesOccursIn(const std::string &origin, std::string_view substring)
 {
     size_t occurrences = 0;
     size_t start_pos = 0;
@@ -43,7 +43,7 @@ StringBuilder &StringBuilder::Append(const char *value)
     return *this;
 }
 
-StringBuilder &StringBuilder::Append(const std::string_view value)
+StringBuilder &StringBuilder::Append(std::string_view value)
 {
     _string.append( value );
     return *this;
@@ -109,7 +109,7 @@ StringBuilder &StringBuilder::Append(double value)
     return *this;
 }
 
-StringBuilder &StringBuilder::Replace(const std::string_view old_value, const std::string_view new_value)
+StringBuilder &StringBuilder::Replace(std::string_view old_value, std::string_view new_value)
 {
     if ( old_value.empty() )
         ThrowWithTarget( ArgumentException{"Argument is empty", "old_value"} );
@@ -163,7 +163,7 @@ StringBuilder &StringBuilder::AppendLine()
     return *this;
 }
 
-StringBuilder &StringBuilder::AppendLine(const std::string_view value)
+StringBuilder &StringBuilder::AppendLine(std::string_view value)
 try
 {
     return Append(value).AppendLine();

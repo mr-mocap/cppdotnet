@@ -35,46 +35,46 @@ void Trace::AutoFlush(bool new_value)
     Private::DebugAndTraceCommon::AutoFlush( new_value );
 }
 
-void Trace::Write(const std::string_view message)
+void Trace::Write(std::string_view message)
 {
     Private::DebugAndTraceCommon::Write( message );
 }
 
-void Trace::Write(const std::string_view message, const std::string_view category)
+void Trace::Write(std::string_view message, std::string_view category)
 {
     Private::DebugAndTraceCommon::Write( message, category );
 }
 
-void Trace::WriteIf(bool condition, const std::string_view message)
+void Trace::WriteIf(bool condition, std::string_view message)
 {
     Private::DebugAndTraceCommon::WriteIf(condition, message);
 }
 
 void Trace::WriteIf(bool condition,
-                    const std::string_view message,
-                    const std::string_view category)
+                    std::string_view message,
+                    std::string_view category)
 {
     Private::DebugAndTraceCommon::WriteIf(condition, message, category);
 }
 
-void Trace::WriteLine(const std::string_view message)
+void Trace::WriteLine(std::string_view message)
 {
     Private::DebugAndTraceCommon::WriteLine( message );
 }
 
-void Trace::WriteLine(const std::string_view message, const std::string_view category)
+void Trace::WriteLine(std::string_view message, std::string_view category)
 {
     Private::DebugAndTraceCommon::WriteLine( message, category );
 }
 
-void Trace::WriteLineIf(bool condition, const std::string_view message)
+void Trace::WriteLineIf(bool condition, std::string_view message)
 {
     Private::DebugAndTraceCommon::WriteLineIf( condition, message );
 }
 
 void Trace::WriteLineIf(bool condition,
-                        const std::string_view message,
-                        const std::string_view category)
+                        std::string_view message,
+                        std::string_view category)
 {
     Private::DebugAndTraceCommon::WriteLineIf( condition, message, category );
 }
@@ -85,41 +85,41 @@ void Trace::Assert(bool condition, const std::source_location location)
 }
 
 void Trace::Assert(bool condition,
-                   const std::string_view message,
+                   std::string_view message,
                    const std::source_location location)
 {
     Private::DebugAndTraceCommon::Assert( condition, message, location);
 }
 
 void Trace::Assert(bool condition,
-                   const std::string_view message,
-                   const std::string_view category,
+                   std::string_view message,
+                   std::string_view category,
                    const std::source_location location)
 {
     Private::DebugAndTraceCommon::Assert( condition, message, category, location);
 }
 
-void Trace::Fail(const std::string_view message)
+void Trace::Fail(std::string_view message)
 {
     Private::DebugAndTraceCommon::Fail( message );
 }
 
-void Trace::Fail(const std::string_view message, const std::string_view category)
+void Trace::Fail(std::string_view message, std::string_view category)
 {
     Private::DebugAndTraceCommon::Fail( message, category );
 }
 
-void Trace::TraceError(const std::string_view message)
+void Trace::TraceError(std::string_view message)
 {
     Private::DebugAndTraceCommon::TraceError( message );
 }
 
-void Trace::TraceWarning(const std::string_view message)
+void Trace::TraceWarning(std::string_view message)
 {
     Private::DebugAndTraceCommon::TraceWarning( message );
 }
 
-void Trace::TraceInformation(const std::string_view message)
+void Trace::TraceInformation(std::string_view message)
 {
     Private::DebugAndTraceCommon::TraceInformation( message );
 }

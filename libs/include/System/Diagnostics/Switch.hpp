@@ -20,7 +20,7 @@ public:
     const std::string &DefaultValue() const { return _defaultValue; }
 
     const std::string &Value();
-          void         Value(const std::string_view new_value);
+          void         Value(std::string_view new_value);
     
     const Collections::Specialized::StringDictionary &Attributes() const { return _attributes; }
 
@@ -39,11 +39,11 @@ protected:
     std::mutex  _initializedLock;
     Collections::Specialized::StringDictionary _attributes;
 
-    Switch(const std::string_view display_name,
-           const std::string_view description);
-    Switch(const std::string_view display_name,
-           const std::string_view description,
-           const std::string_view default_value);
+    Switch(std::string_view display_name,
+           std::string_view description);
+    Switch(std::string_view display_name,
+           std::string_view description,
+           std::string_view default_value);
 
     int  SwitchSetting();
     void SwitchSetting(int new_value);

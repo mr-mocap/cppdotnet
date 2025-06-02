@@ -12,9 +12,9 @@ namespace System
 // Enclosing Reference Marker(s), Variable Name
 using EnvironmentVariableReference = std::tuple<std::string_view, std::string_view>;
 
-static std::string_view ContainsSurroundingTokens(const std::string_view input,
-                                                  const std::string_view start_token,
-                                                  const std::string_view end_token)
+static std::string_view ContainsSurroundingTokens(std::string_view input,
+                                                  std::string_view start_token,
+                                                  std::string_view end_token)
 {
     std::string_view::size_type start_pos = input.find(start_token);
 
@@ -29,7 +29,7 @@ static std::string_view ContainsSurroundingTokens(const std::string_view input,
     return input.substr( start_pos, end_pos );
 }
 
-static EnvironmentVariableReference ContainsEnvironmentVariableReference(const std::string_view input)
+static EnvironmentVariableReference ContainsEnvironmentVariableReference(std::string_view input)
 {
     if ( !input.empty() )
     {
@@ -63,7 +63,7 @@ static EnvironmentVariableReference ContainsEnvironmentVariableReference(const s
     return std::make_tuple( std::string_view{}, std::string_view{} );
 }
 
-const std::string_view Environment::GetEnvironmentVariable(const char *var_name)
+std::string_view Environment::GetEnvironmentVariable(const char *var_name)
 {
     if ( !var_name )
         ThrowWithTarget( ArgumentNullException{ "variable" } );
@@ -76,7 +76,7 @@ const std::string_view Environment::GetEnvironmentVariable(const char *var_name)
     return {};
 }
 
-const std::string_view Environment::GetEnvironmentVariable(const std::string_view var_name)
+std::string_view Environment::GetEnvironmentVariable(std::string_view var_name)
 {
     return GetEnvironmentVariable( std::string{ var_name }.c_str() );
 }
@@ -109,7 +109,7 @@ void Environment::SetEnvironmentVariable(const char *variable, const char *value
     }
 }
 
-std::string Environment::ExpandEnvironmentVariables(const std::string_view input)
+std::string Environment::ExpandEnvironmentVariables(std::string_view input)
 {
     if ( input.empty() )
         ThrowWithTarget( ArgumentNullException{ "input" } );
@@ -155,7 +155,7 @@ Collections::Generic::Dictionary<std::string, std::string> Environment::GetEnvir
     return retval;
 }
 
-const std::string_view Environment::NewLine()
+std::string_view Environment::NewLine()
 {
     return "\n";
 }

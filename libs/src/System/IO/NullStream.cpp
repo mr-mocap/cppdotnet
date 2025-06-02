@@ -4,7 +4,7 @@
 namespace System::IO
 {
 
-void NullStream::Write(const std::string_view )
+void NullStream::Write(std::string_view )
 {
 }
 

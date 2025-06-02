@@ -17,7 +17,7 @@ public:
     using TextWriter::Write;
 
     void Write(char value) override;
-    void Write(const std::string_view message) override;
+    void Write(std::string_view message) override;
 
 protected:
     System::Text::StringBuilder _builder;

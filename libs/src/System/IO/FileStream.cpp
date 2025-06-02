@@ -34,13 +34,13 @@ inline std::fstream *AsFStream(std::iostream *input)
     return static_cast<std::fstream *>(input);
 }
 
-FileStream::FileStream(const std::string_view filename)
+FileStream::FileStream(std::string_view filename)
     :
     Stream( std::make_unique<std::fstream>( std::string{filename} ), true, true, true )
 {
 }
 
-FileStream::FileStream(const std::string_view filename, const FileMode mode)
+FileStream::FileStream(std::string_view filename, const FileMode mode)
     :
     Stream( std::make_unique<std::fstream>( std::string{filename}, MapMode(mode) ), true, true, true )
 {

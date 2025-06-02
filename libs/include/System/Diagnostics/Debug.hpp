@@ -26,8 +26,8 @@ public:
     static void Indent();
     static void Unindent();
 
-    static void Write(const std::string_view message);
-    static void Write(const std::string_view message, const std::string_view category);
+    static void Write(std::string_view message);
+    static void Write(std::string_view message, std::string_view category);
 
     template <typename ...Args>
     static void Write(std::format_string<Args...> &&fmt, Args &&... args)
@@ -35,8 +35,8 @@ public:
         Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
 
-    static void WriteIf(bool condition, const std::string_view message);
-    static void WriteIf(bool condition, const std::string_view message, const std::string_view category);
+    static void WriteIf(bool condition, std::string_view message);
+    static void WriteIf(bool condition, std::string_view message, std::string_view category);
 
     template <typename ...Args>
     static void WriteIf(bool condition, std::format_string<Args...> &&fmt, Args &&... args)
@@ -44,8 +44,8 @@ public:
         WriteIf( condition, std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
 
-    static void WriteLine(const std::string_view message);
-    static void WriteLine(const std::string_view message, const std::string_view category);
+    static void WriteLine(std::string_view message);
+    static void WriteLine(std::string_view message, std::string_view category);
 
     template <typename ...Args>
     static void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
@@ -53,8 +53,8 @@ public:
         WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
 
-    static void WriteLineIf(bool condition, const std::string_view message);
-    static void WriteLineIf(bool condition, const std::string_view message, const std::string_view category);
+    static void WriteLineIf(bool condition, std::string_view message);
+    static void WriteLineIf(bool condition, std::string_view message, std::string_view category);
 
     template <typename ...Args>
     static void WriteLineIf(bool condition, std::format_string<Args...> &&fmt, Args &&... args)
@@ -62,7 +62,7 @@ public:
         WriteLineIf( condition, std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
 
-    static void Print(const std::string_view message);
+    static void Print(std::string_view message);
 
     template <typename ...Args>
     static void Print(std::format_string<Args...> &&fmt, Args &&... args)
@@ -71,9 +71,9 @@ public:
     }
 
     static void Assert(bool condition, const std::source_location = std::source_location::current());
-    static void Assert(bool condition, const std::string_view message,
+    static void Assert(bool condition, std::string_view message,
                        const std::source_location = std::source_location::current());
-    static void Assert(bool condition, const std::string_view message, const std::string_view category,
+    static void Assert(bool condition, std::string_view message, std::string_view category,
                        const std::source_location = std::source_location::current());
 #if 0
     template <typename ...Args>
@@ -83,8 +83,8 @@ public:
     }
 #endif
 
-    static void Fail(const std::string_view message);
-    static void Fail(const std::string_view message, const std::string_view category);
+    static void Fail(std::string_view message);
+    static void Fail(std::string_view message, std::string_view category);
 
     template <typename ...Args>
     static void Fail(std::format_string<Args...> &&fmt, Args &&... args)

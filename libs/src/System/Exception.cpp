@@ -12,7 +12,7 @@ Exception::Exception(Exception &&other)
 {
 }
 
-Exception::Exception(const std::string_view message)
+Exception::Exception(std::string_view message)
     :
     _message{ message }
 {
@@ -42,12 +42,12 @@ const Exception &Exception::GetBaseException() const
         return *this;
 }
 
-const std::string_view Exception::Message() const
+std::string_view Exception::Message() const
 {
     return _message;
 }
 
-const std::string_view Exception::TargetSite() const
+std::string_view Exception::TargetSite() const
 {
     return _targetSite;
 }
@@ -60,7 +60,7 @@ void Exception::TargetSite(const char *object_name)
                                 } );
 }
 
-void Exception::TargetSite(const std::string_view object_name)
+void Exception::TargetSite(std::string_view object_name)
 {
     _targetSite = object_name;
 }
@@ -94,106 +94,106 @@ bool Exception::operator ==(const Exception &other) const
     return true;
 }
 
-const std::string_view Exception::ClassName() const
+std::string_view Exception::ClassName() const
 {
     using namespace std::literals;
 
     return "Exception"sv;
 }
 
-const std::string_view SystemException::ClassName() const
+std::string_view SystemException::ClassName() const
 {
     using namespace std::literals;
 
     return "SytemException"sv;
 }
 
-const std::string_view ArgumentException::ClassName() const
+std::string_view ArgumentException::ClassName() const
 {
     using namespace std::literals;
 
     return "ArgumentException"sv;
 }
 
-ArgumentNullException::ArgumentNullException(const std::string_view param_name)
+ArgumentNullException::ArgumentNullException(std::string_view param_name)
     :
     ArgumentException( std::string("Argument '").append(param_name).append("' is null") )
 {
     _paramName = param_name;
 }
 
-const std::string_view ArgumentNullException::ClassName() const
+std::string_view ArgumentNullException::ClassName() const
 {
     using namespace std::literals;
 
     return "ArgumentNullException"sv;
 }
 
-ArgumentOutOfRangeException::ArgumentOutOfRangeException(const std::string_view param_name)
+ArgumentOutOfRangeException::ArgumentOutOfRangeException(std::string_view param_name)
     :
     ArgumentException( std::string("Argument '").append(param_name).append("' is out-of-range") )
 {
     _paramName = param_name;
 }
 
-const std::string_view ArgumentOutOfRangeException::ClassName() const
+std::string_view ArgumentOutOfRangeException::ClassName() const
 {
     using namespace std::literals;
 
     return "ArgumentOutOfRangeException"sv;
 }
 
-const std::string_view NotSupportedException::ClassName() const
+std::string_view NotSupportedException::ClassName() const
 {
     using namespace std::literals;
 
     return "NotSupportedException"sv;
 }
 
-const std::string_view InvalidOperationException::ClassName() const
+std::string_view InvalidOperationException::ClassName() const
 {
     using namespace std::literals;
 
     return "InvalidOperationException"sv;
 }
 
-const std::string_view FormatException::ClassName() const
+std::string_view FormatException::ClassName() const
 {
     using namespace std::literals;
 
     return "FormatException"sv;
 }
 
-ObjectDisposedException::ObjectDisposedException(const std::string_view disposed_object_name)
+ObjectDisposedException::ObjectDisposedException(std::string_view disposed_object_name)
     :
     InvalidOperationException( std::string("Object '").append(disposed_object_name).append("' already disposed") ),
     _objectName{ disposed_object_name }
 {
 }
 
-ObjectDisposedException::ObjectDisposedException(const std::string_view disposed_object_name,
-                                                 const std::string_view message)
+ObjectDisposedException::ObjectDisposedException(std::string_view disposed_object_name,
+                                                 std::string_view message)
     :
     InvalidOperationException( message ),
     _objectName{ disposed_object_name }
 {
 }
 
-const std::string_view ObjectDisposedException::ClassName() const
+std::string_view ObjectDisposedException::ClassName() const
 {
     using namespace std::literals;
 
     return "ObjectDisposedException"sv;
 }
 
-const std::string_view ArithmeticException::ClassName() const
+std::string_view ArithmeticException::ClassName() const
 {
     using namespace std::literals;
 
     return "ArithmeticException"sv;
 }
 
-const std::string_view OverflowException::ClassName() const
+std::string_view OverflowException::ClassName() const
 {
     using namespace std::literals;
 

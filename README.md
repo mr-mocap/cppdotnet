@@ -17,13 +17,13 @@ I also plan on writing better unit tests for this so I can practice doing that a
 ## Ideas explored so far
 
 * Optimize string handling
-    * Return const std::string_view from functions that use a hard-coded const char * string inside.
+    * Return std::string_view from functions that use a hard-coded const char * string inside.
         * You can just return "Some String", as this will invoke an automatic conversion
           to std::string_view.  We make the final version const so that we can make it difficult
           to write into the returned view.
     * Don't automatically turn a hard-coded string into a std::string
         * This possibly creates two instances of the string in the runtime?
-    * Use const std::string_view instead of std::string as input to
+    * Use std::string_view instead of std::string as input to
       constructors.  Using const std::string & is fine too if it can cut down
       on the number of conversions.
 * Using std::source_location
@@ -37,11 +37,11 @@ I also plan on writing better unit tests for this so I can practice doing that a
     * Useful for Assert(), Debug(), and exception handling.  ***We finally have a non-macro solution!***
 * String Handling
     * You don't have to Use std::string_view literal on hard-coded strings ( "Hard-Coded String"sv )!
-    * **Return const std::string_view from functions that return a hard-coded string.**
+    * **Return std::string_view from functions that return a hard-coded string.**
       This isn't ideal, but I think it is better than just returning a raw
       const char *.  The underlying hard-coded string isn't going anywhere
       because it is compiled into the binary, so there should be no problem
-      with returning a const std::string_view.  Returning a const object
+      with returning a std::string_view.  Returning a const object
       should help enforce not being able to modify it easily.
     * **Return std::string in cases where I actually generate a temporary
       string in a function.**
@@ -51,7 +51,7 @@ I also plan on writing better unit tests for this so I can practice doing that a
       String-like objects can be constructed from either a string_view or string, so it should be fairly transparent.
     * When hard-coding strings, it seems to be best to use NON-const types for the actual storage (except const char *).  You can add
       constness when you have to hand out std::string_view of that data.
-      I originally stored strings as const std::string_view, but I couldn't then copy those out to an external
+      I originally stored strings as std::string_view, but I couldn't then copy those out to an external
       data structure.
 * Singleton Pattern
     * The most elegant form I have found so far is the use of a static variable inside of a block scope.

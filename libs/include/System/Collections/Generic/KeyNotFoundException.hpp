@@ -38,7 +38,7 @@ public:
     /// @}
 
     explicit KeyNotFoundException(const char *message) : KeyNotFoundException( std::string_view{message} ) { }
-    explicit KeyNotFoundException(const std::string_view message) : SystemException( message ) { }
+    explicit KeyNotFoundException(std::string_view message) : SystemException( message ) { }
 
     explicit KeyNotFoundException(const char *message,
                                   Exception &&inner_exception)
@@ -46,13 +46,13 @@ public:
         KeyNotFoundException( std::string_view{message}, std::move(inner_exception) )
     {
     }
-    explicit KeyNotFoundException(const std::string_view message, Exception &&inner_exception)
+    explicit KeyNotFoundException(std::string_view message, Exception &&inner_exception)
         :
         SystemException( message, std::move(inner_exception) )
     {
     }
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 };
 
 }

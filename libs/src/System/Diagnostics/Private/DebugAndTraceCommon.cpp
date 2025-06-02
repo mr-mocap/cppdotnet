@@ -31,25 +31,25 @@ static std::string FormatAssert(const std::source_location location)
     return std::format("[Assert] [File: \"{}\"] [Function: \"{}\"]", location.file_name(), location.function_name());
 }
 
-static std::string FormatAssertMessage(const std::source_location location, const std::string_view message)
+static std::string FormatAssertMessage(const std::source_location location, std::string_view message)
 {
     return std::format("[Assert] [Message: \"{}\"]\t[File: \"{}\"]\t[Function: \"{}\"]", message, location.file_name(), location.function_name());
 }
 
 static std::string FormatAssertMessageCategory(const std::source_location location,
-                                               const std::string_view message,
-                                               const std::string_view category)
+                                               std::string_view message,
+                                               std::string_view category)
 {
     return std::format("[Assert] [Category: \"{}\"]\t[Message: \"{}\"]\t[File: \"{}\"]\t[Function: \"{}\"]", category, message, location.file_name(), location.function_name());
 }
 
-static std::string FormatFailMessage(const std::string_view message)
+static std::string FormatFailMessage(std::string_view message)
 {
     return std::format("[Fail] [Message: \"{}\"]", message);
 }
 
-static std::string FormatFailMessageCategory(const std::string_view message,
-                                             const std::string_view category)
+static std::string FormatFailMessageCategory(std::string_view message,
+                                             std::string_view category)
 {
     return std::format("[Fail] [Message: \"{}\"]\t[Category: \"{}\"]", message, category);
 }
@@ -133,7 +133,7 @@ void DebugAndTraceCommon::AutoFlush(bool new_value)
     _autoFlush = new_value;
 }
 
-void DebugAndTraceCommon::Write(const std::string_view message)
+void DebugAndTraceCommon::Write(std::string_view message)
 {
     bool autoflush = AutoFlush();
     bool needindent = NeedIndent();
@@ -148,7 +148,7 @@ void DebugAndTraceCommon::Write(const std::string_view message)
     }
 }
 
-void DebugAndTraceCommon::Write(const std::string_view message, const std::string_view category)
+void DebugAndTraceCommon::Write(std::string_view message, std::string_view category)
 {
     bool autoflush = Instance().AutoFlush();
     bool needindent = NeedIndent();
@@ -163,7 +163,7 @@ void DebugAndTraceCommon::Write(const std::string_view message, const std::strin
     }
 }
 
-void DebugAndTraceCommon::WriteLine(const std::string_view message)
+void DebugAndTraceCommon::WriteLine(std::string_view message)
 {
     bool autoflush = Instance().AutoFlush();
     bool needindent = NeedIndent();
@@ -178,7 +178,7 @@ void DebugAndTraceCommon::WriteLine(const std::string_view message)
     }
 }
 
-void DebugAndTraceCommon::WriteLine(const std::string_view message, const std::string_view category)
+void DebugAndTraceCommon::WriteLine(std::string_view message, std::string_view category)
 {
     bool autoflush = Instance().AutoFlush();
     bool needindent = NeedIndent();
@@ -193,25 +193,25 @@ void DebugAndTraceCommon::WriteLine(const std::string_view message, const std::s
     }
 }
 
-void DebugAndTraceCommon::WriteIf(bool condition, const std::string_view message)
+void DebugAndTraceCommon::WriteIf(bool condition, std::string_view message)
 {
     if ( condition )
         Write( message );
 }
 
-void DebugAndTraceCommon::WriteIf(bool condition, const std::string_view message, const std::string_view category)
+void DebugAndTraceCommon::WriteIf(bool condition, std::string_view message, std::string_view category)
 {
     if ( condition )
         Write( message, category );
 }
 
-void DebugAndTraceCommon::WriteLineIf(bool condition, const std::string_view message)
+void DebugAndTraceCommon::WriteLineIf(bool condition, std::string_view message)
 {
     if ( condition )
         WriteLine( message );
 }
 
-void DebugAndTraceCommon::WriteLineIf(bool condition, const std::string_view message, const std::string_view category)
+void DebugAndTraceCommon::WriteLineIf(bool condition, std::string_view message, std::string_view category)
 {
     if ( condition )
         WriteLine( message, category );
@@ -226,7 +226,7 @@ void DebugAndTraceCommon::Assert(bool condition, const std::source_location loca
 }
 
 void DebugAndTraceCommon::Assert(bool condition,
-                                 const std::string_view message,
+                                 std::string_view message,
                                  const std::source_location location)
 {
     // TODO: Output the call stack
@@ -236,8 +236,8 @@ void DebugAndTraceCommon::Assert(bool condition,
 }
 
 void DebugAndTraceCommon::Assert(bool condition,
-                                 const std::string_view message,
-                                 const std::string_view category,
+                                 std::string_view message,
+                                 std::string_view category,
                                  const std::source_location location)
 {
     // TODO: Output the call stack
@@ -246,12 +246,12 @@ void DebugAndTraceCommon::Assert(bool condition,
     WriteLineIf( !condition, FormatAssertMessageCategory(location, message, category) );
 }
 
-void DebugAndTraceCommon::Fail(const std::string_view message)
+void DebugAndTraceCommon::Fail(std::string_view message)
 {
     WriteLine( FormatFailMessage( message ) );
 }
 
-void DebugAndTraceCommon::Fail(const std::string_view message, const std::string_view category)
+void DebugAndTraceCommon::Fail(std::string_view message, std::string_view category)
 {
     WriteLine( FormatFailMessageCategory( message, category ) );
 }
@@ -268,7 +268,7 @@ void DebugAndTraceCommon::Close()
         iCurrentListener->Close();
 }
 
-void DebugAndTraceCommon::Print(const std::string_view message)
+void DebugAndTraceCommon::Print(std::string_view message)
 {
     bool autoflush = AutoFlush();
     bool needindent = NeedIndent();
@@ -283,7 +283,7 @@ void DebugAndTraceCommon::Print(const std::string_view message)
     }
 }
 
-void DebugAndTraceCommon::TraceError(const std::string_view message)
+void DebugAndTraceCommon::TraceError(std::string_view message)
 {
     bool autoflush = AutoFlush();
     bool needindent = NeedIndent();
@@ -298,7 +298,7 @@ void DebugAndTraceCommon::TraceError(const std::string_view message)
     }
 }
 
-void DebugAndTraceCommon::TraceWarning(const std::string_view message)
+void DebugAndTraceCommon::TraceWarning(std::string_view message)
 {
     bool autoflush = AutoFlush();
     bool needindent = NeedIndent();
@@ -313,7 +313,7 @@ void DebugAndTraceCommon::TraceWarning(const std::string_view message)
     }
 }
 
-void DebugAndTraceCommon::TraceInformation(const std::string_view message)
+void DebugAndTraceCommon::TraceInformation(std::string_view message)
 {
     bool autoflush = AutoFlush();
     bool needindent = NeedIndent();

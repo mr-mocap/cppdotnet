@@ -18,8 +18,8 @@ public:
     static constexpr Boolean True() { return Boolean(true); }
     static constexpr Boolean False() { return Boolean(false); }
 
-    static const std::string_view FalseString;
-    static const std::string_view TrueString;
+    static std::string_view FalseString;
+    static std::string_view TrueString;
 
     bool Value() const { return _value; }
     void Value(bool new_value) { new_value = new_value; }
@@ -190,12 +190,12 @@ public:
         return Numerics::INumberBase<bool>::MultiplyAddEstimate(value1, value2);
     }
 
-    static Boolean Parse(const std::string_view value_string)
+    static Boolean Parse(std::string_view value_string)
     {
         return Numerics::INumberBase<bool>::Parse(value_string);
     }
 
-    static std::optional<Boolean> TryParse(const std::string_view value_string)
+    static std::optional<Boolean> TryParse(std::string_view value_string)
     {
         return Numerics::INumberBase<bool>::TryParse(value_string);
     }

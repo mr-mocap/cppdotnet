@@ -19,14 +19,14 @@ DefaultTraceListener::~DefaultTraceListener()
 {
 }
 
-const std::string_view DefaultTraceListener::LogFileName() const
+std::string_view DefaultTraceListener::LogFileName() const
 {
     INVARIANT( Name() == "Default" );
 
     return _logFileName;
 }
 
-void DefaultTraceListener::LogFileName(const std::string_view filename)
+void DefaultTraceListener::LogFileName(std::string_view filename)
 {
     INVARIANT( Name() == "Default" );
 
@@ -43,49 +43,49 @@ void DefaultTraceListener::Flush()
     INVARIANT( Name() == "Default" );
 }
 
-void DefaultTraceListener::Write(const std::string_view message)
+void DefaultTraceListener::Write(std::string_view message)
 {
     INVARIANT( Name() == "Default" );
     
     WriteRaw( message );
 }
 
-void DefaultTraceListener::Write(const std::string_view message, const std::string_view category)
+void DefaultTraceListener::Write(std::string_view message, std::string_view category)
 {
     INVARIANT( Name() == "Default" );
 
     WriteRaw( std::string("[").append(category).append("] ").append(message) );
 }
 
-void DefaultTraceListener::WriteLine(const std::string_view message)
+void DefaultTraceListener::WriteLine(std::string_view message)
 {
     INVARIANT( Name() == "Default" );
 
     WriteLineRaw( message );
 }
 
-void DefaultTraceListener::WriteLine(const std::string_view message, const std::string_view category)
+void DefaultTraceListener::WriteLine(std::string_view message, std::string_view category)
 {
     INVARIANT( Name() == "Default" );
 
     WriteLineRaw( std::string("[").append(category).append("] ").append(message) );
 }
 
-void DefaultTraceListener::Fail(const std::string_view message)
+void DefaultTraceListener::Fail(std::string_view message)
 {
     INVARIANT( Name() == "Default" );
 
     WriteLineRaw( message );
 }
 
-void DefaultTraceListener::Fail(const std::string_view message, const std::string_view detail)
+void DefaultTraceListener::Fail(std::string_view message, std::string_view detail)
 {
     INVARIANT( Name() == "Default" );
 
     WriteLineRaw( std::string("Fail: ").append(message).append(" [Detail: ").append(detail).append("]") );
 }
 
-void DefaultTraceListener::WriteRaw(const std::string_view data)
+void DefaultTraceListener::WriteRaw(std::string_view data)
 {
     INVARIANT( Name() == "Default" );
 
@@ -94,7 +94,7 @@ void DefaultTraceListener::WriteRaw(const std::string_view data)
     Debugger::Log( data );
 }
 
-void DefaultTraceListener::WriteLineRaw(const std::string_view data)
+void DefaultTraceListener::WriteLineRaw(std::string_view data)
 {
     INVARIANT( Name() == "Default" );
 

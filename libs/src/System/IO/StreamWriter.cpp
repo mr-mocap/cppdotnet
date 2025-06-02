@@ -9,7 +9,7 @@ StreamWriter::StreamWriter()
 {
 }
 
-StreamWriter::StreamWriter(const std::string_view filename)
+StreamWriter::StreamWriter(std::string_view filename)
     :
     _stream{ std::make_unique<FileStream>( filename ) }
 {
@@ -43,7 +43,7 @@ void StreamWriter::Write(char value)
         _stream->WriteByte( static_cast<uint8_t>(value) );
 }
 
-void StreamWriter::Write(const std::string_view message)
+void StreamWriter::Write(std::string_view message)
 {
     if ( _stream )
         _stream->Write( message );

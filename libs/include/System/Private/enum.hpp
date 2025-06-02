@@ -30,7 +30,7 @@ struct EnumTraits
     using underlying_type      = std::underlying_type_t<T>;
     using name_value_pair_type = std::pair<std::string_view, T>;
 
-    static constexpr auto EnumName() -> const std::string_view { return { }; }
+    static constexpr auto EnumName() -> std::string_view { return { }; }
 
     static constexpr std::span<name_value_pair_type> NameValuePairs()
     {
@@ -56,7 +56,7 @@ struct EnumTraits
         return Values() | std::views::transform( transform_fn );
     }
 
-    static auto ToName(value_type value) -> const std::string_view
+    static auto ToName(value_type value) -> std::string_view
     {
         auto found = std::ranges::find( NameValuePairs(),
                                         value,

@@ -38,7 +38,7 @@ public:
     /// @}
 
     explicit IOException(const char *message) : IOException( std::string_view{message} ) { }
-    explicit IOException(const std::string_view message) : SystemException( message ) { }
+    explicit IOException(std::string_view message) : SystemException( message ) { }
 
     explicit IOException(const char *message,
                          Exception &&inner_exception)
@@ -46,13 +46,13 @@ public:
         IOException( std::string_view{message}, std::move(inner_exception) )
     {
     }
-    explicit IOException(const std::string_view message, Exception &&inner_exception)
+    explicit IOException(std::string_view message, Exception &&inner_exception)
         :
         SystemException( message, std::move(inner_exception) )
     {
     }
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 };
 
 }

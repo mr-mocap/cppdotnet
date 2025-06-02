@@ -78,9 +78,9 @@ struct INumberBase : public IEquatable<T>
 
     static constexpr T MultiplyAddEstimate(T value1, T value2);
 
-    static           T Parse(const std::string_view s);
+    static           T Parse(std::string_view s);
 
-    static std::optional<T> TryParse(const std::string_view s);
+    static std::optional<T> TryParse(std::string_view s);
 };
 
 namespace Private
@@ -89,7 +89,7 @@ namespace Private
 template <class T>
 struct CommonItems
 {
-    static const std::string_view TypeName()
+    static std::string_view TypeName()
     {
         if constexpr (std::is_same_v<T, bool>)
             return std::string_view{"bool"};
@@ -111,7 +111,7 @@ struct CommonItems
             return std::string_view{"uint64_t"};
     }
 
-    static T Parse(const std::string_view s)
+    static T Parse(std::string_view s)
     {
         using namespace std::literals;
 
@@ -154,7 +154,7 @@ struct CommonItems
         }
     }
 
-    static std::optional<T> TryParse(const std::string_view s)
+    static std::optional<T> TryParse(std::string_view s)
     {
         if ( s.empty() )
             return {};
@@ -255,12 +255,12 @@ struct INumberBase<bool> : public IEquatable<bool>
 
     static constexpr bool MultiplyAddEstimate(bool value1, bool value2) { return MinMagnitude(value1, value2); }
 
-    static           bool  Parse(const std::string_view s)
+    static           bool  Parse(std::string_view s)
     {
         return Private::CommonItems<bool>::Parse(s);
     }
 
-    static std::optional<bool> TryParse(const std::string_view s)
+    static std::optional<bool> TryParse(std::string_view s)
     {
         return Private::CommonItems<bool>::TryParse(s);
     }
@@ -344,12 +344,12 @@ struct INumberBase<std::int8_t> : public IEquatable<std::int8_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static std::int8_t Parse(const std::string_view s)
+    static std::int8_t Parse(std::string_view s)
     {
         return Private::CommonItems<std::int8_t>::Parse(s);
     }
 
-    static std::optional<std::int8_t> TryParse(const std::string_view s)
+    static std::optional<std::int8_t> TryParse(std::string_view s)
     {
         return Private::CommonItems<std::int8_t>::TryParse(s);
     }
@@ -432,12 +432,12 @@ struct INumberBase<std::int16_t> : public IEquatable<std::int16_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static std::int16_t Parse(const std::string_view s)
+    static std::int16_t Parse(std::string_view s)
     {
         return Private::CommonItems<std::int16_t>::Parse(s);
     }
 
-    static std::optional<std::int16_t> TryParse(const std::string_view s)
+    static std::optional<std::int16_t> TryParse(std::string_view s)
     {
         return Private::CommonItems<std::int16_t>::TryParse(s);
     }
@@ -521,12 +521,12 @@ struct INumberBase<std::int32_t> : public IEquatable<std::int32_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static std::int32_t Parse(const std::string_view s)
+    static std::int32_t Parse(std::string_view s)
     {
         return Private::CommonItems<std::int32_t>::Parse(s);
     }
 
-    static std::optional<std::int32_t> TryParse(const std::string_view s)
+    static std::optional<std::int32_t> TryParse(std::string_view s)
     {
         return Private::CommonItems<std::int32_t>::TryParse(s);
     }
@@ -610,12 +610,12 @@ struct INumberBase<std::int64_t> : public IEquatable<std::int64_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static std::int64_t Parse(const std::string_view s)
+    static std::int64_t Parse(std::string_view s)
     {
         return Private::CommonItems<std::int64_t>::Parse(s);
     }
 
-    static std::optional<std::int64_t> TryParse(const std::string_view s)
+    static std::optional<std::int64_t> TryParse(std::string_view s)
     {
         return Private::CommonItems<std::int64_t>::TryParse(s);
     }
@@ -699,12 +699,12 @@ struct INumberBase<std::uint8_t> : public IEquatable<std::uint8_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static std::uint8_t Parse(const std::string_view s)
+    static std::uint8_t Parse(std::string_view s)
     {
         return Private::CommonItems<std::uint8_t>::Parse(s);
     }
 
-    static std::optional<std::uint8_t> TryParse(const std::string_view s)
+    static std::optional<std::uint8_t> TryParse(std::string_view s)
     {
         return Private::CommonItems<std::uint8_t>::TryParse(s);
     }
@@ -788,12 +788,12 @@ struct INumberBase<std::uint16_t> : public IEquatable<std::uint16_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static std::uint16_t Parse(const std::string_view s)
+    static std::uint16_t Parse(std::string_view s)
     {
         return Private::CommonItems<std::uint16_t>::Parse(s);
     }
 
-    static std::optional<std::uint16_t> TryParse(const std::string_view s)
+    static std::optional<std::uint16_t> TryParse(std::string_view s)
     {
         return Private::CommonItems<std::uint16_t>::TryParse(s);
     }
@@ -877,12 +877,12 @@ struct INumberBase<std::uint32_t> : public IEquatable<std::uint32_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static std::uint32_t Parse(const std::string_view s)
+    static std::uint32_t Parse(std::string_view s)
     {
         return Private::CommonItems<std::uint32_t>::Parse(s);
     }
 
-    static std::optional<std::uint32_t> TryParse(const std::string_view s)
+    static std::optional<std::uint32_t> TryParse(std::string_view s)
     {
         return Private::CommonItems<std::uint32_t>::TryParse(s);
     }
@@ -966,12 +966,12 @@ struct INumberBase<std::uint64_t> : public IEquatable<std::uint64_t>
         return MinMagnitude(value1, value2); // TODO: FIX
     }
 
-    static std::uint64_t Parse(const std::string_view s)
+    static std::uint64_t Parse(std::string_view s)
     {
         return Private::CommonItems<std::uint64_t>::Parse(s);
     }
 
-    static std::optional<std::uint64_t> TryParse(const std::string_view s)
+    static std::optional<std::uint64_t> TryParse(std::string_view s)
     {
         return Private::CommonItems<std::uint64_t>::TryParse(s);
     }

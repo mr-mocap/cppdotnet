@@ -5,8 +5,8 @@ using namespace std::literals;
 namespace System
 {
 
-const std::string_view Boolean::FalseString = "False"sv;
-const std::string_view Boolean::TrueString  = "True"sv;
+std::string_view Boolean::FalseString = "False"sv;
+std::string_view Boolean::TrueString  = "True"sv;
 
 int Boolean::CompareTo(const Boolean &other) const
 {

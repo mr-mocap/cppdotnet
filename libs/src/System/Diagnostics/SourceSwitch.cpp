@@ -7,19 +7,19 @@
 namespace System::Diagnostics
 {
 
-SourceSwitch::SourceSwitch(const std::string_view display_name, const std::string_view default_switch_value)
+SourceSwitch::SourceSwitch(std::string_view display_name, std::string_view default_switch_value)
     :
     Switch( display_name, {}, default_switch_value )
 {
 }
 
-SourceSwitch::SourceSwitch(const std::string_view display_name)
+SourceSwitch::SourceSwitch(std::string_view display_name)
     :
     Switch( display_name, {} )
 {
 }
 
-SourceSwitch SourceSwitch::Make(const std::string_view display_name, const std::string_view default_switch_value)
+SourceSwitch SourceSwitch::Make(std::string_view display_name, std::string_view default_switch_value)
 {
     Diagnostics::SourceLevels converted{ Convert::ToType(default_switch_value, Diagnostics::SourceLevels::Off) };
 

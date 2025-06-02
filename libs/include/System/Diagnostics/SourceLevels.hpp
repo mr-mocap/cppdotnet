@@ -26,7 +26,7 @@ namespace System
 template <>
 struct EnumTraits<Diagnostics::SourceLevels> : EnumTraitTypes<Diagnostics::SourceLevels>
 {
-    static auto EnumName() -> const std::string_view { return "SourceLevels"; }
+    static auto EnumName() -> std::string_view { return "SourceLevels"; }
 
     static constexpr name_value_pair_type NameValueArray[] = {
             { "All",             Diagnostics::SourceLevels::All },
@@ -76,7 +76,7 @@ struct EnumTraits<Diagnostics::SourceLevels> : EnumTraitTypes<Diagnostics::Sourc
         return IsDefined( static_cast<value_type>(value) );
     }
 
-    static constexpr bool IsDefined(const std::string_view value_string)
+    static constexpr bool IsDefined(std::string_view value_string)
     {
         return std::ranges::find( NameValuePairs(),
                                   value_string,
@@ -84,7 +84,7 @@ struct EnumTraits<Diagnostics::SourceLevels> : EnumTraitTypes<Diagnostics::Sourc
                                 ) != NameValuePairs().end();
     }
 
-    static constexpr auto ToName(value_type value) -> const std::string_view
+    static constexpr auto ToName(value_type value) -> std::string_view
     {
         auto found = std::ranges::find( NameValuePairs(),
                                         value,
@@ -97,7 +97,7 @@ struct EnumTraits<Diagnostics::SourceLevels> : EnumTraitTypes<Diagnostics::Sourc
         return found->first;
     }
 
-    static constexpr auto ToName(underlying_type value) -> const std::string_view
+    static constexpr auto ToName(underlying_type value) -> std::string_view
     {
         return ToName( static_cast<value_type>(value) );
     }

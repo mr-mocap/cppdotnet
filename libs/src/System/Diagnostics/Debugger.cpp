@@ -11,7 +11,7 @@ void Debugger::Log(int level, const std::string &category, const std::string &me
     // assert(category.size() <= 256);
 }
 #else
-void Debugger::Log(const std::string_view message)
+void Debugger::Log(std::string_view message)
 {
     UNUSED(message);
     // TODO: Implement me

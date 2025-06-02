@@ -107,7 +107,7 @@ void CheckGetNames()
     MyTraceLevel t;
 
     std::cout << "GetNames() =\t";
-    std::ranges::copy( t.GetNames(), std::ostream_iterator<const std::string_view>(std::cout, "\t") );
+    std::ranges::copy( t.GetNames(), std::ostream_iterator<std::string_view>(std::cout, "\t") );
     std::cout << std::endl;
 }
 
@@ -300,7 +300,7 @@ void GenericEnum()
     System::Enum t;
 
     std::cout << "GetNames() = \n";
-    std::ranges::copy( t.GetNames(), std::ostream_iterator<const std::string_view>(std::cout, "\t") );
+    std::ranges::copy( t.GetNames(), std::ostream_iterator<std::string_view>(std::cout, "\t") );
     std::cout << std::endl;
 #endif
 }

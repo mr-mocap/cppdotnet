@@ -9,8 +9,8 @@ namespace System::IO
 class FileStream : public Stream
 {
 public:
-    FileStream(const std::string_view filename);
-    FileStream(const std::string_view filename, const FileMode mode);
+    FileStream(std::string_view filename);
+    FileStream(std::string_view filename, const FileMode mode);
    ~FileStream();
 
 protected:

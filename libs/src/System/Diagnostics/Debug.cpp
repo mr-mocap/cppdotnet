@@ -55,47 +55,47 @@ void Debug::Unindent()
     Private::DebugAndTraceCommon::Unindent();
 }
 
-void Debug::Write(const std::string_view message)
+void Debug::Write(std::string_view message)
 {
     Private::DebugAndTraceCommon::Write( message );
 }
 
-void Debug::Write(const std::string_view message, const std::string_view category)
+void Debug::Write(std::string_view message, std::string_view category)
 {
     Private::DebugAndTraceCommon::Write( message, category );
 }
 
-void Debug::WriteIf(bool condition, const std::string_view message)
+void Debug::WriteIf(bool condition, std::string_view message)
 {
     Private::DebugAndTraceCommon::WriteIf( condition, message );
 }
 
-void Debug::WriteIf(bool condition, const std::string_view message, const std::string_view category)
+void Debug::WriteIf(bool condition, std::string_view message, std::string_view category)
 {
     Private::DebugAndTraceCommon::WriteIf( condition, message, category );
 }
 
-void Debug::WriteLine(const std::string_view message)
+void Debug::WriteLine(std::string_view message)
 {
     Private::DebugAndTraceCommon::WriteLine( message );
 }
 
-void Debug::WriteLine(const std::string_view message, const std::string_view category)
+void Debug::WriteLine(std::string_view message, std::string_view category)
 {
     Private::DebugAndTraceCommon::WriteLine( message, category );
 }
 
-void Debug::WriteLineIf(bool condition, const std::string_view message)
+void Debug::WriteLineIf(bool condition, std::string_view message)
 {
     Private::DebugAndTraceCommon::WriteLineIf( condition, message );
 }
 
-void Debug::WriteLineIf(bool condition, const std::string_view message, const std::string_view category)
+void Debug::WriteLineIf(bool condition, std::string_view message, std::string_view category)
 {
     Private::DebugAndTraceCommon::WriteLineIf( condition, message, category );
 }
 
-void Debug::Print(const std::string_view message)
+void Debug::Print(std::string_view message)
 {
     Private::DebugAndTraceCommon::Print( message );
 }
@@ -105,25 +105,25 @@ void Debug::Assert(bool condition, const std::source_location source_location)
     Private::DebugAndTraceCommon::Assert( condition, source_location );
 }
 
-void Debug::Assert(bool condition, const std::string_view message, const std::source_location source_location)
+void Debug::Assert(bool condition, std::string_view message, const std::source_location source_location)
 {
     Private::DebugAndTraceCommon::Assert( condition, message, source_location );
 }
 
 void Debug::Assert(bool condition,
-                   const std::string_view message,
-                   const std::string_view category,
+                   std::string_view message,
+                   std::string_view category,
                    const std::source_location source_location)
 {
     Private::DebugAndTraceCommon::Assert( condition, message, category, source_location );
 }
 
-void Debug::Fail(const std::string_view message)
+void Debug::Fail(std::string_view message)
 {
     Private::DebugAndTraceCommon::Fail( message );
 }
 
-void Debug::Fail(const std::string_view message, const std::string_view category)
+void Debug::Fail(std::string_view message, std::string_view category)
 {
     Private::DebugAndTraceCommon::Fail( message, category );
 }

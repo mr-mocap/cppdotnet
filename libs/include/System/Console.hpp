@@ -42,12 +42,12 @@ public:
     static void Write(uint64_t value);
     static void Write(float value);
     static void Write(double value);
-    static void Write(const std::string_view data);
+    static void Write(std::string_view data);
 
     template <typename ...Args>
     static void Write(std::format_string<Args...> &&fmt, Args &&... args)
     {
-        // Let's use the more primitive Write(const std::string_view) underneath
+        // Let's use the more primitive Write(std::string_view) underneath
         Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
 
@@ -60,12 +60,12 @@ public:
     static void WriteLine(uint64_t value);
     static void WriteLine(float value);
     static void WriteLine(double value);
-    static void WriteLine(const std::string_view line);
+    static void WriteLine(std::string_view line);
 
     template <typename ...Args>
     static void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
     {
-        // Let's use the more primitive WriteLine(const std::string_view) underneath
+        // Let's use the more primitive WriteLine(std::string_view) underneath
         WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
 };

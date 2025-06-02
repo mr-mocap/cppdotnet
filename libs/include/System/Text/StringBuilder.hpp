@@ -14,7 +14,7 @@ class StringBuilder
 {
 public:
     StringBuilder() = default;
-    StringBuilder(const std::string_view initial_value) : _string{ initial_value } { }
+    StringBuilder(std::string_view initial_value) : _string{ initial_value } { }
     StringBuilder(const StringBuilder &other) = default;
     StringBuilder(StringBuilder &&other) = default;
 
@@ -27,7 +27,7 @@ public:
     StringBuilder &Append(bool value);
     StringBuilder &Append(char value);
     StringBuilder &Append(const char *value);
-    StringBuilder &Append(const std::string_view value);
+    StringBuilder &Append(std::string_view value);
     StringBuilder &Append(const std::string &value);
 
     StringBuilder &Append(const StringBuilder &other);
@@ -43,18 +43,18 @@ public:
     StringBuilder &Append(double value);
 
     StringBuilder &AppendLine();
-    StringBuilder &AppendLine(const std::string_view value);
+    StringBuilder &AppendLine(std::string_view value);
 
 #ifdef __cpp_lib_format
     template <typename ...Args>
-    StringBuilder &AppendFormat(const std::string_view fmt, Args&&... args)
+    StringBuilder &AppendFormat(std::string_view fmt, Args&&... args)
     {
         Append( std::vformat(fmt, std::make_format_args(args...)) );
         return *this;
     }
 #endif
 
-    StringBuilder &Replace(const std::string_view old_value, const std::string_view new_value);
+    StringBuilder &Replace(std::string_view old_value, std::string_view new_value);
 
     StringBuilder &Clear();
 

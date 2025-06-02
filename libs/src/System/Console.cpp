@@ -238,7 +238,7 @@ void Console::Write(double value)
     Out().Write( value );
 }
 
-void Console::Write(const std::string_view data)
+void Console::Write(std::string_view data)
 {
     Out().Write( data );
 }
@@ -283,7 +283,7 @@ void Console::WriteLine(double value)
     Out().WriteLine( value );
 }
 
-void Console::WriteLine(const std::string_view line)
+void Console::WriteLine(std::string_view line)
 {
     Out().WriteLine( line );
 }

@@ -18,10 +18,10 @@ public:
     virtual ~TraceFilter() = default;
 
     virtual bool ShouldTrace(const TraceEventCache &cache,
-                             const std::string_view source,
+                             std::string_view source,
                              TraceEventType eventType,
                              int   id,
-                             const std::string_view formatOrMessage)
+                             std::string_view formatOrMessage)
     {
         UNUSED(cache);
         UNUSED(source);

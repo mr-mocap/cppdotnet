@@ -31,7 +31,7 @@ public:
         _minor{ minor }
     {
     }
-    Version(const std::string_view input);
+    Version(std::string_view input);
     Version(const Version &other) = default;
 
     int Major() const { return _major; }
@@ -39,7 +39,7 @@ public:
     int Build() const { return _build; }
     int Revision() const { return _revision; }
 
-    static Version Parse(const std::string_view input);
+    static Version Parse(std::string_view input);
 
     std::string ToString() const;
     std::string ToString(int field_count) const;

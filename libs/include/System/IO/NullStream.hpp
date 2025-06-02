@@ -11,7 +11,7 @@ class NullStream : public Stream
 public:
     NullStream() = default;
 
-    void Write(const std::string_view bytes) override;
+    void Write(std::string_view bytes) override;
     void Write(ReadOnlySpan<std::byte> bytes) override;
     void WriteByte(std::byte byte) override;
     void WriteByte(uint8_t byte) override;

@@ -11,8 +11,8 @@ namespace System::Diagnostics
 class TraceSource
 {
 public:
-    TraceSource(const std::string_view name) : _name{ name } { }
-    TraceSource(const std::string_view name, Diagnostics::SourceLevels default_level) : _name{ name }, _level{ default_level } { }
+    TraceSource(std::string_view name) : _name{ name } { }
+    TraceSource(std::string_view name, Diagnostics::SourceLevels default_level) : _name{ name }, _level{ default_level } { }
 
     Diagnostics::SourceLevels DefaultLevel() const { return _level; }
 

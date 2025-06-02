@@ -11,7 +11,7 @@ class StringReader : public TextReader
 {
 public:
     StringReader() = delete;
-    StringReader(const std::string_view initial_value) : _data{ initial_value } { }
+    StringReader(std::string_view initial_value) : _data{ initial_value } { }
    ~StringReader();
 
     void Close() override;

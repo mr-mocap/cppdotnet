@@ -40,7 +40,7 @@ public:
         return MakeValues() | std::views::transform( transform_fn );
     }
 
-    static const std::string_view GetName(typename EnumPolicy::value_type value)
+    static std::string_view GetName(typename EnumPolicy::value_type value)
     {
         auto found = std::ranges::find( EnumPolicy::NameValueArray(),
                                         value,
@@ -53,7 +53,7 @@ public:
         return found->first;
     }
 
-    const std::string_view GetName() const
+    std::string_view GetName() const
     {
         return GetName( _currentValue );
     }
@@ -68,7 +68,7 @@ public:
         return std::ranges::find( GetValues(), static_cast<typename EnumPolicy::value_type>(value) ) != GetValues().end();
     }
 
-    static bool IsDefined(const std::string_view value_string)
+    static bool IsDefined(std::string_view value_string)
     {
         return std::ranges::find( GetNames(), value_string ) != GetNames().end();
     }
@@ -78,7 +78,7 @@ public:
         return (static_cast<EnumPolicy::underlying_type>(value) & static_cast<EnumPolicy::underlying_type>(_currentValue)) == static_cast<EnumPolicy::underlying_type>(value);
     }
 
-    static typename EnumPolicy::value_type Parse(const std::string_view value_string)
+    static typename EnumPolicy::value_type Parse(std::string_view value_string)
     {
         if ( value_string.empty() )
             ThrowWithTarget( System::ArgumentException{ "Argument is empty", "value_string" } );
@@ -115,7 +115,7 @@ public:
         return casted;
     }
 
-    static std::optional<typename EnumPolicy::value_type> TryParse(const std::string_view value_string)
+    static std::optional<typename EnumPolicy::value_type> TryParse(std::string_view value_string)
     {
         // First, check for a name...
         for (const typename EnumPolicy::name_value_pair_type &i : EnumPolicy::NameValueArray())
@@ -228,7 +228,7 @@ protected:
         return std::views::values( EnumPolicy::NameValueArray() );
     }
 
-    static typename EnumPolicy::value_type ParseCommon(const std::string_view value_string)
+    static typename EnumPolicy::value_type ParseCommon(std::string_view value_string)
     {
         if ( value_string.empty() )
             ThrowWithTarget( System::ArgumentException{ "Argument is empty", "value_string" } );

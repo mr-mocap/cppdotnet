@@ -19,10 +19,10 @@ public:
     void EventType(SourceLevels new_level) { _level = new_level; }
 
     bool ShouldTrace(const TraceEventCache &cache,
-                     const std::string_view source,
+                     std::string_view source,
                      TraceEventType eventType,
                      int   id,
-                     const std::string_view formatOrMessage) override;
+                     std::string_view formatOrMessage) override;
 protected:
     SourceLevels _level;
 

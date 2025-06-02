@@ -9,7 +9,7 @@ std::string TraceEventCache::Callstack() const
     return "System::Diagnostics::TraceEventCache::Callstack() IMPLEMENT ME!";
 }
 
-const std::string_view TraceEventCache::ThreadId() const
+std::string_view TraceEventCache::ThreadId() const
 {
     using namespace std::literals;
 

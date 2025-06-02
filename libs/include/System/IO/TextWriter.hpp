@@ -15,8 +15,8 @@ public:
     TextWriter() = default;
     virtual ~TextWriter();
 
-    const std::string_view NewLine() const { return _newLine; }
-    void NewLine(const std::string_view new_value) { _newLine = new_value; }
+    std::string_view NewLine() const { return _newLine; }
+    void NewLine(std::string_view new_value) { _newLine = new_value; }
 
     virtual void Close();
     virtual void Flush();
@@ -31,12 +31,12 @@ public:
     virtual void Write(uint64_t value);
     virtual void Write(float value);
     virtual void Write(double value);
-    virtual void Write(const std::string_view message) = 0;
+    virtual void Write(std::string_view message) = 0;
 
     template <typename ...Args>
     inline void Write(std::format_string<Args...> fmt, Args &&... args)
     {
-        // Let's use the more primitive Write(const std::string_view) underneath
+        // Let's use the more primitive Write(std::string_view) underneath
         Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
 
@@ -50,13 +50,13 @@ public:
     virtual void WriteLine(uint64_t value);
     virtual void WriteLine(float value);
     virtual void WriteLine(double value);
-    virtual void WriteLine(const std::string_view message);
+    virtual void WriteLine(std::string_view message);
     virtual void WriteLine(const char *message);
     
     template <typename ...Args>
     inline void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
     {
-        // Let's use the more primitive Write(const std::string_view) underneath
+        // Let's use the more primitive Write(std::string_view) underneath
         WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
 

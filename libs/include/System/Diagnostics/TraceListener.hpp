@@ -16,12 +16,12 @@ class TraceListener
 {
 public:
     TraceListener();
-    TraceListener(const std::string_view name);
+    TraceListener(std::string_view name);
     virtual ~TraceListener() = default;
 
-    const std::string_view Name() const;
+    std::string_view Name() const;
     void Name(const std::string &new_name) { _name = new_name; }
-    void Name(const std::string_view new_name) { _name = new_name; }
+    void Name(std::string_view new_name) { _name = new_name; }
 
     TraceOptions TraceOutputOptions() const { return _options; }
     void         TraceOutputOptions(TraceOptions new_options) { _options = new_options; }
@@ -40,8 +40,8 @@ public:
     virtual void Close() = 0;
     virtual void Flush() = 0;
 
-    virtual void Write(const std::string_view message) = 0;
-    virtual void Write(const std::string_view message, const std::string_view category) = 0;
+    virtual void Write(std::string_view message) = 0;
+    virtual void Write(std::string_view message, std::string_view category) = 0;
 
     template <typename ...Args>
     void Write(std::format_string<Args...> &&fmt, Args &&... args)
@@ -49,8 +49,8 @@ public:
         Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
 
-    virtual void WriteLine(const std::string_view message) = 0;
-    virtual void WriteLine(const std::string_view message, const std::string_view category) = 0;
+    virtual void WriteLine(std::string_view message) = 0;
+    virtual void WriteLine(std::string_view message, std::string_view category) = 0;
 
     template <typename ...Args>
     void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
@@ -58,8 +58,8 @@ public:
         WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
 
-    virtual void Fail(const std::string_view message) = 0;
-    virtual void Fail(const std::string_view message, const std::string_view detail) = 0;
+    virtual void Fail(std::string_view message) = 0;
+    virtual void Fail(std::string_view message, std::string_view detail) = 0;
 
     virtual void WriteIndent() = 0;
 

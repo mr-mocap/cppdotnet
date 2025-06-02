@@ -10,7 +10,7 @@ class StreamReader : public TextReader
 {
 public:
     StreamReader();
-    StreamReader(const std::string_view filename);
+    StreamReader(std::string_view filename);
     StreamReader(std::unique_ptr<Stream> &&stream);
    ~StreamReader();
 

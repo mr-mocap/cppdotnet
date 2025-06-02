@@ -19,7 +19,7 @@ TraceListener *TraceListenerCollection::operator [](size_t index)
     return *iter;
 }
 
-TraceListener *TraceListenerCollection::operator [](const std::string_view name)
+TraceListener *TraceListenerCollection::operator [](std::string_view name)
 {
     for (TraceListener *iCurrentListener : _list)
     {
@@ -41,7 +41,7 @@ void TraceListenerCollection::Remove(TraceListener *listener)
     _list.erase( listener );
 }
 
-void TraceListenerCollection::Remove(const std::string_view name)
+void TraceListenerCollection::Remove(std::string_view name)
 {
     for (TraceListener *iCurrentListener : _list)
     {

@@ -14,30 +14,30 @@ class TextWriterTraceListener : public TraceListener
 public:
     TextWriterTraceListener();
     TextWriterTraceListener(std::unique_ptr<System::IO::TextWriter> &&new_writer);
-    TextWriterTraceListener(std::unique_ptr<System::IO::TextWriter> &&new_writer, const std::string_view name);
+    TextWriterTraceListener(std::unique_ptr<System::IO::TextWriter> &&new_writer, std::string_view name);
     TextWriterTraceListener(std::unique_ptr<System::IO::Stream> &&new_stream);
-    TextWriterTraceListener(std::unique_ptr<System::IO::Stream> &&new_stream, const std::string_view name);
+    TextWriterTraceListener(std::unique_ptr<System::IO::Stream> &&new_stream, std::string_view name);
 
     void Close() override;
     void Flush() override;
 
-    void Write(const std::string_view message) override;
-    void Write(const std::string_view message, const std::string_view category) override;
+    void Write(std::string_view message) override;
+    void Write(std::string_view message, std::string_view category) override;
 
-    void WriteLine(const std::string_view message) override;
-    void WriteLine(const std::string_view message, const std::string_view category) override;
+    void WriteLine(std::string_view message) override;
+    void WriteLine(std::string_view message, std::string_view category) override;
 
     System::IO::TextWriter *Writer();
     
-    void Fail(const std::string_view message) override;
-    void Fail(const std::string_view message, const std::string_view detail) override;
+    void Fail(std::string_view message) override;
+    void Fail(std::string_view message, std::string_view detail) override;
 
     void WriteIndent() override;
 protected:
     std::unique_ptr<System::IO::TextWriter> _text_writer;
 
-    void WriteRaw(const std::string_view data);
-    void WriteLineRaw(const std::string_view data);
+    void WriteRaw(std::string_view data);
+    void WriteLineRaw(std::string_view data);
 };
 
 }

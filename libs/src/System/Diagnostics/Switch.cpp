@@ -13,16 +13,16 @@ std::set<Switch *> Switch::GlobalSwitches;
 static std::mutex  GlobalSwitchesMutex;
 
 
-Switch::Switch(const std::string_view display_name,
-               const std::string_view description)
+Switch::Switch(std::string_view display_name,
+               std::string_view description)
     :
     Switch(display_name, description, std::string_view{"0"})
 {
 }
 
-Switch::Switch(const std::string_view display_name,
-               const std::string_view description,
-               const std::string_view default_value)
+Switch::Switch(std::string_view display_name,
+               std::string_view description,
+               std::string_view default_value)
     :
     _displayName(display_name),
     _description(description),
@@ -100,7 +100,7 @@ const std::string &Switch::Value()
     return _value;
 }
 
-void Switch::Value(const std::string_view new_value)
+void Switch::Value(std::string_view new_value)
 {
     Initialize();
     if ( _value != new_value )

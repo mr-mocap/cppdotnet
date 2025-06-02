@@ -17,13 +17,13 @@ public:
     TraceListenerCollection() = default;
 
     TraceListener *operator [](size_t index);
-    TraceListener *operator [](const std::string_view name);
+    TraceListener *operator [](std::string_view name);
 
     size_t Count() const { return _list.size(); }
 
     int  Add(TraceListener *listener);
     void Remove(TraceListener *listener);
-    void Remove(const std::string_view name);
+    void Remove(std::string_view name);
 
     void Clear();
 

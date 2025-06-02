@@ -63,7 +63,7 @@ void TextWriter::Write(double value)
     Write( Convert::ToString(value) );
 }
 
-void TextWriter::WriteLine(const std::string_view message)
+void TextWriter::WriteLine(std::string_view message)
 {
     Write( message );
     Write( NewLine() );

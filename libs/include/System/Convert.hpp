@@ -23,7 +23,7 @@ namespace System
 class Convert
 {
 public:
-    static const std::string_view ToString(Boolean value);
+    static std::string_view ToString(Boolean value);
     static std::string      ToString(char value);
     static std::string      ToString(float  value);
     static std::string      ToString(double value);
@@ -38,17 +38,17 @@ public:
     static std::string      ToString(uint32_t value, Base toBase = Base::Decimal);
     static std::string      ToString(uint64_t value, Base toBase = Base::Decimal);
 
-    static const std::string_view ToString(Diagnostics::TraceOptions value);
-    static const std::string_view ToString(Diagnostics::SourceLevels value);
+    static std::string_view ToString(Diagnostics::TraceOptions value);
+    static std::string_view ToString(Diagnostics::SourceLevels value);
 
-    static std::vector<std::byte> FromHexString(const std::string_view input_string); // Returns sequence as LITTLE-ENDIAN
+    static std::vector<std::byte> FromHexString(std::string_view input_string); // Returns sequence as LITTLE-ENDIAN
     static std::string            ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase = true)
     {
         return ToHexString( std::span<const std::byte>{input_bytes}, uppercase );
     }
     static std::string            ToHexString(std::span<const std::byte> input_bytes, bool uppercase = true);
 
-    static std::string            ToBase64String(const std::string_view input_ascii_string)
+    static std::string            ToBase64String(std::string_view input_ascii_string)
     {
         return ToBase64String( std::as_bytes( std::span<const char>(input_ascii_string) ) );
     }
@@ -62,13 +62,13 @@ public:
 
     static std::string            ToBase85String(std::span<const std::byte> input_bytes);
 
-    static std::vector<std::byte> FromBase85String(const std::string_view input_string);
+    static std::vector<std::byte> FromBase85String(std::string_view input_string);
     static std::vector<std::byte> FromBase85String(std::span<const char> input_string);
 
     // From IConvertable  (move there)
-    static Diagnostics::TraceLevel   ToType(const std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
-    static Diagnostics::TraceOptions ToType(const std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
-    static Diagnostics::SourceLevels ToType(const std::string_view value, Diagnostics::SourceLevels this_is_here_to_select_the_correct_function);
+    static Diagnostics::TraceLevel   ToType(std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
+    static Diagnostics::TraceOptions ToType(std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
+    static Diagnostics::SourceLevels ToType(std::string_view value, Diagnostics::SourceLevels this_is_here_to_select_the_correct_function);
 
     // C++ specific
     static std::string ToChars(auto ...format_args)
@@ -89,7 +89,7 @@ public:
         return { buffer.data(), length };
     }
 
-    static std::byte           From2HexCharsToByte(const std::string_view input_string);
+    static std::byte           From2HexCharsToByte(std::string_view input_string);
     static std::array<char, 2> FromByteTo2HexChars(std::byte input_byte, bool uppercase = true);
 
     /** A structure for storing the digits of a number in a particular base

@@ -11,16 +11,16 @@ class SourceFilter : public TraceFilter
 {
 public:
     SourceFilter() = delete;
-    SourceFilter(const std::string_view source) : _source( source ) { }
+    SourceFilter(std::string_view source) : _source( source ) { }
 
     const std::string &Source() const { return _source; }
-          void         Source(const std::string_view new_source) { _source = new_source; }
+          void         Source(std::string_view new_source) { _source = new_source; }
 
     bool ShouldTrace(const TraceEventCache &cache,
-                     const std::string_view source,
+                     std::string_view source,
                      TraceEventType eventType,
                      int   id,
-                     const std::string_view formatOrMessage) override;
+                     std::string_view formatOrMessage) override;
 protected:
     std::string _source;
 };

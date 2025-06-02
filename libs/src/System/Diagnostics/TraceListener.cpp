@@ -10,7 +10,7 @@ TraceListener::TraceListener()
 {
 }
 
-TraceListener::TraceListener(const std::string_view name)
+TraceListener::TraceListener(std::string_view name)
     :
     _name{ name }
 {
@@ -21,7 +21,7 @@ bool TraceListener::IsThreadSafe() const
     return false;
 }
 
-const std::string_view TraceListener::Name() const
+std::string_view TraceListener::Name() const
 {
     return _name;
 }

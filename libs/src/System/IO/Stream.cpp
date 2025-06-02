@@ -30,7 +30,7 @@ void Stream::Flush()
     _flush();
 }
 
-void Stream::Write(const std::string_view bytes)
+void Stream::Write(std::string_view bytes)
 {
     if ( _stream && CanWrite() )
         _stream->write( bytes.data(), bytes.size() );

@@ -10,7 +10,7 @@ class StreamWriter : public TextWriter
 {
 public:
     StreamWriter();
-    StreamWriter(const std::string_view filename);
+    StreamWriter(std::string_view filename);
     StreamWriter(std::unique_ptr<Stream> &&stream);
    ~StreamWriter();
 
@@ -18,7 +18,7 @@ public:
     void Flush() override;
 
     void Write(char value) override;
-    void Write(const std::string_view message) override;
+    void Write(std::string_view message) override;
 
     Stream *BaseStream() const { return _stream.get(); }
 protected:

@@ -187,12 +187,12 @@ public:
         return Numerics::INumberBase<std::int16_t>::MultiplyAddEstimate(value1, value2);
     }
 
-    static Int16 Parse(const std::string_view value_string)
+    static Int16 Parse(std::string_view value_string)
     {
         return Numerics::INumberBase<std::int16_t>::Parse(value_string);
     }
 
-    static std::optional<Int16> TryParse(const std::string_view value_string)
+    static std::optional<Int16> TryParse(std::string_view value_string)
     {
         return Numerics::INumberBase<std::int16_t>::TryParse(value_string);
     }

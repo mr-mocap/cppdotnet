@@ -123,7 +123,7 @@ public:
     ActivityContext(const ActivityTraceId &trace_id,
                     const ActivitySpanId  &span_id,
                     ActivityTraceFlags     trace_flags,
-                    const std::string_view trace_state,
+                    std::string_view trace_state,
                     const bool             is_remote)
         :
         _trace_id( trace_id ),
@@ -153,7 +153,7 @@ protected:
 class ActivityEvent
 {
 public:
-    ActivityEvent(const std::string_view name)
+    ActivityEvent(std::string_view name)
         :
         _name( name )
     {

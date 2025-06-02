@@ -41,14 +41,14 @@ static std::vector<int> ToInts(std::string_view input, const char separator = '.
     return Append( std::vector<int>(1, converted_value), ToInts(input) );
 }
 
-Version::Version(const std::string_view input)
+Version::Version(std::string_view input)
 {
     Version result{ Parse( input ) };
 
     *this = result;
 }
 
-Version Version::Parse(const std::string_view input)
+Version Version::Parse(std::string_view input)
 {
     std::vector<int> values{ ToInts(input) };
 

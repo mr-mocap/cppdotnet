@@ -28,11 +28,11 @@ public:
         const class Meter &Meter() const { return _meter; }
               class Meter &Meter()       { return _meter; }
 
-        const std::string_view Name() const { return _name; }
+        std::string_view Name() const { return _name; }
 
-        const std::string_view Description() const { return _description; }
+        std::string_view Description() const { return _description; }
 
-        const std::string_view Unit() const { return _unit; }
+        std::string_view Unit() const { return _unit; }
 
         // TODO: Implement Tags
 
@@ -87,9 +87,9 @@ protected:
         virtual bool IsObservable() const = 0;
         virtual const class Meter &Meter() const = 0;
         virtual       class Meter &Meter()       = 0;
-        virtual const std::string_view Name() const = 0;
-        virtual const std::string_view Description() const = 0;
-        virtual const std::string_view Unit() const = 0;
+        virtual std::string_view Name() const = 0;
+        virtual std::string_view Description() const = 0;
+        virtual std::string_view Unit() const = 0;
         virtual       std::string      ToString() const = 0;
 
         virtual void Publish() = 0;
@@ -118,9 +118,9 @@ protected:
         bool IsObservable() const override { return specific_instrument.IsObservable(); }
         const class Meter &Meter() const override { return specific_instrument.Meter(); }
               class Meter &Meter()       override { return specific_instrument.Meter(); }
-        const std::string_view Name() const override { return specific_instrument.Name(); }
-        const std::string_view Description() const override { return specific_instrument.Description(); }
-        const std::string_view Unit() const override { return specific_instrument.Unit(); }
+        std::string_view Name() const override { return specific_instrument.Name(); }
+        std::string_view Description() const override { return specific_instrument.Description(); }
+        std::string_view Unit() const override { return specific_instrument.Unit(); }
         std::string      ToString() const override { return specific_instrument.ToString(); }
 
         void Publish() override { specific_instrument.Publish(); }
@@ -188,9 +188,9 @@ public:
     bool IsObservable() const { return _data->IsObservable(); }
     const class Meter &Meter() const { return _data->Meter(); }
           class Meter &Meter()       { return _data->Meter(); }
-    const std::string_view Name() const { return _data->Name(); }
-    const std::string_view Description() const { return _data->Description(); }
-    const std::string_view Unit() const { return _data->Unit(); }
+    std::string_view Name() const { return _data->Name(); }
+    std::string_view Description() const { return _data->Description(); }
+    std::string_view Unit() const { return _data->Unit(); }
           std::string      ToString() const { return _data->ToString(); }
 protected:
     std::unique_ptr<InternalInterface> _data;

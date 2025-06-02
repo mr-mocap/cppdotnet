@@ -10,13 +10,13 @@ namespace System::Diagnostics
 class ActivitySource final
 {
 public:
-    ActivitySource(const std::string_view name)
+    ActivitySource(std::string_view name)
         :
         _name( name )
     {
     }
 
-    ActivitySource(const std::string_view name, const std::string_view version)
+    ActivitySource(std::string_view name, std::string_view version)
         :
         _name( name ),
         _version( version )

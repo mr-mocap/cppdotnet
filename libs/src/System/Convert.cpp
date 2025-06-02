@@ -15,16 +15,16 @@ namespace System
 {
 
 // From RFC 4648
-static const std::string_view Base64Table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static       std::string_view Base64Table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 static const char             Base64PadChar = '=';
 
-static const std::string_view Base85Table = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstu";
+static       std::string_view Base85Table = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstu";
 static const char             Base85SpecialCase1 = 'z';
 static const char             Base85SpecialCase2 = 'y';
 static const std::uint32_t    Base85SpecialCaseValue1 = 0u;
 static const std::uint32_t    Base85SpecialCaseValue2 = 0x20202020u; // All spaces
 
-static const std::string_view Ascii85_RFC_1924 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~";
+static       std::string_view Ascii85_RFC_1924 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~";
 
 inline bool IsValidBase64(const char input)
 {
@@ -96,7 +96,7 @@ static std::string From4Base64Chars(std::span<const char, 4> input)
     return std::string().append(1, one).append(1, two).append(1, three); // The full three bytes
 }
 
-std::byte Convert::From2HexCharsToByte(const std::string_view input_string)
+std::byte Convert::From2HexCharsToByte(std::string_view input_string)
 {
     PRECONDITION(input_string.size() == 2);
     PRECONDITION( std::isxdigit( input_string.front() ) );
@@ -133,7 +133,7 @@ std::array<char, 2> Convert::FromByteTo2HexChars(std::byte input_byte, bool uppe
         return retval;
 }
 
-const std::string_view Convert::ToString(Boolean value)
+std::string_view Convert::ToString(Boolean value)
 {
     return Boolean{value}.ToString();
 }
@@ -298,12 +298,12 @@ std::string Convert::ToString(uint64_t value, Base toBase)
     return {};
 }
 
-const std::string_view Convert::ToString(Diagnostics::SourceLevels sourcelevels_value)
+std::string_view Convert::ToString(Diagnostics::SourceLevels sourcelevels_value)
 try
 {
     using namespace std::literals;
 
-    static const std::map<Diagnostics::SourceLevels, const std::string_view> sourcelevels_map{
+    static const std::map<Diagnostics::SourceLevels, std::string_view> sourcelevels_map{
         { Diagnostics::SourceLevels::All,      "All"sv },
         { Diagnostics::SourceLevels::Off,      "Off"sv },
         { Diagnostics::SourceLevels::Critical,        "Critical"sv },
@@ -324,12 +324,12 @@ catch (const std::out_of_range &)
     return {};
 }
 
-const std::string_view Convert::ToString(Diagnostics::TraceOptions traceoptions_value)
+std::string_view Convert::ToString(Diagnostics::TraceOptions traceoptions_value)
 try
 {
     using namespace std::literals;
 
-    static const std::map<Diagnostics::TraceOptions, const std::string_view> type_map{
+    static const std::map<Diagnostics::TraceOptions, std::string_view> type_map{
         { Diagnostics::TraceOptions::None,      "None"sv      },
         { Diagnostics::TraceOptions::LogicalOperationStack , "LogicalOperationsStack"sv   },
         { Diagnostics::TraceOptions::DateTime,  "DateTime"sv  },
@@ -349,12 +349,12 @@ catch (const std::out_of_range &)
     return {};
 }
 
-Diagnostics::TraceLevel ToType(const std::string_view string_value, Diagnostics::TraceLevel)
+Diagnostics::TraceLevel ToType(std::string_view string_value, Diagnostics::TraceLevel)
 try
 {
     using namespace std::literals;
 
-    static const std::map<const std::string_view, Diagnostics::TraceLevel> type_map{
+    static const std::map<std::string_view, Diagnostics::TraceLevel> type_map{
         { "Off"sv,     Diagnostics::TraceLevel::Off },
         { "Error"sv,   Diagnostics::TraceLevel::Error },
         { "Warning"sv, Diagnostics::TraceLevel::Warning },
@@ -372,12 +372,12 @@ catch (const std::out_of_range &)
     return {};
 }
 
-Diagnostics::TraceOptions ToType(const std::string_view string_value, Diagnostics::TraceOptions)
+Diagnostics::TraceOptions ToType(std::string_view string_value, Diagnostics::TraceOptions)
 try
 {
     using namespace std::literals;
 
-    static const std::map<const std::string_view, Diagnostics::TraceOptions> type_map{
+    static const std::map<std::string_view, Diagnostics::TraceOptions> type_map{
         { "None"sv,         Diagnostics::TraceOptions::None },
         { "LogicalOperationStack"sv, Diagnostics::TraceOptions::LogicalOperationStack },
         { "DateTime"sv,     Diagnostics::TraceOptions::DateTime },
@@ -397,12 +397,12 @@ catch (const std::out_of_range &)
     return {};
 }
 
-Diagnostics::SourceLevels ToType(const std::string_view string_value, Diagnostics::SourceLevels)
+Diagnostics::SourceLevels ToType(std::string_view string_value, Diagnostics::SourceLevels)
 try
 {
     using namespace std::literals;
 
-    static const std::map<const std::string_view, Diagnostics::SourceLevels> type_map{
+    static const std::map<std::string_view, Diagnostics::SourceLevels> type_map{
         { "All"sv,             Diagnostics::SourceLevels::All },
         { "Off"sv,             Diagnostics::SourceLevels::Off },
         { "Critical"sv,        Diagnostics::SourceLevels::Critical },
@@ -423,7 +423,7 @@ catch(const std::exception& e)
     return {};
 }
 
-std::vector<std::byte> Convert::FromHexString(const std::string_view input_string)
+std::vector<std::byte> Convert::FromHexString(std::string_view input_string)
 {
     std::vector<std::byte> result;
 
@@ -619,7 +619,7 @@ std::string Convert::ToBase85String(std::span<const std::byte> input_bytes)
     return { base85_string.rbegin(), base85_string.rend() };
 }
 
-std::vector<std::byte> Convert::FromBase85String(const std::string_view input_ascii_string)
+std::vector<std::byte> Convert::FromBase85String(std::string_view input_ascii_string)
 {
     UNUSED(input_ascii_string);
 

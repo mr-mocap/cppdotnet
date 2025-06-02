@@ -28,7 +28,7 @@ public:
     size_t Length();
     size_t Position();
 
-    virtual void Write(const std::string_view bytes);
+    virtual void Write(std::string_view bytes);
     virtual void Write(ReadOnlySpan<std::byte> bytes);
     virtual void WriteByte(std::byte value);
     virtual void WriteByte(uint8_t byte);

@@ -9,7 +9,7 @@ StreamReader::StreamReader()
 {
 }
 
-StreamReader::StreamReader(const std::string_view filename)
+StreamReader::StreamReader(std::string_view filename)
     :
     _stream{ std::make_unique<FileStream>( filename ) }
 {

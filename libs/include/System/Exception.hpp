@@ -35,7 +35,7 @@ public:
     Exception &operator =(Exception &&other);
     /// @}
 
-    Exception(const std::string_view message);
+    Exception(std::string_view message);
 
     /** 
      *
@@ -45,7 +45,7 @@ public:
      *  @{
      */
     template <class ExceptionType>
-    Exception(const std::string_view message, const ExceptionType &inner_exception) = delete;
+    Exception(std::string_view message, const ExceptionType &inner_exception) = delete;
 
     template <class ExceptionType>
     Exception(const char *message, ExceptionType &&inner_exception)
@@ -55,7 +55,7 @@ public:
     }
 
     template <class ExceptionType>
-    Exception(const std::string_view message, ExceptionType &&inner_exception)
+    Exception(std::string_view message, ExceptionType &&inner_exception)
         :
         _message{ message },
         _innerException{ std::make_unique<ExceptionType>( std::move(inner_exception) ) }
@@ -65,11 +65,11 @@ public:
 
     virtual ~Exception();
 
-    const std::string_view Message() const;
+    std::string_view Message() const;
 
-    const std::string_view TargetSite() const;
+    std::string_view TargetSite() const;
           void             TargetSite(const char *object_name);
-          void             TargetSite(const std::string_view object_name);
+          void             TargetSite(std::string_view object_name);
 
     const Exception *InnerException() const { return _innerException.get(); }
     const Exception &GetBaseException() const;
@@ -82,7 +82,7 @@ public:
 
     //const char *what() const override { return _message.c_str(); }
 
-    virtual const std::string_view ClassName() const;
+    virtual std::string_view ClassName() const;
 protected:
     std::string _message;
     std::string _targetSite;
@@ -117,13 +117,13 @@ public:
     /// @}
 
     SystemException(const char *message) : SystemException( std::string_view{message} ) { }
-    SystemException(const std::string_view message)
+    SystemException(std::string_view message)
         :
         Exception( message )
     {
     }
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 };
 
 class ArgumentException : public SystemException
@@ -160,10 +160,10 @@ public:
     /// @}
 
     explicit ArgumentException(const char *message) : ArgumentException( std::string_view{message} ) { }
-    explicit ArgumentException(const std::string_view message) : SystemException( message ) { }
+    explicit ArgumentException(std::string_view message) : SystemException( message ) { }
 
     explicit ArgumentException(const char *message, const char *param_name) : ArgumentException( std::string_view{message}, std::string_view{param_name} ) { }
-    explicit ArgumentException(const std::string_view message, const std::string_view param_name)
+    explicit ArgumentException(std::string_view message, std::string_view param_name)
         :
         SystemException( message ),
         _paramName{ param_name }
@@ -176,8 +176,8 @@ public:
         ArgumentException( std::string_view{message}, std::string_view{param_name}, std::move(inner_exception) )
     {
     }
-    explicit ArgumentException(const std::string_view message,
-                               const std::string_view param_name,
+    explicit ArgumentException(std::string_view message,
+                               std::string_view param_name,
                                Exception &&inner_exception)
         :
         SystemException( message, std::move(inner_exception) ),
@@ -185,9 +185,9 @@ public:
     {
     }
 
-    const std::string_view ParamName() const { return _paramName; }
+    std::string_view ParamName() const { return _paramName; }
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 protected:
     std::string _paramName;
 };
@@ -220,16 +220,16 @@ public:
     /// @}
 
     ArgumentNullException(const char *param_name) : ArgumentNullException( std::string_view{param_name} ) { }
-    ArgumentNullException(const std::string_view param_name);
+    ArgumentNullException(std::string_view param_name);
 
     ArgumentNullException(const char *param_name, const char *message) : ArgumentNullException( std::string_view{param_name}, std::string_view{message} ) { }
-    ArgumentNullException(const std::string_view param_name, const std::string_view message)
+    ArgumentNullException(std::string_view param_name, std::string_view message)
         :
         ArgumentException( message, param_name )
     {
     }
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 };
 
 class ArgumentOutOfRangeException : public ArgumentException
@@ -260,16 +260,16 @@ public:
     /// @}
 
     ArgumentOutOfRangeException(const char *param_name) : ArgumentOutOfRangeException( std::string_view{param_name} ) { }
-    ArgumentOutOfRangeException(const std::string_view param_name);
+    ArgumentOutOfRangeException(std::string_view param_name);
 
     ArgumentOutOfRangeException(const char *param_name, const char *message) : ArgumentOutOfRangeException( std::string_view{param_name}, std::string_view{message} ) { }
-    ArgumentOutOfRangeException(const std::string_view param_name, const std::string_view message)
+    ArgumentOutOfRangeException(std::string_view param_name, std::string_view message)
         :
         ArgumentException( message, param_name )
     {
     }
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 };
 
 class NotSupportedException : public SystemException
@@ -300,9 +300,9 @@ public:
     /// @}
 
     NotSupportedException(const char *message) : NotSupportedException( std::string_view{message} ) { }
-    NotSupportedException(const std::string_view message) : SystemException( message ) { }
+    NotSupportedException(std::string_view message) : SystemException( message ) { }
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 };
 
 class InvalidOperationException : public SystemException
@@ -333,9 +333,9 @@ public:
     /// @}
 
     InvalidOperationException(const char *message) : InvalidOperationException( std::string_view{message} ) { }
-    InvalidOperationException(const std::string_view message) : SystemException( message ) { }
+    InvalidOperationException(std::string_view message) : SystemException( message ) { }
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 };
 
 class ObjectDisposedException : public InvalidOperationException
@@ -372,14 +372,14 @@ public:
     /// @}
 
     ObjectDisposedException(const char *disposed_object_name) : ObjectDisposedException( std::string_view{disposed_object_name} ) { }
-    ObjectDisposedException(const std::string_view disposed_object_name);
+    ObjectDisposedException(std::string_view disposed_object_name);
 
     ObjectDisposedException(const char *disposed_object_name, const char *message);
-    ObjectDisposedException(const std::string_view disposed_object_name, const std::string_view message);
+    ObjectDisposedException(std::string_view disposed_object_name, std::string_view message);
 
     const std::string ObjectName() const { return _objectName; }
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 protected:
     std::string _objectName;
 };
@@ -392,10 +392,10 @@ public:
     FormatException() = default;
 
     explicit FormatException(const char *message) : FormatException( std::string_view{message} ) { }
-    explicit FormatException(const std::string_view message) : SystemException( message ) { }
+    explicit FormatException(std::string_view message) : SystemException( message ) { }
 
     explicit FormatException(const char *message, Exception &&inner_exception) : FormatException( std::string_view(message), std::move(inner_exception) ) { }
-    explicit FormatException(const std::string_view message, Exception &&inner_exception)
+    explicit FormatException(std::string_view message, Exception &&inner_exception)
         :
         SystemException( message, std::move(inner_exception) )
     {
@@ -417,7 +417,7 @@ public:
     FormatException &operator =(FormatException &&other) = default;
     /// @}
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 };
 
 class ArithmeticException : public SystemException
@@ -428,10 +428,10 @@ public:
     ArithmeticException() = default;
 
     explicit ArithmeticException(const char *message) : ArithmeticException( std::string_view{message} ) { }
-    explicit ArithmeticException(const std::string_view message) : SystemException( message ) { }
+    explicit ArithmeticException(std::string_view message) : SystemException( message ) { }
 
     explicit ArithmeticException(const char *message, Exception &&inner_exception) : ArithmeticException( std::string_view(message), std::move(inner_exception) ) { }
-    explicit ArithmeticException(const std::string_view message, Exception &&inner_exception)
+    explicit ArithmeticException(std::string_view message, Exception &&inner_exception)
         :
         SystemException( message, std::move(inner_exception) )
     {
@@ -453,7 +453,7 @@ public:
     ArithmeticException &operator =(ArithmeticException &&other) = default;
     /// @}
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 };
 
 class OverflowException : public SystemException
@@ -464,10 +464,10 @@ public:
     OverflowException() = default;
 
     explicit OverflowException(const char *message) : OverflowException( std::string_view{message} ) { }
-    explicit OverflowException(const std::string_view message) : SystemException( message ) { }
+    explicit OverflowException(std::string_view message) : SystemException( message ) { }
 
     explicit OverflowException(const char *message, Exception &&inner_exception) : OverflowException( std::string_view(message), std::move(inner_exception) ) { }
-    explicit OverflowException(const std::string_view message, Exception &&inner_exception)
+    explicit OverflowException(std::string_view message, Exception &&inner_exception)
         :
         SystemException( message, std::move(inner_exception) )
     {
@@ -489,7 +489,7 @@ public:
     OverflowException &operator =(OverflowException &&other) = default;
     /// @}
 
-    const std::string_view ClassName() const override;
+    std::string_view ClassName() const override;
 };
 
 /** Throws the given exception and fills in the TargetSite()
