@@ -5,6 +5,7 @@
 #include "System/EventHandler.hpp"
 #include "System/DateTime.hpp"
 #include "System/Diagnostics/ActivitySource.hpp"
+#include "System/Private/enum.hpp"
 #include <array>
 #include <string>
 #include <cstddef>
