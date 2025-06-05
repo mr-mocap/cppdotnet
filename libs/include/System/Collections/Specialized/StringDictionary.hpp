@@ -12,7 +12,11 @@ namespace System::Collections::Specialized
 class StringDictionary : public Generic::Dictionary<std::string, std::string>
 {
 public:
+    using Base = Generic::Dictionary<std::string, std::string>;
+
     using Generic::Dictionary<std::string, std::string>::Dictionary;
+
+    constexpr void Add(std::string_view key, std::string_view value) { Base::Add( std::string{key}, std::string{value} ); }
 };
 
 }
