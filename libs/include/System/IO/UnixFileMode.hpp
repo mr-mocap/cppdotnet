@@ -1,5 +1,7 @@
 #pragma once
 
+#include "System/Private/enum.hpp"
+
 
 namespace System::IO
 {
