@@ -1,11 +1,13 @@
 #pragma once
 
+#include "System/Exception.hpp"
 #include <string>
 #include <string_view>
 #if __cplusplus >= 202002L
 #include <format>
 #endif
 #include <cstdint>
+#include <cstddef>
 
 namespace System::Text
 {
@@ -18,13 +20,22 @@ public:
     StringBuilder(const StringBuilder &other) = default;
     StringBuilder(StringBuilder &&other) = default;
 
-    size_t Capacity() const { return _string.capacity(); }
-    void   SetCapacity(size_t new_capacity) { _string.reserve(new_capacity); }
+    constexpr size_t Capacity() const { return _string.capacity(); }
+    constexpr void   SetCapacity(size_t new_capacity)
+    {
+        if ( new_capacity < Capacity() )
+            ThrowWithTarget( ArgumentOutOfRangeException{"new_capacity", "Operation forces object to be less than the current length of this instance"} );
+        if ( new_capacity > MaxCapacity() )
+            ThrowWithTarget( ArgumentOutOfRangeException{"new_capacity", "Operation forces object to exceed MaxCapacity"} );
 
-    size_t Length() const { return _string.size(); }
-    size_t MaxCapacity() const { return _string.max_size(); }
+        _string.reserve(new_capacity);
+    }
+
+    constexpr size_t Length() const { return _string.size(); }
+    constexpr size_t MaxCapacity() const { return _this_max_capacity; }
 
     StringBuilder &Append(bool value);
+    StringBuilder &Append(std::byte value);
     StringBuilder &Append(char value);
     StringBuilder &Append(const char *value);
     StringBuilder &Append(std::string_view value);
@@ -56,7 +67,11 @@ public:
 
     StringBuilder &Replace(std::string_view old_value, std::string_view new_value);
 
-    StringBuilder &Clear();
+    constexpr StringBuilder &Clear()
+    {
+        _string.clear();
+        return *this;
+    }
 
     const std::string &ToString() const { return _string; }
 
@@ -70,6 +85,7 @@ public:
           std::string::value_type &operator [](size_t index)       { return _string[index]; }
 protected:
     std::string _string;
+    size_t      _this_max_capacity = _string.max_size();
 };
 
 }

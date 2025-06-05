@@ -133,9 +133,14 @@ std::array<char, 2> Convert::FromByteTo2HexChars(std::byte input_byte, bool uppe
         return retval;
 }
 
-std::string_view Convert::ToString(Boolean value)
+std::string_view Convert::ToString(bool value)
 {
     return Boolean{value}.ToString();
+}
+
+std::string Convert::ToString(std::byte value)
+{
+    return std::string{ 1, static_cast<char>(value) };
 }
 
 std::string Convert::ToString(char value)

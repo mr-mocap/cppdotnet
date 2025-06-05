@@ -13,6 +13,7 @@
 #include <vector>
 #include <array>
 #include <cstdint>
+#include <cstddef>
 #include <cctype>
 #include <cassert>
 #include <charconv>
@@ -23,8 +24,9 @@ namespace System
 class Convert
 {
 public:
-    static std::string_view ToString(Boolean value);
+    static std::string_view ToString(bool value);
     static std::string      ToString(char value);
+    static std::string      ToString(std::byte value);
     static std::string      ToString(float  value);
     static std::string      ToString(double value);
 

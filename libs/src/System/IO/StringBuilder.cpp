@@ -1,7 +1,6 @@
 #include "System/Text/StringBuilder.hpp"
 #include "System/Convert.hpp"
 #include "System/Environment.hpp"
-#include "System/Exception.hpp"
 #include <exception>
 
 
@@ -27,85 +26,150 @@ static size_t NumberOfTimesOccursIn(const std::string &origin, std::string_view 
 
 StringBuilder &StringBuilder::Append(bool value)
 {
+    std::string_view string_value = System::Convert::ToString(value);
+
+    if ( (Length() + string_value.length()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
+    _string.append( System::Convert::ToString(value) );
+    return *this;
+}
+
+StringBuilder &StringBuilder::Append(std::byte value)
+{
+    if ( (Length() + 1) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
     _string.append( System::Convert::ToString(value) );
     return *this;
 }
 
 StringBuilder &StringBuilder::Append(char value)
 {
+    if ( (Length() + 1) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
     _string.push_back( value );
     return *this;
 }
 
 StringBuilder &StringBuilder::Append(const char *value)
 {
-    _string.append(value);
-    return *this;
+    return Append( std::string_view{value} );
 }
 
 StringBuilder &StringBuilder::Append(std::string_view value)
 {
+    if ( (Length() + value.size()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
     _string.append( value );
     return *this;
 }
 
 StringBuilder &StringBuilder::Append(const std::string &value)
 {
+    if ( (Length() + value.size()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
     _string.append( value );
     return *this;
 }
 
-StringBuilder &StringBuilder::Append(const StringBuilder &other)
+StringBuilder &StringBuilder::Append(const StringBuilder &other_builder)
 {
-    _string.append( other.ToString() );
+    if ( (Length() + other_builder.Length()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"other_builder", "Operation forces object to exceed MaxCapacity"} );
+
+    _string.append( other_builder.ToString() );
     return *this;
 }
 
 StringBuilder &StringBuilder::Append(int16_t value)
 {
-    _string.append( System::Convert::ToString(value) );
+    std::string str_value = System::Convert::ToString(value);
+
+    if ( (Length() + str_value.size()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
+    _string.append( str_value );
     return *this;
 }
 
 StringBuilder &StringBuilder::Append(int32_t value)
 {
-    _string.append( System::Convert::ToString(value) );
+    std::string str_value = System::Convert::ToString(value);
+
+    if ( (Length() + str_value.size()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
+    _string.append( str_value );
     return *this;
 }
 
 StringBuilder &StringBuilder::Append(int64_t value)
 {
-    _string.append( System::Convert::ToString(value) );
+    std::string str_value = System::Convert::ToString(value);
+
+    if ( (Length() + str_value.size()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
+    _string.append( str_value );
     return *this;
 }
 
 StringBuilder &StringBuilder::Append(uint16_t value)
 {
-    _string.append( System::Convert::ToString(value) );
+    std::string str_value = System::Convert::ToString(value);
+
+    if ( (Length() + str_value.size()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
+    _string.append( str_value );
     return *this;
 }
 
 StringBuilder &StringBuilder::Append(uint32_t value)
 {
-    _string.append( System::Convert::ToString(value) );
+    std::string str_value = System::Convert::ToString(value);
+
+    if ( (Length() + str_value.size()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
+    _string.append( str_value );
     return *this;
 }
 
 StringBuilder &StringBuilder::Append(uint64_t value)
 {
-    _string.append( System::Convert::ToString(value) );
+    std::string str_value = System::Convert::ToString(value);
+
+    if ( (Length() + str_value.size()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
+    _string.append( str_value );
     return *this;
 }
 
 StringBuilder &StringBuilder::Append(float value)
 {
-    _string.append( System::Convert::ToString(value) );
+    std::string str_value = System::Convert::ToString(value);
+
+    if ( (Length() + str_value.size()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
+    _string.append( str_value );
     return *this;
 }
 
 StringBuilder &StringBuilder::Append(double value)
 {
-    _string.append( System::Convert::ToString(value) );
+    std::string str_value = System::Convert::ToString(value);
+
+    if ( (Length() + str_value.size()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
+
+    _string.append( str_value );
     return *this;
 }
 
@@ -159,7 +223,12 @@ StringBuilder &StringBuilder::Replace(std::string_view old_value, std::string_vi
 
 StringBuilder &StringBuilder::AppendLine()
 {
-    _string.append( System::Environment::NewLine() );
+    std::string_view str_value = System::Environment::NewLine();
+
+    if ( (Length() + str_value.size()) > MaxCapacity() )
+        ThrowWithTarget( ArgumentOutOfRangeException{"<None>", "Operation forces object to exceed MaxCapacity"} );
+
+    _string.append( str_value );
     return *this;
 }
 
@@ -171,12 +240,6 @@ try
 catch (const std::length_error &e)
 {
     ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
-    return *this;
-}
-
-StringBuilder &StringBuilder::Clear()
-{
-    _string.clear();
     return *this;
 }
 
