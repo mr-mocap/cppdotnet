@@ -55,4 +55,30 @@ void TraceListener::SetNeedIndent()
     _needIndent = (_indentSize > 0) && (_indentLevel > 0);
 }
 
+void TraceListener::TraceData(System::Diagnostics::TraceEventCache &event_cache,
+                                                  std::string_view  source,
+                               System::Diagnostics::TraceEventType  event_type,
+                                                               int  id
+                          )
+{
+    TraceData( event_cache, source, event_type, id, std::string() );
+}
+
+void TraceListener::TraceData(System::Diagnostics::TraceEventCache &event_cache,
+                                                  std::string_view  source,
+                               System::Diagnostics::TraceEventType  event_type,
+                                                               int  id,
+                                                  std::string_view  message
+                          )
+{
+    WriteLine("[Trace Header: Source=\"{}\" EventType=\"{}\" ID=\"{}\"]", source, event_type, id);
+    WriteLine(message);
+    WriteLine("[Trace Footer: Time=\"{}\" PID=\"{}\" TID=\"{}\" Timestamp=\"{}\"]",
+              event_cache.DateTime().ToString(),
+              event_cache.ProcessId(),
+              event_cache.ThreadId(),
+              event_cache.Timestamp()
+             );
+}
+
 }

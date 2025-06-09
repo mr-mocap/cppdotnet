@@ -2,6 +2,7 @@
 
 #include "System/Diagnostics/TraceOptions.hpp"
 #include "System/Diagnostics/TraceFilter.hpp"
+#include "System/Diagnostics/TraceEventCache.hpp"
 #include "System/Collections/Specialized/StringDictionary.hpp"
 #include <string>
 #include <format>
@@ -63,7 +64,38 @@ public:
 
     virtual void WriteIndent() = 0;
 
+    virtual void TraceData(System::Diagnostics::TraceEventCache &event_cache,
+                                               std::string_view  source,
+                            System::Diagnostics::TraceEventType  event_type,
+                                                            int  id
+                          );
+
+    virtual void TraceData(System::Diagnostics::TraceEventCache &event_cache,
+                                               std::string_view  source,
+                            System::Diagnostics::TraceEventType  event_type,
+                                                            int  id,
+                                               std::string_view  message
+                          );
+
+    template <typename ...Args>
+    void TraceData(System::Diagnostics::TraceEventCache  &event_cache,
+                                       std::string_view   source,
+                    System::Diagnostics::TraceEventType   event_type,
+                                                    int   id,
+                            std::format_string<Args...> &&fmt,
+                                                   Args &&... args)
+    {
+        TraceData( event_cache,
+                   source,
+                   event_type,
+                   id,
+                   std::string_view( std::vformat( fmt.get(), std::make_wformat_args( args... ) ) )
+                 );
+    }
+
     const Collections::Specialized::StringDictionary &Attributes() const { return _attributes; }
+
+    //?? GetSupportedAttributes() const;
 
     const TraceFilter *Filter() const { return _filter.get(); }
           TraceFilter *Filter()       { return _filter.get(); }
@@ -73,8 +105,8 @@ protected:
     std::string  _name;
     int          _indentLevel = 0;
     int          _indentSize  = 0;
-    TraceOptions _options{ TraceOptions::None };
-    bool         _needIndent = false;
+    TraceOptions _options     = TraceOptions::None;
+    bool         _needIndent  = false;
     std::string  _indentString;
     Collections::Specialized::StringDictionary _attributes;
     std::unique_ptr<TraceFilter> _filter;
