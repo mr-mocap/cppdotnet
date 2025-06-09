@@ -3,7 +3,23 @@
 #include "System/Diagnostics/Debugger.hpp"
 #include "System/Convert.hpp"
 #include "System/Private/private.hpp"
+#include <format>
 
+
+static std::string GenerateMessage(std::string_view message, std::string_view category)
+{
+    return std::format("[{}] {}", category, message);
+}
+
+static std::string GenerateFailMessage(std::string_view message, std::string_view detail)
+{
+    return std::format("[Fail] {} [{}]", message, detail);
+}
+
+static std::string GenerateFailMessage(std::string_view message)
+{
+    return std::format("[Fail] {}", message);
+}
 
 namespace System::Diagnostics
 {
@@ -13,6 +29,8 @@ DefaultTraceListener::DefaultTraceListener()
     TraceListener("Default")
 {
     INVARIANT( Name() == "Default" );
+
+    _line_buffer.reserve( 512 );
 }
 
 DefaultTraceListener::~DefaultTraceListener()
@@ -31,16 +49,23 @@ void DefaultTraceListener::LogFileName(std::string_view filename)
     INVARIANT( Name() == "Default" );
 
     _logFileName = filename;
+    _log_stream = std::make_unique<System::IO::StreamWriter>( _logFileName );
 }
 
 void DefaultTraceListener::Close()
 {
     INVARIANT( Name() == "Default" );
+
+    if ( _log_stream )
+        _log_stream->Close();
 }
 
 void DefaultTraceListener::Flush()
 {
     INVARIANT( Name() == "Default" );
+
+    if ( _log_stream )
+        _log_stream->Flush();
 }
 
 void DefaultTraceListener::Write(std::string_view message)
@@ -54,7 +79,7 @@ void DefaultTraceListener::Write(std::string_view message, std::string_view cate
 {
     INVARIANT( Name() == "Default" );
 
-    WriteRaw( std::string("[").append(category).append("] ").append(message) );
+    WriteRaw( GenerateMessage( message, category ) );
 }
 
 void DefaultTraceListener::WriteLine(std::string_view message)
@@ -68,41 +93,43 @@ void DefaultTraceListener::WriteLine(std::string_view message, std::string_view 
 {
     INVARIANT( Name() == "Default" );
 
-    WriteLineRaw( std::string("[").append(category).append("] ").append(message) );
+    WriteLineRaw( GenerateMessage( message, category ) );
 }
 
 void DefaultTraceListener::Fail(std::string_view message)
 {
     INVARIANT( Name() == "Default" );
 
-    WriteLineRaw( message );
+    WriteLineRaw( GenerateFailMessage( message ) );
 }
 
 void DefaultTraceListener::Fail(std::string_view message, std::string_view detail)
 {
     INVARIANT( Name() == "Default" );
 
-    WriteLineRaw( std::string("Fail: ").append(message).append(" [Detail: ").append(detail).append("]") );
-}
+    WriteLineRaw( GenerateFailMessage( message, detail ) );
+ }
 
 void DefaultTraceListener::WriteRaw(std::string_view data)
 {
-    INVARIANT( Name() == "Default" );
-
-    UNUSED(data);
-
-    Debugger::Log( data );
+    Debugger::Log( 1, "Default", data );
+    if ( _log_stream )
+        _log_stream->Write( data );
 }
 
 void DefaultTraceListener::WriteLineRaw(std::string_view data)
 {
-    INVARIANT( Name() == "Default" );
+    _line_buffer.clear();
 
-    UNUSED(data);
-    
-    WriteIndent();
-    WriteRaw( data );
-    WriteRaw( "\n" );
+    // Write the indent if needed...
+    if ( _needIndent )
+        _line_buffer.append( _indentString );
+
+    if ( _log_stream )
+        _log_stream->WriteLine( _line_buffer.append( data ) );
+
+    Debugger::Log( 1, "Default", _line_buffer );
+
     SetNeedIndent();
 }
 
