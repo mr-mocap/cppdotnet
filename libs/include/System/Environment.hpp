@@ -23,6 +23,8 @@ public:
 
     static std::string_view NewLine();
 
+    static std::string StackTrace();
+
     [[noreturn]] static void Exit(int exit_code);
 };
 

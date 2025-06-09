@@ -4,6 +4,9 @@
 #include <tuple>
 #include <cstring>
 #include <stdlib.h>
+#if __cpp_lib_stacktrace > 202011L
+#include <stacktrace>
+#endif
 
 
 namespace System
@@ -158,6 +161,15 @@ Collections::Generic::Dictionary<std::string, std::string> Environment::GetEnvir
 std::string_view Environment::NewLine()
 {
     return "\n";
+}
+
+std::string Environment::StackTrace()
+{
+#if __cpp_lib_stacktrace > 202011L
+    return std::stacktrace::current().to_string();
+#else
+    return "System::Environment::Callstack() (not compiled under C++23 or greater with stacktrace library)";
+#endif
 }
 
 void Environment::Exit(int exit_code)
