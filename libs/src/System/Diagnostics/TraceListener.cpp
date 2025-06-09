@@ -61,6 +61,7 @@ void TraceListener::TraceData(System::Diagnostics::TraceEventCache &event_cache,
                                                                int  id
                           )
 {
+    // Treat as a partial function and really call the same method, but with an empty message
     TraceData( event_cache, source, event_type, id, std::string() );
 }
 
@@ -71,14 +72,17 @@ void TraceListener::TraceData(System::Diagnostics::TraceEventCache &event_cache,
                                                   std::string_view  message
                           )
 {
-    WriteLine("[Trace Header: Source=\"{}\" EventType=\"{}\" ID=\"{}\"]", source, event_type, id);
-    WriteLine(message);
-    WriteLine("[Trace Footer: Time=\"{}\" PID=\"{}\" TID=\"{}\" Timestamp=\"{}\"]",
-              event_cache.DateTime().ToString(),
-              event_cache.ProcessId(),
-              event_cache.ThreadId(),
-              event_cache.Timestamp()
-             );
+    if ( !Filter() || (Filter() && Filter()->ShouldTrace( event_cache, source, event_type, id, message ) ) )
+    {
+        WriteLine("[Trace Header: Source=\"{}\" EventType=\"{}\" ID=\"{}\"]", source, event_type, id);
+        WriteLine(message);
+        WriteLine("[Trace Footer: Time=\"{}\" PID=\"{}\" TID=\"{}\" Timestamp=\"{}\"]",
+                  event_cache.DateTime().ToString(),
+                  event_cache.ProcessId(),
+                  event_cache.ThreadId(),
+                  event_cache.Timestamp()
+                 );
+    }
 }
 
 }

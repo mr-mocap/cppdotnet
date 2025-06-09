@@ -125,8 +125,6 @@ void TextWriterTraceListener::WriteLineRaw(std::string_view data)
             _line_buffer.append( _indentString );
 
         _text_writer->WriteLine( _line_buffer.append( data ) );
-
-        SetNeedIndent();
     }
 }
 
@@ -135,7 +133,6 @@ void TextWriterTraceListener::WriteIndent()
     if ( _needIndent )
     {
         WriteRaw( _indentString );
-        _needIndent = false;
     }
 }
 
