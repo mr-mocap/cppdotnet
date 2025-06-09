@@ -227,4 +227,16 @@ TimeSpan Activity::Duration() const
     return TimeSpan::Zero();
 }
 
+Activity &Activity::AddBaggage(std::string_view key, std::string_view value)
+{
+    _baggage.Add( key, value );
+    return *this;
+}
+
+Activity &Activity::AddTag(std::string_view key, std::string_view value)
+{
+    _tags_to_log.Add( key, value );
+    return *this;
+}
+
 }

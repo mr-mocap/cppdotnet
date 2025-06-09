@@ -6,10 +6,12 @@
 #include "System/DateTime.hpp"
 #include "System/Diagnostics/ActivitySource.hpp"
 #include "System/Private/enum.hpp"
+#include "System/Collections/Specialized/StringDictionary.hpp"
 #include <array>
 #include <string>
 #include <cstddef>
 #include <concepts>
+#include <map>
 
 
 namespace System::Diagnostics
@@ -255,6 +257,10 @@ public:
 
     bool IsStopped() const { return _stopped; }
 
+    Activity &AddBaggage(std::string_view key, std::string_view value);
+
+    Activity &AddTag(std::string_view key, std::string_view value);
+
     static EventHandler<ActivityChangedEventArgs> CurrentChanged;
 protected:
     std::string _operation_name;
@@ -266,6 +272,8 @@ protected:
     std::string        _status_description;
     ActivityTraceId    _trace_id;
     ActivityContext    _activity_context;
+    System::Collections::Specialized::StringDictionary _tags_to_log;
+    System::Collections::Specialized::StringDictionary _baggage;
     Activity          *_parent = nullptr;
     DateTime           _start_time;
     DateTime           _end_time;
