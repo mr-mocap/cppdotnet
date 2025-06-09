@@ -5,17 +5,15 @@
 namespace System::Diagnostics
 {
 
-#if 0
-void Debugger::Log(int level, const std::string &category, const std::string &message)
+void Debugger::Log(int level, std::string_view category, std::string_view message)
 {
     // assert(category.size() <= 256);
-}
-#else
-void Debugger::Log(std::string_view message)
-{
+
+    UNUSED(level);
+    UNUSED(category);
     UNUSED(message);
-    // TODO: Implement me
+
+    // TODO: FIXME (in C++23?)
 }
-#endif
 
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <string_view>
 
 namespace System::Diagnostics
 {
@@ -9,8 +9,7 @@ class Debugger final
 {
 public:
 
-    //static void Log(int level, const std::string &category, const std::string &message);
-    static void Log(std::string_view message);
+    static void Log(int level, std::string_view category, std::string_view message);
 };
 
 }
