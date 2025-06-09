@@ -14,6 +14,8 @@ void CommonUsage()
     assert( System::Diagnostics::Debug::Listeners().Count() == 1 );
 
     System::Diagnostics::Debug::WriteLine("This is a test!");
+    System::Diagnostics::Debug::WriteLineIf(true, "This is the value {}", 42);
+    System::Diagnostics::Debug::WriteLineIf(false, "This is the value {}", 42);
 }
 
 void Run()
