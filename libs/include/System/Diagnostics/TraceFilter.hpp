@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Diagnostics/TraceEventType.hpp"
 #include "System/Private/private.hpp"
+#include "System/Diagnostics/TraceEventType.hpp"
 #include <string_view>
 #include <format>
 
