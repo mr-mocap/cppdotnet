@@ -12,6 +12,7 @@
 #include <cstddef>
 #include <concepts>
 #include <map>
+#include <memory>
 
 
 namespace System::Diagnostics
@@ -261,6 +262,8 @@ public:
 
     Activity &AddTag(std::string_view key, std::string_view value);
 
+    const System::Collections::Generic::List<std::unique_ptr<System::Diagnostics::ActivityEvent>> &Events() const { return _activity_events; }
+
     static EventHandler<ActivityChangedEventArgs> CurrentChanged;
 protected:
     std::string _operation_name;
@@ -274,6 +277,7 @@ protected:
     ActivityContext    _activity_context;
     System::Collections::Specialized::StringDictionary _tags_to_log;
     System::Collections::Specialized::StringDictionary _baggage;
+    System::Collections::Generic::List<std::unique_ptr<System::Diagnostics::ActivityEvent>> _activity_events;
     Activity          *_parent = nullptr;
     DateTime           _start_time;
     DateTime           _end_time;

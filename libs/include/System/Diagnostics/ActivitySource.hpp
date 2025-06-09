@@ -23,6 +23,9 @@ public:
     {
     }
 
+    std::string_view Name() const { return _name; }
+
+    std::string_view Version() const { return _version; }
 protected:
     std::string _name;
     std::string _version;
