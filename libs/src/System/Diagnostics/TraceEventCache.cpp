@@ -1,4 +1,5 @@
 #include "System/Diagnostics/TraceEventCache.hpp"
+#include "System/Environment.hpp"
 
 
 namespace System::Diagnostics
@@ -6,8 +7,21 @@ namespace System::Diagnostics
 
 std::string TraceEventCache::Callstack() const
 {
-    return "System::Diagnostics::TraceEventCache::Callstack() IMPLEMENT ME!";
+    return Environment::StackTrace();
 }
+
+const System::DateTime &TraceEventCache::DateTime() const
+{
+    if ( !_datetime.has_value() )
+        _datetime.emplace( System::DateTime::UtcNow() );
+    return _datetime.value();
+}
+
+#if 0
+Collections::Stack TraceEventCache::LogicalOperationStack() const
+{
+}
+#endif
 
 std::string_view TraceEventCache::ThreadId() const
 {

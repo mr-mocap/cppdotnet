@@ -1,6 +1,8 @@
 #pragma once
 
 #include "System/DateTime.hpp"
+#include <optional>
+#include <string>
 
 
 namespace System::Diagnostics
@@ -13,20 +15,20 @@ public:
 
     std::string Callstack() const;
 
-    const System::DateTime &DateTime() const { return _datetime; }
-
-    long Timestamp() const { return _timestamp; }
-
-    std::string_view ThreadId() const;
-
-    int ProcessId() const;
+    const System::DateTime &DateTime() const;
 
 #if 0
     Collections::Stack LogicalOperationStack() const;
 #endif
+
+    int ProcessId() const;
+
+    std::string_view ThreadId() const;
+
+    long Timestamp() const { return DateTime().Ticks(); }
+
 protected:
-    System::DateTime _datetime;
-    long _timestamp = 0;
+    mutable std::optional<System::DateTime> _datetime;
 };
 
 }
