@@ -9,9 +9,9 @@ namespace System::Collections::Generic
 template <class T>
 class ICollection
 {
-    struct InternalInterface
+    struct Interface
     {
-        virtual ~InternalInterface() { }
+        virtual ~Interface() { }
 
         virtual std::size_t Count() const = 0;
         virtual bool        IsReadOnly() const = 0;
@@ -25,24 +25,24 @@ class ICollection
 
         // TODO: Add CopyTo() ?
 
-        virtual std::unique_ptr<InternalInterface> Clone() = 0;
-        virtual std::unique_ptr<InternalInterface> Empty() = 0;
+        virtual std::unique_ptr<Interface> Clone() = 0;
+        virtual std::unique_ptr<Interface> Empty() = 0;
     };
 
     template <typename DataType>
-    struct GeneralizedInterface : InternalInterface
+    struct SpecificTypedInterface : Interface
     {
-        GeneralizedInterface() = default;
-        GeneralizedInterface(DataType &input) : data( input ) { }
-        GeneralizedInterface(DataType &&input) : data( std::move(input) ) { }
-        ~GeneralizedInterface() override { }
+        SpecificTypedInterface() = default;
+        SpecificTypedInterface(DataType &input) : data( input ) { }
+        SpecificTypedInterface(DataType &&input) : data( std::move(input) ) { }
+        ~SpecificTypedInterface() override { }
           
         // Default copy and move
-        GeneralizedInterface(const GeneralizedInterface &other) = default;
-        GeneralizedInterface(GeneralizedInterface &&other) = default;
+        SpecificTypedInterface(const SpecificTypedInterface &other) = default;
+        SpecificTypedInterface(SpecificTypedInterface &&other) = default;
 
-        GeneralizedInterface &operator =(const GeneralizedInterface &) = default;
-        GeneralizedInterface &operator =(GeneralizedInterface &&) = default;
+        SpecificTypedInterface &operator =(const SpecificTypedInterface &) = default;
+        SpecificTypedInterface &operator =(SpecificTypedInterface &&) = default;
 
         std::size_t Count() const override { return data.Count(); }
 
@@ -59,14 +59,14 @@ class ICollection
 
         bool Contains(const T &item) override { return data.Contains(item); }
 
-        std::unique_ptr<InternalInterface> Clone() override
+        std::unique_ptr<Interface> Clone() override
         {
-            return std::make_unique<GeneralizedInterface>(data);
+            return std::make_unique<SpecificTypedInterface>(data);
         }
 
-        std::unique_ptr<InternalInterface> Empty() override
+        std::unique_ptr<Interface> Empty() override
         {
-            return std::make_unique_for_overwrite<GeneralizedInterface>();
+            return std::make_unique_for_overwrite<SpecificTypedInterface>();
         }
 
         DataType data;
@@ -78,14 +78,14 @@ public:
     template <class DataType>
     ICollection(DataType &input)
       :
-      _data( std::make_unique<GeneralizedInterface<DataType>>(input) )
+      _data( std::make_unique<SpecificTypedInterface<DataType>>(input) )
     {
     }
 
     template <class DataType>
     ICollection(DataType &&input)
       :
-      _data( std::make_unique<GeneralizedInterface<DataType>>( std::move(input) ) )
+      _data( std::make_unique<SpecificTypedInterface<DataType>>( std::move(input) ) )
     {
     }
 
@@ -124,16 +124,16 @@ public:
     void Clear()                 { _data->Clear(); }
     bool Contains(const T &item) { return _data->Contains(item); }
 protected:
-    std::unique_ptr<InternalInterface> _data;
+    std::unique_ptr<Interface> _data;
 };
 
 
 template <class T>
 class ICollectionRef
 {
-    struct InternalInterface
+    struct Interface
     {
-        virtual ~InternalInterface() { }
+        virtual ~Interface() { }
 
         virtual std::size_t Count() const = 0;
         virtual bool        IsReadOnly() const = 0;
@@ -147,25 +147,25 @@ class ICollectionRef
 
         // TODO: Add CopyTo() ?
 
-        virtual std::unique_ptr<InternalInterface> Clone() = 0;
+        virtual std::unique_ptr<Interface> Clone() = 0;
     };
 
     template <typename DataType>
-    struct GeneralizedInterfacePtr : InternalInterface
+    struct SpecificTypedInterfacePtr : Interface
     {
-        GeneralizedInterfacePtr() = delete;
-        GeneralizedInterfacePtr(DataType *input) : data( input ) { } // For easily creating a copy
-        ~GeneralizedInterfacePtr() override
+        SpecificTypedInterfacePtr() = delete;
+        SpecificTypedInterfacePtr(DataType *input) : data( input ) { } // For easily creating a copy
+        ~SpecificTypedInterfacePtr() override
         {
             data = nullptr;
         }
           
         // Default copy and move
-        GeneralizedInterfacePtr(const GeneralizedInterfacePtr &other) = default;
-        GeneralizedInterfacePtr(GeneralizedInterfacePtr &&other) = default;
+        SpecificTypedInterfacePtr(const SpecificTypedInterfacePtr &other) = default;
+        SpecificTypedInterfacePtr(SpecificTypedInterfacePtr &&other) = default;
 
-        GeneralizedInterfacePtr &operator =(const GeneralizedInterfacePtr &) = default;
-        GeneralizedInterfacePtr &operator =(GeneralizedInterfacePtr &&) = default;
+        SpecificTypedInterfacePtr &operator =(const SpecificTypedInterfacePtr &) = default;
+        SpecificTypedInterfacePtr &operator =(SpecificTypedInterfacePtr &&) = default;
 
         std::size_t Count() const override { return data->Count(); }
 
@@ -182,9 +182,9 @@ class ICollectionRef
 
         bool Contains(const T &item) override { return data->Contains(item); }
 
-        std::unique_ptr<InternalInterface> Clone() override
+        std::unique_ptr<Interface> Clone() override
         {
-            return std::make_unique<GeneralizedInterfacePtr<DataType>>(data);
+            return std::make_unique<SpecificTypedInterfacePtr<DataType>>(data);
         }
 
         DataType *data = nullptr;
@@ -196,7 +196,7 @@ public:
     template <class DataType>
     ICollectionRef(DataType *input)
       :
-      _data( std::make_unique<GeneralizedInterfacePtr<DataType>>(input) )
+      _data( std::make_unique<SpecificTypedInterfacePtr<DataType>>(input) )
     {
     }
 
@@ -222,7 +222,7 @@ public:
     void Clear()                 { _data->Clear(); }
     bool Contains(const T &item) { return _data->Contains(item); }
 protected:
-    std::unique_ptr<InternalInterface> _data;
+    std::unique_ptr<Interface> _data;
 };
 
 }
