@@ -4,6 +4,22 @@
 #include "System/IO/StreamWriter.hpp"
 
 
+// TODO: Merge with DefaultTraceListener.cpp version
+static std::string GenerateMessage(std::string_view message, std::string_view category)
+{
+    return std::format("[{}] {}", category, message);
+}
+
+static std::string GenerateFailMessage(std::string_view message, std::string_view detail)
+{
+    return std::format("[Fail] {} [{}]", message, detail);
+}
+
+static std::string GenerateFailMessage(std::string_view message)
+{
+    return std::format("[Fail] {}", message);
+}
+
 namespace System::Diagnostics
 {
 
@@ -59,30 +75,22 @@ void TextWriterTraceListener::Flush()
 
 void TextWriterTraceListener::Write(std::string_view message)
 {
-    Debugger::Log( message );
     WriteRaw( message );
 }
 
 void TextWriterTraceListener::Write(std::string_view message, std::string_view category)
 {
-    Debugger::Log( message );
-    WriteRaw( std::string("[").append(category).append("] ").append(message) );
+    WriteRaw( GenerateMessage( message, category ) );
 }
 
 void TextWriterTraceListener::WriteLine(std::string_view message)
 {
-    Debugger::Log( message );
-    WriteIndent();
     WriteLineRaw( message );
-    SetNeedIndent();
 }
 
 void TextWriterTraceListener::WriteLine(std::string_view message, std::string_view category)
 {
-    Debugger::Log( message );
-    WriteIndent();
-    WriteLineRaw( std::string("[").append(category).append("] ").append(message) );
-    SetNeedIndent();
+    WriteLineRaw( GenerateMessage( message, category ) );
 }
 
 System::IO::TextWriter *TextWriterTraceListener::Writer()
@@ -92,12 +100,12 @@ System::IO::TextWriter *TextWriterTraceListener::Writer()
 
 void TextWriterTraceListener::Fail(std::string_view message)
 {
-    WriteLineRaw( std::string("Fail: ").append(message) );
+    WriteLineRaw( GenerateFailMessage( message ) );
 }
 
 void TextWriterTraceListener::Fail(std::string_view message, std::string_view detail)
 {
-    WriteLineRaw( std::string("Fail: ").append(message).append(" [Detail: ").append(detail).append("]") );
+    WriteLineRaw( GenerateFailMessage( message, detail ) );
 }
 
 void TextWriterTraceListener::WriteRaw(std::string_view data)
@@ -109,7 +117,17 @@ void TextWriterTraceListener::WriteRaw(std::string_view data)
 void TextWriterTraceListener::WriteLineRaw(std::string_view data)
 {
     if ( _text_writer )
-        _text_writer->WriteLine( data );
+    {
+        _line_buffer.clear();
+
+        // Write the indent if needed...
+        if ( _needIndent )
+            _line_buffer.append( _indentString );
+
+        _text_writer->WriteLine( _line_buffer.append( data ) );
+
+        SetNeedIndent();
+    }
 }
 
 void TextWriterTraceListener::WriteIndent()

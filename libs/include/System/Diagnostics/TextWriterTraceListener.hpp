@@ -35,6 +35,7 @@ public:
     void WriteIndent() override;
 protected:
     std::unique_ptr<System::IO::TextWriter> _text_writer;
+    std::string _line_buffer;
 
     void WriteRaw(std::string_view data);
     void WriteLineRaw(std::string_view data);
