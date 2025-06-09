@@ -29,7 +29,7 @@ public:
         UNUSED(id);
         UNUSED(formatOrMessage);
 
-        return false;
+        return true;
     }
     
     virtual std::string ToString() const { return std::format("{}", "System::Diagnostics::TraceFilter IMPLEMENT ME!"); }
