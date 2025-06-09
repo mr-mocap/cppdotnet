@@ -16,13 +16,13 @@ public:
    ~EventTypeFilter() = default;
 
     SourceLevels EventType() const { return _level; }
-    void EventType(SourceLevels new_level) { _level = new_level; }
+            void EventType(SourceLevels new_level) { _level = new_level; }
 
     bool ShouldTrace(const TraceEventCache &cache,
-                     std::string_view source,
-                     TraceEventType eventType,
-                     int   id,
-                     std::string_view formatOrMessage) override;
+                           std::string_view source,
+                             TraceEventType eventType,
+                                        int id,
+                           std::string_view formatOrMessage) override;
 protected:
     SourceLevels _level;
 

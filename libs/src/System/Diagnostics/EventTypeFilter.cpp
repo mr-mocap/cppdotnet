@@ -6,10 +6,10 @@ namespace System::Diagnostics
 {
 
 bool EventTypeFilter::ShouldTrace(const TraceEventCache &cache,
-                                  std::string_view source,
-                                        TraceEventType   eventType,
-                                        int              id,
-                                  std::string_view formatOrMessage)
+                                       std::string_view  source,
+                                         TraceEventType  eventType,
+                                                    int  id,
+                                       std::string_view  formatOrMessage)
 {
     //PRECONDITION( is_exactly_one_of(eventType, ) );
 
