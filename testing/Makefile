@@ -41,8 +41,10 @@ OBJS = TestDefaultTraceListener.o \
 	TestBinaryWriter.o \
 	TestStopwatch.o \
 	TestCounter.o \
+	TestGuid.o \
 	main.o
 
+EXTERNAL_LIBS = -l$(LIB_BASE_NAME) -luuid
 CXXFLAGS=-std=c++20 -W -Wall -Wextra -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
 LDFLAGS=-L$(LIB_BUILD_DIR)
 
@@ -62,7 +64,7 @@ lib: $(LIB_PATH)
 	cd .. && $(MAKE) lib
 
 $(BINARY_NAME): $(LIB_PATH) $(OBJS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(OBJS) -o $(BINARY_NAME) $(LDFLAGS) -L ../libs/build -l $(LIB_BASE_NAME)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(OBJS) -o $(BINARY_NAME) $(LDFLAGS) $(EXTERNAL_LIBS)
 
 .PHONY: test
 test: $(LIB_PATH) $(BINARY_NAME)

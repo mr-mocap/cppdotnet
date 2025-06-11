@@ -2,7 +2,6 @@
 
 #include "System/Span.hpp"
 
-#include <span>
 #include <type_traits>
 #include <algorithm>
 

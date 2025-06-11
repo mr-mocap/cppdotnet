@@ -77,6 +77,8 @@ public:
 
     constexpr Span(std::span<Type, Extent> from) : _data{ from } { }
 
+    template <std::size_t OtherExtent>
+    constexpr Span(std::span<Type, OtherExtent> from) : _data{ from } { }
 
     static constexpr Span<Type> Empty() { return Span<Type>(); }
 
@@ -132,22 +134,27 @@ public:
     constexpr const_pointer data() const { return _data.data(); }
     constexpr pointer       data()       { return _data.data(); }
 
+    constexpr size_type size_bytes() const { return _data.size_bytes(); }
+
+    Span<const std::byte>   as_bytes() const    { return Span<const std::byte>{ std::as_bytes( _data ) }; }
+    Span<std::byte>         as_writable_bytes() { return Span<std::byte>{ std::as_writable_bytes( _data ) }; }
+
     // Make work with foreach
     constexpr const_iterator begin()  const noexcept { return _data.begin(); }
     constexpr iterator       begin()        noexcept { return _data.begin(); }
     constexpr const_iterator cbegin() const noexcept { return _data.cbegin(); }
 
-    constexpr const_iterator end()  const noexcept { return _data.end();   }
-    constexpr iterator       end()         noexcept { return _data.end();   }
-    constexpr const_iterator cend() const noexcept { return _data.cend();   }
+    constexpr const_iterator end()  const noexcept { return _data.end();  }
+    constexpr iterator       end()        noexcept { return _data.end();  }
+    constexpr const_iterator cend() const noexcept { return _data.cend(); }
 
-    constexpr const_iterator rbegin()  const noexcept { return _data.rbegin(); }
-    constexpr iterator       rbegin()        noexcept { return _data.rbegin(); }
+    constexpr const_iterator rbegin()  const noexcept { return _data.rbegin();  }
+    constexpr iterator       rbegin()        noexcept { return _data.rbegin();  }
     constexpr const_iterator crbegin() const noexcept { return _data.crbegin(); }
 
     constexpr const_iterator rend()  const noexcept { return _data.rend();   }
     constexpr iterator       rend()        noexcept { return _data.rend();   }
-    constexpr const_iterator crend() const noexcept { return _data.crend();   }
+    constexpr const_iterator crend() const noexcept { return _data.crend();  }
 protected:
     std::span<Type, Extent> _data;
 
