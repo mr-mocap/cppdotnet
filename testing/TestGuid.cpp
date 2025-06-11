@@ -73,6 +73,32 @@ void ToArrayReturnsUnderlyingValues()
         assert( converted_to_array[i] == std::byte{init_array[i]} );
 }
 
+void ToString()
+{
+    std::cout << __func__ << std::endl;
+
+    std::string s1 = System::Guid::NewGuid().ToString();
+    std::string s2 = System::Guid::NewGuid().ToString();
+
+    std::cout << s1 << std::endl;
+    std::cout << s2 << std::endl;
+
+    assert( s1.size() == 36 );
+    assert( s2.size() == 36 );
+
+    assert( s1[8] == '-' );
+    assert( s2[8] == '-' );
+
+    assert( s1[13] == '-' );
+    assert( s2[13] == '-' );
+
+    assert( s1[18] == '-' );
+    assert( s2[18] == '-' );
+
+    assert( s1[23] == '-' );
+    assert( s2[23] == '-' );
+}
+
 void Run()
 {
     std::cout << "Running Guid Tests..." << std::endl;
@@ -81,6 +107,7 @@ void Run()
     EmptyProducesAllZeros();
     AllBitsSetProducesAllBitsSet();
     ToArrayReturnsUnderlyingValues();
+    ToString();
 
     std::cout << "PASSED!" << std::endl;
 }

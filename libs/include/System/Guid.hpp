@@ -39,6 +39,8 @@ public:
 
     ReadOnlySpan<std::byte, 16> ToByteArray() const;
 
+    std::string ToString() const;
+
     static Guid NewGuid();
 protected:
     uuid_t _data = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

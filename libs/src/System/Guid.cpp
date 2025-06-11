@@ -91,4 +91,12 @@ Guid Guid::AllBitsSet()
                                                                                 0xFF, 0xFF, 0xFF, 0xFF} ) ) );
 }
 
+std::string Guid::ToString() const
+{
+    char buffer[37];
+
+    uuid_unparse( _data, buffer );
+    return std::string( buffer );
+}
+
 }
