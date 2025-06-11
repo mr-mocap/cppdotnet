@@ -75,4 +75,20 @@ Guid Guid::NewGuid()
     return Guid( std::as_bytes( std::span(uuid) ) );
 }
 
+Guid Guid::Empty()
+{
+    return Guid( std::as_bytes( std::span( std::initializer_list<unsigned char>{0, 0, 0, 0,
+                                                                                0, 0, 0, 0,
+                                                                                0, 0, 0, 0,
+                                                                                0, 0, 0, 0} ) ) );
+}
+
+Guid Guid::AllBitsSet()
+{
+    return Guid( std::as_bytes( std::span( std::initializer_list<unsigned char>{0xFF, 0xFF, 0xFF, 0xFF,
+                                                                                0xFF, 0xFF, 0xFF, 0xFF,
+                                                                                0xFF, 0xFF, 0xFF, 0xFF,
+                                                                                0xFF, 0xFF, 0xFF, 0xFF} ) ) );
+}
+
 }

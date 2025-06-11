@@ -20,19 +20,19 @@ public:
          std::byte d, std::byte e, std::byte f, std::byte g, std::byte h, std::byte i, std::byte j, std::byte k);
 
     Guid(ReadOnlySpan<std::byte> bytes);
+
     Guid(std::span<const std::byte> bytes)
         :
+        // Delegating constructor...
         Guid( ReadOnlySpan<std::byte>(bytes) )
     {
     }
     
     Guid(const Guid &other);
 
-    constexpr static Guid Empty() { return Guid(); }
+    static Guid Empty();
 
-    static Guid AllBitsSet() { return Guid(0xFFFFFFFFU, 0xFFFFU, 0xFFFFU,
-                                           std::byte{0xFF}, std::byte{0xFF}, std::byte{0xFF}, std::byte{0xFF}, std::byte{0xFF},
-                                           std::byte{0xFF}, std::byte{0xFF}, std::byte{0xFF}); }
+    static Guid AllBitsSet();
 
     int Variant() const { return 0; }
     int Version() const { return 0; }
