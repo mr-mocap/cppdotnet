@@ -86,6 +86,8 @@ void ToString()
     assert( s1.size() == 36 );
     assert( s2.size() == 36 );
 
+    assert( s1 != s2 );
+
     assert( s1[8] == '-' );
     assert( s2[8] == '-' );
 
