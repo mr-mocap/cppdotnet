@@ -6,11 +6,27 @@ LIB_PATH = build/$(LIB_NAME)
 INC_PARAMS = $(INCLUDE_DIRS:%=-I%)
 DEBUG_FLAGS = -g3
 
-CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I . $(INC_PARAMS) $(DEBUG_FLAGS)
+EXTRA_LIBS = -luuid
 
-LIB_SRC  = $(wildcard *.cpp src/System/*.cpp src/System/Collections/*.cpp src/System/Diagnostics/*.cpp src/System/Diagnostics/Metrics/*.cpp src/System/Diagnostics/Private/*.cpp src/System/IO/*.cpp src/System/Text/*.cpp)
+CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I . $(INC_PARAMS) $(DEBUG_FLAGS) $(EXTRA_LIBS)
+
+LIB_SRC  = $(wildcard *.cpp \
+                      src/System/*.cpp \
+                      src/System/Collections/*.cpp \
+					  src/System/Diagnostics/*.cpp \
+					  src/System/Diagnostics/Metrics/*.cpp \
+					  src/System/Diagnostics/Private/*.cpp \
+					  src/System/IO/*.cpp \
+					  src/System/Text/*.cpp)
 LIB_OBJS = $(patsubst %.cpp,build/%.o,${LIB_SRC})
-LIB_DEP  = $(LIB_PATH)/*.d $(LIB_PATH)/src/System/*.d $(LIB_PATH)/src/System/Collections/*.d $(LIB_PATH)/src/System/Diagnostics/*.d $(LIB_PATH)/src/System/Diagnostics/Metrics/*.d $(LIB_PATH)/src/System/Diagnostics/Private/*.d $(LIB_PATH)/src/System/IO/*.d $(LIB_PATH)/src/System/Text/*.d
+LIB_DEP  = $(LIB_PATH)/*.d \
+           $(LIB_PATH)/src/System/*.d \
+		   $(LIB_PATH)/src/System/Collections/*.d \
+		   $(LIB_PATH)/src/System/Diagnostics/*.d \
+		   $(LIB_PATH)/src/System/Diagnostics/Metrics/*.d \
+		   $(LIB_PATH)/src/System/Diagnostics/Private/*.d \
+		   $(LIB_PATH)/src/System/IO/*.d \
+		   $(LIB_PATH)/src/System/Text/*.d
 
 build/%.o : %.cpp
 	echo Making build directory...

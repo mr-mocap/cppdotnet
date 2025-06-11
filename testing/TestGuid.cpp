@@ -101,6 +101,15 @@ void ToString()
     assert( s2[23] == '-' );
 }
 
+void ParseValidString()
+{
+    using namespace std::literals::string_view_literals;
+
+    std::cout << __func__ << std::endl;
+
+    System::Guid object = System::Guid::Parse( ""sv );
+}
+
 void Run()
 {
     std::cout << "Running Guid Tests..." << std::endl;
@@ -110,6 +119,7 @@ void Run()
     AllBitsSetProducesAllBitsSet();
     ToArrayReturnsUnderlyingValues();
     ToString();
+    ParseValidString();
 
     std::cout << "PASSED!" << std::endl;
 }

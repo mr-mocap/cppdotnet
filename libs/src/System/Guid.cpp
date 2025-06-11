@@ -93,10 +93,32 @@ Guid Guid::AllBitsSet()
 
 std::string Guid::ToString() const
 {
-    char buffer[37];
+    char buffer[ sizeof(uuid_t) ];
 
     uuid_unparse( _data, buffer );
     return std::string( buffer );
+}
+
+Guid Guid::Parse(std::string_view input)
+{
+    using namespace std::literals::string_view_literals;
+
+    if ( input.empty() )
+        ThrowWithTarget( ArgumentNullException{ "input"sv } );
+    if ( input.size() != 36 )
+        ThrowWithTarget( FormatException{ "String is not 36 characters long"sv } );
+
+    uuid_t output_uuid;
+
+    int result = uuid_parse_range( &input.front(), &input.back(), output_uuid );
+
+    if ( result == -1 )
+    {
+        // Something went wrong
+        ThrowWithTarget( FormatException{ "String is not in expected format"sv } );
+    }
+
+    return Guid( output_uuid );
 }
 
 }

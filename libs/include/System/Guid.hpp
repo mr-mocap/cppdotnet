@@ -1,9 +1,11 @@
 #pragma once
 
+#include "System/ReadOnlySpan.hpp"
 #include <cstdint>
 #include <cstddef>
+#include <string>
+#include <string_view>
 #include <uuid/uuid.h>
-#include "System/ReadOnlySpan.hpp"
 
 
 namespace System
@@ -42,8 +44,16 @@ public:
     std::string ToString() const;
 
     static Guid NewGuid();
+
+    static Guid Parse(std::string_view input);
 protected:
     uuid_t _data = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    Guid(const uuid_t &external_value)
+    {
+        std::ranges::copy( std::span(external_value),
+                           std::ranges::begin(_data) );
+    }
 };
 
 }
