@@ -107,7 +107,30 @@ void ParseValidString()
 
     std::cout << __func__ << std::endl;
 
-    System::Guid object = System::Guid::Parse( ""sv );
+    System::Guid object = System::Guid::Parse( "7e44885f-b76d-4c05-a6f2-460a803d8f28"sv );
+    System::ReadOnlySpan<std::byte, 16> bytes = object.ToByteArray();
+
+    // Use the hex string values, but without the hyphens...
+    assert( bytes[0] == std::byte{0x7e} );
+    assert( bytes[1] == std::byte{0x44} );
+    assert( bytes[2] == std::byte{0x88} );
+    assert( bytes[3] == std::byte{0x5f} );
+
+    assert( bytes[4] == std::byte{0xb7} );
+    assert( bytes[5] == std::byte{0x6d} );
+
+    assert( bytes[6] == std::byte{0x4c} );
+    assert( bytes[7] == std::byte{0x05} );
+
+    assert( bytes[8] == std::byte{0xa6} );
+    assert( bytes[9] == std::byte{0xf2} );
+
+    assert( bytes[10] == std::byte{0x46} );
+    assert( bytes[11] == std::byte{0x0a} );
+    assert( bytes[12] == std::byte{0x80} );
+    assert( bytes[13] == std::byte{0x3d} );
+    assert( bytes[14] == std::byte{0x8f} );
+    assert( bytes[15] == std::byte{0x28} );
 }
 
 void Run()

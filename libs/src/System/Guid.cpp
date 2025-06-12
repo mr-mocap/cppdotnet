@@ -93,10 +93,11 @@ Guid Guid::AllBitsSet()
 
 std::string Guid::ToString() const
 {
-    char buffer[ sizeof(uuid_t) ];
+    // Two hex chars per byte, four hyphens and a '\0' terminator
+    char buffer[ sizeof(uuid_t) * 2 + 4 + 1];
 
     uuid_unparse( _data, buffer );
-    return std::string( buffer );
+    return std::string( buffer, sizeof(buffer) - 1 );
 }
 
 Guid Guid::Parse(std::string_view input)
@@ -110,7 +111,7 @@ Guid Guid::Parse(std::string_view input)
 
     uuid_t output_uuid;
 
-    int result = uuid_parse_range( &input.front(), &input.back(), output_uuid );
+    int result = uuid_parse_range( input.data(), input.data() + input.size(), output_uuid );
 
     if ( result == -1 )
     {
