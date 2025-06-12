@@ -1,6 +1,7 @@
 #pragma once
 
 #include "System/Diagnostics/Tracing/EventSourceSettings.hpp"
+#include <string>
 #include <string_view>
 
 namespace System::Diagnostics::Tracing
@@ -36,11 +37,11 @@ public:
     {
     }
 
-    const std::string &Name() const { return _name; }
+    std::string_view Name() const { return _name; }
 
     const EventSourceSettings &Settings() const { return _settings; }
 
-    void Write(std::string_view event_name) { }
+    void Write(std::string_view event_name);
 protected:
     std::string         _name;
     EventSourceSettings _settings = EventSourceSettings::Default;
