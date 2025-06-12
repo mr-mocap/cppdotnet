@@ -42,6 +42,7 @@ public:
     ReadOnlySpan<std::byte, 16> ToByteArray() const;
 
     std::string ToString() const;
+    std::string ToString(std::string_view format) const;
 
     static Guid NewGuid();
 

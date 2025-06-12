@@ -2,8 +2,336 @@
 #include "System/BitConverter.hpp"
 #include "System/Span.hpp"
 #include <algorithm>
+#include <format>
+#include <cctype>
 #include <uuid/uuid.h>
 
+#if 0
+SPECIFIER | Format of return value
+---------   ----------------------
+N           32 digits:
+            00000000000000000000000000000000
+
+D           32 digits separated by hyphens:
+            00000000-0000-0000-0000-000000000000
+
+B           32 digits separated by hyphens, enclosed in braces:
+            {00000000-0000-0000-0000-000000000000}
+
+P           32 digits separated by hyphens, enclosed in parentheses:
+            (00000000-0000-0000-0000-000000000000)
+
+X           Four hexadecimal values enclosed in braces, where the fourth value is a subset
+            of eight hexadecimal values that is also enclosed in braces:
+            {0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}
+#endif
+
+static std::string NStringToDString(std::string_view input)
+{
+    return std::format("{}-{}-{}-{}-{}", input.substr(0, 8),
+                                         input.substr(8, 4),
+                                         input.substr(12, 4),
+                                         input.substr(16, 4),
+                                         input.substr(20, 12));
+}
+
+static std::string XStringToDString(std::string_view input)
+{
+    return std::format("{}-{}-{}-{}{}-{}{}{}{}{}{}",
+                       input.substr( 3, 8 ),
+
+                       input.substr( 14, 4 ),
+
+                       input.substr( 21, 4 ),
+
+                       input.substr( 29, 2 ),
+                       input.substr( 34, 2 ),
+
+                       input.substr( 39, 2 ),
+                       input.substr( 44, 2 ),
+                       input.substr( 49, 2 ),
+                       input.substr( 54, 2 ),
+                       input.substr( 59, 2 ),
+                       input.substr( 64, 2 )
+                      );
+}
+
+static std::string AsDString(const uuid_t &input)
+{
+    // Two hex chars per byte, four hyphens and a '\0' terminator
+    char buffer[ (16 * 2) + 4 + 1];
+
+    uuid_unparse( input, buffer );
+    return std::string( buffer, sizeof(buffer) - 1 );
+}
+
+static std::string AsNString(const uuid_t &input)
+{
+    std::string d_str = AsDString( input );
+
+    // Erase the hyphens...
+    return d_str.erase( 23, 1 ).erase( 18, 1 ).erase( 13, 1 ).erase( 8, 1 );
+}
+
+static std::string AsBString(const uuid_t &input)
+{
+    std::string d_str = AsDString( input );
+
+    return d_str.insert( 0, 1, '{' ).append( 1, '}' );
+}
+
+static std::string AsPString(const uuid_t &input)
+{
+    std::string d_str = AsDString( input );
+
+    return d_str.insert( 0, 1, '(' ).append( 1, ')' );
+}
+
+static std::string AsXString(const uuid_t &input)
+{
+    std::string d_str = AsDString( input );
+    std::string_view view = d_str;
+
+    // Erase the hyphens...
+    return std::format("{}0x{},0x{},0x{},{}0x{},0x{},0x{},0x{},0x{},0x{},0x{},0x{}{}{}",
+                       '{',
+                       view.substr( 0, 8 ),
+                       view.substr( 9, 4 ),
+                       view.substr( 14, 4 ),
+                       '{',
+                       view.substr( 19, 2 ),
+                       view.substr( 21, 2 ),
+                       view.substr( 24, 2 ),
+                       view.substr( 26, 2 ),
+                       view.substr( 28, 2 ),
+                       view.substr( 30, 2 ),
+                       view.substr( 32, 2 ),
+                       view.substr( 34, 2 ),
+                       '}',
+                       '}');
+}
+
+static bool AllDigitsAreHex(std::string_view input)
+{
+    if ( input.empty() )
+        return false;
+    return std::ranges::all_of( input, [](unsigned char i) { return std::isxdigit(i); } );
+}
+
+static bool IsNFormat(std::string_view input)
+{
+    if ( input.size() != 32 )
+        return false;
+
+    return AllDigitsAreHex( input );
+}
+
+static bool IsDFormat(std::string_view input)
+{
+    if ( input.size() != 36 )
+        return false;
+    
+    // First group of digits...
+    if ( !AllDigitsAreHex( input.substr( 0, 8 ) ) )
+        return false;
+
+    // Second group of digits...
+    if ( !AllDigitsAreHex( input.substr( 9, 4 ) ) )
+        return false;
+
+    // Third group of digits...
+    if ( !AllDigitsAreHex( input.substr( 14, 4 ) ) )
+        return false;
+
+    // Fourth group of digits...
+    if ( !AllDigitsAreHex( input.substr( 19, 4 ) ) )
+        return false;
+
+    // Fifth group of digits...
+    if ( !AllDigitsAreHex( input.substr( 24, 12 ) ) )
+        return false;
+    
+    // Hyphens...
+    if ( input[8] != '-' )
+        return false;
+    if ( input[13] != '-' )
+        return false;
+    if ( input[18] != '-' )
+        return false;
+    if ( input[23] != '-' )
+        return false;
+    return true;
+}
+
+static bool IsBFormat(std::string_view input)
+{
+    if ( input.size() != 38 )
+        return false;
+    
+    if ( (input.front() != '{') || (input.back() != '}') )
+        return false;
+
+    // First group of digits...
+    if ( !AllDigitsAreHex( input.substr( 1, 8 ) ) )
+        return false;
+
+    // Second group of digits...
+    if ( !AllDigitsAreHex( input.substr( 10, 4 ) ) )
+        return false;
+
+    // Third group of digits...
+    if ( !AllDigitsAreHex( input.substr( 15, 4 ) ) )
+        return false;
+
+    // Fourth group of digits...
+    if ( !AllDigitsAreHex( input.substr( 20, 4 ) ) )
+        return false;
+
+    // Fifth group of digits...
+    if ( !AllDigitsAreHex( input.substr( 25, 12 ) ) )
+        return false;
+    
+    // Hyphens...
+    if ( input[9] != '-' )
+        return false;
+    if ( input[14] != '-' )
+        return false;
+    if ( input[19] != '-' )
+        return false;
+    if ( input[24] != '-' )
+        return false;
+    return true;
+}
+
+static bool IsPFormat(std::string_view input)
+{
+    if ( input.size() != 38 )
+        return false;
+    
+    if ( (input.front() != '(') || (input.back() != ')') )
+        return false;
+
+    // First group of digits...
+    if ( !AllDigitsAreHex( input.substr( 1, 8 ) ) )
+        return false;
+
+    // Second group of digits...
+    if ( !AllDigitsAreHex( input.substr( 10, 4 ) ) )
+        return false;
+
+    // Third group of digits...
+    if ( !AllDigitsAreHex( input.substr( 15, 4 ) ) )
+        return false;
+
+    // Fourth group of digits...
+    if ( !AllDigitsAreHex( input.substr( 20, 4 ) ) )
+        return false;
+
+    // Fifth group of digits...
+    if ( !AllDigitsAreHex( input.substr( 25, 12 ) ) )
+        return false;
+    
+    // Hyphens...
+    if ( input[9] != '-' )
+        return false;
+    if ( input[14] != '-' )
+        return false;
+    if ( input[19] != '-' )
+        return false;
+    if ( input[24] != '-' )
+        return false;
+    return true;
+}
+
+static bool IsXFormat(std::string_view input)
+{
+    if ( input.size() != 68 )
+        return false;
+    
+    if ( (input.front() != '{') || (input.back() != '}') )
+        return false;
+
+    if ( (input[26] != '{') || (input[66] != '}') )
+        return false;
+
+    // Commas...
+    if ( input[11] != ',' )
+        return false;
+    if ( input[18] != ',' )
+        return false;
+    if ( input[25] != ',' )
+        return false;
+    if ( input[31] != ',' )
+        return false;
+    if ( input[36] != ',' )
+        return false;
+    if ( input[41] != ',' )
+        return false;
+    if ( input[46] != ',' )
+        return false;
+    if ( input[51] != ',' )
+        return false;
+    if ( input[56] != ',' )
+        return false;
+    if ( input[61] != ',' )
+        return false;
+
+    // First group of digits...
+    if ( !AllDigitsAreHex( input.substr( 3, 8 ) ) )
+        return false;
+
+    // Second group of digits...
+    if ( !AllDigitsAreHex( input.substr( 14, 4 ) ) )
+        return false;
+
+    // Third group of digits...
+    if ( !AllDigitsAreHex( input.substr( 21, 4 ) ) )
+        return false;
+
+    // Fourth group of digits...
+    if ( !AllDigitsAreHex( input.substr( 29, 2 ) ) )
+        return false;
+    if ( !AllDigitsAreHex( input.substr( 34, 2 ) ) )
+        return false;
+    if ( !AllDigitsAreHex( input.substr( 39, 2 ) ) )
+        return false;
+    if ( !AllDigitsAreHex( input.substr( 44, 2 ) ) )
+        return false;
+    if ( !AllDigitsAreHex( input.substr( 49, 2 ) ) )
+        return false;
+    if ( !AllDigitsAreHex( input.substr( 54, 2 ) ) )
+        return false;
+    if ( !AllDigitsAreHex( input.substr( 59, 2 ) ) )
+        return false;
+    if ( !AllDigitsAreHex( input.substr( 64, 2 ) ) )
+        return false;
+
+    // The hex prefixes...
+    if ( input.substr( 1, 2 ) != "0x" )
+        return false;
+    if ( input.substr( 12, 2 ) != "0x" )
+        return false;
+    if ( input.substr( 19, 2 ) != "0x" )
+        return false;
+
+    if ( input.substr( 27, 2 ) != "0x" )
+        return false;
+    if ( input.substr( 32, 2 ) != "0x" )
+        return false;
+    if ( input.substr( 37, 2 ) != "0x" )
+        return false;
+    if ( input.substr( 42, 2 ) != "0x" )
+        return false;
+    if ( input.substr( 47, 2 ) != "0x" )
+        return false;
+    if ( input.substr( 52, 2 ) != "0x" )
+        return false;
+    if ( input.substr( 57, 2 ) != "0x" )
+        return false;
+    if ( input.substr( 62, 2 ) != "0x" )
+        return false;
+    return true;
+}
 
 namespace System
 {
@@ -93,11 +421,30 @@ Guid Guid::AllBitsSet()
 
 std::string Guid::ToString() const
 {
-    // Two hex chars per byte, four hyphens and a '\0' terminator
-    char buffer[ sizeof(uuid_t) * 2 + 4 + 1];
+    return AsDString( _data );
+}
 
-    uuid_unparse( _data, buffer );
-    return std::string( buffer, sizeof(buffer) - 1 );
+std::string Guid::ToString(std::string_view format) const
+{
+    using namespace std::literals::string_view_literals;
+
+    if ( format.empty() )
+        return AsDString( _data );
+
+    if ( format == "N" )
+        return AsNString( _data );
+    else if ( format == "D" )
+        return AsDString( _data );
+    else if ( format == "B" )
+        return AsBString( _data );
+    else if ( format == "P" )
+        return AsPString( _data );
+    else if ( format == "X" )
+        return AsXString( _data );
+    else
+        ThrowWithTarget( FormatException{ "'format' is not an available format type"sv } );
+
+    return {}; // Should never reach this!
 }
 
 Guid Guid::Parse(std::string_view input)
@@ -106,12 +453,46 @@ Guid Guid::Parse(std::string_view input)
 
     if ( input.empty() )
         ThrowWithTarget( ArgumentNullException{ "input"sv } );
-    if ( input.size() != 36 )
-        ThrowWithTarget( FormatException{ "String is not 36 characters long"sv } );
+    
+    std::string d_format_string;
 
+    // Transform all other formats to D format, because that is what uuid_parse/uuid_parse_range understands
+    do
+    {
+        if ( IsNFormat( input ) )
+        {
+            d_format_string = NStringToDString( input );
+            break;
+        }
+        else if ( IsDFormat( input ) )
+        {
+            // Already in the correct format
+            d_format_string = input;
+            break;
+        }
+        else if ( IsBFormat( input ) )
+        {
+            d_format_string = input.substr( 1, 36 );
+            break;
+        }
+        else if ( IsPFormat( input ) )
+        {
+            d_format_string = input.substr( 1, 36 );
+            break;
+        }
+        else if ( IsXFormat( input ) )
+        {
+            d_format_string = XStringToDString( input );
+            break;
+        }
+
+        ThrowWithTarget( FormatException{ "String is not in one of the expected formats (N, D, B, P, or X)"sv } );
+    } while (false);
+    
+    // We should now have a D format string to parse, so parse it!
     uuid_t output_uuid;
 
-    int result = uuid_parse_range( input.data(), input.data() + input.size(), output_uuid );
+    int result = uuid_parse_range( d_format_string.data(), d_format_string.data() + d_format_string.size(), output_uuid );
 
     if ( result == -1 )
     {
