@@ -1,5 +1,6 @@
 #pragma once
 
+#include "System/Diagnostics/Activity.hpp"
 #include <string>
 #include <string_view>
 
@@ -26,6 +27,11 @@ public:
     std::string_view Name() const { return _name; }
 
     std::string_view Version() const { return _version; }
+
+    Activity CreateActivity(std::string_view  name,
+                            ActivityKind      kind,
+                            ActivityContext  &parent_context,
+                            ActivityIdFormat  id_format);
 protected:
     std::string _name;
     std::string _version;

@@ -153,6 +153,12 @@ std::string ActivitySpanId::ToHexString() const
     return System::Convert::ToHexString( _id );
 }
 
+ActivityLink::ActivityLink(const ActivityContext &context)
+    :
+    _context( context )
+{
+}
+
 static Activity  DefaultActivity("No Activity");
 static Activity *CurrentActivity = nullptr;
 EventHandler<ActivityChangedEventArgs> Activity::CurrentChanged;

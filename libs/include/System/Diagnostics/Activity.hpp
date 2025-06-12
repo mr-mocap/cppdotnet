@@ -4,7 +4,9 @@
 #include "System/EventArgs.hpp"
 #include "System/EventHandler.hpp"
 #include "System/DateTime.hpp"
+#if 0
 #include "System/Diagnostics/ActivitySource.hpp"
+#endif
 #include "System/Private/enum.hpp"
 #include "System/Collections/Specialized/StringDictionary.hpp"
 #include <array>
@@ -196,10 +198,20 @@ struct ActivityCreationOptions
 #if 0
     T            Parent;
     ActivityTagsCollection SamplingTags;
-#endif
     ActivitySource  Source;
+#endif
     ActivityTraceId TraceId;
     std::string     TraceState;
+};
+
+class ActivityLink
+{
+public:
+    ActivityLink(const ActivityContext &context);
+
+    const ActivityContext &Context() const { return _context; }
+protected:
+    ActivityContext _context;
 };
 
 class Activity
