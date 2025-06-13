@@ -7,6 +7,7 @@
 #if 0
 #include "System/Diagnostics/ActivitySource.hpp"
 #endif
+#include "System/Diagnostics/ActivityTraceId.hpp"
 #include "System/Private/enum.hpp"
 #include "System/Collections/Specialized/StringDictionary.hpp"
 #include <array>
@@ -47,43 +48,6 @@ enum class ActivityIdFormat
     Unknown      = 0,
     Hierarchical = 1,
     W3C          = 2
-};
-
-struct ActivityTraceId
-{
-    ActivityTraceId()
-    {
-        _id.fill( std::byte(0) );
-    }
-    ActivityTraceId(const ActivityTraceId &other)
-    {
-        _id = other._id;
-    }
-
-    ActivityTraceId &operator =(const ActivityTraceId &other)
-    {
-        _id = other._id;
-        return *this;
-    }
-
-    bool operator ==(const ActivityTraceId &other);
-
-    static ActivityTraceId CreateRandom();
-
-    static ActivityTraceId CreateFromString(ReadOnlySpan<char> input);
-    static ActivityTraceId CreateFromBytes(ReadOnlySpan<std::byte> input);
-
-    std::string ToHexString() const;
-
-    std::string ToString() const { return ToHexString(); }
-protected:
-    std::array<std::byte, 16> _id;
-
-    ActivityTraceId(const std::array<std::byte, 16> &array)
-    {
-        for (size_t i = 0; i < _id.size(); ++i)
-            _id[ i ] = array[i];
-    }
 };
 
 class ActivitySpanId
