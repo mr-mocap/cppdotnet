@@ -382,6 +382,11 @@ Guid::Guid(std::uint32_t a, std::uint16_t b, std::uint16_t c,
 
 Guid::Guid(ReadOnlySpan<std::byte> bytes)
 {
+    using namespace std::literals::string_view_literals;
+
+    if ( bytes.Length() != 16 )
+        ThrowWithTarget( ArgumentOutOfRangeException( "bytes"sv, "Does not have exactly 16 bytes"sv ) );
+
     bytes.CopyTo( std::as_writable_bytes( std::span(_data) ) );
 }
 
@@ -501,6 +506,23 @@ Guid Guid::Parse(std::string_view input)
     }
 
     return Guid( output_uuid );
+}
+
+Guid &Guid::operator =(const Guid &other)
+{
+    std::ranges::copy( other._data, _data );
+    return *this;
+}
+
+std::strong_ordering Guid::operator <=>(const Guid &other) const
+{
+    int result = uuid_compare( _data, other._data );
+
+    if ( result < 0 )
+        return std::strong_ordering::less;
+    if ( result > 0 )
+        return std::strong_ordering::greater;
+    return std::strong_ordering::equal;
 }
 
 }

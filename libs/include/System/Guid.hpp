@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <string>
 #include <string_view>
+#include <compare>
 #include <uuid/uuid.h>
 
 
@@ -32,6 +33,8 @@ public:
     
     Guid(const Guid &other);
 
+    Guid &operator =(const Guid &);
+
     static Guid Empty();
 
     static Guid AllBitsSet();
@@ -47,6 +50,9 @@ public:
     static Guid NewGuid();
 
     static Guid Parse(std::string_view input);
+
+    std::strong_ordering operator <=>(const Guid &other) const;
+
 protected:
     uuid_t _data = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
