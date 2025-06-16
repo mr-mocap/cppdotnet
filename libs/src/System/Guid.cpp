@@ -395,6 +395,13 @@ Guid::Guid(const Guid &other)
     uuid_copy( _data, other._data );
 }
 
+Guid::Guid(std::string_view str_input)
+{
+    Guid temp = Parse(str_input);
+
+    std::ranges::copy( std::span(temp._data), std::ranges::begin(_data) );
+}
+
 ReadOnlySpan<std::byte, 16> Guid::ToByteArray() const
 {
     return ReadOnlySpan<std::byte, 16>( std::as_bytes( std::span(_data) ) );
@@ -503,6 +510,62 @@ Guid Guid::Parse(std::string_view input)
     {
         // Something went wrong
         ThrowWithTarget( FormatException{ "String is not in expected format"sv } );
+    }
+
+    return Guid( output_uuid );
+}
+
+std::optional<Guid> Guid::TryParse(std::string_view input)
+{
+    using namespace std::literals::string_view_literals;
+
+    if ( input.empty() )
+        return { };
+    
+    std::string d_format_string;
+
+    // Transform all other formats to D format, because that is what uuid_parse/uuid_parse_range understands
+    do
+    {
+        if ( IsNFormat( input ) )
+        {
+            d_format_string = NStringToDString( input );
+            break;
+        }
+        else if ( IsDFormat( input ) )
+        {
+            // Already in the correct format
+            d_format_string = input;
+            break;
+        }
+        else if ( IsBFormat( input ) )
+        {
+            d_format_string = input.substr( 1, 36 );
+            break;
+        }
+        else if ( IsPFormat( input ) )
+        {
+            d_format_string = input.substr( 1, 36 );
+            break;
+        }
+        else if ( IsXFormat( input ) )
+        {
+            d_format_string = XStringToDString( input );
+            break;
+        }
+
+        return { };
+    } while (false);
+    
+    // We should now have a D format string to parse, so parse it!
+    uuid_t output_uuid;
+
+    int result = uuid_parse_range( d_format_string.data(), d_format_string.data() + d_format_string.size(), output_uuid );
+
+    if ( result == -1 )
+    {
+        // Something went wrong
+        return { };
     }
 
     return Guid( output_uuid );

@@ -6,6 +6,7 @@
 #include <string>
 #include <string_view>
 #include <compare>
+#include <optional>
 #include <uuid/uuid.h>
 
 
@@ -30,6 +31,7 @@ public:
         Guid( ReadOnlySpan<std::byte>(bytes) )
     {
     }
+    Guid(std::string_view str_input);
     
     Guid(const Guid &other);
 
@@ -50,6 +52,8 @@ public:
     static Guid NewGuid();
 
     static Guid Parse(std::string_view input);
+
+    static std::optional<Guid> TryParse(std::string_view input);
 
     std::strong_ordering operator <=>(const Guid &other) const;
 
