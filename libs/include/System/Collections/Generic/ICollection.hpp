@@ -30,19 +30,19 @@ class ICollection
     };
 
     template <typename DataType>
-    struct SpecificTypedInterface : Interface
+    struct InterfaceModel : Interface
     {
-        SpecificTypedInterface() = default;
-        SpecificTypedInterface(DataType &input) : data( input ) { }
-        SpecificTypedInterface(DataType &&input) : data( std::move(input) ) { }
-        ~SpecificTypedInterface() override { }
+        InterfaceModel() = default;
+        InterfaceModel(DataType &input) : data( input ) { }
+        InterfaceModel(DataType &&input) : data( std::move(input) ) { }
+        ~InterfaceModel() override { }
           
         // Default copy and move
-        SpecificTypedInterface(const SpecificTypedInterface &other) = default;
-        SpecificTypedInterface(SpecificTypedInterface &&other) = default;
+        InterfaceModel(const InterfaceModel &other) = default;
+        InterfaceModel(InterfaceModel &&other) = default;
 
-        SpecificTypedInterface &operator =(const SpecificTypedInterface &) = default;
-        SpecificTypedInterface &operator =(SpecificTypedInterface &&) = default;
+        InterfaceModel &operator =(const InterfaceModel &) = default;
+        InterfaceModel &operator =(InterfaceModel &&) = default;
 
         std::size_t Count() const override { return data.Count(); }
 
@@ -61,12 +61,12 @@ class ICollection
 
         std::unique_ptr<Interface> Clone() override
         {
-            return std::make_unique<SpecificTypedInterface>(data);
+            return std::make_unique<InterfaceModel>(data);
         }
 
         std::unique_ptr<Interface> Empty() override
         {
-            return std::make_unique_for_overwrite<SpecificTypedInterface>();
+            return std::make_unique_for_overwrite<InterfaceModel>();
         }
 
         DataType data;
@@ -78,53 +78,53 @@ public:
     template <class DataType>
     ICollection(DataType &input)
       :
-      _data( std::make_unique<SpecificTypedInterface<DataType>>(input) )
+      m_pimple( std::make_unique<InterfaceModel<DataType>>(input) )
     {
     }
 
     template <class DataType>
     ICollection(DataType &&input)
       :
-      _data( std::make_unique<SpecificTypedInterface<DataType>>( std::move(input) ) )
+      m_pimple( std::make_unique<InterfaceModel<DataType>>( std::move(input) ) )
     {
     }
 
     ICollection(const ICollection &other)
       :
-      _data( other._data->Clone() )
+      m_pimple( other.m_pimple->Clone() )
     {
     }
     ICollection(ICollection &other)
       :
-      _data( other._data->Clone() )
+      m_pimple( other.m_pimple->Clone() )
     {
     }
     ICollection(ICollection &&other)
       :
-      _data( other._data->Empty() )
+      m_pimple( other.m_pimple->Empty() )
     {
-        std::swap( _data, other._data );
+        std::swap( m_pimple, other.m_pimple );
     }
 
     ICollection &operator =(const ICollection &other)
     {
-        _data = other._data->Clone();
+        m_pimple = other.m_pimple->Clone();
         return *this;
     }
 
     ICollection &operator =(ICollection &&other) = delete;
 
-    std::size_t Count() const      { return _data->Count(); }
-    bool        IsReadOnly() const { return _data->IsReadOnly(); }
-    bool        IsReadOnly()       { return _data->IsReadOnly(); }
-    bool        IsSynchronized() const { return _data->IsSynchronized(); }
+    std::size_t Count() const      { return m_pimple->Count(); }
+    bool        IsReadOnly() const { return m_pimple->IsReadOnly(); }
+    bool        IsReadOnly()       { return m_pimple->IsReadOnly(); }
+    bool        IsSynchronized() const { return m_pimple->IsSynchronized(); }
 
-    void Add(const T &item)      { _data->Add(item); }
-    bool Remove(const T &item)   { return _data->Remove(item); }
-    void Clear()                 { _data->Clear(); }
-    bool Contains(const T &item) { return _data->Contains(item); }
+    void Add(const T &item)      { m_pimple->Add(item); }
+    bool Remove(const T &item)   { return m_pimple->Remove(item); }
+    void Clear()                 { m_pimple->Clear(); }
+    bool Contains(const T &item) { return m_pimple->Contains(item); }
 protected:
-    std::unique_ptr<Interface> _data;
+    std::unique_ptr<Interface> m_pimple;
 };
 
 
@@ -151,21 +151,21 @@ class ICollectionRef
     };
 
     template <typename DataType>
-    struct SpecificTypedInterfacePtr : Interface
+    struct InterfaceModelPtr : Interface
     {
-        SpecificTypedInterfacePtr() = delete;
-        SpecificTypedInterfacePtr(DataType *input) : data( input ) { } // For easily creating a copy
-        ~SpecificTypedInterfacePtr() override
+        InterfaceModelPtr() = delete;
+        InterfaceModelPtr(DataType *input) : data( input ) { } // For easily creating a copy
+        ~InterfaceModelPtr() override
         {
             data = nullptr;
         }
           
         // Default copy and move
-        SpecificTypedInterfacePtr(const SpecificTypedInterfacePtr &other) = default;
-        SpecificTypedInterfacePtr(SpecificTypedInterfacePtr &&other) = default;
+        InterfaceModelPtr(const InterfaceModelPtr &other) = default;
+        InterfaceModelPtr(InterfaceModelPtr &&other) = default;
 
-        SpecificTypedInterfacePtr &operator =(const SpecificTypedInterfacePtr &) = default;
-        SpecificTypedInterfacePtr &operator =(SpecificTypedInterfacePtr &&) = default;
+        InterfaceModelPtr &operator =(const InterfaceModelPtr &) = default;
+        InterfaceModelPtr &operator =(InterfaceModelPtr &&) = default;
 
         std::size_t Count() const override { return data->Count(); }
 
@@ -184,7 +184,7 @@ class ICollectionRef
 
         std::unique_ptr<Interface> Clone() override
         {
-            return std::make_unique<SpecificTypedInterfacePtr<DataType>>(data);
+            return std::make_unique<InterfaceModelPtr<DataType>>(data);
         }
 
         DataType *data = nullptr;
@@ -196,33 +196,33 @@ public:
     template <class DataType>
     ICollectionRef(DataType *input)
       :
-      _data( std::make_unique<SpecificTypedInterfacePtr<DataType>>(input) )
+      m_pimpl( std::make_unique<InterfaceModelPtr<DataType>>(input) )
     {
     }
 
     ICollectionRef(const ICollectionRef &other)
       :
-      _data( other._data->Clone() )
+      m_pimpl( other.m_pimpl->Clone() )
     {
     }
     ICollectionRef(ICollectionRef &other)
       :
-      _data( other._data->Clone() )
+      m_pimpl( other.m_pimpl->Clone() )
     {
     }
     ICollectionRef(ICollectionRef &&other) = default;
 
-    std::size_t Count() const      { return _data->Count(); }
-    bool        IsReadOnly() const { return _data->IsReadOnly(); }
-    bool        IsReadOnly()       { return _data->IsReadOnly(); }
-    bool        IsSynchronized() const { return _data->IsSynchronized(); }
+    std::size_t Count() const      { return m_pimpl->Count(); }
+    bool        IsReadOnly() const { return m_pimpl->IsReadOnly(); }
+    bool        IsReadOnly()       { return m_pimpl->IsReadOnly(); }
+    bool        IsSynchronized() const { return m_pimpl->IsSynchronized(); }
 
-    void Add(const T &item)      { _data->Add(item); }
-    bool Remove(const T &item)   { return _data->Remove(item); }
-    void Clear()                 { _data->Clear(); }
-    bool Contains(const T &item) { return _data->Contains(item); }
+    void Add(const T &item)      { m_pimpl->Add(item); }
+    bool Remove(const T &item)   { return m_pimpl->Remove(item); }
+    void Clear()                 { m_pimpl->Clear(); }
+    bool Contains(const T &item) { return m_pimpl->Contains(item); }
 protected:
-    std::unique_ptr<Interface> _data;
+    std::unique_ptr<Interface> m_pimpl;
 };
 
 }
