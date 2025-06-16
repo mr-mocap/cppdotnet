@@ -515,6 +515,11 @@ Guid Guid::Parse(std::string_view input)
     return Guid( output_uuid );
 }
 
+Guid Guid::Parse(ReadOnlySpan<char> input)
+{
+    return Parse( std::string_view( input.begin(), input.end() ) );
+}
+
 std::optional<Guid> Guid::TryParse(std::string_view input)
 {
     using namespace std::literals::string_view_literals;
@@ -569,6 +574,11 @@ std::optional<Guid> Guid::TryParse(std::string_view input)
     }
 
     return Guid( output_uuid );
+}
+
+std::optional<Guid> Guid::TryParse(ReadOnlySpan<char> input)
+{
+    return TryParse( std::string_view( input.begin(), input.end() ) );
 }
 
 Guid &Guid::operator =(const Guid &other)

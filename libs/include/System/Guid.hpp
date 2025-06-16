@@ -52,8 +52,10 @@ public:
     static Guid NewGuid();
 
     static Guid Parse(std::string_view input);
+    static Guid Parse(ReadOnlySpan<char> input);
 
     static std::optional<Guid> TryParse(std::string_view input);
+    static std::optional<Guid> TryParse(ReadOnlySpan<char> input);
 
     std::strong_ordering operator <=>(const Guid &other) const;
 
