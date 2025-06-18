@@ -12,41 +12,46 @@ template <typename T>
 concept HasValueType = requires { typename T::value_type; };
 
 template <typename T>
-concept IComparable = requires(T Object, T OtherObject) {
+concept Comparable = requires(T Object, T OtherObject) {
     { Object.CompareTo(OtherObject) } -> std::same_as<int>; // Must return -1, 0, or 1 ( for <, ==, > )
 };
 
 template <typename T>
-concept IEquatable = requires(T Object, T OtherObject) {
+concept Equatable = requires(T Object, T OtherObject) {
     { Object.Equals(OtherObject) } -> std::same_as<bool>;
 };
 
 template <typename T>
-concept IFormattable = requires(T Object, const std::string &format) {
+concept Formattable = requires(T Object, const std::string &format) {
     { Object.ToString(format) } -> std::same_as<std::string>;
 };
 
 template <typename T>
-concept IObserver = requires(T Object, T NewData, Exception ExceptionObject) {
+concept Observer = requires(T Object, T NewData, Exception ExceptionObject) {
     { Object.OnCompleted() } -> std::same_as<void>;
     { Object.OnError(ExceptionObject) } -> std::same_as<void>;
     { Object.OnNext(NewData) } -> std::same_as<void>;
 };
 
 template <typename T>
-concept IObservable = requires(T Object) {
+concept Observable = requires(T Object) {
     Object.Subscribe();
 };
 
 template <typename T>
-concept IParsable = requires(T Object, const std::string &s) {
+concept Parsable = requires(T Object, const std::string &s) {
     { Object.Parse(s) } -> std::same_as<T>;
     { Object.TryParse(s) } -> std::same_as<T>;
 };
 
 template <typename T>
-concept IProgress = requires(T Object, T NewValue) {
+concept Progress = requires(T Object, T NewValue) {
     { Object.Report(NewValue) } -> std::same_as<void>;
+};
+
+template <typename T>
+concept Disposable = requires(T Object) {
+    { Object.Dispose() } -> std::same_as<void>;
 };
 
 }
