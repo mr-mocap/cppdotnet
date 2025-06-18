@@ -27,6 +27,7 @@ concept Comparer = requires(T Object, T OtherObject) {
     { Object.Compare(Object, OtherObject) } -> std::same_as<int>;
 };
 
+#if 0
 template <typename T, typename KeyT, typename ValueT>
 concept DictionaryOnly = requires(T Object, const KeyT &key) {
     typename T::value_type;
@@ -45,11 +46,28 @@ concept DictionaryOnly = requires(T Object, const KeyT &key) {
     { Object.Keys() } -> std::same_as<typename T::KeyCollection>;
     { Object.Values() } -> std::same_as<typename T::ValueCollection>;
 };
+#endif
 
+#if 0
 template <typename T, typename KeyT, typename ValueT>
 concept Dictionary = DictionaryOnly<T, KeyT, ValueT> &&
                      Collection<T, Generic::KeyValuePair<KeyT, ValueT>>;
     // NOTE: Also implements ICollection<KeyValuePair<KeyT, ValueT>>
+#else
+template <typename T, typename KeyT, typename ValueT>
+concept Dictionary = Collection<T, Generic::KeyValuePair<KeyT, ValueT>> &&
+                     requires (T Object, const KeyT &key) {
+                         typename T::KeyCollection;
+                         typename T::ValueCollection;
+
+                         { T::KeyCollection } -> std::same_as< Collection<T::KeyCollection, KeyT> >;
+                         { T::ValueCollection } -> std::same_as< Collection<T::ValueCollection, ValueT> >;
+
+                         { Object[key] } -> std::same_as<ValueT &>;
+                         { Object.Keys() } -> std::same_as<typename T::KeyCollection>;
+                         { Object.Values() } -> std::same_as<typename T::ValueCollection>;
+                     }
+#endif
 
 template <typename T>
 concept EqualityComparer = requires(T Object, T OtherObject) {
