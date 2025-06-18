@@ -2,6 +2,7 @@
 #include "System/Collections/Generic/ICollection.hpp"
 #include "System/Collections/Generic/LinkedList.hpp"
 #include "System/Collections/Generic/List.hpp"
+#include "System/Collections/Generic/Dictionary.hpp"
 #include <iostream>
 #include <cassert>
 
@@ -9,14 +10,30 @@
 namespace TestICollection
 {
 
+template <typename K, typename V>
+using KVP = System::Collections::Generic::KeyValuePair<K, V>;
+
+template <class CollectionType>
 System::Collections::Generic::ICollection<int> TestMove()
 {
-   System::Collections::Generic::LinkedList<int> example; 
+   CollectionType example; 
 
    example.Add(1);
    example.Add(2);
    example.Add(3);
    example.Add(4);
+
+   return example;
+}
+
+System::Collections::Generic::ICollection<KVP<int,int>> TestMoveFromDictionary()
+{
+   System::Collections::Generic::Dictionary<int, int> example; 
+
+   example.Add(0, 1);
+   example.Add(1, 2);
+   example.Add(2, 3);
+   example.Add(3, 4);
 
    return example;
 }
@@ -161,17 +178,43 @@ void MoveConstructorLeavesOldObjectEmpty()
     assert( icollection.Count() == 0 );
 }
 
-void MovedFromFunction()
+void MovedFromFunctionAsLinkedList()
 {
     std::cout << __func__ << std::endl;
 
-    System::Collections::Generic::ICollection<int> data = TestMove();
+    System::Collections::Generic::ICollection<int> data = TestMove<System::Collections::Generic::LinkedList<int>>();
 
     assert( data.Count() == 4 );
     assert( data.Contains(1) );
     assert( data.Contains(2) );
     assert( data.Contains(3) );
     assert( data.Contains(4) );
+}
+
+void MovedFromFunctionAsList()
+{
+    std::cout << __func__ << std::endl;
+
+    System::Collections::Generic::ICollection<int> data = TestMove<System::Collections::Generic::List<int>>();
+
+    assert( data.Count() == 4 );
+    assert( data.Contains(1) );
+    assert( data.Contains(2) );
+    assert( data.Contains(3) );
+    assert( data.Contains(4) );
+}
+
+void MovedFromFunctionAsDictionary()
+{
+    std::cout << __func__ << std::endl;
+
+    System::Collections::Generic::ICollection<KVP<int, int>> data = TestMoveFromDictionary();
+
+    assert( data.Count() == 4 );
+    assert( data.Contains( KVP<int, int>(0, 1) ) );
+    assert( data.Contains( KVP<int, int>(1, 2) ) );
+    assert( data.Contains( KVP<int, int>(2, 3) ) );
+    assert( data.Contains( KVP<int, int>(3, 4) ) );
 }
 
 void ConstructWithLinkedListRef()
@@ -223,7 +266,9 @@ void Run()
     ConstructedWithObjectMakesANewCopy();
     CopyConstructorMakesANewObject();
     MoveConstructorLeavesOldObjectEmpty();
-    MovedFromFunction();
+    MovedFromFunctionAsLinkedList();
+    MovedFromFunctionAsList();
+    MovedFromFunctionAsDictionary();
 
     ConstructWithLinkedListRef();
     ConstructWithListRef();

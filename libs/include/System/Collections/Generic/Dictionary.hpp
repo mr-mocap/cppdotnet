@@ -240,7 +240,12 @@ public:
         return true;
     }
 
-    constexpr bool Remove(const key_type &key)
+    bool Remove(const value_type &kvp)
+    {
+        return Remove( kvp.Key() );
+    }
+
+    bool Remove(const key_type &key)
     {
         return _data.erase( key );
     }
@@ -283,6 +288,11 @@ public:
     bool IsReadOnly()       { return false; }
 
     bool IsSynchronized() const { return false; }
+
+    constexpr void Add(const value_type &item)
+    {
+        Add( item.Key(), item.Value() );
+    }
 
     constexpr void Add(const key_type &key, const mapped_type &value)
     {
