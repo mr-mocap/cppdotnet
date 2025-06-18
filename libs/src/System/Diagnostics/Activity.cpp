@@ -89,6 +89,10 @@ TimeSpan Activity::Duration() const
     return TimeSpan::Zero();
 }
 
+const ActivitySource &Activity::Source() const
+{
+}
+
 Activity &Activity::AddBaggage(std::string_view key, std::string_view value)
 {
     _baggage.Add( key, value );

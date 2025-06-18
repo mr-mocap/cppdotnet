@@ -8,6 +8,8 @@
 namespace System::Diagnostics
 {
 
+class ActivityListener;
+
 class ActivitySource final
 {
 public:
@@ -28,10 +30,14 @@ public:
 
     std::string_view Version() const { return _version; }
 
+    bool HasListeners() const;
+
     Activity CreateActivity(std::string_view  name,
                             ActivityKind      kind,
                             ActivityContext  &parent_context,
                             ActivityIdFormat  id_format);
+
+    static void AddActivityListener(const ActivityListener &listener);
 protected:
     std::string _name;
     std::string _version;

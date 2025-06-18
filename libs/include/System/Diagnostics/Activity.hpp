@@ -4,9 +4,6 @@
 #include "System/EventArgs.hpp"
 #include "System/EventHandler.hpp"
 #include "System/DateTime.hpp"
-#if 0
-#include "System/Diagnostics/ActivitySource.hpp"
-#endif
 #include "System/Diagnostics/ActivityTraceId.hpp"
 #include "System/Diagnostics/ActivitySpanId.hpp"
 #include "System/Private/enum.hpp"
@@ -21,6 +18,8 @@
 
 namespace System::Diagnostics
 {
+
+class ActivitySource;
 
 enum class ActivityTraceFlags
 {
@@ -60,7 +59,7 @@ public:
     ActivityContext(const ActivityTraceId &trace_id,
                     const ActivitySpanId  &span_id,
                     ActivityTraceFlags     trace_flags,
-                    std::string_view trace_state,
+                    std::string_view       trace_state,
                     const bool             is_remote)
         :
         _trace_id( trace_id ),
@@ -124,15 +123,15 @@ template <class T>
     requires ( std::same_as<T, std::string> || std::same_as<T, ActivityContext> )
 struct ActivityCreationOptions
 {
-    ActivityKind    Kind = ActivityKind::Internal;
-    std::string     Name;
+    ActivityKind     Kind = ActivityKind::Internal;
+    std::string      Name;
 #if 0
     T            Parent;
     ActivityTagsCollection SamplingTags;
-    ActivitySource  Source;
 #endif
-    ActivityTraceId TraceId;
-    std::string     TraceState;
+    ActivitySource  *Source = nullptr;
+    ActivityTraceId  TraceId;
+    std::string      TraceState;
 };
 
 class ActivityLink
@@ -189,6 +188,8 @@ public:
 
     static Activity &Current();
     static void      Current(Activity &new_activity);
+
+    const ActivitySource &Source() const;
 
     const DateTime &StartTimeUtc() const { return _start_time; }
 

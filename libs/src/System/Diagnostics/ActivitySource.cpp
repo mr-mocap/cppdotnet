@@ -12,4 +12,13 @@ Activity ActivitySource::CreateActivity(std::string_view  name,
     return Activity(name);
 }
 
+void ActivitySource::AddActivityListener(const ActivityListener &listener)
+{
+}
+
+bool ActivitySource::HasListeners() const
+{
+    return false;
+}
+
 }
