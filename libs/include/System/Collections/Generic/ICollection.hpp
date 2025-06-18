@@ -6,7 +6,7 @@
 namespace System::Collections::Generic
 {
 
-template <class T>
+template <typename T>
 class ICollection
 {
     struct Interface
@@ -29,12 +29,12 @@ class ICollection
         virtual std::unique_ptr<Interface> Empty() = 0;
     };
 
-    template <typename DataType>
+    template <class CollectionType>
     struct InterfaceModel : Interface
     {
         InterfaceModel() = default;
-        InterfaceModel(DataType &input) : data( input ) { }
-        InterfaceModel(DataType &&input) : data( std::move(input) ) { }
+        InterfaceModel(CollectionType &input) : data( input ) { }
+        InterfaceModel(CollectionType &&input) : data( std::move(input) ) { }
         ~InterfaceModel() override { }
           
         // Default copy and move
@@ -69,23 +69,23 @@ class ICollection
             return std::make_unique_for_overwrite<InterfaceModel>();
         }
 
-        DataType data;
+        CollectionType data;
     };
 
 public:
     ICollection() = delete;
 
-    template <class DataType>
-    ICollection(DataType &input)
+    template <typename CollectionType>
+    ICollection(CollectionType &input)
       :
-      m_pimple( std::make_unique<InterfaceModel<DataType>>(input) )
+      m_pimple( std::make_unique<InterfaceModel<CollectionType>>(input) )
     {
     }
 
-    template <class DataType>
-    ICollection(DataType &&input)
+    template <typename CollectionType>
+    ICollection(CollectionType &&input)
       :
-      m_pimple( std::make_unique<InterfaceModel<DataType>>( std::move(input) ) )
+      m_pimple( std::make_unique<InterfaceModel<CollectionType>>( std::move(input) ) )
     {
     }
 
@@ -128,7 +128,7 @@ protected:
 };
 
 
-template <class T>
+template <typename T>
 class ICollectionRef
 {
     struct Interface
@@ -150,11 +150,11 @@ class ICollectionRef
         virtual std::unique_ptr<Interface> Clone() = 0;
     };
 
-    template <typename DataType>
+    template <class CollectionType>
     struct InterfaceModelPtr : Interface
     {
         InterfaceModelPtr() = delete;
-        InterfaceModelPtr(DataType *input) : data( input ) { } // For easily creating a copy
+        InterfaceModelPtr(CollectionType *input) : data( input ) { } // For easily creating a copy
         ~InterfaceModelPtr() override
         {
             data = nullptr;
@@ -184,19 +184,19 @@ class ICollectionRef
 
         std::unique_ptr<Interface> Clone() override
         {
-            return std::make_unique<InterfaceModelPtr<DataType>>(data);
+            return std::make_unique<InterfaceModelPtr<CollectionType>>(data);
         }
 
-        DataType *data = nullptr;
+        CollectionType *data = nullptr;
     };
 
 public:
     ICollectionRef() = delete;
 
-    template <class DataType>
-    ICollectionRef(DataType *input)
+    template <class CollectionType>
+    ICollectionRef(CollectionType *input)
       :
-      m_pimpl( std::make_unique<InterfaceModelPtr<DataType>>(input) )
+      m_pimpl( std::make_unique<InterfaceModelPtr<CollectionType>>(input) )
     {
     }
 
