@@ -9,32 +9,33 @@ namespace System::Collections::Generic::Concepts
 {
 
 template <typename ContainerT, typename ValueT>
-concept ICollection = requires(ContainerT Object, ContainerT OtherObject) {
+concept Collection = requires(ContainerT Object, ValueT Item) {
     typename ContainerT::value_type;
     { ContainerT::value_type } -> std::same_as<ValueT>;
 
     { Object.Count() } -> std::same_as<int>; // Must return -1, 0, or 1 ( for <, ==, > )
     { Object.IsReadOnly() } -> std::same_as<bool>;
-    { Object.Add(OtherObject) } -> std::same_as<void>;
+    { Object.Add(Item) } -> std::same_as<void>;
     { Object.Clear() } -> std::same_as<void>;
-    { Object.Contains(OtherObject) } -> std::same_as<bool>;
+    { Object.Contains(Item) } -> std::same_as<bool>;
     //{ Object.CopyTo() } -> std::same_as<bool>;
-    { Object.Remove(OtherObject) } -> std::same_as<bool>;
+    { Object.Remove(Item) } -> std::same_as<bool>;
 };
 
 template <typename T>
-concept IComparer = requires(T Object, T OtherObject) {
+concept Comparer = requires(T Object, T OtherObject) {
     { Object.Compare(Object, OtherObject) } -> std::same_as<int>;
 };
 
 template <typename T, typename KeyT, typename ValueT>
-concept IDictionaryOnly = requires(T Object, const KeyT &key) {
+concept DictionaryOnly = requires(T Object, const KeyT &key) {
     typename T::value_type;
     typename T::key_type;
     typename T::mapped_type;
     { T::value_type } -> std::same_as< KeyValuePair<KeyT, ValueT> >;
     { T::key_type } -> std::same_as<KeyT>;
     { T::mapped_type } -> std::same_as<ValueT>;
+
     typename T::KeyCollection;
     typename T::ValueCollection;
 
@@ -46,12 +47,12 @@ concept IDictionaryOnly = requires(T Object, const KeyT &key) {
 };
 
 template <typename T, typename KeyT, typename ValueT>
-concept IDictionary = IDictionaryOnly<T, KeyT, ValueT> &&
-                      ICollection<T, typename T::value_type>;
+concept Dictionary = DictionaryOnly<T, KeyT, ValueT> &&
+                     Collection<T, Generic::KeyValuePair<KeyT, ValueT>>;
     // NOTE: Also implements ICollection<KeyValuePair<KeyT, ValueT>>
 
 template <typename T>
-concept IEqualityComparer = requires(T Object, T OtherObject) {
+concept EqualityComparer = requires(T Object, T OtherObject) {
     { Object.Equals(Object, OtherObject) } -> std::same_as<int>;
 };
 
