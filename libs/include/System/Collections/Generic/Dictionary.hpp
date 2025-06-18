@@ -227,16 +227,16 @@ public:
         return true;
     }
 
-    constexpr bool TryGetValue(const key_type &key, mapped_type &value) const
+    constexpr bool TryGetValue(const key_type &key, mapped_type &value_out) const
     {
         auto iter = _data.find( key );
 
         if ( iter == _data.end() )
         {
-            value = mapped_type{};
+            value_out = mapped_type{};
             return false;
         }
-        value = iter->second;
+        value_out = iter->second;
         return true;
     }
 
@@ -330,20 +330,20 @@ public:
     }
 
     // Range-for compatibility
-          iterator  begin()       { return iterator{ _data.begin() }; }
-    const_iterator  begin() const { return const_iterator{ _data.begin() }; }
-    const_iterator cbegin() const noexcept { return const_iterator{ _data.cbegin() }; }
+          iterator  begin()                { return _data.begin(); }
+    const_iterator  begin() const          { return _data.begin(); }
+    const_iterator cbegin() const noexcept { return _data.cbegin(); }
 
-          iterator  end()        { return _data.end(); }
-    const_iterator  end()  const { return _data.end(); }
+          iterator  end()                { return _data.end(); }
+    const_iterator  end()  const         { return _data.end(); }
     const_iterator cend() const noexcept { return _data.cend(); }
 
-          reverse_iterator  rbegin()       { return _data.rbegin(); }
-    const_reverse_iterator  rbegin() const { return _data.rbegin(); }
+          reverse_iterator  rbegin()                { return _data.rbegin(); }
+    const_reverse_iterator  rbegin() const          { return _data.rbegin(); }
     const_reverse_iterator crbegin() const noexcept { return _data.crbegin(); }
 
-          reverse_iterator  rend()       { return _data.rend(); }
-    const_reverse_iterator  rend() const { return _data.rend(); }
+          reverse_iterator  rend()                { return _data.rend(); }
+    const_reverse_iterator  rend() const          { return _data.rend(); }
     const_reverse_iterator crend() const noexcept { return _data.crend(); }
 protected:
     std::map<TKey, TValue, Compare, Allocator> _data;
