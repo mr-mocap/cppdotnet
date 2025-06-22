@@ -257,6 +257,65 @@ void ConstructWithListRef()
     assert( icollection.Contains(3) );
 }
 
+void IterateOverList()
+{
+    std::cout << __func__ << std::endl;
+
+    int example_data[] = { 0, 1, 2, 3 };
+    System::Collections::Generic::List<int> list(example_data);
+
+    {
+        System::Collections::Generic::ICollection icollection{ list };
+
+        for (int i: icollection)
+        {
+            std::cout << i << std::endl;
+        }
+    }
+
+    {
+        const System::Collections::Generic::ICollection const_icollection{ list };
+
+        for (const int i: const_icollection)
+        {
+            std::cout << i << std::endl;
+        }
+    }
+}
+
+void IterateOverLinkedList()
+{
+    std::cout << __func__ << std::endl;
+
+    int example_data[] = { 0, 1, 2, 3 };
+    System::Collections::Generic::LinkedList<int> linked_list(example_data);
+
+    {
+        System::Collections::Generic::ICollection icollection{ linked_list };
+
+        for (int i: icollection)
+        {
+            std::cout << i << std::endl;
+        }
+    }
+}
+
+void IterateOverDictionary()
+{
+    std::cout << __func__ << std::endl;
+
+    System::Collections::Generic::Dictionary<int, std::string> dictionary( { {0, "zero"}, {1, "one"}, {2, "two"}, {3, "three"} });
+
+    {
+        System::Collections::Generic::ICollection icollection{ dictionary };
+
+        for (const System::Collections::Generic::KeyValuePair<int, std::string> &i: icollection)
+        {
+            std::cout << "KeyValuePair<int, string> = " << i.Key() << ", " << i.Value() << std::endl;
+        }
+    }
+}
+
 void Run()
 {
     std::cout << "Running ICollection Tests..." << std::endl;
@@ -272,6 +331,10 @@ void Run()
 
     ConstructWithLinkedListRef();
     ConstructWithListRef();
+
+    IterateOverList();
+    IterateOverLinkedList();
+    IterateOverDictionary();
 
     std::cout << "PASSED!" << std::endl;
 }

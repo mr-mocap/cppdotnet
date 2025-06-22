@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <iterator>
 
 
 namespace System::Collections::Generic
@@ -9,6 +10,273 @@ namespace System::Collections::Generic
 template <typename T>
 class ICollection
 {
+    struct IteratorInterface;
+    template <typename ModelT> class IteratorModel;
+    
+    struct ConstIteratorInterface;
+    template <typename ModelT> class ConstIteratorModel;
+
+public:
+
+    struct Iterator
+    {
+        Iterator(std::unique_ptr<IteratorInterface> &&position)
+            :
+            m_pimpl( std::move(position) )
+        {
+        }
+
+        Iterator(const Iterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        Iterator(Iterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        Iterator(Iterator &&other) = delete;
+
+        Iterator &operator =(const Iterator &other)
+        {
+            m_pimpl = other.m_pimpl->Clone();
+            return *this;
+        }
+
+        Iterator &operator =(Iterator &&other) = delete;
+
+        T &operator *()  noexcept { return *(*m_pimpl); }
+
+        T  operator ->() noexcept { return m_pimpl->operator ->(); }
+
+        Iterator &operator ++() noexcept
+        {
+            m_pimpl->operator ++();
+            return *this;
+        }
+
+        Iterator &operator --() noexcept
+        {
+            m_pimpl->operator --();
+            return *this;
+        }
+
+        friend bool operator ==(const Iterator &left, const Iterator &right) noexcept
+        {
+            return *left.m_pimpl == *right.m_pimpl;
+        }
+
+        protected:
+            std::unique_ptr<IteratorInterface> m_pimpl;
+
+            Iterator() = default;
+    };
+
+    struct ConstIterator
+    {
+        ConstIterator(std::unique_ptr<ConstIteratorInterface> &&position)
+            :
+            m_pimpl( std::move(position) )
+        {
+        }
+
+        ConstIterator(const ConstIterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        ConstIterator(ConstIterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        ConstIterator(ConstIterator &&other) = delete;
+
+        ConstIterator &operator =(const ConstIterator &other)
+        {
+            m_pimpl = other.m_pimpl->Clone();
+            return *this;
+        }
+
+        ConstIterator &operator =(ConstIterator &&other) = delete;
+
+        const T &operator*() const noexcept { return *(*m_pimpl); }
+
+        const T *operator->() const noexcept  { return m_pimpl->operator ->(); }
+
+        ConstIterator &operator++() noexcept
+        {
+            m_pimpl->operator ++();
+            return *this;
+        }
+
+        ConstIterator &operator--() noexcept
+        {
+            m_pimpl->operator --();
+            return *this;
+        }
+
+        friend bool operator ==(const ConstIterator &left, const ConstIterator &right) noexcept
+        {
+            return *left.m_pimpl == *right.m_pimpl;
+        }
+
+        protected:
+            std::unique_ptr<ConstIteratorInterface> m_pimpl;
+
+            ConstIterator() = default;
+    };
+
+private:
+    struct IteratorInterface
+    {
+        virtual ~IteratorInterface() { }
+
+        virtual T &operator*() noexcept = 0;
+
+        virtual T *operator->() noexcept = 0;
+
+        virtual IteratorInterface &operator++() noexcept = 0;
+
+        virtual IteratorInterface &operator--() noexcept = 0;
+
+        friend bool operator ==(const IteratorInterface &left, const IteratorInterface &right) noexcept
+        {
+            return left.EqualTo(right);
+        }
+
+        virtual std::unique_ptr<IteratorInterface> Clone() = 0;
+
+        virtual bool EqualTo(const IteratorInterface &other) const = 0;
+    };
+
+    template <typename CollectionType>
+    struct IteratorModel : IteratorInterface
+    {
+        IteratorModel(CollectionType::iterator i)
+          :
+          m_iterator( i )
+        {
+        }
+
+       ~IteratorModel() override { }
+
+        T &operator*() noexcept override
+        {
+            return *m_iterator;
+        }
+
+        T *operator->() noexcept override
+        {
+            return m_iterator.operator ->();
+        }
+
+        IteratorInterface &operator++() noexcept override
+        {
+            ++m_iterator;
+            return *this;
+        }
+
+        IteratorInterface &operator--() noexcept override
+        {
+            --m_iterator;
+            return *this;
+        }
+
+        std::unique_ptr<IteratorInterface> Clone() override
+        {
+            return std::make_unique<IteratorModel>(m_iterator);
+        }
+
+        bool EqualTo(const IteratorInterface &other) const override
+        {
+            const IteratorModel<CollectionType> *p = dynamic_cast<const IteratorModel<CollectionType> *>(&other);
+
+            if ( !p )
+                return false;
+            return m_iterator == p->m_iterator;
+        }
+        protected:
+            CollectionType::iterator m_iterator;
+    };
+
+    struct ConstIteratorInterface
+    {
+        virtual ~ConstIteratorInterface() { }
+
+        virtual const T &operator*() const noexcept = 0;
+
+        virtual const T *operator->() const noexcept = 0;
+
+        virtual ConstIteratorInterface &operator++() noexcept = 0;
+
+        virtual ConstIteratorInterface &operator--() noexcept = 0;
+
+        friend bool operator ==(const ConstIteratorInterface &left, const ConstIteratorInterface &right) noexcept
+        {
+            return left.EqualTo(right);
+        }
+
+        virtual std::unique_ptr<ConstIteratorInterface> Clone() const = 0;
+
+        virtual bool EqualTo(const ConstIteratorInterface &other) const = 0;
+    };
+
+    template <typename CollectionType>
+    struct ConstIteratorModel : ConstIteratorInterface
+    {
+        ConstIteratorModel(CollectionType::const_iterator i)
+          :
+          m_iterator( i )
+        {
+        }
+
+       ~ConstIteratorModel() override { }
+
+        const T &operator*() const noexcept override
+        {
+            return *m_iterator;
+        }
+
+        const T *operator->() const noexcept override
+        {
+            return m_iterator.operator ->();
+        }
+
+        ConstIteratorInterface &operator++() noexcept override
+        {
+            ++m_iterator;
+            return *this;
+        }
+
+        ConstIteratorInterface &operator--() noexcept override
+        {
+            --m_iterator;
+            return *this;
+        }
+
+        std::unique_ptr<ConstIteratorInterface> Clone() const override
+        {
+            return std::make_unique<ConstIteratorModel>(m_iterator);
+        }
+
+        bool EqualTo(const ConstIteratorInterface &other) const override
+        {
+            const ConstIteratorModel<CollectionType> *p = dynamic_cast<const ConstIteratorModel<CollectionType> *>(&other);
+
+            if ( !p )
+                return false;
+            return m_iterator == p->m_iterator;
+        }
+        protected:
+            CollectionType::const_iterator m_iterator;
+    };
+
     struct Interface
     {
         virtual ~Interface() { }
@@ -27,13 +295,22 @@ class ICollection
 
         virtual std::unique_ptr<Interface> Clone() = 0;
         virtual std::unique_ptr<Interface> Empty() = 0;
+
+        // Range-for compatibility
+        virtual      Iterator  begin()       = 0;
+        virtual ConstIterator  begin() const = 0;
+        virtual ConstIterator cbegin() const = 0;
+
+        virtual      Iterator  end()       = 0;
+        virtual ConstIterator  end() const = 0;
+        virtual ConstIterator cend() const = 0;
     };
 
     template <class CollectionType>
     struct InterfaceModel : Interface
     {
         InterfaceModel() = default;
-        InterfaceModel(CollectionType &input) : data( input ) { }
+        InterfaceModel(const CollectionType  &input) : data( input ) { }
         InterfaceModel(CollectionType &&input) : data( std::move(input) ) { }
         ~InterfaceModel() override { }
           
@@ -69,68 +346,381 @@ class ICollection
             return std::make_unique_for_overwrite<InterfaceModel>();
         }
 
+        // Range-for compatibility
+             Iterator  begin()       override { return Iterator( std::make_unique<IteratorModel<CollectionType>>(data.begin()) ); }
+        ConstIterator  begin() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.begin()) ); }
+        ConstIterator cbegin() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.cbegin()) ); }
+
+             Iterator  end()       override { return Iterator( std::make_unique<IteratorModel<CollectionType>>(data.end()) ); }
+        ConstIterator  end() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.end()) ); }
+        ConstIterator cend() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.cend()) ); }
+
         CollectionType data;
     };
 
 public:
+    using value_type  = T;
+    using size_type   = std::size_t;
+    using reference       =       value_type &;
+    using const_reference = const value_type &;
+    using pointer         =       value_type *;
+    using const_pointer   = const value_type *;
+
+    using iterator        = Iterator;
+    using const_iterator  = ConstIterator;
+
+
     ICollection() = delete;
 
     template <typename CollectionType>
     ICollection(CollectionType &input)
       :
-      m_pimple( std::make_unique<InterfaceModel<CollectionType>>(input) )
+      m_pimpl( std::make_unique<InterfaceModel<CollectionType>>(input) )
+    {
+    }
+
+    template <typename CollectionType>
+    ICollection(const CollectionType &input)
+      :
+      m_pimpl( std::make_unique<const InterfaceModel<CollectionType>>(input) )
     {
     }
 
     template <typename CollectionType>
     ICollection(CollectionType &&input)
       :
-      m_pimple( std::make_unique<InterfaceModel<CollectionType>>( std::move(input) ) )
+      m_pimpl( std::make_unique<InterfaceModel<CollectionType>>( std::move(input) ) )
     {
     }
 
     ICollection(const ICollection &other)
       :
-      m_pimple( other.m_pimple->Clone() )
+      m_pimpl( other.m_pimpl->Clone() )
     {
     }
     ICollection(ICollection &other)
       :
-      m_pimple( other.m_pimple->Clone() )
+      m_pimpl( other.m_pimpl->Clone() )
     {
     }
     ICollection(ICollection &&other)
       :
-      m_pimple( other.m_pimple->Empty() )
+      m_pimpl( other.m_pimpl->Empty() )
     {
-        std::swap( m_pimple, other.m_pimple );
+        std::swap( m_pimpl, other.m_pimpl );
     }
 
     ICollection &operator =(const ICollection &other)
     {
-        m_pimple = other.m_pimple->Clone();
+        m_pimpl = other.m_pimpl->Clone();
         return *this;
     }
 
     ICollection &operator =(ICollection &&other) = delete;
 
-    std::size_t Count() const      { return m_pimple->Count(); }
-    bool        IsReadOnly() const { return m_pimple->IsReadOnly(); }
-    bool        IsReadOnly()       { return m_pimple->IsReadOnly(); }
-    bool        IsSynchronized() const { return m_pimple->IsSynchronized(); }
+    std::size_t Count() const      { return m_pimpl->Count(); }
+    bool        IsReadOnly() const { return m_pimpl->IsReadOnly(); }
+    bool        IsReadOnly()       { return m_pimpl->IsReadOnly(); }
+    bool        IsSynchronized() const { return m_pimpl->IsSynchronized(); }
 
-    void Add(const T &item)      { m_pimple->Add(item); }
-    bool Remove(const T &item)   { return m_pimple->Remove(item); }
-    void Clear()                 { m_pimple->Clear(); }
-    bool Contains(const T &item) { return m_pimple->Contains(item); }
+    void Add(const T &item)      { m_pimpl->Add(item); }
+    bool Remove(const T &item)   { return m_pimpl->Remove(item); }
+    void Clear()                 { m_pimpl->Clear(); }
+    bool Contains(const T &item) { return m_pimpl->Contains(item); }
+
+    // Range-for compatibility
+          iterator  begin()       { return m_pimpl->begin(); }
+    const_iterator  begin() const { return const_cast<const Interface *>(m_pimpl.get())->begin(); } // We have to make the underlying object const here
+    const_iterator cbegin() const { return m_pimpl->cbegin(); }
+
+          iterator  end()         { return m_pimpl->end(); }
+    const_iterator  end() const { return const_cast<const Interface *>(m_pimpl.get())->end(); } // We have to make the underlying object const here
+    const_iterator cend()   const { return m_pimpl->cend(); }
 protected:
-    std::unique_ptr<Interface> m_pimple;
+    std::unique_ptr<Interface> m_pimpl;
 };
+
+// Deduction Guides
+
+template <typename CollectionType>
+ICollection(CollectionType &input) -> ICollection<typename CollectionType::value_type>;
 
 
 template <typename T>
 class ICollectionRef
 {
+    struct IteratorInterface;
+    template <typename ModelT> class IteratorModel;
+    
+    struct ConstIteratorInterface;
+    template <typename ModelT> class ConstIteratorModel;
+
+public:
+
+    struct Iterator
+    {
+        Iterator(std::unique_ptr<IteratorInterface> &&position)
+            :
+            m_pimpl( std::move(position) )
+        {
+        }
+
+        Iterator(const Iterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        Iterator(Iterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        Iterator(Iterator &&other) = delete;
+
+        Iterator &operator =(const Iterator &other)
+        {
+            m_pimpl = other.m_pimpl->Clone();
+            return *this;
+        }
+
+        Iterator &operator =(Iterator &&other) = delete;
+
+        T &operator *()  noexcept { return *(*m_pimpl); }
+
+        T  operator ->() noexcept { return m_pimpl->operator ->(); }
+
+        Iterator &operator ++() noexcept
+        {
+            m_pimpl->operator ++();
+            return *this;
+        }
+
+        Iterator &operator --() noexcept
+        {
+            m_pimpl->operator --();
+            return *this;
+        }
+
+        friend bool operator ==(const Iterator &left, const Iterator &right) noexcept
+        {
+            return *left.m_pimpl == *right.m_pimpl;
+        }
+
+        protected:
+            std::unique_ptr<IteratorInterface> m_pimpl;
+
+            Iterator() = default;
+    };
+
+    struct ConstIterator
+    {
+        ConstIterator(std::unique_ptr<ConstIteratorInterface> &&position)
+            :
+            m_pimpl( std::move(position) )
+        {
+        }
+
+        ConstIterator(const ConstIterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        ConstIterator(ConstIterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        ConstIterator(ConstIterator &&other) = delete;
+
+        ConstIterator &operator =(const ConstIterator &other)
+        {
+            m_pimpl = other.m_pimpl->Clone();
+            return *this;
+        }
+
+        ConstIterator &operator =(ConstIterator &&other) = delete;
+
+        const T &operator*() const noexcept { return *(*m_pimpl); }
+
+        const T *operator->() const noexcept  { return m_pimpl->operator ->(); }
+
+        ConstIterator &operator++() noexcept
+        {
+            m_pimpl->operator ++();
+            return *this;
+        }
+
+        ConstIterator &operator--() noexcept
+        {
+            m_pimpl->operator --();
+            return *this;
+        }
+
+        friend bool operator ==(const ConstIterator &left, const ConstIterator &right) noexcept
+        {
+            return *left.m_pimpl == *right.m_pimpl;
+        }
+
+        protected:
+            std::unique_ptr<ConstIteratorInterface> m_pimpl;
+
+            ConstIterator() = default;
+    };
+
+private:
+    struct IteratorInterface
+    {
+        virtual ~IteratorInterface() { }
+
+        virtual T &operator*() noexcept = 0;
+
+        virtual T *operator->() noexcept = 0;
+
+        virtual IteratorInterface &operator++() noexcept = 0;
+
+        virtual IteratorInterface &operator--() noexcept = 0;
+
+        friend bool operator ==(const IteratorInterface &left, const IteratorInterface &right) noexcept
+        {
+            return left.EqualTo(right);
+        }
+
+        virtual std::unique_ptr<IteratorInterface> Clone() = 0;
+
+        virtual bool EqualTo(const IteratorInterface &other) const = 0;
+    };
+
+    template <typename CollectionType>
+    struct IteratorModel : IteratorInterface
+    {
+        IteratorModel(CollectionType::iterator i)
+          :
+          m_iterator( i )
+        {
+        }
+
+       ~IteratorModel() override { }
+
+        T &operator*() noexcept override
+        {
+            return *m_iterator;
+        }
+
+        T *operator->() noexcept override
+        {
+            return m_iterator.operator ->();
+        }
+
+        IteratorInterface &operator++() noexcept override
+        {
+            ++m_iterator;
+            return *this;
+        }
+
+        IteratorInterface &operator--() noexcept override
+        {
+            --m_iterator;
+            return *this;
+        }
+
+        std::unique_ptr<IteratorInterface> Clone() override
+        {
+            return std::make_unique<IteratorModel>(m_iterator);
+        }
+
+        bool EqualTo(const IteratorInterface &other) const override
+        {
+            const IteratorModel<CollectionType> *p = dynamic_cast<const IteratorModel<CollectionType> *>(&other);
+
+            if ( !p )
+                return false;
+            return m_iterator == p->m_iterator;
+        }
+        protected:
+            CollectionType::iterator m_iterator;
+    };
+
+    struct ConstIteratorInterface
+    {
+        virtual ~ConstIteratorInterface() { }
+
+        virtual const T &operator*() const noexcept = 0;
+
+        virtual const T *operator->() const noexcept = 0;
+
+        virtual ConstIteratorInterface &operator++() noexcept = 0;
+
+        virtual ConstIteratorInterface &operator--() noexcept = 0;
+
+        friend bool operator ==(const ConstIteratorInterface &left, const ConstIteratorInterface &right) noexcept
+        {
+            return left.EqualTo(right);
+        }
+
+        virtual std::unique_ptr<ConstIteratorInterface> Clone() const = 0;
+
+        virtual bool EqualTo(const ConstIteratorInterface &other) const = 0;
+    };
+
+    template <typename CollectionType>
+    struct ConstIteratorModel : ConstIteratorInterface
+    {
+        ConstIteratorModel(CollectionType::const_iterator i)
+          :
+          m_iterator( i )
+        {
+        }
+        ConstIteratorModel(CollectionType::iterator i)
+          :
+          m_iterator( i )
+        {
+        }
+
+       ~ConstIteratorModel() override { }
+
+        const T &operator*() const noexcept override
+        {
+            return *m_iterator;
+        }
+
+        const T *operator->() const noexcept override
+        {
+            return m_iterator.operator ->();
+        }
+
+        ConstIteratorInterface &operator++() noexcept override
+        {
+            ++m_iterator;
+            return *this;
+        }
+
+        ConstIteratorInterface &operator--() noexcept override
+        {
+            --m_iterator;
+            return *this;
+        }
+
+        std::unique_ptr<ConstIteratorInterface> Clone() const override
+        {
+            return std::make_unique<ConstIteratorModel>(m_iterator);
+        }
+
+        bool EqualTo(const ConstIteratorInterface &other) const override
+        {
+            const ConstIteratorModel<CollectionType> *p = dynamic_cast<const ConstIteratorModel<CollectionType> *>(&other);
+
+            if ( !p )
+                return false;
+            return m_iterator == p->m_iterator;
+        }
+        protected:
+            CollectionType::const_iterator m_iterator;
+    };
+
     struct Interface
     {
         virtual ~Interface() { }
@@ -148,6 +738,15 @@ class ICollectionRef
         // TODO: Add CopyTo() ?
 
         virtual std::unique_ptr<Interface> Clone() = 0;
+
+        // Range-for compatibility
+        virtual      Iterator  begin()       = 0;
+        virtual ConstIterator  begin() const = 0;
+        virtual ConstIterator cbegin() const = 0;
+
+        virtual      Iterator  end()       = 0;
+        virtual ConstIterator  end() const = 0;
+        virtual ConstIterator cend() const = 0;
     };
 
     template <class CollectionType>
@@ -187,10 +786,30 @@ class ICollectionRef
             return std::make_unique<InterfaceModelPtr<CollectionType>>(data);
         }
 
+        // Range-for compatibility
+             Iterator  begin()       override { return Iterator( std::make_unique<IteratorModel<CollectionType>>(data->begin()) ); }
+        ConstIterator  begin() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.begin()) ); }
+        ConstIterator cbegin() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data->cbegin()) ); }
+
+             Iterator  end()       override { return Iterator( std::make_unique<IteratorModel<CollectionType>>(data->end()) ); }
+        ConstIterator  end() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.end()) ); }
+        ConstIterator cend() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data->cend()) ); }
+
         CollectionType *data = nullptr;
     };
 
 public:
+    using value_type  = T;
+    using size_type   = std::size_t;
+    using reference       =       value_type &;
+    using const_reference = const value_type &;
+    using pointer         =       value_type *;
+    using const_pointer   = const value_type *;
+
+    using iterator        = Iterator;
+    using const_iterator  = ConstIterator;
+
+
     ICollectionRef() = delete;
 
     template <class CollectionType>
@@ -221,6 +840,15 @@ public:
     bool Remove(const T &item)   { return m_pimpl->Remove(item); }
     void Clear()                 { m_pimpl->Clear(); }
     bool Contains(const T &item) { return m_pimpl->Contains(item); }
+
+    // Range-for compatibility
+          iterator  begin()       { return m_pimpl->begin(); }
+    const_iterator  begin() const { return const_cast<const Interface *>(m_pimpl.get())->begin(); }
+    const_iterator cbegin() const { return m_pimpl->cbegin(); }
+
+          iterator  end()         { return m_pimpl->end(); }
+    const_iterator  end()   const { return const_cast<const Interface *>(m_pimpl.get())->end(); }
+    const_iterator cend()   const { return m_pimpl->cend(); }
 protected:
     std::unique_ptr<Interface> m_pimpl;
 };
