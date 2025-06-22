@@ -788,11 +788,11 @@ private:
 
         // Range-for compatibility
              Iterator  begin()       override { return Iterator( std::make_unique<IteratorModel<CollectionType>>(data->begin()) ); }
-        ConstIterator  begin() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.begin()) ); }
+        ConstIterator  begin() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data->begin()) ); }
         ConstIterator cbegin() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data->cbegin()) ); }
 
              Iterator  end()       override { return Iterator( std::make_unique<IteratorModel<CollectionType>>(data->end()) ); }
-        ConstIterator  end() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.end()) ); }
+        ConstIterator  end() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data->end()) ); }
         ConstIterator cend() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data->cend()) ); }
 
         CollectionType *data = nullptr;
