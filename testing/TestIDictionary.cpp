@@ -14,6 +14,18 @@ using KVP = System::Collections::Generic::KeyValuePair<K, V>;
 using DictionaryType = System::Collections::Generic::Dictionary<int, std::string>;
 using IDictionaryType = System::Collections::Generic::Dictionary<int, std::string>;
 
+System::Collections::Generic::IDictionary<int,int> TestMoveFromDictionary()
+{
+   System::Collections::Generic::Dictionary<int, int> example; 
+
+   example.Add(0, 1);
+   example.Add(1, 2);
+   example.Add(2, 3);
+   example.Add(3, 4);
+
+   return example;
+}
+
 void MoveConstructedWithDataType()
 {
     std::cout << __func__ << std::endl;
@@ -134,6 +146,35 @@ void MoveConstructorLeavesOldObjectEmpty()
     assert( idictionary.Count() == 0 );
 }
 
+void MovedFromFunctionAsDictionary()
+{
+    std::cout << __func__ << std::endl;
+
+    System::Collections::Generic::IDictionary<int, int> data = TestMoveFromDictionary();
+
+    assert( data.Count() == 4 );
+    assert( data.Contains( KVP<int, int>(0, 1) ) );
+    assert( data.Contains( KVP<int, int>(1, 2) ) );
+    assert( data.Contains( KVP<int, int>(2, 3) ) );
+    assert( data.Contains( KVP<int, int>(3, 4) ) );
+}
+
+void IterateOverDictionary()
+{
+    std::cout << __func__ << std::endl;
+
+    System::Collections::Generic::Dictionary<int, std::string> dictionary( { {0, "zero"}, {1, "one"}, {2, "two"}, {3, "three"} });
+
+    {
+        System::Collections::Generic::IDictionary idictionary{ dictionary };
+
+        for (const System::Collections::Generic::KeyValuePair<int, std::string> &i: idictionary)
+        {
+            std::cout << "KeyValuePair<int, string> = " << i.Key() << ", " << i.Value() << std::endl;
+        }
+    }
+}
+
 void Run()
 {
     std::cout << "Running IDictionary Tests..." << std::endl;
@@ -142,18 +183,16 @@ void Run()
     ConstructedWithObjectMakesANewCopy();
     CopyConstructorMakesANewObject();
     MoveConstructorLeavesOldObjectEmpty();
-#if 0
-    MovedFromFunctionAsLinkedList();
-    MovedFromFunctionAsList();
     MovedFromFunctionAsDictionary();
 
+#if 0
     ConstructWithLinkedListRef();
     ConstructWithListRef();
 
     IterateOverList();
     IterateOverLinkedList();
-    IterateOverDictionary();
 #endif
+    IterateOverDictionary();
 
     std::cout << "PASSED!" << std::endl;
 }
