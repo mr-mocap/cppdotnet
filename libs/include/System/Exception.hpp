@@ -500,8 +500,8 @@ public:
  *        the information about the call-site of the function call.
  */ 
 template <class ExceptionType>
-void ThrowWithTarget(ExceptionType        &&exception_to_throw,
-                     std::source_location   sloc = std::source_location::current())
+[[noreturn]] void ThrowWithTarget(ExceptionType        &&exception_to_throw,
+                                  std::source_location   sloc = std::source_location::current())
 {
     ExceptionType e{ std::forward<ExceptionType>( exception_to_throw ) };
     
