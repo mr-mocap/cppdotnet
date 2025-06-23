@@ -299,12 +299,6 @@ public:
         return false;
     }
 
-    // C++ speicfic stuff
-    friend std::strong_ordering operator <=>(const Dictionary &left, const Dictionary &right)
-    {
-        return left._data <=> right._data;
-    }
-
     // Range-for compatibility
           iterator  begin()                { return _data.begin(); }
     const_iterator  begin() const          { return _data.begin(); }
