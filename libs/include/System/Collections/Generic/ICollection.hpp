@@ -99,9 +99,9 @@ public:
 
         ConstIterator &operator =(ConstIterator &&other) = delete;
 
-        const T &operator*() const noexcept { return *(*m_pimpl); }
+        const T &operator*() noexcept { return *(*m_pimpl); }
 
-        const T *operator->() const noexcept  { return m_pimpl->operator ->(); }
+        const T *operator->() noexcept  { return m_pimpl->operator ->(); }
 
         ConstIterator &operator++() noexcept
         {
@@ -469,12 +469,6 @@ public:
             return *this;
         }
 
-        Iterator &operator --() noexcept
-        {
-            m_pimpl->operator --();
-            return *this;
-        }
-
         friend bool operator ==(const Iterator &left, const Iterator &right) noexcept
         {
             return *left.m_pimpl == *right.m_pimpl;
@@ -516,19 +510,13 @@ public:
 
         ConstIterator &operator =(ConstIterator &&other) = delete;
 
-        const T &operator*() const noexcept { return *(*m_pimpl); }
+        const T &operator*() noexcept { return *(*m_pimpl); }
 
-        const T *operator->() const noexcept  { return m_pimpl->operator ->(); }
+        const T *operator->() noexcept  { return m_pimpl->operator ->(); }
 
         ConstIterator &operator++() noexcept
         {
             m_pimpl->operator ++();
-            return *this;
-        }
-
-        ConstIterator &operator--() noexcept
-        {
-            m_pimpl->operator --();
             return *this;
         }
 
@@ -620,13 +608,11 @@ private:
     {
         virtual ~ConstIteratorInterface() { }
 
-        virtual const T &operator*() const noexcept = 0;
+        virtual const T &operator*() noexcept = 0;
 
-        virtual const T *operator->() const noexcept = 0;
+        virtual const T *operator->() noexcept = 0;
 
         virtual ConstIteratorInterface &operator++() noexcept = 0;
-
-        virtual ConstIteratorInterface &operator--() noexcept = 0;
 
         friend bool operator ==(const ConstIteratorInterface &left, const ConstIteratorInterface &right) noexcept
         {
@@ -646,20 +632,15 @@ private:
           m_iterator( i )
         {
         }
-        ConstIteratorModel(CollectionType::iterator i)
-          :
-          m_iterator( i )
-        {
-        }
 
        ~ConstIteratorModel() override { }
 
-        const T &operator*() const noexcept override
+        const T &operator*() noexcept override
         {
             return *m_iterator;
         }
 
-        const T *operator->() const noexcept override
+        const T *operator->() noexcept override
         {
             return m_iterator.operator ->();
         }
@@ -667,12 +648,6 @@ private:
         ConstIteratorInterface &operator++() noexcept override
         {
             ++m_iterator;
-            return *this;
-        }
-
-        ConstIteratorInterface &operator--() noexcept override
-        {
-            --m_iterator;
             return *this;
         }
 
@@ -726,7 +701,7 @@ private:
     {
         InterfaceModelPtr() = delete;
         InterfaceModelPtr(CollectionType *input) : data( input ) { } // For easily creating a copy
-        ~InterfaceModelPtr() override
+       ~InterfaceModelPtr() override
         {
             data = nullptr;
         }
@@ -784,7 +759,14 @@ public:
 
     ICollectionRef() = delete;
 
-    template <class CollectionType>
+    template <typename CollectionType>
+    ICollectionRef(const CollectionType *input)
+      :
+      m_pimpl( std::make_unique<const InterfaceModelPtr<CollectionType>>(input) )
+    {
+    }
+
+    template <typename CollectionType>
     ICollectionRef(CollectionType *input)
       :
       m_pimpl( std::make_unique<InterfaceModelPtr<CollectionType>>(input) )
@@ -801,7 +783,15 @@ public:
       m_pimpl( other.m_pimpl->Clone() )
     {
     }
-    ICollectionRef(ICollectionRef &&other) = default;
+    ICollectionRef(ICollectionRef &&other) = delete;
+
+    ICollectionRef &operator =(const ICollectionRef &other)
+    {
+        m_pimpl = other.m_pimpl->Clone();
+        return *this;
+    }
+
+    ICollectionRef &operator =(ICollectionRef &&other) = delete;
 
     std::size_t Count() const      { return m_pimpl->Count(); }
     bool        IsReadOnly() const { return m_pimpl->IsReadOnly(); }
@@ -815,11 +805,11 @@ public:
 
     // Range-for compatibility
           iterator  begin()       { return m_pimpl->begin(); }
-    const_iterator  begin() const { return const_cast<const Interface *>(m_pimpl.get())->begin(); }
+    const_iterator  begin() const { return const_cast<const Interface *>(m_pimpl.get())->begin(); } // We have to make the underlying object const here
     const_iterator cbegin() const { return m_pimpl->cbegin(); }
 
           iterator  end()         { return m_pimpl->end(); }
-    const_iterator  end()   const { return const_cast<const Interface *>(m_pimpl.get())->end(); }
+    const_iterator  end() const { return const_cast<const Interface *>(m_pimpl.get())->end(); } // We have to make the underlying object const here
     const_iterator cend()   const { return m_pimpl->cend(); }
 protected:
     std::unique_ptr<Interface> m_pimpl;
