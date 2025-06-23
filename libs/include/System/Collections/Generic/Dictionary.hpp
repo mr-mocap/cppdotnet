@@ -188,11 +188,6 @@ public:
         return _data[key];
     }
 
-    constexpr const mapped_type &operator[](const key_type &key) const
-    {
-        return _data[key];
-    }
-
     constexpr mapped_type &at(const key_type &key)
     {
         try
@@ -203,7 +198,6 @@ public:
         {
             ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
         }
-        return mapped_type(); // We should NEVER get here!  Is this correct?
     }
 
     constexpr const mapped_type &at(const key_type &key) const
@@ -216,7 +210,6 @@ public:
         {
             ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
         }
-        return mapped_type(); // We should NEVER get here!  Is this correct?
     }
 
     constexpr bool TryAdd(const key_type &key, const mapped_type &value)
