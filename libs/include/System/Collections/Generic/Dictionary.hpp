@@ -32,7 +32,7 @@ public:
     using size_type   = std::size_t;
     using difference_type = underlying_datatype::difference_type;
     using hasher          = Hash;
-    using key_compare     = KeyEqual;
+    using key_equal       = KeyEqual;
     using allocator_type  = Allocator;
     using reference       =       value_type &;
     using const_reference = const value_type &;
@@ -124,7 +124,7 @@ public:
     
     Dictionary(const std::unordered_map<TKey, TValue, Hash, KeyEqual, Allocator> &init_value)
         :
-        _data( init_value )
+        m_data( init_value )
     {
     }
 
@@ -136,7 +136,7 @@ public:
                const KeyEqual   &comp = KeyEqual(),
                const Allocator &alloc = Allocator())
         :
-        _data( first, one_past_last, minimum_initial_bucket_count, hash, comp, alloc )
+        m_data( first, one_past_last, minimum_initial_bucket_count, hash, comp, alloc )
     {
     }
 
@@ -147,13 +147,13 @@ public:
                const KeyEqual   &comp = KeyEqual(),
                const Allocator &alloc = Allocator())
         :
-        _data( il, minimum_initial_bucket_count, hash, comp, alloc )
+        m_data( il, minimum_initial_bucket_count, hash, comp, alloc )
     {
     }
 
     Dictionary(std::unordered_map<TKey, TValue, Hash, KeyEqual, Allocator> &&init_value)
         :
-        _data( std::move(init_value) )
+        m_data( std::move(init_value) )
     {
     }
 
@@ -162,20 +162,20 @@ public:
     constexpr Dictionary &operator =(const Dictionary &) = default;
     constexpr Dictionary &operator =(Dictionary &&) = default;
 
-    constexpr key_compare Comparer() const { return _data.key_comp(); }
+    constexpr key_equal Comparer() const { return m_data.key_comp(); }
 
     constexpr size_type Capacity() const { return Count(); }  // NOTE: This isn't really implementable, is it?
 
     constexpr mapped_type &operator[](const key_type &key)
     {
-        return _data[key];
+        return m_data[key];
     }
 
     constexpr mapped_type &at(const key_type &key)
     {
         try
         {
-            return _data.at( key );
+            return m_data.at( key );
         }
         catch(const std::out_of_range &)
         {
@@ -187,7 +187,7 @@ public:
     {
         try
         {
-            return _data.at( key );
+            return m_data.at( key );
         }
         catch(const std::out_of_range &)
         {
@@ -197,17 +197,17 @@ public:
 
     constexpr bool TryAdd(const key_type &key, const mapped_type &value)
     {
-        if ( _data.contains( key ) )
+        if ( m_data.contains( key ) )
             return false;
-        _data[ key ] = value;
+        m_data[ key ] = value;
         return true;
     }
 
     constexpr bool TryGetValue(const key_type &key, mapped_type &value_out) const
     {
-        auto iter = _data.find( key );
+        auto iter = m_data.find( key );
 
-        if ( iter == _data.end() )
+        if ( iter == m_data.end() )
         {
             value_out = mapped_type{};
             return false;
@@ -223,17 +223,17 @@ public:
 
     bool Remove(const key_type &key)
     {
-        return _data.erase( key );
+        return m_data.erase( key );
     }
 
     constexpr bool ContainsKey(const key_type &key) const
     {
-        return _data.contains( key );
+        return m_data.contains( key );
     }
 
     constexpr bool ContainsValue(const mapped_type &value) const
     {
-        for (auto const &v : std::views::values( _data ) )
+        for (auto const &v : std::views::values( m_data ) )
             if ( v == value )
                 return true;
         return false;
@@ -244,7 +244,7 @@ public:
         std::vector<key_type> rv;
 
         rv.reserve( Count() );
-        std::ranges::copy( std::views::keys( _data ), std::back_inserter( rv ) );
+        std::ranges::copy( std::views::keys( m_data ), std::back_inserter( rv ) );
         return rv;
     }
 
@@ -253,12 +253,12 @@ public:
         std::vector<mapped_type> rv;
 
         rv.reserve( Count() );
-        std::ranges::copy( std::views::values( _data ), std::back_inserter( rv ) );
+        std::ranges::copy( std::views::values( m_data ), std::back_inserter( rv ) );
         return rv;
     }
 
     // ICollection interface
-    constexpr size_type Count() const { return _data.size(); }
+    constexpr size_type Count() const { return m_data.size(); }
 
     bool IsReadOnly() const { return true; }
     bool IsReadOnly()       { return false; }
@@ -274,24 +274,24 @@ public:
     {
         using namespace std::literals;
 
-        if ( _data.contains( key ) )
+        if ( m_data.contains( key ) )
             ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the Dictionary", key), "key"sv ) );
         else
-            _data[ key ] = value;
+            m_data[ key ] = value;
         
         POSTCONDITION( ContainsKey(key) );
     }
 
     constexpr void Clear()
     {
-        _data.clear();
+        m_data.clear();
 
-        POSTCONDITION( _data.empty() );
+        POSTCONDITION( m_data.empty() );
     }
 
     constexpr bool Contains(const KeyValuePair<TKey, TValue> &key_value_pair) const
     {
-        for (const std::pair<const TKey, TValue> &iCurrentIteration : _data)
+        for (const std::pair<const TKey, TValue> &iCurrentIteration : m_data)
         {
             if ( iCurrentIteration == key_value_pair )
                 return true;
@@ -300,15 +300,15 @@ public:
     }
 
     // Range-for compatibility
-          iterator  begin()                { return _data.begin(); }
-    const_iterator  begin() const          { return _data.begin(); }
-    const_iterator cbegin() const noexcept { return _data.cbegin(); }
+          iterator  begin()                { return m_data.begin(); }
+    const_iterator  begin() const          { return m_data.begin(); }
+    const_iterator cbegin() const noexcept { return m_data.cbegin(); }
 
-          iterator  end()                { return _data.end(); }
-    const_iterator  end()  const         { return _data.end(); }
-    const_iterator cend() const noexcept { return _data.cend(); }
+          iterator  end()                { return m_data.end(); }
+    const_iterator  end()  const         { return m_data.end(); }
+    const_iterator cend() const noexcept { return m_data.cend(); }
 protected:
-    std::unordered_map<TKey, TValue, Hash, KeyEqual, Allocator> _data;
+    std::unordered_map<TKey, TValue, Hash, KeyEqual, Allocator> m_data;
 };
 
 // Deduction Guides
