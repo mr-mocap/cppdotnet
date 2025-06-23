@@ -58,12 +58,6 @@ public:
             return *this;
         }
 
-        Iterator &operator --() noexcept
-        {
-            m_pimpl->operator --();
-            return *this;
-        }
-
         friend bool operator ==(const Iterator &left, const Iterator &right) noexcept
         {
             return *left.m_pimpl == *right.m_pimpl;
@@ -115,12 +109,6 @@ public:
             return *this;
         }
 
-        ConstIterator &operator--() noexcept
-        {
-            m_pimpl->operator --();
-            return *this;
-        }
-
         friend bool operator ==(const ConstIterator &left, const ConstIterator &right) noexcept
         {
             return *left.m_pimpl == *right.m_pimpl;
@@ -142,8 +130,6 @@ private:
         virtual T *operator->() noexcept = 0;
 
         virtual IteratorInterface &operator++() noexcept = 0;
-
-        virtual IteratorInterface &operator--() noexcept = 0;
 
         friend bool operator ==(const IteratorInterface &left, const IteratorInterface &right) noexcept
         {
@@ -182,12 +168,6 @@ private:
             return *this;
         }
 
-        IteratorInterface &operator--() noexcept override
-        {
-            --m_iterator;
-            return *this;
-        }
-
         std::unique_ptr<IteratorInterface> Clone() override
         {
             return std::make_unique<IteratorModel>(m_iterator);
@@ -209,13 +189,11 @@ private:
     {
         virtual ~ConstIteratorInterface() { }
 
-        virtual const T &operator*() const noexcept = 0;
+        virtual const T &operator*() noexcept = 0;
 
-        virtual const T *operator->() const noexcept = 0;
+        virtual const T *operator->() noexcept = 0;
 
         virtual ConstIteratorInterface &operator++() noexcept = 0;
-
-        virtual ConstIteratorInterface &operator--() noexcept = 0;
 
         friend bool operator ==(const ConstIteratorInterface &left, const ConstIteratorInterface &right) noexcept
         {
@@ -238,12 +216,12 @@ private:
 
        ~ConstIteratorModel() override { }
 
-        const T &operator*() const noexcept override
+        const T &operator*() noexcept override
         {
             return *m_iterator;
         }
 
-        const T *operator->() const noexcept override
+        const T *operator->() noexcept override
         {
             return m_iterator.operator ->();
         }
@@ -251,12 +229,6 @@ private:
         ConstIteratorInterface &operator++() noexcept override
         {
             ++m_iterator;
-            return *this;
-        }
-
-        ConstIteratorInterface &operator--() noexcept override
-        {
-            --m_iterator;
             return *this;
         }
 

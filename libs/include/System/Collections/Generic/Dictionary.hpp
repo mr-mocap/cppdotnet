@@ -5,7 +5,9 @@
 #include "System/Collections/Generic/KeyValuePair.hpp"
 #include "System/Exception.hpp"
 #include "System/Private/private.hpp"
-#include <map>
+#include <unordered_map>
+#include <functional>
+#include <iterator>
 #include <format>
 #include <ranges>
 #include <compare>
@@ -16,19 +18,21 @@ namespace System::Collections::Generic
 
 template <class TKey,
           class TValue,
-          class Compare   = std::less<TKey>,
+          class Hash      = std::hash<TKey>,
+          class KeyEqual  = std::equal_to<TKey>,
           class Allocator = std::allocator<std::pair<const TKey, TValue>>>
 class Dictionary
 {
 public:
-    using underlying_datatype = std::map<TKey, TValue, Compare, Allocator>;
+    using underlying_datatype = std::unordered_map<TKey, TValue, Hash, KeyEqual, Allocator>;
 
     using key_type    = TKey;
     using mapped_type = TValue;
     using value_type  = KeyValuePair<TKey, TValue>;
     using size_type   = std::size_t;
     using difference_type = underlying_datatype::difference_type;
-    using key_compare     = Compare;
+    using hasher          = Hash;
+    using key_compare     = KeyEqual;
     using allocator_type  = Allocator;
     using reference       =       value_type &;
     using const_reference = const value_type &;
@@ -45,12 +49,12 @@ public:
 
         SpecializedIterator(Base i) : Base( i ) { }
 
-        Dictionary::reference operator*() const noexcept
+        Dictionary::reference operator*() noexcept
         {
             return reinterpret_cast<Dictionary::reference>( Base::operator *() );
         }
 
-        Dictionary::pointer operator->() const noexcept
+        Dictionary::pointer operator->() noexcept
         {
             return reinterpret_cast<Dictionary::pointer>( Base::operator ->() );
         }
@@ -68,19 +72,6 @@ public:
             return tmp;
         }
 
-        SpecializedIterator &operator--() noexcept
-        {
-            Base::operator--();
-            return *this;
-        }
-
-        SpecializedIterator operator--(int) noexcept
-        {
-            SpecializedIterator tmp = Base::operator--(1);
-
-            return tmp;
-        }
-
         friend bool operator==(const SpecializedIterator &left, const SpecializedIterator &right) noexcept
         {
             return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
@@ -94,12 +85,12 @@ public:
 
         SpecializedConstIterator(Base i) : Base( i ) { }
 
-        Dictionary::const_reference operator*() const noexcept
+        Dictionary::const_reference operator*() noexcept
         {
             return reinterpret_cast<Dictionary::const_reference>( Base::operator *() );
         }
 
-        Dictionary::const_pointer operator->() const noexcept
+        Dictionary::const_pointer operator->() noexcept
         {
             return reinterpret_cast<Dictionary::const_pointer>( Base::operator ->() );
         }
@@ -117,36 +108,21 @@ public:
             return tmp;
         }
 
-        SpecializedConstIterator &operator--() noexcept
-        {
-            Base::operator--();
-            return *this;
-        }
-
-        SpecializedConstIterator operator--(int) noexcept
-        {
-            SpecializedConstIterator tmp = Base::operator--(1);
-
-            return tmp;
-        }
-
         friend bool operator==(const SpecializedConstIterator &left, const SpecializedConstIterator &right) noexcept
         {
             return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
         }
     };
 
-    using iterator               = SpecializedIterator;
-    using const_iterator         = SpecializedConstIterator;
-    using reverse_iterator       = std::reverse_iterator<SpecializedIterator>;
-    using const_reverse_iterator = std::reverse_iterator<SpecializedConstIterator>;
+    using iterator       = SpecializedIterator;
+    using const_iterator = SpecializedConstIterator;
 
     using KeyCollection = List<key_type>;
     using ValueCollection = List<mapped_type>;
 
     constexpr Dictionary() = default;
     
-    Dictionary(const std::map<key_type, mapped_type> &init_value)
+    Dictionary(const std::unordered_map<TKey, TValue, Hash, KeyEqual, Allocator> &init_value)
         :
         _data( init_value )
     {
@@ -154,21 +130,28 @@ public:
 
     // This allows the use of either explicit iterator pairs OR the new range syntax
     template <class InputIterator>
-    Dictionary(InputIterator first, InputIterator one_past_last)
-        :
-        _data( first, one_past_last )
-    {
-    }
-
-    Dictionary(std::initializer_list<std::pair<const TKey, TValue>> il,
-               const Compare   &comp = Compare(),
+    Dictionary(InputIterator first, InputIterator one_past_last,
+                     std::size_t minimum_initial_bucket_count = 0,
+               const Hash       &hash = Hash(),
+               const KeyEqual   &comp = KeyEqual(),
                const Allocator &alloc = Allocator())
         :
-        _data( il, comp, alloc )
+        _data( first, one_past_last, minimum_initial_bucket_count, hash, comp, alloc )
     {
     }
 
-    Dictionary(std::map<key_type, mapped_type> &&init_value)
+    
+    Dictionary(std::initializer_list<std::pair<const TKey, TValue>> il,
+                     std::size_t minimum_initial_bucket_count = 0,
+               const Hash       &hash = Hash(),
+               const KeyEqual   &comp = KeyEqual(),
+               const Allocator &alloc = Allocator())
+        :
+        _data( il, minimum_initial_bucket_count, hash, comp, alloc )
+    {
+    }
+
+    Dictionary(std::unordered_map<TKey, TValue, Hash, KeyEqual, Allocator> &&init_value)
         :
         _data( std::move(init_value) )
     {
@@ -330,23 +313,10 @@ public:
           iterator  end()                { return _data.end(); }
     const_iterator  end()  const         { return _data.end(); }
     const_iterator cend() const noexcept { return _data.cend(); }
-
-          reverse_iterator  rbegin()                { return _data.rbegin(); }
-    const_reverse_iterator  rbegin() const          { return _data.rbegin(); }
-    const_reverse_iterator crbegin() const noexcept { return _data.crbegin(); }
-
-          reverse_iterator  rend()                { return _data.rend(); }
-    const_reverse_iterator  rend() const          { return _data.rend(); }
-    const_reverse_iterator crend() const noexcept { return _data.crend(); }
 protected:
-    std::map<TKey, TValue, Compare, Allocator> _data;
+    std::unordered_map<TKey, TValue, Hash, KeyEqual, Allocator> _data;
 };
 
 // Deduction Guides
-template <class TKey, class TValue>
-Dictionary(const std::map<TKey, TValue> &) -> Dictionary<TKey, TValue>;
-
-template <class TKey, class TValue>
-Dictionary(std::map<TKey, TValue> &&) -> Dictionary<TKey, TValue>;
 
 }

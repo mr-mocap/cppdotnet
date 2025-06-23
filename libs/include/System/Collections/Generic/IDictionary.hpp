@@ -3,6 +3,7 @@
 #include "System/Collections/Generic/KeyValuePair.hpp"
 #include "System/Collections/Generic/ICollection.hpp"
 #include <memory>
+#include <iterator>
 
 namespace System::Collections::Generic
 {
@@ -10,55 +11,279 @@ namespace System::Collections::Generic
 template <typename KeyT, typename ValueT>
 class IDictionary
 {
+    struct IteratorInterface;
+    template <typename ModelT> class IteratorModel;
+    
+    struct ConstIteratorInterface;
+    template <typename ModelT> class ConstIteratorModel;
+
+public:
+    using key_type    = KeyT;
+    using mapped_type = ValueT;
+    using value_type  = KeyValuePair<KeyT, ValueT>;
+    using size_type   = std::size_t;
+    using reference       =       value_type &;
+    using const_reference = const value_type &;
+    using pointer         =       KeyValuePair<KeyT, ValueT> *;
+    using const_pointer   = const KeyValuePair<KeyT, ValueT> *;
+
+
+    struct Iterator
+    {
+        Iterator(std::unique_ptr<IteratorInterface> &&position)
+            :
+            m_pimpl( std::move(position) )
+        {
+        }
+
+        Iterator(const Iterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        Iterator(Iterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        Iterator(Iterator &&other) = delete;
+
+        Iterator &operator =(const Iterator &other)
+        {
+            m_pimpl = other.m_pimpl->Clone();
+            return *this;
+        }
+
+        Iterator &operator =(Iterator &&other) = delete;
+
+        IDictionary::reference operator *()  noexcept { return *(*m_pimpl); }
+
+        IDictionary::reference  operator ->() noexcept { return m_pimpl->operator ->(); }
+
+        Iterator &operator ++() noexcept
+        {
+            m_pimpl->operator ++();
+            return *this;
+        }
+
+        friend bool operator ==(const Iterator &left, const Iterator &right) noexcept
+        {
+            return *left.m_pimpl == *right.m_pimpl;
+        }
+
+        protected:
+            std::unique_ptr<IteratorInterface> m_pimpl;
+
+            Iterator() = default;
+    };
+
+    struct ConstIterator
+    {
+        ConstIterator(std::unique_ptr<ConstIteratorInterface> &&position)
+            :
+            m_pimpl( std::move(position) )
+        {
+        }
+
+        ConstIterator(const ConstIterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        ConstIterator(ConstIterator &other)
+          :
+          m_pimpl( other.m_pimpl->Clone() )
+        {
+        }
+
+        ConstIterator(ConstIterator &&other) = delete;
+
+        ConstIterator &operator =(const ConstIterator &other)
+        {
+            m_pimpl = other.m_pimpl->Clone();
+            return *this;
+        }
+
+        ConstIterator &operator =(ConstIterator &&other) = delete;
+
+        IDictionary::const_reference operator *()  noexcept { return *(*m_pimpl); }
+
+        IDictionary::const_pointer   operator ->() noexcept { return m_pimpl->operator ->(); }
+
+        ConstIterator &operator ++() noexcept
+        {
+            m_pimpl->operator ++();
+            return *this;
+        }
+
+        friend bool operator ==(const ConstIterator &left, const ConstIterator &right) noexcept
+        {
+            return *left.m_pimpl == *right.m_pimpl;
+        }
+
+        protected:
+            std::unique_ptr<ConstIteratorInterface> m_pimpl;
+
+            ConstIterator() = default;
+    };
+
+private:
+    struct IteratorInterface
+    {
+        virtual ~IteratorInterface() { }
+
+        virtual IDictionary::reference operator*() noexcept = 0;
+
+        virtual IDictionary::pointer operator->() noexcept = 0;
+
+        virtual IteratorInterface &operator++() noexcept = 0;
+
+        virtual bool EqualTo(const IteratorInterface &other) const = 0;
+
+        friend bool operator==(const IteratorInterface &left, const IteratorInterface &right) noexcept
+        {
+            return left.EqualTo(right);
+        }
+    };
+
+    template <typename DictionaryType>
+    struct IteratorModel : IteratorInterface
+    {
+        IteratorModel(DictionaryType::iterator i)
+          :
+          m_iterator( i )
+        {
+        }
+
+       ~IteratorModel() override { }
+
+        IDictionary::reference operator*() noexcept override
+        {
+            return *m_iterator;
+        }
+
+        IDictionary::pointer operator->() noexcept override
+        {
+            return m_iterator.operator ->();
+        }
+
+        IteratorInterface &operator++() noexcept override
+        {
+            ++m_iterator;
+            return *this;
+        }
+
+        bool EqualTo(const IteratorInterface &other) const override
+        {
+            const IteratorModel<DictionaryType> *p = dynamic_cast<const IteratorModel<DictionaryType> *>(&other);
+
+            if ( !p )
+                return false;
+            return m_iterator == p->m_iterator;
+        }
+        protected:
+            DictionaryType::iterator m_iterator;
+    };
+
+    struct ConstIteratorInterface
+    {
+        virtual ~ConstIteratorInterface() { }
+
+        virtual IDictionary::const_reference operator*() noexcept = 0;
+
+        virtual IDictionary::const_pointer operator->() noexcept = 0;
+
+        virtual ConstIteratorInterface &operator++() noexcept = 0;
+
+        virtual bool EqualTo(const ConstIteratorInterface &other) const = 0;
+
+        friend bool operator==(const ConstIteratorInterface &left, const ConstIteratorInterface &right) noexcept
+        {
+            return left.EqualTo(right);
+        }
+    };
+
+    template <typename DictionaryType>
+    struct ConstIteratorModel : ConstIteratorInterface
+    {
+        ConstIteratorModel(DictionaryType::const_iterator i)
+          :
+          m_iterator( i )
+        {
+        }
+
+       ~ConstIteratorModel() override { }
+
+        IDictionary::const_reference operator*() noexcept override
+        {
+            return *m_iterator;
+        }
+
+        IDictionary::const_pointer operator->() noexcept override
+        {
+            return m_iterator.operator ->();
+        }
+
+        ConstIteratorInterface &operator++() noexcept override
+        {
+            ++m_iterator;
+            return *this;
+        }
+
+        bool EqualTo(const ConstIteratorInterface &other) const override
+        {
+            const ConstIteratorModel<DictionaryType> *p = dynamic_cast<const ConstIteratorModel<DictionaryType> *>(&other);
+
+            if ( !p )
+                return false;
+            return m_iterator == p->m_iterator;
+        }
+        protected:
+            DictionaryType::const_iterator m_iterator;
+    };
+
     struct Interface
     {
         virtual ~Interface() { }
 
-        virtual std::size_t Count() const = 0;
+        virtual std::size_t Count()      const = 0;
         virtual bool        IsReadOnly() const = 0;
         virtual bool        IsReadOnly()       = 0;
         virtual bool        IsSynchronized() const = 0;
 
         // Collection
-        virtual void Add(const KeyValuePair<KeyT, ValueT> &item) = 0;
-        virtual bool Remove(const KeyValuePair<KeyT, ValueT> &item) = 0;
+        virtual void Add(const KeyValuePair<key_type, mapped_type> &item)      = 0;
+        virtual bool Remove(const KeyValuePair<key_type, mapped_type> &item)   = 0;
         virtual void Clear() = 0;
-        virtual bool Contains(const KeyValuePair<KeyT, ValueT> &item) = 0;
+        virtual bool Contains(const KeyValuePair<key_type, mapped_type> &item) = 0;
 
         // TODO: Add CopyTo() ?
 
         // Dictionary
-        virtual       ValueT &operator[](const KeyT &key) = 0;
-        virtual const ValueT &operator[](const KeyT &key) const = 0;
-        virtual       ValueT &at(const KeyT &key)       = 0;
-        virtual const ValueT &at(const KeyT &key) const = 0;
+        virtual       mapped_type &operator[](const key_type &key)       = 0;
+        virtual       mapped_type &at(const key_type &key)       = 0;
+        virtual const mapped_type &at(const key_type &key) const = 0;
 
-        virtual void Add(const KeyT &key, const ValueT &value) = 0;
-        virtual bool TryAdd(const KeyT &key, const ValueT &value) = 0;
-        virtual bool Remove(const KeyT &key) = 0;
-        virtual bool ContainsKey(const KeyT &key) const = 0;
-        virtual bool ContainsValue(const ValueT &value) const = 0;
-        virtual bool TryGetValue(const KeyT &key, const ValueT &value_out) const = 0;
-        virtual ICollection<KeyT>   Keys()   const = 0;
-        virtual ICollection<ValueT> Values() const = 0;
+        virtual void Add(const key_type &key, const mapped_type &value)             = 0;
+        virtual bool TryAdd(const key_type &key, const mapped_type &value)          = 0;
+        virtual bool Remove(const key_type &key)                                    = 0;
+        virtual bool ContainsKey(const key_type &key)                         const = 0;
+        virtual bool ContainsValue(const mapped_type &value)                  const = 0;
+        virtual bool TryGetValue(const key_type &key, mapped_type &value_out) const = 0;
 
-#if 0
-        virtual Dictionary<KeyT, ValueT>::iterator        begin()                = 0;
-        virtual Dictionary<KeyT, ValueT>::const_iterator  begin() const          = 0;
-        virtual Dictionary<KeyT, ValueT>::const_iterator cbegin() const noexcept = 0;
+        virtual ICollection<key_type>    Keys()   const = 0;
+        virtual ICollection<mapped_type> Values() const = 0;
 
-        virtual Dictionary<KeyT, ValueT>::iterator        end()                = 0;
-        virtual Dictionary<KeyT, ValueT>::const_iterator  end()  const         = 0;
-        virtual Dictionary<KeyT, ValueT>::const_iterator cend() const noexcept = 0;
+        virtual Iterator       begin()       = 0;
+        virtual ConstIterator  begin() const = 0;
+        virtual ConstIterator cbegin() const noexcept = 0;
 
-        virtual Dictionary<KeyT, ValueT>::reverse_iterator        rbegin()                = 0;
-        virtual Dictionary<KeyT, ValueT>::const_reverse_iterator  rbegin() const          = 0;
-        virtual Dictionary<KeyT, ValueT>::const_reverse_iterator crbegin() const noexcept = 0;
-
-        virtual Dictionary<KeyT, ValueT>::reverse_iterator        rend()                = 0;
-        virtual Dictionary<KeyT, ValueT>::const_reverse_iterator  rend() const          = 0;
-        virtual Dictionary<KeyT, ValueT>::const_reverse_iterator crend() const noexcept = 0;
-#endif
+        virtual Iterator       end()                = 0;
+        virtual ConstIterator  end() const          = 0;
+        virtual ConstIterator cend() const noexcept = 0;
 
         virtual std::unique_ptr<Interface> Clone() = 0;
         virtual std::unique_ptr<Interface> Empty() = 0;
@@ -86,38 +311,35 @@ class IDictionary
 
         bool IsSynchronized() const override { return data.IsSynchronized(); }
 
-        void Add(const KeyValuePair<KeyT, ValueT> &item) override { data.Add(item); }
-
-        bool Remove(const KeyValuePair<KeyT, ValueT> &item) override { return data.Remove(item); }
-
-        void Clear() override { data.Clear(); }
-
+        void Add(const KeyValuePair<KeyT, ValueT> &item)      override { data.Add(item); }
+        bool Remove(const KeyValuePair<KeyT, ValueT> &item)   override { return data.Remove(item); }
+        void Clear()                                          override { data.Clear(); }
         bool Contains(const KeyValuePair<KeyT, ValueT> &item) override { return data.Contains(item); }
 
         // Dictionary
-              ValueT &operator[](const KeyT &key)       override { return data[key]; }
-        const ValueT &operator[](const KeyT &key) const override { return data[key]; }
-              ValueT &at(const KeyT &key)       override { return data.at(key); }
-        const ValueT &at(const KeyT &key) const override { return data.at(key); }
+              mapped_type &operator[](const key_type &key)       override { return data[key]; }
+              mapped_type &at(const key_type &key)               override { return data.at(key); }
+        const mapped_type &at(const key_type &key)         const override { return data.at(key); }
 
-        void Add(const KeyT &key, const ValueT &value) override { data.Add(key, value); }
-        bool TryAdd(const KeyT &key, const ValueT &value) override { return data.TryAdd(key, value); }
-        bool Remove(const KeyT &key) const override { return data.Remove(key); }
-        bool ContainsKey(const KeyT &key) const override { return data.ContainsKey(key); }
-        bool ContainsValue(const ValueT &value) const override { return data.ContainsValue(value); }
-        bool TryGetValue(const KeyT &key, const ValueT &value_out) const override { data.TryGetValue(key, value_out); }
-        ICollection<KeyT>   Keys()   const override { return data.Keys(); }
-        ICollection<ValueT> Values() const override { return data.Values(); }
+        void Add(const key_type &key, const mapped_type &value)             override { data.Add(key, value); }
+        bool TryAdd(const key_type &key, const mapped_type &value)          override { return data.TryAdd(key, value); }
+        bool Remove(const key_type &key)                                    override { return data.Remove(key); }
+        bool ContainsKey(const key_type &key)                         const override { return data.ContainsKey(key); }
+        bool ContainsValue(const mapped_type &value)                  const override { return data.ContainsValue(value); }
+        bool TryGetValue(const key_type &key, mapped_type &value_out) const override { return data.TryGetValue(key, value_out); }
+
+        ICollection<key_type>    Keys()   const override { return data.Keys(); }
+        ICollection<mapped_type> Values() const override { return data.Values(); }
+
+        Iterator       begin()                { return Iterator{ std::make_unique<IteratorModel<DictionaryType>>(data.begin()) }; }
+        ConstIterator  begin() const          { return ConstIterator{ std::make_unique<ConstIteratorModel<DictionaryType>>(data.begin()) }; }
+        ConstIterator cbegin() const noexcept { return ConstIterator{ std::make_unique<ConstIteratorModel<DictionaryType>>(data.cbegin()) }; }
+        
+        Iterator       end()                { return Iterator{ std::make_unique<IteratorModel<DictionaryType>>(data.end()) }; }
+        ConstIterator  end() const          { return ConstIterator{ std::make_unique<ConstIteratorModel<DictionaryType>>(data.end()) }; }
+        ConstIterator cend() const noexcept { return ConstIterator{ std::make_unique<ConstIteratorModel<DictionaryType>>(data.cend()) }; }
 
 #if 0
-        Dictionary<KeyT, ValueT>::iterator        begin()       { return iterator{ data.begin() }; }
-        Dictionary<KeyT, ValueT>::const_iterator  begin() const { return const_iterator{ data.begin() }; }
-        Dictionary<KeyT, ValueT>::const_iterator cbegin() const noexcept { return const_iterator{ data.cbegin() }; }
-        
-        Dictionary<KeyT, ValueT>::iterator        end()        { return data.end(); }
-        Dictionary<KeyT, ValueT>::const_iterator  end()  const { return data.end(); }
-        Dictionary<KeyT, ValueT>::const_iterator cend() const noexcept { return data.cend(); }
-
         Dictionary<KeyT, ValueT>::reverse_iterator        rbegin()       { return data.rbegin(); }
         Dictionary<KeyT, ValueT>::const_reverse_iterator  rbegin() const { return data.rbegin(); }
         Dictionary<KeyT, ValueT>::const_reverse_iterator crbegin() const noexcept { return data.crbegin(); }
@@ -141,84 +363,88 @@ class IDictionary
     };
 
 public:
+    using iterator               = Iterator;
+    using const_iterator         = ConstIterator;
+    using reverse_iterator       = std::reverse_iterator<Iterator>;
+    using const_reverse_iterator = std::reverse_iterator<ConstIterator>;
+
     IDictionary() = delete;
 
-    template <typename DictionaryType>
+    template <class DictionaryType>
     IDictionary(DictionaryType &input)
       :
-      m_pimple( std::make_unique<InterfaceModel<DictionaryType>>(input) )
+      m_pimpl( std::make_unique<InterfaceModel<DictionaryType>>(input) )
     {
     }
 
-    template <typename DictionaryType>
+    template <class DictionaryType>
     IDictionary(DictionaryType &&input)
       :
-      m_pimple( std::make_unique<InterfaceModel<DictionaryType>>( std::move(input) ) )
+      m_pimpl( std::make_unique<InterfaceModel<DictionaryType>>( std::move(input) ) )
     {
     }
 
     IDictionary(const IDictionary &other)
       :
-      m_pimple( other.m_pimple->Clone() )
+      m_pimpl( other.m_pimpl->Clone() )
     {
     }
     IDictionary(IDictionary &other)
       :
-      m_pimple( other.m_pimple->Clone() )
+      m_pimpl( other.m_pimpl->Clone() )
     {
     }
     IDictionary(IDictionary &&other)
       :
-      m_pimple( other.m_pimple->Empty() )
+      m_pimpl( other.m_pimpl->Empty() )
     {
-        std::swap( m_pimple, other.m_pimple );
+        std::swap( m_pimpl, other.m_pimpl );
     }
 
     IDictionary &operator =(const IDictionary &other)
     {
-        m_pimple = other.m_pimple->Clone();
+        m_pimpl = other.m_pimpl->Clone();
         return *this;
     }
 
     IDictionary &operator =(IDictionary &&other) = delete;
 
     // Collection
-    std::size_t Count() const      { return m_pimple->Count(); }
-    bool        IsReadOnly() const { return m_pimple->IsReadOnly(); }
-    bool        IsReadOnly()       { return m_pimple->IsReadOnly(); }
-    bool        IsSynchronized() const { return m_pimple->IsSynchronized(); }
+    std::size_t Count() const      { return m_pimpl->Count(); }
+    bool        IsReadOnly() const { return m_pimpl->IsReadOnly(); }
+    bool        IsReadOnly()       { return m_pimpl->IsReadOnly(); }
+    bool        IsSynchronized() const { return m_pimpl->IsSynchronized(); }
 
-    void Add(const KeyValueType<KeyT, ValueT> &item)      { m_pimple->Add(item); }
-    bool Remove(const KeyValueType<KeyT, ValueT> &item)   { return m_pimple->Remove(item); }
-    void Clear()                 { m_pimple->Clear(); }
-    bool Contains(const KeyValueType<KeyT, ValueT> &item) { return m_pimple->Contains(item); }
+    void Add(const KeyValuePair<key_type, mapped_type> &item)      { m_pimpl->Add(item); }
+    bool Remove(const KeyValuePair<key_type, mapped_type> &item)   { return m_pimpl->Remove(item); }
+    void Clear()                                                   { m_pimpl->Clear(); }
+    bool Contains(const KeyValuePair<key_type, mapped_type> &item) { return m_pimpl->Contains(item); }
 
     // Dictionary
-          ValueT &operator[](const KeyT &key)       { return m_pimple->operator [](key); }
-    const ValueT &operator[](const KeyT &key) const { return m_pimple->operator [](key); }
-          ValueT &at(const KeyT &key)       { return m_pimple->at(key); }
-    const ValueT &at(const KeyT &key) const { return m_pimple->at(key); }
+          mapped_type &operator[](const key_type &key)       { return m_pimpl->operator [](key); }
+          mapped_type &at(const key_type &key)               { return m_pimpl->at(key); }
+    const mapped_type &at(const key_type &key)         const { return m_pimpl->at(key); }
 
-    void Add(const KeyT &key, const ValueT &value) { m_pimple->Add(key, value); }
-    bool TryAdd(const KeyT &key, const ValueT &value) { return m_pimple->TryAdd(key, value); }
-    bool Remove(const KeyT &key) const override { return m_pimple->Remove(key); }
-    bool ContainsKey(const KeyT &key) const { return m_pimple->ContainsKey(key); }
-    bool ContainsValue(const ValueT &value) const { return m_pimple->ContainsValue(value); }
-    bool TryGetValue(const KeyT &key, const ValueT &value_out) const { return m_pimple->TryGetValue(key, value_out); }
+    void Add(const key_type &key, const mapped_type &value)                   { m_pimpl->Add(key, value); }
+    bool TryAdd(const key_type &key, const mapped_type &value)                { return m_pimpl->TryAdd(key, value); }
+    bool Remove(const key_type &key)                                    const { return m_pimpl->Remove(key); }
+    bool ContainsKey(const key_type &key)                               const { return m_pimpl->ContainsKey(key); }
+    bool ContainsValue(const mapped_type &value)                        const { return m_pimpl->ContainsValue(value); }
+    bool TryGetValue(const key_type &key, const mapped_type &value_out) const { return m_pimpl->TryGetValue(key, value_out); }
 
-    ICollection<KeyT>   Keys()   const { return m_pimple->Keys(); }
-    ICollection<ValueT> Values() const { return m_pimple->Values(); }
+    ICollection<key_type>    Keys()   const { return m_pimpl->Keys(); }
+    ICollection<mapped_type> Values() const { return m_pimpl->Values(); }
+
+    // Range-for compatibility
+          iterator  begin()                { return iterator{ m_pimpl->begin() }; }
+    const_iterator  begin() const          { return const_iterator{ m_pimpl->begin() }; }
+    const_iterator cbegin() const noexcept { return const_iterator{ m_pimpl->cbegin() }; }
+
+          iterator  end()                { return m_pimpl->end(); }
+    const_iterator  end()  const         { return m_pimpl->end(); }
+    const_iterator cend() const noexcept { return m_pimpl->cend(); }
 
 #if 0
-    // Range-for compatibility
-          iterator  begin()       { return iterator{ _data.begin() }; }
-    const_iterator  begin() const { return const_iterator{ _data.begin() }; }
-    const_iterator cbegin() const noexcept { return const_iterator{ _data.cbegin() }; }
-
-          iterator  end()        { return _data.end(); }
-    const_iterator  end()  const { return _data.end(); }
-    const_iterator cend() const noexcept { return _data.cend(); }
-
           reverse_iterator  rbegin()       { return _data.rbegin(); }
     const_reverse_iterator  rbegin() const { return _data.rbegin(); }
     const_reverse_iterator crbegin() const noexcept { return _data.crbegin(); }
@@ -228,6 +454,12 @@ public:
     const_reverse_iterator crend() const noexcept { return _data.crend(); }
 #endif
 protected:
-    std::unique_ptr<Interface> m_pimple;
+    std::unique_ptr<Interface> m_pimpl;
 };
+
+// Deduction Guides
+
+template <class DictionaryType>
+IDictionary(DictionaryType &input) -> IDictionary<typename DictionaryType::key_type, typename DictionaryType::mapped_type>;
+
 }

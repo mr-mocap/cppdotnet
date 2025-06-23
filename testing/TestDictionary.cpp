@@ -3,6 +3,7 @@
 #include "System/Console.hpp"
 #include <iostream>
 #include <cassert>
+#include <ranges>
 #include <algorithm>
 
 
@@ -45,7 +46,7 @@ void ConstructWithMap()
 
     // From a std::map
     {
-        std::map<std::string, int> m{ { {"b", 1}, {"c", 2}, {"a", 3}, {"d", 4} } };
+        std::unordered_map<std::string, int> m{ { {"b", 1}, {"c", 2}, {"a", 3}, {"d", 4} } };
 
         assert( m.size() == 4 );
         assert( m["b"] == 1 );
@@ -62,33 +63,12 @@ void ConstructWithMap()
         assert( d["c"] == 2 );
         assert( d["a"] == 3 );
         assert( d["d"] == 4 );
-    }
 
-    // From std::map using a specialized Comparison operator
-    {
-        std::map<std::string, int, std::greater<std::string>> m{ { {"a", 1}, {"b", 2}, {"c", 3}, {"d", 4} } };
-
-        for (auto [key, value] : m)
-            std::cout << "key: " << key << "\tvalue: " << value << std::endl;
-
-        // Verify that the items are in reverse order...
-        assert( m.size() == 4 );
+        // They iterate in the same order...
         assert( std::next(m.begin(), 0)->first == "d" );
         assert( std::next(m.begin(), 1)->first == "c" );
         assert( std::next(m.begin(), 2)->first == "b" );
         assert( std::next(m.begin(), 3)->first == "a" );
-
-        // With a pair of iterators...
-        System::Collections::Generic::Dictionary<std::string, int> d( m.begin(), m.end() );
-
-        // Verify it is in < ordering (opposite from the std::map above, because we used the default Comparison)
-        assert( d.Count() == 4 );
-
-        // access like a std::pair
-        assert( std::next(d.begin(), 0)->first == "a" );
-        assert( std::next(d.begin(), 1)->first == "b" );
-        assert( std::next(d.begin(), 2)->first == "c" );
-        assert( std::next(d.begin(), 3)->first == "d" );
 
         // access like a KeyValuePair
         assert( std::next(d.begin(), 0)->Key() == "a" );
@@ -106,7 +86,7 @@ void ConstructWithMap()
 
     // Test construction with an rvalue
     {
-        std::map<std::string, int> m{ { {"b", 1}, {"c", 2}, {"a", 3}, {"d", 4} } };
+        std::unordered_map<std::string, int> m{ { {"b", 1}, {"c", 2}, {"a", 3}, {"d", 4} } };
 
         assert( m.size() == 4 );
         assert( m["b"] == 1 );
@@ -115,10 +95,10 @@ void ConstructWithMap()
         assert( m["d"] == 4 );
 
         // Using an rvalue std::map
-        System::Collections::Generic::Dictionary<std::string, int> d( std::map<std::string, int>( { { "a", 1 },
-                                                                                                    { "b", 2 },
-                                                                                                    { "c", 3 },
-                                                                                                    { "d", 4 } } ) );
+        System::Collections::Generic::Dictionary<std::string, int> d( std::unordered_map<std::string, int>( { { "a", 1 },
+                                                                                                              { "b", 2 },
+                                                                                                              { "c", 3 },
+                                                                                                              { "d", 4 } } ) );
 
         // Should be in the same order
         assert( d.Count() == 4 );
@@ -143,7 +123,7 @@ void ConstructWithMap()
 
     // Test construction with a deduction guide...
     {
-        std::map<std::string, int> m{ {"a", 1}, {"b", 2}, {"c", 3} };
+        std::unordered_map<std::string, int> m{ {"a", 1}, {"b", 2}, {"c", 3} };
 
         System::Collections::Generic::Dictionary d{ m };
 
@@ -389,11 +369,6 @@ void IteratingAsKeyValuePair()
     // Underlying type...
     for (const auto &iCurrent : d)
         std::cout << "pair [" << iCurrent.first << ", " << iCurrent.second << "]" << std::endl;
-
-    // Backward...
-    System::Console::Out().WriteLine("Backwards...");
-    for (const auto &iCurrent : d | std::views::reverse)
-        System::Console::Out().WriteLine("{}", iCurrent.ToString());
 }
 
 void Run()
