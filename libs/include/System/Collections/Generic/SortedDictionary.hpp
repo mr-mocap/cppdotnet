@@ -45,12 +45,12 @@ public:
 
         SpecializedIterator(Base i) : Base( i ) { }
 
-        SortedDictionary::reference operator*() const noexcept
+        SortedDictionary::reference operator*() noexcept
         {
             return reinterpret_cast<SortedDictionary::reference>( Base::operator *() );
         }
 
-        SortedDictionary::pointer operator->() const noexcept
+        SortedDictionary::pointer operator->() noexcept
         {
             return reinterpret_cast<SortedDictionary::pointer>( Base::operator ->() );
         }
@@ -94,12 +94,12 @@ public:
 
         SpecializedConstIterator(Base i) : Base( i ) { }
 
-        SortedDictionary::const_reference operator*() const noexcept
+        SortedDictionary::const_reference operator*() noexcept
         {
             return reinterpret_cast<SortedDictionary::const_reference>( Base::operator *() );
         }
 
-        SortedDictionary::const_pointer operator->() const noexcept
+        SortedDictionary::const_pointer operator->() noexcept
         {
             return reinterpret_cast<SortedDictionary::const_pointer>( Base::operator ->() );
         }
