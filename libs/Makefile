@@ -12,7 +12,7 @@ CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I . $(INC_PARAMS) $(DEBUG_FLAGS
 
 LIB_SRC  = $(wildcard *.cpp \
                       src/System/*.cpp \
-                      src/System/Collections/*.cpp \
+                      src/System/Collections/Generic/*.cpp \
 					  src/System/Diagnostics/*.cpp \
 					  src/System/Diagnostics/Metrics/*.cpp \
 					  src/System/Diagnostics/Private/*.cpp \
@@ -21,7 +21,7 @@ LIB_SRC  = $(wildcard *.cpp \
 LIB_OBJS = $(patsubst %.cpp,build/%.o,${LIB_SRC})
 LIB_DEP  = $(LIB_PATH)/*.d \
            $(LIB_PATH)/src/System/*.d \
-		   $(LIB_PATH)/src/System/Collections/*.d \
+		   $(LIB_PATH)/src/System/Collections/Generic/*.d \
 		   $(LIB_PATH)/src/System/Diagnostics/*.d \
 		   $(LIB_PATH)/src/System/Diagnostics/Metrics/*.d \
 		   $(LIB_PATH)/src/System/Diagnostics/Private/*.d \
