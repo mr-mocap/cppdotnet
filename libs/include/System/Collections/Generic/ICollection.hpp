@@ -20,6 +20,12 @@ public:
 
     struct Iterator
     {
+        using difference_type   = std::ptrdiff_t;
+        using value_type        = T;
+        using pointer           = value_type *;
+        using reference         = value_type &;
+        using iterator_category = std::forward_iterator_tag;
+
         Iterator(std::unique_ptr<IteratorInterface> &&position)
             :
             m_pimpl( std::move(position) )
@@ -58,6 +64,14 @@ public:
             return *this;
         }
 
+        Iterator operator ++(int dummy_value) noexcept
+        {
+            Iterator old = *this;
+
+            m_pimpl = m_pimpl->post_increment();
+            return old;
+        }
+
         friend bool operator ==(const Iterator &left, const Iterator &right) noexcept
         {
             return *left.m_pimpl == *right.m_pimpl;
@@ -71,6 +85,12 @@ public:
 
     struct ConstIterator
     {
+        using difference_type   = std::ptrdiff_t;
+        using value_type        = T;
+        using pointer           = const value_type *;
+        using reference         = const value_type &;
+        using iterator_category = std::forward_iterator_tag;
+
         ConstIterator(std::unique_ptr<ConstIteratorInterface> &&position)
             :
             m_pimpl( std::move(position) )
@@ -109,6 +129,14 @@ public:
             return *this;
         }
 
+        ConstIterator operator ++(int dummy_value) noexcept
+        {
+            ConstIterator old = *this;
+
+            m_pimpl = m_pimpl->post_increment();
+            return old;
+        }
+
         friend bool operator ==(const ConstIterator &left, const ConstIterator &right) noexcept
         {
             return *left.m_pimpl == *right.m_pimpl;
@@ -130,6 +158,8 @@ private:
         virtual T *operator->() noexcept = 0;
 
         virtual IteratorInterface &operator++() noexcept = 0;
+
+        virtual std::unique_ptr<IteratorInterface> post_increment() noexcept = 0;
 
         friend bool operator ==(const IteratorInterface &left, const IteratorInterface &right) noexcept
         {
@@ -168,6 +198,14 @@ private:
             return *this;
         }
 
+        std::unique_ptr<IteratorInterface> post_increment() noexcept override
+        {
+            typename CollectionType::iterator old = m_iterator;
+
+            m_iterator++;
+            return std::make_unique<IteratorModel>(old);
+        }
+
         std::unique_ptr<IteratorInterface> Clone() override
         {
             return std::make_unique<IteratorModel>(m_iterator);
@@ -194,6 +232,8 @@ private:
         virtual const T *operator->() noexcept = 0;
 
         virtual ConstIteratorInterface &operator++() noexcept = 0;
+
+        virtual std::unique_ptr<ConstIteratorInterface> post_increment() noexcept = 0;
 
         friend bool operator ==(const ConstIteratorInterface &left, const ConstIteratorInterface &right) noexcept
         {
@@ -230,6 +270,14 @@ private:
         {
             ++m_iterator;
             return *this;
+        }
+
+        std::unique_ptr<ConstIteratorInterface> post_increment() noexcept override
+        {
+            typename CollectionType::const_iterator old = m_iterator;
+
+            m_iterator++;
+            return std::make_unique<ConstIteratorModel>(old);
         }
 
         std::unique_ptr<ConstIteratorInterface> Clone() const override
@@ -431,6 +479,12 @@ public:
 
     struct Iterator
     {
+        using difference_type   = std::ptrdiff_t;
+        using value_type        = T;
+        using pointer           = value_type *;
+        using reference         = value_type &;
+        using iterator_category = std::forward_iterator_tag;
+
         Iterator(std::unique_ptr<IteratorInterface> &&position)
             :
             m_pimpl( std::move(position) )
@@ -469,6 +523,14 @@ public:
             return *this;
         }
 
+        Iterator operator ++(int dummy_value) noexcept
+        {
+            Iterator old = *this;
+
+            m_pimpl = m_pimpl->post_increment();
+            return old;
+        }
+
         friend bool operator ==(const Iterator &left, const Iterator &right) noexcept
         {
             return *left.m_pimpl == *right.m_pimpl;
@@ -482,6 +544,12 @@ public:
 
     struct ConstIterator
     {
+        using difference_type   = std::ptrdiff_t;
+        using value_type        = T;
+        using pointer           = const value_type *;
+        using reference         = const value_type &;
+        using iterator_category = std::forward_iterator_tag;
+
         ConstIterator(std::unique_ptr<ConstIteratorInterface> &&position)
             :
             m_pimpl( std::move(position) )
@@ -520,6 +588,14 @@ public:
             return *this;
         }
 
+        ConstIterator operator ++(int dummy_value) noexcept
+        {
+            ConstIterator old = *this;
+
+            m_pimpl = m_pimpl->post_increment();
+            return old;
+        }
+
         friend bool operator ==(const ConstIterator &left, const ConstIterator &right) noexcept
         {
             return *left.m_pimpl == *right.m_pimpl;
@@ -542,7 +618,7 @@ private:
 
         virtual IteratorInterface &operator++() noexcept = 0;
 
-        virtual IteratorInterface &operator--() noexcept = 0;
+        virtual std::unique_ptr<IteratorInterface> post_increment() noexcept = 0;
 
         friend bool operator ==(const IteratorInterface &left, const IteratorInterface &right) noexcept
         {
@@ -581,10 +657,12 @@ private:
             return *this;
         }
 
-        IteratorInterface &operator--() noexcept override
+        std::unique_ptr<IteratorInterface> post_increment() noexcept override
         {
-            --m_iterator;
-            return *this;
+            typename CollectionType::iterator old = m_iterator;
+
+            m_iterator++;
+            return std::make_unique<IteratorModel>(old);
         }
 
         std::unique_ptr<IteratorInterface> Clone() override
@@ -613,6 +691,8 @@ private:
         virtual const T *operator->() noexcept = 0;
 
         virtual ConstIteratorInterface &operator++() noexcept = 0;
+
+        virtual std::unique_ptr<ConstIteratorInterface> post_increment() noexcept = 0;
 
         friend bool operator ==(const ConstIteratorInterface &left, const ConstIteratorInterface &right) noexcept
         {
@@ -649,6 +729,14 @@ private:
         {
             ++m_iterator;
             return *this;
+        }
+
+        std::unique_ptr<ConstIteratorInterface> post_increment() noexcept override
+        {
+            typename CollectionType::const_iterator old = m_iterator;
+
+            m_iterator++;
+            return std::make_unique<ConstIteratorModel>(old);
         }
 
         std::unique_ptr<ConstIteratorInterface> Clone() const override

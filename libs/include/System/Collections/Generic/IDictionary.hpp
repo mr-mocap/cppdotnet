@@ -30,6 +30,12 @@ public:
 
     struct Iterator
     {
+        using difference_type   = std::ptrdiff_t;
+        using value_type        = KeyValuePair<KeyT, ValueT>;
+        using pointer           = value_type *;
+        using reference         = value_type &;
+        using iterator_category = std::forward_iterator_tag;
+
         Iterator(std::unique_ptr<IteratorInterface> &&position)
             :
             m_pimpl( std::move(position) )
@@ -58,14 +64,22 @@ public:
 
         Iterator &operator =(Iterator &&other) = delete;
 
-        IDictionary::reference operator *()  noexcept { return *(*m_pimpl); }
+        reference operator *()  noexcept { return *(*m_pimpl); }
 
-        IDictionary::reference  operator ->() noexcept { return m_pimpl->operator ->(); }
+        reference  operator ->() noexcept { return m_pimpl->operator ->(); }
 
         Iterator &operator ++() noexcept
         {
             m_pimpl->operator ++();
             return *this;
+        }
+
+        Iterator operator ++(int dummy_value) noexcept
+        {
+            Iterator old = *this;
+
+            m_pimpl = m_pimpl->post_increment();
+            return old;
         }
 
         friend bool operator ==(const Iterator &left, const Iterator &right) noexcept
@@ -81,6 +95,12 @@ public:
 
     struct ConstIterator
     {
+        using difference_type   = std::ptrdiff_t;
+        using value_type        = KeyValuePair<KeyT, ValueT>;
+        using pointer           = const value_type *;
+        using reference         = const value_type &;
+        using iterator_category = std::forward_iterator_tag;
+
         ConstIterator(std::unique_ptr<ConstIteratorInterface> &&position)
             :
             m_pimpl( std::move(position) )
@@ -119,6 +139,14 @@ public:
             return *this;
         }
 
+        Iterator operator ++(int dummy_value) noexcept
+        {
+            Iterator old = *this;
+
+            m_pimpl = m_pimpl->post_increment();
+            return old;
+        }
+
         friend bool operator ==(const ConstIterator &left, const ConstIterator &right) noexcept
         {
             return *left.m_pimpl == *right.m_pimpl;
@@ -135,11 +163,11 @@ private:
     {
         virtual ~IteratorInterface() { }
 
-        virtual IDictionary::reference operator*() noexcept = 0;
+        virtual IDictionary::reference  operator*()  noexcept = 0;
+        virtual IDictionary::pointer    operator->() noexcept = 0;
+        virtual IteratorInterface      &operator++() noexcept = 0;
 
-        virtual IDictionary::pointer operator->() noexcept = 0;
-
-        virtual IteratorInterface &operator++() noexcept = 0;
+        virtual std::unique_ptr<IteratorInterface> post_increment() noexcept = 0;
 
         virtual bool EqualTo(const IteratorInterface &other) const = 0;
 
@@ -176,6 +204,14 @@ private:
             return *this;
         }
 
+        std::unique_ptr<IteratorInterface> post_increment() noexcept override
+        {
+            typename DictionaryType::iterator old = m_iterator;
+
+            m_iterator++;
+            return std::make_unique<IteratorModel>(old);
+        }
+
         bool EqualTo(const IteratorInterface &other) const override
         {
             const IteratorModel<DictionaryType> *p = dynamic_cast<const IteratorModel<DictionaryType> *>(&other);
@@ -192,11 +228,10 @@ private:
     {
         virtual ~ConstIteratorInterface() { }
 
-        virtual IDictionary::const_reference operator*() noexcept = 0;
-
-        virtual IDictionary::const_pointer operator->() noexcept = 0;
-
-        virtual ConstIteratorInterface &operator++() noexcept = 0;
+        virtual IDictionary::const_reference             operator*()  noexcept = 0;
+        virtual IDictionary::const_pointer               operator->() noexcept = 0;
+        virtual ConstIteratorInterface                  &operator++() noexcept = 0;
+        virtual std::unique_ptr<ConstIteratorInterface>  post_increment() noexcept = 0;
 
         virtual bool EqualTo(const ConstIteratorInterface &other) const = 0;
 
@@ -231,6 +266,14 @@ private:
         {
             ++m_iterator;
             return *this;
+        }
+
+        std::unique_ptr<ConstIteratorInterface> post_increment() noexcept override
+        {
+            typename DictionaryType::const_iterator old = m_iterator;
+
+            m_iterator++;
+            return std::make_unique<ConstIteratorModel>(old);
         }
 
         bool EqualTo(const ConstIteratorInterface &other) const override
