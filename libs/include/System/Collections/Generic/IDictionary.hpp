@@ -479,23 +479,14 @@ public:
     ICollection<mapped_type> Values() const { return m_pimpl->Values(); }
 
     // Range-for compatibility
-          iterator  begin()                { return iterator{ m_pimpl->begin() }; }
-    const_iterator  begin() const          { return const_iterator{ m_pimpl->begin() }; }
-    const_iterator cbegin() const noexcept { return const_iterator{ m_pimpl->cbegin() }; }
+          iterator  begin()                { return m_pimpl->begin(); }
+    const_iterator  begin() const          { return const_cast<const Interface *>(m_pimpl.get())->begin(); } // We have to make the underlying object const here
+    const_iterator cbegin() const noexcept { return m_pimpl->cbegin(); }
 
           iterator  end()                { return m_pimpl->end(); }
-    const_iterator  end()  const         { return m_pimpl->end(); }
+    const_iterator  end()  const         { return const_cast<const Interface *>(m_pimpl.get())->end(); }
     const_iterator cend() const noexcept { return m_pimpl->cend(); }
 
-#if 0
-          reverse_iterator  rbegin()       { return _data.rbegin(); }
-    const_reverse_iterator  rbegin() const { return _data.rbegin(); }
-    const_reverse_iterator crbegin() const noexcept { return _data.crbegin(); }
-
-          reverse_iterator  rend()       { return _data.rend(); }
-    const_reverse_iterator  rend() const { return _data.rend(); }
-    const_reverse_iterator crend() const noexcept { return _data.crend(); }
-#endif
 protected:
     std::unique_ptr<Interface> m_pimpl;
 };
