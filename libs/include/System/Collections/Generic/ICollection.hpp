@@ -866,11 +866,6 @@ public:
       m_pimpl( other.m_pimpl->Clone() )
     {
     }
-    ICollectionRef(ICollectionRef &other)
-      :
-      m_pimpl( other.m_pimpl->Clone() )
-    {
-    }
     ICollectionRef(ICollectionRef &&other) = delete;
 
     ICollectionRef &operator =(const ICollectionRef &other)
