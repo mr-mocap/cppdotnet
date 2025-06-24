@@ -23,6 +23,8 @@
 #include "TestTimeSpan.hpp"
 #include "TestDateTime.hpp"
 #include "TestICollection.hpp"
+#include "TestIDictionary.hpp"
+#include "TestIList.hpp"
 #include "TestDictionary.hpp"
 #include "TestTimeOnly.hpp"
 #include "TestDateTimeOffset.hpp"
@@ -42,7 +44,6 @@ int main(void)
 {
     std::cout << "Running Unit Tests!\n";
 
-#if 0
     TestDebug::Run();
     TestTrace::Run();
     TestException::Run();
@@ -68,6 +69,8 @@ int main(void)
     TestDateTime::Run();
     TestICollection::Run();
     TestDictionary::Run();
+    TestIDictionary::Run();
+    TestIList::Run();
     TestTimeOnly::Run();
     TestDateTimeOffset::Run();
     TestDateOnly::Run();
@@ -77,7 +80,6 @@ int main(void)
     TestBinaryWriter::Run();
     TestStopwatch::Run();
     TestCounter::Run();
-#endif
     TestGuid::Run();
 
     std::cout << "All tests passed!\n";

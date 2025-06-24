@@ -57,31 +57,12 @@ void ConstructWithMap()
         // Directly
         System::Collections::Generic::Dictionary<std::string, int> d( m );
 
-        // Should be in the same order
+        // Should have the same keys with the same values...
         assert( d.Count() == 4 );
         assert( d["b"] == 1 );
         assert( d["c"] == 2 );
         assert( d["a"] == 3 );
         assert( d["d"] == 4 );
-
-        // They iterate in the same order...
-        assert( std::next(m.begin(), 0)->first == "d" );
-        assert( std::next(m.begin(), 1)->first == "c" );
-        assert( std::next(m.begin(), 2)->first == "b" );
-        assert( std::next(m.begin(), 3)->first == "a" );
-
-        // access like a KeyValuePair
-        assert( std::next(d.begin(), 0)->Key() == "a" );
-        assert( std::next(d.begin(), 0)->Value() == 1 );
-
-        assert( std::next(d.begin(), 1)->Key() == "b" );
-        assert( std::next(d.begin(), 1)->Value() == 2 );
-
-        assert( std::next(d.begin(), 2)->Key() == "c" );
-        assert( std::next(d.begin(), 2)->Value() == 3 );
-
-        assert( std::next(d.begin(), 3)->Key() == "d" );
-        assert( std::next(d.begin(), 3)->Value() == 4 );
     }
 
     // Test construction with an rvalue

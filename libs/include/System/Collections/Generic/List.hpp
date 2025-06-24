@@ -159,7 +159,7 @@ public:
     }
 
     // IList-specific methods
-    int IndexOf(const T &item) const
+    size_type IndexOf(const T &item) const
     {
         auto iter_found = std::find( begin(), end(), item );
 

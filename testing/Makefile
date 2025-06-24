@@ -32,6 +32,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestDateTime.o \
 	TestICollection.o \
 	TestIDictionary.o \
+	TestIList.o \
 	TestDictionary.o \
 	TestTimeOnly.o \
 	TestDateTimeOffset.o \
