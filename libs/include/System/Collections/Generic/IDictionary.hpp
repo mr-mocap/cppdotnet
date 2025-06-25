@@ -382,16 +382,6 @@ private:
         ConstIterator  end() const          { return ConstIterator{ std::make_unique<ConstIteratorModel<DictionaryType>>(data.end()) }; }
         ConstIterator cend() const noexcept { return ConstIterator{ std::make_unique<ConstIteratorModel<DictionaryType>>(data.cend()) }; }
 
-#if 0
-        Dictionary<KeyT, ValueT>::reverse_iterator        rbegin()       { return data.rbegin(); }
-        Dictionary<KeyT, ValueT>::const_reverse_iterator  rbegin() const { return data.rbegin(); }
-        Dictionary<KeyT, ValueT>::const_reverse_iterator crbegin() const noexcept { return data.crbegin(); }
-        
-        Dictionary<KeyT, ValueT>::reverse_iterator        rend()       { return data.rend(); }
-        Dictionary<KeyT, ValueT>::const_reverse_iterator  rend() const { return data.rend(); }
-        Dictionary<KeyT, ValueT>::const_reverse_iterator crend() const noexcept { return data.crend(); }
-#endif
-
         std::unique_ptr<Interface> Clone() override
         {
             return std::make_unique<InterfaceModel>(data);
