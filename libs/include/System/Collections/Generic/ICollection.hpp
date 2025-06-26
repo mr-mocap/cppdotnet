@@ -17,6 +17,7 @@ class ICollection
     template <typename ModelT> class ConstIteratorModel;
 
 public:
+    struct ConstIterator;
 
     struct Iterator
     {
@@ -77,6 +78,11 @@ public:
             return *left.m_pimpl == *right.m_pimpl;
         }
 
+        ConstIterator AsConst() const
+        {
+            return ConstIterator( m_pimpl->CloneAsConst() );
+        }
+
         protected:
             std::unique_ptr<IteratorInterface> m_pimpl;
 
@@ -109,6 +115,12 @@ public:
         {
         }
 
+        ConstIterator(const Iterator &other)
+            :
+            m_pimpl( std::move( other.AsConst().m_pimpl ) )
+        {
+        }
+            
         ConstIterator(ConstIterator &&other) = delete;
 
         ConstIterator &operator =(const ConstIterator &other)
@@ -149,6 +161,8 @@ public:
     };
 
 private:
+    struct ConstIteratorInterface;
+
     struct IteratorInterface
     {
         virtual ~IteratorInterface() { }
@@ -167,6 +181,7 @@ private:
         }
 
         virtual std::unique_ptr<IteratorInterface> Clone() = 0;
+        virtual std::unique_ptr<ConstIteratorInterface> CloneAsConst() = 0;
 
         virtual bool EqualTo(const IteratorInterface &other) const = 0;
     };
@@ -211,6 +226,8 @@ private:
             return std::make_unique<IteratorModel>(m_iterator);
         }
 
+        std::unique_ptr<ConstIteratorInterface> CloneAsConst() override;
+
         bool EqualTo(const IteratorInterface &other) const override
         {
             const IteratorModel<CollectionType> *p = dynamic_cast<const IteratorModel<CollectionType> *>(&other);
@@ -251,6 +268,12 @@ private:
         ConstIteratorModel(CollectionType::const_iterator i)
           :
           m_iterator( i )
+        {
+        }
+
+        ConstIteratorModel(CollectionType::iterator i)
+            :
+            m_iterator( i )
         {
         }
 
@@ -318,11 +341,9 @@ private:
 
         // Range-for compatibility
         virtual      Iterator  begin()       = 0;
-        virtual ConstIterator  begin() const = 0;
         virtual ConstIterator cbegin() const = 0;
 
         virtual      Iterator  end()       = 0;
-        virtual ConstIterator  end() const = 0;
         virtual ConstIterator cend() const = 0;
     };
 
@@ -368,11 +389,9 @@ private:
 
         // Range-for compatibility
              Iterator  begin()       override { return Iterator( std::make_unique<IteratorModel<CollectionType>>(data.begin()) ); }
-        ConstIterator  begin() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.begin()) ); }
         ConstIterator cbegin() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.cbegin()) ); }
 
              Iterator  end()       override { return Iterator( std::make_unique<IteratorModel<CollectionType>>(data.end()) ); }
-        ConstIterator  end() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.end()) ); }
         ConstIterator cend() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data.cend()) ); }
 
         CollectionType data;
@@ -450,15 +469,22 @@ public:
 
     // Range-for compatibility
           iterator  begin()       { return m_pimpl->begin(); }
-    const_iterator  begin() const { return const_cast<const Interface *>(m_pimpl.get())->begin(); } // We have to make the underlying object const here
+    const_iterator  begin() const { return m_pimpl->cbegin(); }
     const_iterator cbegin() const { return m_pimpl->cbegin(); }
 
-          iterator  end()         { return m_pimpl->end(); }
-    const_iterator  end() const { return const_cast<const Interface *>(m_pimpl.get())->end(); } // We have to make the underlying object const here
-    const_iterator cend()   const { return m_pimpl->cend(); }
+          iterator  end()       { return m_pimpl->end(); }
+    const_iterator  end() const { return m_pimpl->cend(); }
+    const_iterator cend() const { return m_pimpl->cend(); }
 protected:
     std::unique_ptr<Interface> m_pimpl;
 };
+
+template <class CollectionType>
+template <class Specialization>
+auto ICollection<CollectionType>::IteratorModel<Specialization>::CloneAsConst() -> std::unique_ptr<typename ICollection<CollectionType>::ConstIteratorInterface>
+{
+    return std::make_unique<ICollection<CollectionType>::ConstIteratorModel<Specialization>>(m_iterator);
+}
 
 // Deduction Guides
 
@@ -476,6 +502,7 @@ class ICollectionRef
     template <typename ModelT> class ConstIteratorModel;
 
 public:
+    struct ConstIterator;
 
     struct Iterator
     {
@@ -536,6 +563,11 @@ public:
             return *left.m_pimpl == *right.m_pimpl;
         }
 
+        ConstIterator AsConst() const
+        {
+            return ConstIterator( m_pimpl->CloneAsConst() );
+        }
+
         protected:
             std::unique_ptr<IteratorInterface> m_pimpl;
 
@@ -568,6 +600,12 @@ public:
         {
         }
 
+        ConstIterator(const Iterator &other)
+            :
+            m_pimpl( std::move( other.AsConst().m_pimpl ) )
+        {
+        }
+            
         ConstIterator(ConstIterator &&other) = delete;
 
         ConstIterator &operator =(const ConstIterator &other)
@@ -608,6 +646,8 @@ public:
     };
 
 private:
+    struct ConstIteratorInterface;
+
     struct IteratorInterface
     {
         virtual ~IteratorInterface() { }
@@ -626,6 +666,7 @@ private:
         }
 
         virtual std::unique_ptr<IteratorInterface> Clone() = 0;
+        virtual std::unique_ptr<ConstIteratorInterface> CloneAsConst() = 0;
 
         virtual bool EqualTo(const IteratorInterface &other) const = 0;
     };
@@ -670,6 +711,8 @@ private:
             return std::make_unique<IteratorModel>(m_iterator);
         }
 
+        std::unique_ptr<ConstIteratorInterface> CloneAsConst() override;
+        
         bool EqualTo(const IteratorInterface &other) const override
         {
             const IteratorModel<CollectionType> *p = dynamic_cast<const IteratorModel<CollectionType> *>(&other);
@@ -776,11 +819,9 @@ private:
 
         // Range-for compatibility
         virtual      Iterator  begin()       = 0;
-        virtual ConstIterator  begin() const = 0;
         virtual ConstIterator cbegin() const = 0;
 
         virtual      Iterator  end()       = 0;
-        virtual ConstIterator  end() const = 0;
         virtual ConstIterator cend() const = 0;
     };
 
@@ -823,11 +864,9 @@ private:
 
         // Range-for compatibility
              Iterator  begin()       override { return Iterator( std::make_unique<IteratorModel<CollectionType>>(data->begin()) ); }
-        ConstIterator  begin() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data->begin()) ); }
         ConstIterator cbegin() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data->cbegin()) ); }
 
              Iterator  end()       override { return Iterator( std::make_unique<IteratorModel<CollectionType>>(data->end()) ); }
-        ConstIterator  end() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data->end()) ); }
         ConstIterator cend() const override { return ConstIterator( std::make_unique<ConstIteratorModel<CollectionType>>(data->cend()) ); }
 
         CollectionType *data = nullptr;
@@ -887,15 +926,22 @@ public:
     bool Contains(const T &item) { return m_pimpl->Contains(item); }
 
     // Range-for compatibility
-          iterator  begin()       { return m_pimpl->begin(); }
-    const_iterator  begin() const { return const_cast<const Interface *>(m_pimpl.get())->begin(); } // We have to make the underlying object const here
+          iterator  begin()       { return m_pimpl->begin();  }
+    const_iterator  begin() const { return m_pimpl->cbegin(); }
     const_iterator cbegin() const { return m_pimpl->cbegin(); }
 
-          iterator  end()         { return m_pimpl->end(); }
-    const_iterator  end() const { return const_cast<const Interface *>(m_pimpl.get())->end(); } // We have to make the underlying object const here
-    const_iterator cend()   const { return m_pimpl->cend(); }
+          iterator  end()       { return m_pimpl->end();  }
+    const_iterator  end() const { return m_pimpl->cend(); }
+    const_iterator cend() const { return m_pimpl->cend(); }
 protected:
     std::unique_ptr<Interface> m_pimpl;
 };
+
+template <class CollectionType>
+template <class Specialization>
+auto ICollectionRef<CollectionType>::IteratorModel<Specialization>::CloneAsConst() -> std::unique_ptr<typename ICollectionRef<CollectionType>::ConstIteratorInterface>
+{
+    return std::make_unique<ICollectionRef<CollectionType>::ConstIteratorModel<Specialization>>(m_iterator);
+}
 
 }
