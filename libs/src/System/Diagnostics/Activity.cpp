@@ -1,4 +1,5 @@
 #include "System/Diagnostics/Activity.hpp"
+#include "System/Diagnostics/ActivitySource.hpp"
 #include "System/Span.hpp"
 #include "System/Convert.hpp"
 #include <random>
@@ -91,6 +92,9 @@ TimeSpan Activity::Duration() const
 
 const ActivitySource &Activity::Source() const
 {
+    static ActivitySource dummy("dummy");
+
+    return dummy;
 }
 
 Activity &Activity::AddBaggage(std::string_view key, std::string_view value)
