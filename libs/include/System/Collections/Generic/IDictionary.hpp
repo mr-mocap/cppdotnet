@@ -74,7 +74,7 @@ public:
             return *this;
         }
 
-        Iterator operator ++(int dummy_value) noexcept
+        Iterator operator ++(int) noexcept
         {
             Iterator old = *this;
 
@@ -139,7 +139,7 @@ public:
             return *this;
         }
 
-        Iterator operator ++(int dummy_value) noexcept
+        Iterator operator ++(int) noexcept
         {
             Iterator old = *this;
 
