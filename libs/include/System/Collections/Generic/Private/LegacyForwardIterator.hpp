@@ -9,6 +9,14 @@ namespace System::Collections::Generic::Private
 template <class T>
 struct LegacyForwardIteratorBase
 {
+    using value_type        = T;
+    using size_type         = std::size_t;
+    using difference_type   = std::ptrdiff_t;
+    using pointer           =       value_type *;
+    using reference         =       value_type &;
+    using const_pointer     = const value_type *;
+    using const_reference   = const value_type &;
+
     struct IteratorInterface;
     template <class CollectionType> class IteratorModel;
     
@@ -17,10 +25,10 @@ struct LegacyForwardIteratorBase
 
     struct ConstIterator;
 
-    struct Iterator
+    struct Iterator : std::forward_iterator_tag
     {
-        using difference_type   = std::ptrdiff_t;
-        using value_type        = T;
+        using difference_type   = LegacyForwardIteratorBase::difference_type;
+        using value_type        = LegacyForwardIteratorBase::value_type;
         using pointer           = value_type *;
         using reference         = value_type &;
         using iterator_category = std::forward_iterator_tag;
@@ -81,16 +89,16 @@ struct LegacyForwardIteratorBase
             return ConstIterator( m_pimpl->CloneAsConst() );
         }
 
-        protected:
-            std::unique_ptr<IteratorInterface> m_pimpl;
+    protected:
+        std::unique_ptr<IteratorInterface> m_pimpl;
 
-            Iterator() = default;
+        Iterator() = default;
     };
 
-    struct ConstIterator
+    struct ConstIterator : std::forward_iterator_tag
     {
-        using difference_type   = std::ptrdiff_t;
-        using value_type        = T;
+        using difference_type   = LegacyForwardIteratorBase::difference_type;
+        using value_type        = LegacyForwardIteratorBase::value_type;
         using pointer           = const value_type *;
         using reference         = const value_type &;
         using iterator_category = std::forward_iterator_tag;
@@ -158,16 +166,12 @@ struct LegacyForwardIteratorBase
             ConstIterator() = default;
     };
 
-    //struct ConstIteratorInterface;
-
     struct ConstIteratorInterface
     {
         virtual ~ConstIteratorInterface() { }
 
         virtual const T &operator*() = 0;
-
         virtual const T *operator->() = 0;
-
         virtual ConstIteratorInterface &operator++() = 0;
 
         virtual std::unique_ptr<ConstIteratorInterface> post_increment() = 0;
@@ -245,9 +249,7 @@ struct LegacyForwardIteratorBase
         virtual ~IteratorInterface() { }
 
         virtual T &operator*() = 0;
-
         virtual T *operator->() = 0;
-
         virtual IteratorInterface &operator++() = 0;
 
         virtual std::unique_ptr<IteratorInterface> post_increment() = 0;
@@ -320,8 +322,8 @@ struct LegacyForwardIteratorBase
             CollectionType::iterator m_iterator;
     };
 
-    using iterator       = Iterator;
-    using const_iterator = ConstIterator;
+    using iterator          = Iterator;
+    using const_iterator    = ConstIterator;
 };
 
 }

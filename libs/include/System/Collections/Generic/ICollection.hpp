@@ -11,15 +11,17 @@ template <typename T>
 class ICollection : public Private::LegacyForwardIteratorBase<T>
 {
 public:
-    using value_type  = T;
-    using size_type   = std::size_t;
-    using reference       =       value_type &;
-    using const_reference = const value_type &;
-    using pointer         =       value_type *;
-    using const_pointer   = const value_type *;
-    using iterator        = Private::LegacyForwardIteratorBase<T>::Iterator;
-    using const_iterator  = Private::LegacyForwardIteratorBase<T>::ConstIterator;
+    using IteratorBase = Private::LegacyForwardIteratorBase<T>;
 
+    using typename IteratorBase::value_type;
+    using typename IteratorBase::size_type;
+    using typename IteratorBase::difference_type;
+    using typename IteratorBase::reference;
+    using typename IteratorBase::const_reference;
+    using typename IteratorBase::pointer;
+    using typename IteratorBase::const_pointer;
+    using typename IteratorBase::iterator;
+    using typename IteratorBase::const_iterator;
 
 private:
     using Interface = Private::ICollectionInterface<T, iterator, const_iterator>;
@@ -65,11 +67,11 @@ private:
         }
 
         // Range-for compatibility
-        iterator        begin() override { return       iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<T>::IteratorModel<CollectionType>>(data.begin()) }; }
-        const_iterator cbegin() override { return const_iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<T>::ConstIteratorModel<CollectionType>>(data.cbegin()) }; }
+        iterator        begin() override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>(data.begin()) }; }
+        const_iterator cbegin() override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>(data.cbegin()) }; }
 
-        iterator        end() override { return       iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<T>::IteratorModel<CollectionType>>(data.end()) }; }
-        const_iterator cend() override { return const_iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<T>::ConstIteratorModel<CollectionType>>(data.cend()) }; }
+        iterator        end() override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>(data.end()) }; }
+        const_iterator cend() override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>(data.cend()) }; }
 
         CollectionType data;
     };
@@ -154,14 +156,17 @@ template <typename T>
 class ICollectionRef : public Private::LegacyForwardIteratorBase<T>
 {
 public:
-    using value_type  = T;
-    using size_type   = std::size_t;
-    using reference       =       value_type &;
-    using const_reference = const value_type &;
-    using pointer         =       value_type *;
-    using const_pointer   = const value_type *;
-    using iterator        = Private::LegacyForwardIteratorBase<T>::Iterator;
-    using const_iterator  = Private::LegacyForwardIteratorBase<T>::ConstIterator;
+    using IteratorBase = Private::LegacyForwardIteratorBase<T>;
+
+    using typename IteratorBase::value_type;
+    using typename IteratorBase::size_type;
+    using typename IteratorBase::difference_type;
+    using typename IteratorBase::reference;
+    using typename IteratorBase::const_reference;
+    using typename IteratorBase::pointer;
+    using typename IteratorBase::const_pointer;
+    using typename IteratorBase::iterator;
+    using typename IteratorBase::const_iterator;
 
 private:
     using Interface = Private::ICollectionInterface<T, iterator, const_iterator>;
@@ -211,20 +216,20 @@ private:
         // Range-for compatibility
         iterator  begin() override
         {
-            return iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<T>::IteratorModel<CollectionType>>( data->begin() ) };
+            return iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>( data->begin() ) };
         }
         const_iterator cbegin() override
         {
-            return const_iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<T>::ConstIteratorModel<CollectionType>>( data->cbegin() ) };
+            return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>( data->cbegin() ) };
         }
 
         iterator  end() override
         {
-            return iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<T>::IteratorModel<CollectionType>>( data->end() ) };
+            return iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>( data->end() ) };
         }
         const_iterator cend() override
         {
-            return const_iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<T>::ConstIteratorModel<CollectionType>>( data->cend() ) };
+            return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>( data->cend() ) };
         }
 
         CollectionType *data = nullptr;

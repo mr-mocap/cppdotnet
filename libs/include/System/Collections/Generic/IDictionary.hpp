@@ -10,16 +10,18 @@ template <typename KeyT, typename ValueT>
 class IDictionary : public Private::LegacyForwardIteratorBase<KeyValuePair<KeyT, ValueT>>
 {
 public:
+    using IteratorBase = Private::LegacyForwardIteratorBase<KeyValuePair<KeyT, ValueT>>;
+
     using key_type    = KeyT;
     using mapped_type = ValueT;
-    using value_type  = KeyValuePair<KeyT, ValueT>;
-    using size_type   = std::size_t;
-    using reference       =       value_type &;
-    using const_reference = const value_type &;
-    using pointer         =       KeyValuePair<KeyT, ValueT> *;
-    using const_pointer   = const KeyValuePair<KeyT, ValueT> *;
-    using iterator        = Private::LegacyForwardIteratorBase<KeyValuePair<KeyT, ValueT>>::Iterator;
-    using const_iterator  = Private::LegacyForwardIteratorBase<KeyValuePair<KeyT, ValueT>>::ConstIterator;
+    using typename IteratorBase::value_type;
+    using typename IteratorBase::size_type;
+    using typename IteratorBase::reference;
+    using typename IteratorBase::const_reference;
+    using typename IteratorBase::pointer;
+    using typename IteratorBase::const_pointer;
+    using typename IteratorBase::iterator;
+    using typename IteratorBase::const_iterator;
 
 private:
     using Interface = Private::IDictionaryInterface<KeyT, ValueT, iterator, const_iterator>;
@@ -66,11 +68,11 @@ private:
         ICollection<key_type>    Keys()   const override { return data.Keys(); }
         ICollection<mapped_type> Values() const override { return data.Values(); }
 
-        iterator        begin() override { return       iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<KeyValuePair<KeyT, ValueT>>::IteratorModel<DictionaryType>>( data.begin() ) }; }
-        const_iterator cbegin() override { return const_iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<KeyValuePair<KeyT, ValueT>>::ConstIteratorModel<DictionaryType>>( data.cbegin() ) }; }
+        iterator        begin() override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<DictionaryType>>( data.begin() ) }; }
+        const_iterator cbegin() override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.cbegin() ) }; }
         
-        iterator        end() override { return       iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<KeyValuePair<KeyT, ValueT>>::IteratorModel<DictionaryType>>( data.end() ) }; }
-        const_iterator cend() override { return const_iterator{ std::make_unique<typename Private::LegacyForwardIteratorBase<KeyValuePair<KeyT, ValueT>>::ConstIteratorModel<DictionaryType>>( data.cend() ) }; }
+        iterator        end() override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<DictionaryType>>( data.end() ) }; }
+        const_iterator cend() override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.cend() ) }; }
 
         std::unique_ptr<Interface> Clone() override
         {
