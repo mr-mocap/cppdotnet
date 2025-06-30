@@ -68,11 +68,13 @@ private:
         ICollection<key_type>    Keys()   const override { return data.Keys(); }
         ICollection<mapped_type> Values() const override { return data.Values(); }
 
-        iterator        begin() override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<DictionaryType>>( data.begin() ) }; }
-        const_iterator cbegin() override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.cbegin() ) }; }
+        iterator        begin()       override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<DictionaryType>>( data.begin() ) }; }
+        const_iterator  begin() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.begin() ) }; }
+        const_iterator cbegin() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.cbegin() ) }; }
         
-        iterator        end() override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<DictionaryType>>( data.end() ) }; }
-        const_iterator cend() override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.cend() ) }; }
+        iterator        end()       override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<DictionaryType>>( data.end() ) }; }
+        const_iterator  end() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.end() ) }; }
+        const_iterator cend() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.cend() ) }; }
 
         std::unique_ptr<Interface> Clone() override
         {
@@ -130,10 +132,10 @@ public:
     IDictionary &operator =(IDictionary &&other) = delete;
 
     // Collection
-    std::size_t Count() const      { return m_pimpl->Count(); }
-    bool        IsReadOnly() const { return m_pimpl->IsReadOnly(); }
+    std::size_t Count() const      { return AsConst()->Count(); }
+    bool        IsReadOnly() const { return AsConst()->IsReadOnly(); }
     bool        IsReadOnly()       { return m_pimpl->IsReadOnly(); }
-    bool        IsSynchronized() const { return m_pimpl->IsSynchronized(); }
+    bool        IsSynchronized() const { return AsConst()->IsSynchronized(); }
 
     void Add(const KeyValuePair<key_type, mapped_type> &item)      { m_pimpl->Add(item); }
     bool Remove(const KeyValuePair<key_type, mapped_type> &item)   { return m_pimpl->Remove(item); }
@@ -143,29 +145,34 @@ public:
     // Dictionary
           mapped_type &operator[](const key_type &key)       { return m_pimpl->operator [](key); }
           mapped_type &at(const key_type &key)               { return m_pimpl->at(key); }
-    const mapped_type &at(const key_type &key)         const { return const_cast<const Interface *>(m_pimpl.get())->at(key); }
+    const mapped_type &at(const key_type &key)         const { return AsConst()->at(key); }
 
     void Add(const key_type &key, const mapped_type &value)                   { m_pimpl->Add(key, value); }
     bool TryAdd(const key_type &key, const mapped_type &value)                { return m_pimpl->TryAdd(key, value); }
     bool Remove(const key_type &key)                                          { return m_pimpl->Remove(key); }
-    bool ContainsKey(const key_type &key)                               const { return m_pimpl->ContainsKey(key); }
-    bool ContainsValue(const mapped_type &value)                        const { return m_pimpl->ContainsValue(value); }
-    bool TryGetValue(const key_type &key, const mapped_type &value_out) const { return m_pimpl->TryGetValue(key, value_out); }
+    bool ContainsKey(const key_type &key)                               const { return AsConst()->ContainsKey(key); }
+    bool ContainsValue(const mapped_type &value)                        const { return AsConst()->ContainsValue(value); }
+    bool TryGetValue(const key_type &key, const mapped_type &value_out) const { return AsConst()->TryGetValue(key, value_out); }
 
-    ICollection<key_type>    Keys()   const { return m_pimpl->Keys();   }
-    ICollection<mapped_type> Values() const { return m_pimpl->Values(); }
+    ICollection<key_type>    Keys()   const { return AsConst()->Keys();   }
+    ICollection<mapped_type> Values() const { return AsConst()->Values(); }
 
     // Range-for compatibility
           iterator  begin()       { return m_pimpl->begin();  }
-    const_iterator  begin() const { return m_pimpl->cbegin(); }
-    const_iterator cbegin() const { return m_pimpl->cbegin(); }
+    const_iterator  begin() const { return AsConst()->cbegin(); }
+    const_iterator cbegin() const { return AsConst()->cbegin(); }
 
           iterator  end()       { return m_pimpl->end();  }
-    const_iterator  end() const { return m_pimpl->cend(); }
-    const_iterator cend() const { return m_pimpl->cend(); }
+    const_iterator  end() const { return AsConst()->cend(); }
+    const_iterator cend() const { return AsConst()->cend(); }
 
 protected:
     std::unique_ptr<Interface> m_pimpl;
+
+    const Interface *AsConst() const
+    {
+        return m_pimpl.get();
+    }
 };
 
 // Deduction Guides

@@ -25,11 +25,13 @@ struct ICollectionInterface
     virtual std::unique_ptr<ICollectionInterface> Empty() = 0;
 
     // Range-for compatibility
-    virtual IteratorType       begin() = 0;
-    virtual ConstIteratorType cbegin() = 0;
+    virtual IteratorType       begin()       = 0;
+    virtual ConstIteratorType  begin() const = 0;
+    virtual ConstIteratorType cbegin() const = 0;
 
-    virtual IteratorType       end() = 0;
-    virtual ConstIteratorType cend() = 0;
+    virtual IteratorType       end()       = 0;
+    virtual ConstIteratorType  end() const = 0;
+    virtual ConstIteratorType cend() const = 0;
 };
 
 }
