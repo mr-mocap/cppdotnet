@@ -322,8 +322,8 @@ struct LegacyForwardIteratorBase
             CollectionType::iterator m_iterator;
     };
 
-    using iterator          = Iterator;
-    using const_iterator    = ConstIterator;
+    using iterator       = Iterator;
+    using const_iterator = ConstIterator;
 };
 
 }
