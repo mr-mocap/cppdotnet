@@ -181,7 +181,7 @@ private:
     template <class CollectionType>
     struct InterfaceModelPtr : Interface
     {
-        InterfaceModelPtr() = delete;
+        InterfaceModelPtr() = default;
         InterfaceModelPtr(CollectionType *input) : data( input ) { } // For easily creating a copy
        ~InterfaceModelPtr() override
         {
