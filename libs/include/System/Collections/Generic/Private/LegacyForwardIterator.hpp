@@ -79,9 +79,14 @@ struct LegacyForwardIteratorBase
             return old;
         }
 
-        friend bool operator ==(const Iterator &left, const Iterator &right)
+        bool operator ==(const Iterator &other)
         {
-            return *left.m_pimpl == *right.m_pimpl;
+            return *m_pimpl == *other.m_pimpl;
+        }
+
+        bool operator !=(const Iterator &other)
+        {
+            return *m_pimpl != *other.m_pimpl;
         }
 
         ConstIterator AsConst() const
@@ -155,11 +160,15 @@ struct LegacyForwardIteratorBase
             return old;
         }
 
-        friend bool operator ==(const ConstIterator &left, const ConstIterator &right)
+        bool operator ==(const ConstIterator &other)
         {
-            return *left.m_pimpl == *right.m_pimpl;
+            return *m_pimpl == *other.m_pimpl;
         }
 
+        bool operator !=(const ConstIterator &other)
+        {
+            return *m_pimpl != *other.m_pimpl;
+        }
         protected:
             std::unique_ptr<ConstIteratorInterface> m_pimpl;
 
@@ -176,14 +185,10 @@ struct LegacyForwardIteratorBase
 
         virtual std::unique_ptr<ConstIteratorInterface> post_increment() = 0;
 
-        friend bool operator ==(const ConstIteratorInterface &left, const ConstIteratorInterface &right)
-        {
-            return left.EqualTo(right);
-        }
+        virtual bool operator ==(const ConstIteratorInterface &other) const = 0;
+        virtual bool operator !=(const ConstIteratorInterface &other) const = 0;
 
         virtual std::unique_ptr<ConstIteratorInterface> Clone() const = 0;
-
-        virtual bool EqualTo(const ConstIteratorInterface &other) const = 0;
     };
 
     template <class CollectionType>
@@ -232,13 +237,24 @@ struct LegacyForwardIteratorBase
             return std::make_unique<ConstIteratorModel>(m_iterator);
         }
 
-        bool EqualTo(const ConstIteratorInterface &other) const override
+        bool operator ==(const ConstIteratorInterface &other) const override
         {
             const ConstIteratorModel<CollectionType> *p = dynamic_cast<const ConstIteratorModel<CollectionType> *>(&other);
 
             if ( !p )
                 return false;
+
             return m_iterator == p->m_iterator;
+        }
+
+        bool operator !=(const ConstIteratorInterface &other) const override
+        {
+            const ConstIteratorModel<CollectionType> *p = dynamic_cast<const ConstIteratorModel<CollectionType> *>(&other);
+
+            if ( !p )
+                return false;
+
+            return m_iterator != p->m_iterator;
         }
         protected:
             CollectionType::const_iterator m_iterator;
@@ -254,15 +270,11 @@ struct LegacyForwardIteratorBase
 
         virtual std::unique_ptr<IteratorInterface> post_increment() = 0;
 
-        friend bool operator ==(const IteratorInterface &left, const IteratorInterface &right)
-        {
-            return left.EqualTo(right);
-        }
+        virtual bool operator ==(const IteratorInterface &other) const = 0;
+        virtual bool operator !=(const IteratorInterface &other) const = 0;
 
         virtual std::unique_ptr<IteratorInterface> Clone() = 0;
         virtual std::unique_ptr<ConstIteratorInterface> CloneAsConst() const = 0;
-
-        virtual bool EqualTo(const IteratorInterface &other) const = 0;
     };
 
     template <class CollectionType>
@@ -297,12 +309,12 @@ struct LegacyForwardIteratorBase
             typename CollectionType::iterator old = m_iterator;
 
             m_iterator++;
-            return std::make_unique<IteratorModel>(old);
+            return std::make_unique<IteratorModel<CollectionType>>(old);
         }
 
         std::unique_ptr<IteratorInterface> Clone() override
         {
-            return std::make_unique<IteratorModel>(m_iterator);
+            return std::make_unique<IteratorModel<CollectionType>>(m_iterator);
         }
 
         std::unique_ptr<ConstIteratorInterface> CloneAsConst() const override
@@ -310,13 +322,24 @@ struct LegacyForwardIteratorBase
             return std::make_unique<ConstIteratorModel<CollectionType>>(m_iterator);
         }
 
-        bool EqualTo(const IteratorInterface &other) const override
+        bool operator ==(const IteratorInterface &other) const override
         {
             const IteratorModel<CollectionType> *p = dynamic_cast<const IteratorModel<CollectionType> *>(&other);
 
             if ( !p )
                 return false;
+
             return m_iterator == p->m_iterator;
+        }
+
+        bool operator !=(const IteratorInterface &other) const override
+        {
+            const IteratorModel<CollectionType> *p = dynamic_cast<const IteratorModel<CollectionType> *>(&other);
+
+            if ( !p )
+                return true;
+
+            return m_iterator != p->m_iterator;
         }
         protected:
             CollectionType::iterator m_iterator;
