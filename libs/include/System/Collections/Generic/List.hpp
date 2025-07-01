@@ -15,15 +15,17 @@ template <class T>
 class List
 {
 public:
+    using underlying_type = std::vector<T>;
+
     using value_type      = T;
-    using size_type       = std::vector<T>::size_type;
-    using difference_type = std::vector<T>::difference_type;
-    using reference       = std::vector<T>::reference;
-    using const_reference = std::vector<T>::const_reference;
-    using iterator        = std::vector<T>::iterator;
-    using const_iterator  = std::vector<T>::const_iterator;
-    using reverse_iterator = std::vector<T>::reverse_iterator;
-    using const_reverse_iterator = std::vector<T>::const_reverse_iterator;
+    using size_type       = underlying_type::size_type;
+    using difference_type = underlying_type::difference_type;
+    using reference       = underlying_type::reference;
+    using const_reference = underlying_type::const_reference;
+    using iterator               = underlying_type::iterator;
+    using const_iterator         = underlying_type::const_iterator;
+    using reverse_iterator       = underlying_type::reverse_iterator;
+    using const_reverse_iterator = underlying_type::const_reverse_iterator;
     using predicate       = System::Predicate<T>;
 
     constexpr List() = default;

@@ -95,7 +95,6 @@ void CopyConstructorMakesANewObject()
     assert( ilist_copy.Contains(2) );
     assert( ilist_copy.Contains(3) );
 }
-
 void MoveConstructorLeavesOldObjectEmpty()
 {
     std::cout << __func__ << std::endl;
