@@ -176,6 +176,10 @@ protected:
     }
 };
 
+// Deduction Guides
+
+template <class ListType>
+IList(ListType &input) -> IList<typename ListType::value_type>;
 
 template <class T>
 class IListRef : public Private::LegacyBidirectionalIteratorBase<T>
