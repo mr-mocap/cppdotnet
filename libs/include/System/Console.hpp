@@ -43,6 +43,11 @@ public:
     static void Write(float value);
     static void Write(double value);
     static void Write(std::string_view data);
+    static void Write(const char *data)
+    {
+        // Let's use the more primitive Write(std::string_view) underneath
+        Write( std::string_view(data) );
+    }
 
     template <typename ...Args>
     static void Write(std::format_string<Args...> &&fmt, Args &&... args)
@@ -61,6 +66,11 @@ public:
     static void WriteLine(float value);
     static void WriteLine(double value);
     static void WriteLine(std::string_view line);
+    static void WriteLine(const char *line)
+    {
+        // Let's use the more primitive WriteLine(std::string_view) underneath
+        WriteLine( std::string_view(line) );
+    }
 
     template <typename ...Args>
     static void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
