@@ -233,6 +233,7 @@ public:
         return true;
     }
 
+    // From ICollection interface
     bool Remove(const value_type &kvp)
     {
         return Remove( kvp.Key() );
