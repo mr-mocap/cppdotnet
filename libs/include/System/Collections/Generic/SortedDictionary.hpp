@@ -188,6 +188,11 @@ public:
         return _data[key];
     }
 
+    constexpr const mapped_type &operator[](const key_type &key) const
+    {
+        return _data[key];
+    }
+
     constexpr mapped_type &at(const key_type &key)
     {
         try
