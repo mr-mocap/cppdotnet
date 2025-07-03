@@ -1,9 +1,8 @@
 #pragma once
 
-#include "System/Collections/Generic/KeyNotFoundException.hpp"
 #include "System/Collections/Generic/List.hpp"
 #include "System/Collections/Generic/KeyValuePair.hpp"
-#include "System/Exception.hpp"
+#include "System/Collections/Generic/KeyNotFoundException.hpp"
 #include "System/Private/private.hpp"
 #include <map>
 #include <format>
@@ -188,6 +187,11 @@ public:
         return _data[key];
     }
 
+    constexpr const mapped_type &operator[](const key_type &key) const
+    {
+        return _data[key];
+    }
+
     constexpr mapped_type &at(const key_type &key)
     {
         try
@@ -292,6 +296,8 @@ public:
 
     void Insert(size_type index, const key_type &key, const mapped_type &value)
     {
+        using namespace std::literals;
+
         if ( index > Count() )
             ThrowWithTarget( ArgumentOutOfRangeException( std::format("Index '{}' is out of range for OrderedDictionary", index) ) );
 
