@@ -18,16 +18,14 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::Base64FormattingOptions>
+struct EnumPolicy<System::Base64FormattingOptions> : EnumTypeTraits<System::Base64FormattingOptions>
 {
 public:
-    using value_type = System::Base64FormattingOptions;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "Base64FormattingOptions";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "None",             Base64FormattingOptions::None },
+            { "None",             Base64FormattingOptions::None             },
             { "InsertLineBreaks", Base64FormattingOptions::InsertLineBreaks }
         };
 };

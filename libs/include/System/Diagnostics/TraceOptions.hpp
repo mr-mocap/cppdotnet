@@ -22,21 +22,19 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::Diagnostics::TraceOptions>
+struct EnumPolicy<System::Diagnostics::TraceOptions> : EnumTraitTypes<System::Diagnostics::TraceOptions>
 {
 public:
-    using value_type = System::Diagnostics::TraceOptions;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "TraceOptions";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "None",      Diagnostics::TraceOptions::None },
+            { "None",      Diagnostics::TraceOptions::None      },
             { "LogicalOperationStack", Diagnostics::TraceOptions::LogicalOperationStack },
-            { "DateTime",  Diagnostics::TraceOptions::DateTime },
+            { "DateTime",  Diagnostics::TraceOptions::DateTime  },
             { "Timestamp", Diagnostics::TraceOptions::Timestamp },
             { "ProcessId", Diagnostics::TraceOptions::ProcessId },
-            { "ThreadId",  Diagnostics::TraceOptions::ThreadId },
+            { "ThreadId",  Diagnostics::TraceOptions::ThreadId  },
             { "Callstack", Diagnostics::TraceOptions::Callstack }
         };
 };

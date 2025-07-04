@@ -32,31 +32,29 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::ConsoleColor>
+struct EnumPolicy<System::ConsoleColor> : EnumTraitTypes<System::ConsoleColor>
 {
 public:
-    using value_type = System::ConsoleColor;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "ConsoleColor";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "Black",       ConsoleColor::Black },
-            { "DarkBlue",    ConsoleColor::DarkBlue },
-            { "DarkGreen",   ConsoleColor::DarkGreen },
-            { "DarkCyan",    ConsoleColor::DarkCyan },
-            { "DarkRed",     ConsoleColor::DarkRed },
+            { "Black",       ConsoleColor::Black       },
+            { "DarkBlue",    ConsoleColor::DarkBlue    },
+            { "DarkGreen",   ConsoleColor::DarkGreen   },
+            { "DarkCyan",    ConsoleColor::DarkCyan    },
+            { "DarkRed",     ConsoleColor::DarkRed     },
             { "DarkMagenta", ConsoleColor::DarkMagenta },
-            { "DarkYellow",  ConsoleColor::DarkYellow },
-            { "Gray",        ConsoleColor::Gray },
-            { "DarkGray",    ConsoleColor::DarkGray },
-            { "Blue",        ConsoleColor::Blue },
-            { "Green",       ConsoleColor::Green },
-            { "Cyan",        ConsoleColor::Cyan },
-            { "Red",         ConsoleColor::Red },
-            { "Magenta",     ConsoleColor::Magenta },
-            { "Yellow",      ConsoleColor::Yellow },
-            { "White",       ConsoleColor::White }
+            { "DarkYellow",  ConsoleColor::DarkYellow  },
+            { "Gray",        ConsoleColor::Gray        },
+            { "DarkGray",    ConsoleColor::DarkGray    },
+            { "Blue",        ConsoleColor::Blue        },
+            { "Green",       ConsoleColor::Green       },
+            { "Cyan",        ConsoleColor::Cyan        },
+            { "Red",         ConsoleColor::Red         },
+            { "Magenta",     ConsoleColor::Magenta     },
+            { "Yellow",      ConsoleColor::Yellow      },
+            { "White",       ConsoleColor::White       }
         };
 };
 

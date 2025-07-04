@@ -24,22 +24,20 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::Diagnostics::SourceLevels>
+struct EnumPolicy<System::Diagnostics::SourceLevels> : EnumTraitTypes<System::Diagnostics::SourceLevels>
 {
 public:
-    using value_type = System::Diagnostics::SourceLevels;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "SourceLevels";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "All",             Diagnostics::SourceLevels::All },
-            { "Off",             Diagnostics::SourceLevels::Off },
-            { "Critical",        Diagnostics::SourceLevels::Critical },
-            { "Error",           Diagnostics::SourceLevels::Error },
-            { "Warning",         Diagnostics::SourceLevels::Warning },
-            { "Information",     Diagnostics::SourceLevels::Information },
-            { "Verbose",         Diagnostics::SourceLevels::Verbose },
+            { "All",             Diagnostics::SourceLevels::All             },
+            { "Off",             Diagnostics::SourceLevels::Off             },
+            { "Critical",        Diagnostics::SourceLevels::Critical        },
+            { "Error",           Diagnostics::SourceLevels::Error           },
+            { "Warning",         Diagnostics::SourceLevels::Warning         },
+            { "Information",     Diagnostics::SourceLevels::Information     },
+            { "Verbose",         Diagnostics::SourceLevels::Verbose         },
             { "ActivityTracing", Diagnostics::SourceLevels::ActivityTracing }
         };
 };

@@ -18,18 +18,16 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::IO::SeekOrigin>
+struct EnumPolicy<System::IO::SeekOrigin> : EnumTraitTypes<System::IO::SeekOrigin>
 {
 public:
-    using value_type = System::IO::SeekOrigin;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "SeekOrigin";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "Begin",   IO::SeekOrigin::Begin },
+            { "Begin",   IO::SeekOrigin::Begin   },
             { "Current", IO::SeekOrigin::Current },
-            { "End",     IO::SeekOrigin::End }
+            { "End",     IO::SeekOrigin::End     }
         };
 };
 

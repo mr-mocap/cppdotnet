@@ -18,11 +18,9 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::Diagnostics::Tracing::EventActivityOptions>
+struct EnumPolicy<System::Diagnostics::Tracing::EventActivityOptions> : EnumTraitTypes<System::Diagnostics::Tracing::EventActivityOptions>
 {
 public:
-    using value_type = System::Diagnostics::Tracing::EventActivityOptions;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "EventActivityOptions";
 
@@ -30,7 +28,8 @@ public:
             { "None",       Diagnostics::Tracing::EventActivityOptions::None       },
             { "Disable",    Diagnostics::Tracing::EventActivityOptions::Disable    },
             { "Recursive",  Diagnostics::Tracing::EventActivityOptions::Recursive  },
-            { "Detachable", Diagnostics::Tracing::EventActivityOptions::Detachable } };
+            { "Detachable", Diagnostics::Tracing::EventActivityOptions::Detachable }
+        };
 };
 
 }

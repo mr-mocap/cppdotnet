@@ -16,17 +16,15 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::IO::MatchCasing>
+struct EnumPolicy<System::IO::MatchCasing> : EnumTraitTypes<System::IO::MatchCasing>
 {
 public:
-    using value_type = System::IO::MatchCasing;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "MatchCasing";
 
     static constexpr name_value_pair_type NameValueArray[] = {
             { "PlatformDefault", IO::MatchCasing::PlatformDefault },
-            { "CaseSensitive",   IO::MatchCasing::CaseSensitive },
+            { "CaseSensitive",   IO::MatchCasing::CaseSensitive   },
             { "CaseInsensitive", IO::MatchCasing::CaseInsensitive }
         };
 };

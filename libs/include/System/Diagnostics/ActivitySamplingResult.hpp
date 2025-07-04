@@ -19,18 +19,16 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::Diagnostics::ActivitySamplingResult>
+struct EnumPolicy<System::Diagnostics::ActivitySamplingResult> : EnumTraitTypes<System::Diagnostics::ActivitySamplingResult>
 {
 public:
-    using value_type = System::Diagnostics::ActivitySamplingResult;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "ActivitySamplingResult";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "None",               Diagnostics::ActivitySamplingResult::None },
-            { "PropagationData",    Diagnostics::ActivitySamplingResult::PropagationData },
-            { "AllData",            Diagnostics::ActivitySamplingResult::AllData },
+            { "None",               Diagnostics::ActivitySamplingResult::None               },
+            { "PropagationData",    Diagnostics::ActivitySamplingResult::PropagationData    },
+            { "AllData",            Diagnostics::ActivitySamplingResult::AllData            },
             { "AllDataAndRecorded", Diagnostics::ActivitySamplingResult::AllDataAndRecorded }
         };
 };

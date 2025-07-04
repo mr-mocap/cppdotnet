@@ -25,19 +25,17 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::Diagnostics::TraceLevel>
+struct EnumPolicy<System::Diagnostics::TraceLevel> : EnumTraitTypes<System::Diagnostics::TraceLevel>
 {
 public:
-    using value_type = System::Diagnostics::TraceLevel;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "TraceLevel";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "Off",     Diagnostics::TraceLevel::Off },
-            { "Error",   Diagnostics::TraceLevel::Error },
+            { "Off",     Diagnostics::TraceLevel::Off     },
+            { "Error",   Diagnostics::TraceLevel::Error   },
             { "Warning", Diagnostics::TraceLevel::Warning },
-            { "Info",    Diagnostics::TraceLevel::Info },
+            { "Info",    Diagnostics::TraceLevel::Info    },
             { "Verbose", Diagnostics::TraceLevel::Verbose }
         };
 };

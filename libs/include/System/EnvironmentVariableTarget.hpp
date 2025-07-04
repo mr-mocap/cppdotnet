@@ -19,11 +19,9 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::EnvironmentVariableTarget>
+struct EnumPolicy<System::EnvironmentVariableTarget> : EnumTraitTypes<System::EnvironmentVariableTarget>
 {
 public:
-    using value_type = System::EnvironmentVariableTarget;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "EnvironmentVariableTarget";
 

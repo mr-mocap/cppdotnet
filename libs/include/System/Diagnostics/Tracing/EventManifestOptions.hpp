@@ -19,11 +19,9 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::Diagnostics::Tracing::EventManifestOptions>
+struct EnumPolicy<System::Diagnostics::Tracing::EventManifestOptions> : EnumTraitTypes<System::Diagnostics::Tracing::EventManifestOptions>
 {
 public:
-    using value_type = System::Diagnostics::Tracing::EventManifestOptions;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "EventManifestOptions";
 

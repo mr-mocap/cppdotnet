@@ -25,18 +25,16 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::Diagnostics::Tracing::EventOpcode>
+struct EnumPolicy<System::Diagnostics::Tracing::EventOpcode> : EnumTraitTypes<System::Diagnostics::Tracing::EventOpcode>
 {
 public:
-    using value_type = System::Diagnostics::Tracing::EventOpcode;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "EventOpcode";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "Info",                Diagnostics::Tracing::EventOpcode::Info  },
-            { "Start",               Diagnostics::Tracing::EventOpcode::Start },
-            { "Stop",                Diagnostics::Tracing::EventOpcode::Stop  },
+            { "Info",                Diagnostics::Tracing::EventOpcode::Info      },
+            { "Start",               Diagnostics::Tracing::EventOpcode::Start     },
+            { "Stop",                Diagnostics::Tracing::EventOpcode::Stop      },
             { "DataCollectionStart", Diagnostics::Tracing::EventOpcode::DataCollectionStart },
             { "DataCollectionStop",  Diagnostics::Tracing::EventOpcode::DataCollectionStop  },
             { "Extension",           Diagnostics::Tracing::EventOpcode::Extension },

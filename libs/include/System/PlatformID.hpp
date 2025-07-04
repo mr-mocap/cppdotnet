@@ -22,11 +22,9 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::PlatformID>
+struct EnumPolicy<System::PlatformID> : EnumTraitTypes<System::PlatformID>
 {
 public:
-    using value_type = System::PlatformID;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "PlatformID";
 

@@ -19,11 +19,9 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::DateTimeKind>
+struct EnumPolicy<System::DateTimeKind> : EnumTraitTypes<System::DateTimeKind>
 {
 public:
-    using value_type = System::DateTimeKind;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "DateTimeKind";
 

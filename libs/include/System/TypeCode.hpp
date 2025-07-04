@@ -34,11 +34,9 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::TypeCode>
+struct EnumPolicy<System::TypeCode> : EnumTraitTypes<System::TypeCode>
 {
 public:
-    using value_type = System::TypeCode;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "TypeCode";
 

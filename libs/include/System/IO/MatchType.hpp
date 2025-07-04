@@ -15,17 +15,15 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::IO::MatchType>
+struct EnumPolicy<System::IO::MatchType> : EnumTraitTypes<System::IO::MatchType>
 {
 public:
-    using value_type = System::IO::MatchType;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "MatchType";
 
     static constexpr name_value_pair_type NameValueArray[] = {
             { "Simple", IO::MatchType::Simple },
-            { "Win32",  IO::MatchType::Win32 }
+            { "Win32",  IO::MatchType::Win32  }
         };
 };
 

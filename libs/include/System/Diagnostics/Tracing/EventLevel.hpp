@@ -20,11 +20,9 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::Diagnostics::Tracing::EventLevel>
+struct EnumPolicy<System::Diagnostics::Tracing::EventLevel> : EnumTraitTypes<System::Diagnostics::Tracing::EventLevel>
 {
 public:
-    using value_type = System::Diagnostics::Tracing::EventLevel;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "EventLevel";
 

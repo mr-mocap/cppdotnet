@@ -20,11 +20,9 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<ConsoleModifiers>
+struct EnumPolicy<ConsoleModifiers> : EnumTraitTypes<ConsoleModifiers>
 {
 public:
-    using value_type = System::ConsoleModifiers;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "ConsoleModifiers";
 

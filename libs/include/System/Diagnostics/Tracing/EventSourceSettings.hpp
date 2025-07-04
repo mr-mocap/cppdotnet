@@ -19,18 +19,16 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::Diagnostics::Tracing::EventSourceSettings>
+struct EnumPolicy<System::Diagnostics::Tracing::EventSourceSettings> : EnumTraitTypes<System::Diagnostics::Tracing::EventSourceSettings>
 {
 public:
-    using value_type = System::Diagnostics::Tracing::EventSourceSettings;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "EventSourceSettings";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "Default",                      Diagnostics::Tracing::EventSourceSettings::Default },
-            { "ThrowOnEventWriteErrors",      Diagnostics::Tracing::EventSourceSettings::ThrowOnEventWriteErrors },
-            { "EtwManifestEventFormat",       Diagnostics::Tracing::EventSourceSettings::EtwManifestEventFormat },
+            { "Default",                      Diagnostics::Tracing::EventSourceSettings::Default                      },
+            { "ThrowOnEventWriteErrors",      Diagnostics::Tracing::EventSourceSettings::ThrowOnEventWriteErrors      },
+            { "EtwManifestEventFormat",       Diagnostics::Tracing::EventSourceSettings::EtwManifestEventFormat       },
             { "EtwSelfDescribingEventFormat", Diagnostics::Tracing::EventSourceSettings::EtwSelfDescribingEventFormat }
         };
 };

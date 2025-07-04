@@ -29,28 +29,26 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::IO::UnixFileMode>
+struct EnumPolicy<System::IO::UnixFileMode> : EnumTraitTypes<System::IO::UnixFileMode>
 {
 public:
-    using value_type = System::IO::UnixFileMode;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "UnixFileMode";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "None",         IO::UnixFileMode::None },
+            { "None",         IO::UnixFileMode::None         },
             { "OtherExecute", IO::UnixFileMode::OtherExecute },
-            { "OtherWrite",   IO::UnixFileMode::OtherWrite },
-            { "OtherRead",    IO::UnixFileMode::OtherRead },
+            { "OtherWrite",   IO::UnixFileMode::OtherWrite   },
+            { "OtherRead",    IO::UnixFileMode::OtherRead    },
             { "GroupExecute", IO::UnixFileMode::GroupExecute },
-            { "GroupWrite",   IO::UnixFileMode::GroupWrite },
-            { "GroupRead",    IO::UnixFileMode::GroupRead },
-            { "UserExecute",  IO::UnixFileMode::UserExecute },
-            { "UserWrite",    IO::UnixFileMode::UserWrite },
-            { "UserRead",     IO::UnixFileMode::UserRead },
-            { "StickyBit",    IO::UnixFileMode::StickyBit },
-            { "SetGroup",     IO::UnixFileMode::SetGroup },
-            { "SetUser",      IO::UnixFileMode::SetUser }
+            { "GroupWrite",   IO::UnixFileMode::GroupWrite   },
+            { "GroupRead",    IO::UnixFileMode::GroupRead    },
+            { "UserExecute",  IO::UnixFileMode::UserExecute  },
+            { "UserWrite",    IO::UnixFileMode::UserWrite    },
+            { "UserRead",     IO::UnixFileMode::UserRead     },
+            { "StickyBit",    IO::UnixFileMode::StickyBit    },
+            { "SetGroup",     IO::UnixFileMode::SetGroup     },
+            { "SetUser",      IO::UnixFileMode::SetUser      }
         };
 };
 

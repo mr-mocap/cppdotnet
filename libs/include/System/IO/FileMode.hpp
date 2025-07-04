@@ -21,21 +21,19 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::IO::FileMode>
+struct EnumPolicy<System::IO::FileMode> : EnumTraitTypes<System::IO::FileMode>
 {
 public:
-    using value_type = System::IO::FileMode;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "FileMode";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "CreateNew",    IO::FileMode::CreateNew },
-            { "Create",       IO::FileMode::Create },
-            { "Open",         IO::FileMode::Open },
+            { "CreateNew",    IO::FileMode::CreateNew    },
+            { "Create",       IO::FileMode::Create       },
+            { "Open",         IO::FileMode::Open         },
             { "OpenOrCreate", IO::FileMode::OpenOrCreate },
-            { "Truncate",     IO::FileMode::Truncate },
-            { "Append",       IO::FileMode::Append }
+            { "Truncate",     IO::FileMode::Truncate     },
+            { "Append",       IO::FileMode::Append       }
         };
 };
 

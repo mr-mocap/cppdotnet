@@ -23,11 +23,9 @@ struct EnumTraitTypes
 
 template <class T>
     requires std::is_enum_v<T>
-struct EnumPolicy
+struct EnumPolicy : EnumTraitTypes<T>
 {
 public:
-    using value_type = T;
-    using name_value_pair_type = std::pair<const char *, value_type>;
 
     static constexpr std::string_view EnumName = "UndefinedEnumPolicy";
 
