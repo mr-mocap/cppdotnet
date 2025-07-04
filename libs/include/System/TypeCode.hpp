@@ -34,96 +34,34 @@ namespace System
 {
 
 template <>
-struct EnumTraits<System::TypeCode> : EnumTraitTypes<System::TypeCode>
+struct EnumPolicy<System::TypeCode>
 {
-    static auto EnumName() -> std::string_view { return "TypeCode"; }
+public:
+    using value_type = System::TypeCode;
+    using name_value_pair_type = std::pair<const char *, value_type>;
+
+    static constexpr std::string_view EnumName = "TypeCode";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "Empty",    System::TypeCode::Empty    },
-            { "Object",   System::TypeCode::Object   },
-            { "DBNull",   System::TypeCode::DBNull   },
-            { "Boolean",  System::TypeCode::Boolean  },
-            { "Char",     System::TypeCode::Char     },
-            { "SByte",    System::TypeCode::SByte    },
-            { "Byte",     System::TypeCode::Byte     },
-            { "Int16",    System::TypeCode::Int16    },
-            { "UInt16",   System::TypeCode::UInt16   },
-            { "Int32",    System::TypeCode::Int32    },
-            { "UInt32",   System::TypeCode::UInt32   },
-            { "Int64",    System::TypeCode::Int64    },
-            { "UInt64",   System::TypeCode::UInt64   },
-            { "Single",   System::TypeCode::Single   },
-            { "Double",   System::TypeCode::Double   },
-            { "Decimal",  System::TypeCode::Decimal  },
-            { "DateTime", System::TypeCode::DateTime },
-            { "String",   System::TypeCode::String   }
+            { "Empty",    TypeCode::Empty    },
+            { "Object",   TypeCode::Object   },
+            { "DBNull",   TypeCode::DBNull   },
+            { "Boolean",  TypeCode::Boolean  },
+            { "Char",     TypeCode::Char     },
+            { "SByte",    TypeCode::SByte    },
+            { "Byte",     TypeCode::Byte     },
+            { "Int16",    TypeCode::Int16    },
+            { "UInt16",   TypeCode::UInt16   },
+            { "Int32",    TypeCode::Int32    },
+            { "UInt32",   TypeCode::UInt32   },
+            { "Int64",    TypeCode::Int64    },
+            { "UInt64",   TypeCode::UInt64   },
+            { "Single",   TypeCode::Single   },
+            { "Double",   TypeCode::Double   },
+            { "Decimal",  TypeCode::Decimal  },
+            { "DateTime", TypeCode::DateTime },
+            { "String",   TypeCode::String   }
         };
-
-    static constexpr auto NameValuePairs() -> std::span<const name_value_pair_type>
-    {
-        return std::span{ NameValueArray };
-    }
-
-    static constexpr auto Count() -> std::size_t { return NameValuePairs().size(); }
-
-    static constexpr auto Names() -> std::ranges::keys_view<std::span<const name_value_pair_type>>
-    {
-        return std::views::keys( NameValuePairs() );
-    }
-
-    static constexpr auto Values() -> std::ranges::values_view<std::span<const name_value_pair_type>>
-    {
-        return std::views::values( NameValuePairs() );
-    }
-
-    static constexpr auto ValuesAsUnderlyingType()
-    {
-        auto to_underlying_type = [](const value_type item) { return static_cast<underlying_type>(item); };
-
-        return Values() | std::views::transform( to_underlying_type );
-    }
-
-    static constexpr bool IsDefined(value_type value)
-    {
-        return std::ranges::find( NameValuePairs(),
-                                  value,
-                                  &name_value_pair_type::second
-                                ) != NameValuePairs().end();
-    }
-
-    static constexpr bool IsDefined(underlying_type value)
-    {
-        return IsDefined( static_cast<value_type>(value) );
-    }
-
-    static constexpr bool IsDefined(std::string_view value_string)
-    {
-        return std::ranges::find( NameValuePairs(),
-                                  value_string,
-                                  &name_value_pair_type::first
-                                ) != NameValuePairs().end();
-    }
-
-    static constexpr auto ToName(value_type value) -> std::string_view
-    {
-        auto found = std::ranges::find( NameValuePairs(),
-                                        value,
-                                        &name_value_pair_type::second
-                                      );
-
-        if ( found == NameValuePairs().end() )
-            return {};
-
-        return found->first;
-    }
-
-    static constexpr auto ToName(underlying_type value) -> std::string_view
-    {
-        return ToName( static_cast<value_type>(value) );
-    }
-
-    static constexpr value_type min() { return System::TypeCode::Empty; }
-    static constexpr value_type max() { return System::TypeCode::String; }
 };
 
 }

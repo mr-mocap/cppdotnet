@@ -1,12 +1,13 @@
 #pragma once
 
-#include <type_traits>
 #include <utility>
 #include <string_view>
 #include <span>
 #include <ranges>
 #include <format>
 #include <algorithm>
+#include <array>
+#include <type_traits>
 
 namespace System
 {
@@ -22,41 +23,76 @@ struct EnumTraitTypes
 
 template <class T>
     requires std::is_enum_v<T>
-struct EnumTraits
+struct EnumPolicy
 {
-    // You MUST implement the following for the specialization!
-#if 0
-    using value_type           = T;
+public:
+    using value_type = T;
+    using name_value_pair_type = std::pair<const char *, value_type>;
+
+    static constexpr std::string_view EnumName = "UndefinedEnumPolicy";
+
+    static constexpr name_value_pair_type NameValueArray[] = {
+            { "UndefinedEnumValue", static_cast<T>(0) }
+        };
+};
+
+template <class T, class EnumPolicyT = EnumPolicy<T>>
+    requires std::is_enum_v<T>
+struct EnumTraits : EnumPolicyT
+{
+    using value_type           = EnumPolicyT::value_type;
     using underlying_type      = std::underlying_type_t<T>;
-    using name_value_pair_type = std::pair<std::string_view, T>;
+    using name_value_pair_type = EnumPolicyT::name_value_pair_type;
 
-    static constexpr auto EnumName() -> std::string_view { return { }; }
+    using name_array_type      = std::ranges::keys_view<std::span<name_value_pair_type>>;
+    using value_array_type     = std::ranges::values_view<std::span<name_value_pair_type>>;
 
-    static constexpr std::span<name_value_pair_type> NameValuePairs()
+    static constexpr auto NameValuePairs() -> decltype( std::span{ EnumPolicyT::NameValueArray } )
     {
-        return {};
+        return std::span{ EnumPolicyT::NameValueArray };
     }
 
-    static auto Count() -> std::size_t { return NameValuePairs().size(); }
+    static constexpr std::size_t Count() { return NameValuePairs().size(); }
 
-    static auto Names() -> std::ranges::keys_view<std::span<name_value_pair_type>>
+    static constexpr auto Names() -> name_array_type
     {
         return std::views::keys( NameValuePairs() );
     }
 
-    static auto Values() -> std::ranges::values_view<std::span<name_value_pair_type>>
+    static constexpr auto Values() -> value_array_type
     {
         return std::views::values( NameValuePairs() );
     }
 
-    static auto ValuesAsUnderlyingType()
+    static constexpr auto ValuesAsUnderlyingType()
     {
         auto transform_fn = [=](const value_type item) { return static_cast<underlying_type>(item); };
 
         return Values() | std::views::transform( transform_fn );
     }
 
-    static auto ToName(value_type value) -> std::string_view
+    static constexpr bool IsDefined(value_type value)
+    {
+        return std::ranges::find( NameValuePairs(),
+                                  value,
+                                  &name_value_pair_type::second
+                                ) != NameValuePairs().end();
+    }
+
+    static constexpr bool IsDefined(underlying_type value)
+    {
+        return IsDefined( static_cast<value_type>(value) );
+    }
+
+    static constexpr bool IsDefined(std::string_view value_string)
+    {
+        return std::ranges::find( NameValuePairs(),
+                                  value_string,
+                                  &name_value_pair_type::first
+                                ) != NameValuePairs().end();
+    }
+
+    static constexpr auto ToName(value_type value) -> std::string_view
     {
         auto found = std::ranges::find( NameValuePairs(),
                                         value,
@@ -69,9 +105,13 @@ struct EnumTraits
         return found->first;
     }
 
-    static constexpr value_type min() { return value_type{}; }
-    static constexpr value_type max() { return value_type{}; }
-#endif
+    static constexpr auto ToName(underlying_type value) -> std::string_view
+    {
+        return ToName( static_cast<value_type>(value) );
+    }
+
+    static constexpr value_type Min() { return NameValuePairs().front(); }
+    static constexpr value_type Max() { return NameValuePairs().back(); }
 };
 
 template <class T>

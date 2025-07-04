@@ -161,222 +161,160 @@ namespace System
 {
 
 template <>
-struct EnumTraits<System::ConsoleKey> : EnumTraitTypes<System::ConsoleKey>
+struct EnumPolicy<System::ConsoleKey>
 {
-    static auto EnumName() -> std::string_view { return "ConsoleKey"; }
+public:
+    using value_type = System::ConsoleKey;
+    using name_value_pair_type = std::pair<const char *, value_type>;
+
+    static constexpr std::string_view EnumName = "ConsoleKey";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "None",        System::ConsoleKey::None },
-            { "Backspace",   System::ConsoleKey::Backspace },
-            { "Tab",         System::ConsoleKey::Tab },
-            { "Clear",       System::ConsoleKey::Clear },
-            { "Enter",       System::ConsoleKey::Enter },
-            { "Pause",       System::ConsoleKey::Pause },
-            { "Escape",      System::ConsoleKey::Escape },
-            { "Spacebar",    System::ConsoleKey::Spacebar },
-            { "PageUp",      System::ConsoleKey::PageUp },
-            { "PageDown",    System::ConsoleKey::PageDown },
-            { "End",         System::ConsoleKey::End },
-            { "LeftArrow",   System::ConsoleKey::LeftArrow },
-            { "UpArrow",     System::ConsoleKey::UpArrow },
-            { "RightArrow",  System::ConsoleKey::RightArrow },
-            { "DownArrow",   System::ConsoleKey::DownArrow },
-            { "Select",      System::ConsoleKey::Select },
-            { "Print",       System::ConsoleKey::Print },
-            { "Execute",     System::ConsoleKey::Execute },
-            { "PrintScreen", System::ConsoleKey::PrintScreen },
-            { "Insert",      System::ConsoleKey::Insert },
-            { "Delete",      System::ConsoleKey::Delete },
-            { "Help",        System::ConsoleKey::Help },
-            { "D0",          System::ConsoleKey::D0 },
-            { "D1",          System::ConsoleKey::D1 },
-            { "D2",          System::ConsoleKey::D2 },
-            { "D3",          System::ConsoleKey::D3 },
-            { "D4",          System::ConsoleKey::D4 },
-            { "D5",          System::ConsoleKey::D5 },
-            { "D6",          System::ConsoleKey::D6 },
-            { "D7",          System::ConsoleKey::D7 },
-            { "D8",          System::ConsoleKey::D8 },
-            { "D9",          System::ConsoleKey::D9 },
-            { "A", System::ConsoleKey::A },
-            { "B", System::ConsoleKey::B },
-            { "C", System::ConsoleKey::C },
-            { "D", System::ConsoleKey::D },
-            { "E", System::ConsoleKey::E },
-            { "F", System::ConsoleKey::F },
-            { "G", System::ConsoleKey::G },
-            { "H", System::ConsoleKey::H },
-            { "I", System::ConsoleKey::I },
-            { "J", System::ConsoleKey::J },
-            { "K", System::ConsoleKey::K },
-            { "L", System::ConsoleKey::L },
-            { "M", System::ConsoleKey::M },
-            { "N", System::ConsoleKey::N },
-            { "O", System::ConsoleKey::O },
-            { "P", System::ConsoleKey::P },
-            { "Q", System::ConsoleKey::Q },
-            { "R", System::ConsoleKey::R },
-            { "S", System::ConsoleKey::S },
-            { "T", System::ConsoleKey::T },
-            { "U", System::ConsoleKey::U },
-            { "V", System::ConsoleKey::V },
-            { "W", System::ConsoleKey::W },
-            { "X", System::ConsoleKey::X },
-            { "Y", System::ConsoleKey::Y },
-            { "Z", System::ConsoleKey::Z },
-            { "LeftWindows",  System::ConsoleKey::LeftWindows },
-            { "RightWindows", System::ConsoleKey::RightWindows },
-            { "Applications", System::ConsoleKey::Applications },
-            { "Sleep",        System::ConsoleKey::Sleep },
-            { "NumPad0",   System::ConsoleKey::NumPad0 },
-            { "NumPad1",   System::ConsoleKey::NumPad1 },
-            { "NumPad2",   System::ConsoleKey::NumPad2 },
-            { "NumPad3",   System::ConsoleKey::NumPad3 },
-            { "NumPad4",   System::ConsoleKey::NumPad4 },
-            { "NumPad5",   System::ConsoleKey::NumPad5 },
-            { "NumPad6",   System::ConsoleKey::NumPad6 },
-            { "NumPad7",   System::ConsoleKey::NumPad7 },
-            { "NumPad8",   System::ConsoleKey::NumPad8 },
-            { "NumPad9",   System::ConsoleKey::NumPad9 },
-            { "Multiply",  System::ConsoleKey::Multiply },
-            { "Add",       System::ConsoleKey::Add },
-            { "Separator", System::ConsoleKey::Separator },
-            { "Subtract",  System::ConsoleKey::Subtract },
-            { "Decimal",   System::ConsoleKey::Decimal },
-            { "Divide",    System::ConsoleKey::Divide },
-            { "F1",  System::ConsoleKey::F1 },
-            { "F2",  System::ConsoleKey::F2 },
-            { "F3",  System::ConsoleKey::F3 },
-            { "F4",  System::ConsoleKey::F4 },
-            { "F5",  System::ConsoleKey::F5 },
-            { "F6",  System::ConsoleKey::F6 },
-            { "F7",  System::ConsoleKey::F7 },
-            { "F8",  System::ConsoleKey::F8 },
-            { "F9",  System::ConsoleKey::F9 },
-            { "F10", System::ConsoleKey::F10 },
-            { "F11", System::ConsoleKey::F11 },
-            { "F12", System::ConsoleKey::F12 },
-            { "F13", System::ConsoleKey::F13 },
-            { "F14", System::ConsoleKey::F14 },
-            { "F15", System::ConsoleKey::F15 },
-            { "F16", System::ConsoleKey::F16 },
-            { "F17", System::ConsoleKey::F17 },
-            { "F18", System::ConsoleKey::F18 },
-            { "F19", System::ConsoleKey::F19 },
-            { "F20", System::ConsoleKey::F20 },
-            { "F21", System::ConsoleKey::F21 },
-            { "F22", System::ConsoleKey::F22 },
-            { "F23", System::ConsoleKey::F23 },
-            { "F24", System::ConsoleKey::F24 },
-            { "BrowserBack",       System::ConsoleKey::BrowserBack },
-            { "BrowserForward",    System::ConsoleKey::BrowserForward },
-            { "BrowserRefresh",    System::ConsoleKey::BrowserRefresh },
-            { "BrowserStop",       System::ConsoleKey::BrowserStop },
-            { "BrowserSearch",     System::ConsoleKey::BrowserSearch },
-            { "BrowserFavorites",  System::ConsoleKey::BrowserFavorites },
-            { "BrowserHome",       System::ConsoleKey::BrowserHome },
-            { "VolumeMute",        System::ConsoleKey::VolumeMute },
-            { "VolumeDown",        System::ConsoleKey::VolumeDown },
-            { "VolumeUp",          System::ConsoleKey::VolumeUp },
-            { "MediaNext",         System::ConsoleKey::MediaNext },
-            { "MediaPrevious",     System::ConsoleKey::MediaPrevious },
-            { "MediaStop",         System::ConsoleKey::MediaStop },
-            { "MediaPlay",         System::ConsoleKey::MediaPlay },
-            { "LaunchMail",        System::ConsoleKey::LaunchMail },
-            { "LaunchMediaSelect", System::ConsoleKey::LaunchMediaSelect },
-            { "LaunchApp1",        System::ConsoleKey::LaunchApp1 },
-            { "LaunchApp2",        System::ConsoleKey::LaunchApp2 },
-            { "Oem1",      System::ConsoleKey::Oem1 },
-            { "OemPlus",   System::ConsoleKey::OemPlus },
-            { "OemComma",  System::ConsoleKey::OemComma },
-            { "OemMinus",  System::ConsoleKey::OemMinus },
-            { "OemPeriod", System::ConsoleKey::OemPeriod},
-            { "Oem2",      System::ConsoleKey::Oem2 },
-            { "Oem3",      System::ConsoleKey::Oem3 },
-            { "Oem4",      System::ConsoleKey::Oem4 },
-            { "Oem5",      System::ConsoleKey::Oem5 },
-            { "Oem6",      System::ConsoleKey::Oem6 },
-            { "Oem7",      System::ConsoleKey::Oem7 },
-            { "Oem8",      System::ConsoleKey::Oem8 },
-            { "Oem102",    System::ConsoleKey::Oem102 },
-            { "Process",   System::ConsoleKey::Process },
-            { "Packet",    System::ConsoleKey::Packet },
-            { "Attention", System::ConsoleKey::Attention },
-            { "CrSel",     System::ConsoleKey::CrSel },
-            { "ExSel",     System::ConsoleKey::ExSel },
-            { "EraseEndOfFile", System::ConsoleKey::EraseEndOfFile },
-            { "Play",      System::ConsoleKey::Play },
-            { "Zoom",      System::ConsoleKey::Zoom },
-            { "NoName",    System::ConsoleKey::NoName },
-            { "Pa1",       System::ConsoleKey::Pa1 },
-            { "OemClear",  System::ConsoleKey::OemClear }
+            { "None",        ConsoleKey::None },
+            { "Backspace",   ConsoleKey::Backspace },
+            { "Tab",         ConsoleKey::Tab },
+            { "Clear",       ConsoleKey::Clear },
+            { "Enter",       ConsoleKey::Enter },
+            { "Pause",       ConsoleKey::Pause },
+            { "Escape",      ConsoleKey::Escape },
+            { "Spacebar",    ConsoleKey::Spacebar },
+            { "PageUp",      ConsoleKey::PageUp },
+            { "PageDown",    ConsoleKey::PageDown },
+            { "End",         ConsoleKey::End },
+            { "LeftArrow",   ConsoleKey::LeftArrow },
+            { "UpArrow",     ConsoleKey::UpArrow },
+            { "RightArrow",  ConsoleKey::RightArrow },
+            { "DownArrow",   ConsoleKey::DownArrow },
+            { "Select",      ConsoleKey::Select },
+            { "Print",       ConsoleKey::Print },
+            { "Execute",     ConsoleKey::Execute },
+            { "PrintScreen", ConsoleKey::PrintScreen },
+            { "Insert",      ConsoleKey::Insert },
+            { "Delete",      ConsoleKey::Delete },
+            { "Help",        ConsoleKey::Help },
+            { "D0",          ConsoleKey::D0 },
+            { "D1",          ConsoleKey::D1 },
+            { "D2",          ConsoleKey::D2 },
+            { "D3",          ConsoleKey::D3 },
+            { "D4",          ConsoleKey::D4 },
+            { "D5",          ConsoleKey::D5 },
+            { "D6",          ConsoleKey::D6 },
+            { "D7",          ConsoleKey::D7 },
+            { "D8",          ConsoleKey::D8 },
+            { "D9",          ConsoleKey::D9 },
+            { "A", ConsoleKey::A },
+            { "B", ConsoleKey::B },
+            { "C", ConsoleKey::C },
+            { "D", ConsoleKey::D },
+            { "E", ConsoleKey::E },
+            { "F", ConsoleKey::F },
+            { "G", ConsoleKey::G },
+            { "H", ConsoleKey::H },
+            { "I", ConsoleKey::I },
+            { "J", ConsoleKey::J },
+            { "K", ConsoleKey::K },
+            { "L", ConsoleKey::L },
+            { "M", ConsoleKey::M },
+            { "N", ConsoleKey::N },
+            { "O", ConsoleKey::O },
+            { "P", ConsoleKey::P },
+            { "Q", ConsoleKey::Q },
+            { "R", ConsoleKey::R },
+            { "S", ConsoleKey::S },
+            { "T", ConsoleKey::T },
+            { "U", ConsoleKey::U },
+            { "V", ConsoleKey::V },
+            { "W", ConsoleKey::W },
+            { "X", ConsoleKey::X },
+            { "Y", ConsoleKey::Y },
+            { "Z", ConsoleKey::Z },
+            { "LeftWindows",  ConsoleKey::LeftWindows },
+            { "RightWindows", ConsoleKey::RightWindows },
+            { "Applications", ConsoleKey::Applications },
+            { "Sleep",        ConsoleKey::Sleep },
+            { "NumPad0",   ConsoleKey::NumPad0 },
+            { "NumPad1",   ConsoleKey::NumPad1 },
+            { "NumPad2",   ConsoleKey::NumPad2 },
+            { "NumPad3",   ConsoleKey::NumPad3 },
+            { "NumPad4",   ConsoleKey::NumPad4 },
+            { "NumPad5",   ConsoleKey::NumPad5 },
+            { "NumPad6",   ConsoleKey::NumPad6 },
+            { "NumPad7",   ConsoleKey::NumPad7 },
+            { "NumPad8",   ConsoleKey::NumPad8 },
+            { "NumPad9",   ConsoleKey::NumPad9 },
+            { "Multiply",  ConsoleKey::Multiply },
+            { "Add",       ConsoleKey::Add },
+            { "Separator", ConsoleKey::Separator },
+            { "Subtract",  ConsoleKey::Subtract },
+            { "Decimal",   ConsoleKey::Decimal },
+            { "Divide",    ConsoleKey::Divide },
+            { "F1",  ConsoleKey::F1 },
+            { "F2",  ConsoleKey::F2 },
+            { "F3",  ConsoleKey::F3 },
+            { "F4",  ConsoleKey::F4 },
+            { "F5",  ConsoleKey::F5 },
+            { "F6",  ConsoleKey::F6 },
+            { "F7",  ConsoleKey::F7 },
+            { "F8",  ConsoleKey::F8 },
+            { "F9",  ConsoleKey::F9 },
+            { "F10", ConsoleKey::F10 },
+            { "F11", ConsoleKey::F11 },
+            { "F12", ConsoleKey::F12 },
+            { "F13", ConsoleKey::F13 },
+            { "F14", ConsoleKey::F14 },
+            { "F15", ConsoleKey::F15 },
+            { "F16", ConsoleKey::F16 },
+            { "F17", ConsoleKey::F17 },
+            { "F18", ConsoleKey::F18 },
+            { "F19", ConsoleKey::F19 },
+            { "F20", ConsoleKey::F20 },
+            { "F21", ConsoleKey::F21 },
+            { "F22", ConsoleKey::F22 },
+            { "F23", ConsoleKey::F23 },
+            { "F24", ConsoleKey::F24 },
+            { "BrowserBack",       ConsoleKey::BrowserBack },
+            { "BrowserForward",    ConsoleKey::BrowserForward },
+            { "BrowserRefresh",    ConsoleKey::BrowserRefresh },
+            { "BrowserStop",       ConsoleKey::BrowserStop },
+            { "BrowserSearch",     ConsoleKey::BrowserSearch },
+            { "BrowserFavorites",  ConsoleKey::BrowserFavorites },
+            { "BrowserHome",       ConsoleKey::BrowserHome },
+            { "VolumeMute",        ConsoleKey::VolumeMute },
+            { "VolumeDown",        ConsoleKey::VolumeDown },
+            { "VolumeUp",          ConsoleKey::VolumeUp },
+            { "MediaNext",         ConsoleKey::MediaNext },
+            { "MediaPrevious",     ConsoleKey::MediaPrevious },
+            { "MediaStop",         ConsoleKey::MediaStop },
+            { "MediaPlay",         ConsoleKey::MediaPlay },
+            { "LaunchMail",        ConsoleKey::LaunchMail },
+            { "LaunchMediaSelect", ConsoleKey::LaunchMediaSelect },
+            { "LaunchApp1",        ConsoleKey::LaunchApp1 },
+            { "LaunchApp2",        ConsoleKey::LaunchApp2 },
+            { "Oem1",              ConsoleKey::Oem1 },
+            { "OemPlus",           ConsoleKey::OemPlus },
+            { "OemComma",          ConsoleKey::OemComma },
+            { "OemMinus",          ConsoleKey::OemMinus },
+            { "OemPeriod",         ConsoleKey::OemPeriod},
+            { "Oem2",              ConsoleKey::Oem2 },
+            { "Oem3",              ConsoleKey::Oem3 },
+            { "Oem4",              ConsoleKey::Oem4 },
+            { "Oem5",              ConsoleKey::Oem5 },
+            { "Oem6",              ConsoleKey::Oem6 },
+            { "Oem7",              ConsoleKey::Oem7 },
+            { "Oem8",              ConsoleKey::Oem8 },
+            { "Oem102",            ConsoleKey::Oem102 },
+            { "Process",           ConsoleKey::Process },
+            { "Packet",            ConsoleKey::Packet },
+            { "Attention",         ConsoleKey::Attention },
+            { "CrSel",             ConsoleKey::CrSel },
+            { "ExSel",             ConsoleKey::ExSel },
+            { "EraseEndOfFile",    ConsoleKey::EraseEndOfFile },
+            { "Play",              ConsoleKey::Play },
+            { "Zoom",              ConsoleKey::Zoom },
+            { "NoName",            ConsoleKey::NoName },
+            { "Pa1",               ConsoleKey::Pa1 },
+            { "OemClear",          ConsoleKey::OemClear }
         };
-
-    static constexpr auto NameValuePairs() -> std::span<const name_value_pair_type>
-    {
-        return std::span{ NameValueArray };
-    }
-
-    static constexpr auto Count() -> std::size_t { return NameValuePairs().size(); }
-
-    static constexpr auto Names() -> std::ranges::keys_view<std::span<const name_value_pair_type>>
-    {
-        return std::views::keys( NameValuePairs() );
-    }
-
-    static constexpr auto Values() -> std::ranges::values_view<std::span<const name_value_pair_type>>
-    {
-        return std::views::values( NameValuePairs() );
-    }
-
-    static constexpr auto ValuesAsUnderlyingType()
-    {
-        auto to_underlying_type = [](const value_type item) { return static_cast<underlying_type>(item); };
-
-        return Values() | std::views::transform( to_underlying_type );
-    }
-
-    static constexpr bool IsDefined(value_type value)
-    {
-        return std::ranges::find( NameValuePairs(),
-                                  value,
-                                  &name_value_pair_type::second
-                                ) != NameValuePairs().end();
-    }
-
-    static constexpr bool IsDefined(underlying_type value)
-    {
-        return IsDefined( static_cast<value_type>(value) );
-    }
-
-    static constexpr bool IsDefined(std::string_view value_string)
-    {
-        return std::ranges::find( NameValuePairs(),
-                                  value_string,
-                                  &name_value_pair_type::first
-                                ) != NameValuePairs().end();
-    }
-
-    static constexpr auto ToName(value_type value) -> std::string_view
-    {
-        auto found = std::ranges::find( NameValuePairs(),
-                                        value,
-                                        &name_value_pair_type::second
-                                      );
-
-        if ( found == NameValuePairs().end() )
-            return {};
-
-        return found->first;
-    }
-
-    static constexpr auto ToName(underlying_type value) -> std::string_view
-    {
-        return ToName( static_cast<value_type>(value) );
-    }
-
-    static constexpr value_type min() { return System::ConsoleKey::None; }
-    static constexpr value_type max() { return System::ConsoleKey::OemClear; }
 };
 
 }
