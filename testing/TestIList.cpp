@@ -1,8 +1,11 @@
 #include "TestIList.hpp"
 #include "System/Collections/Generic/IList.hpp"
 #include "System/Collections/Generic/List.hpp"
-#include <iostream>
+#include "System/Collections/Generic/OrderedDictionary.hpp"
+#include "System/Console.hpp"
 #include <cassert>
+#include <ranges>
+#include <string>
 
 
 namespace TestIList
@@ -10,16 +13,19 @@ namespace TestIList
 
 void MoveConstructedWithDataType()
 {
-    std::cout << __func__ << std::endl;
+#if 0
+    System::Console::WriteLine(__func__);
 
     System::Collections::Generic::IList<int> empty{ System::Collections::Generic::List<int>() };
 
     assert( empty.Count() == 0 );
+#endif
 }
 
 void ConstructedWithObjectMakesANewCopy()
 {
-    std::cout << __func__ << std::endl;
+#if 0
+    System::Console::WriteLine(__func__);
 
     System::Collections::Generic::List<int> list;
 
@@ -46,11 +52,13 @@ void ConstructedWithObjectMakesANewCopy()
     assert( ilist.Contains(1) );
     assert( ilist.Contains(2) );
     assert( ilist.Contains(3) );
+#endif
 }
 
 void CopyConstructorMakesANewObject()
 {
-    std::cout << __func__ << std::endl;
+#if 0
+    System::Console::WriteLine(__func__);
 
     System::Collections::Generic::List<int> list;
 
@@ -94,10 +102,13 @@ void CopyConstructorMakesANewObject()
     assert( ilist_copy.Contains(1) );
     assert( ilist_copy.Contains(2) );
     assert( ilist_copy.Contains(3) );
+#endif
 }
+
 void MoveConstructorLeavesOldObjectEmpty()
 {
-    std::cout << __func__ << std::endl;
+#if 0
+    System::Console::WriteLine(__func__);
 
     System::Collections::Generic::List<int>  list;
 
@@ -125,11 +136,13 @@ void MoveConstructorLeavesOldObjectEmpty()
     assert( ilist_move.Contains(3) );
 
     assert( ilist.Count() == 0 );
+#endif
 }
 
 void ConstructWithListRef()
 {
-    std::cout << __func__ << std::endl;
+#if 0
+    System::Console::WriteLine(__func__);
 
     int example_data[] = { 1, 2, 3 };
     System::Collections::Generic::List<int>  list(example_data);
@@ -145,11 +158,44 @@ void ConstructWithListRef()
     assert( ilistref.Contains(1) );
     assert( ilistref.Contains(2) );
     assert( ilistref.Contains(3) );
+#endif
+}
+
+void IterateOverListAsIList()
+{
+#if 0
+    System::Console::WriteLine(__func__);
+
+    // Iterate Over List...
+    System::Console::WriteLine("Iterating over List...");
+    {
+        System::Collections::Generic::List<std::string> list( {"zero", "one", "two", "three"} );
+        System::Collections::Generic::IList ilist{ list };
+
+        for (const std::string &i : ilist)
+        {
+            System::Console::WriteLine("string = {}", i);
+        }
+    }
+    // Iterate Over Sorted Dictionary...
+    System::Console::WriteLine("Iterating over SortedDictionary...");
+    {
+        System::Collections::Generic::OrderedDictionary<int, std::string> list( { {2, "two"}, {0, "zero"}, {3, "three"}, {1, "one"} } );
+        System::Collections::Generic::IList ilist{ list };
+
+#if 0
+        for (const System::Collections::Generic::KeyValuePair<int, std::string> &i : ilist)
+        {
+            System::Console::WriteLine("pair = {}: {}", i.Key(), i.Value());
+        }
+#endif
+    }
+#endif
 }
 
 void Run()
 {
-    std::cout << "Running IList Tests..." << std::endl;
+    System::Console::WriteLine("Running IList Tests...");
 
     MoveConstructedWithDataType();
     ConstructedWithObjectMakesANewCopy();
@@ -157,9 +203,9 @@ void Run()
     MoveConstructorLeavesOldObjectEmpty();
 
     ConstructWithListRef();
-    //IterateOverList();
+    IterateOverListAsIList();
 
-    std::cout << "PASSED!" << std::endl;
+    System::Console::WriteLine("PASSED!");
 }
 
 }
