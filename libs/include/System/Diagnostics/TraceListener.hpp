@@ -44,6 +44,11 @@ public:
     virtual void Write(std::string_view message) = 0;
     virtual void Write(std::string_view message, std::string_view category) = 0;
 
+    void Write(const char *message)
+    {
+        Write( std::string_view(message) );
+    }
+
     template <typename ...Args>
     void Write(std::format_string<Args...> &&fmt, Args &&... args)
     {
@@ -53,6 +58,11 @@ public:
     virtual void WriteLine(std::string_view message) = 0;
     virtual void WriteLine(std::string_view message, std::string_view category) = 0;
 
+    void WriteLine(const char *message)
+    {
+        WriteLine( std::string_view(message) );
+    }
+
     template <typename ...Args>
     void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
     {
@@ -61,6 +71,11 @@ public:
 
     virtual void Fail(std::string_view message) = 0;
     virtual void Fail(std::string_view message, std::string_view detail) = 0;
+
+    void Fail(const char *message)
+    {
+        Fail( std::string_view(message) );
+    }
 
     virtual void WriteIndent() = 0;
 
