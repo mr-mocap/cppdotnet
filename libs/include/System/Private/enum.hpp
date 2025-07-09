@@ -29,7 +29,7 @@ public:
 
     static constexpr std::string_view EnumName = "UndefinedEnumPolicy";
 
-    static constexpr name_value_pair_type NameValueArray[] = {
+    static constexpr typename EnumTraitTypes<T>::name_value_pair_type NameValueArray[] = {
             { "UndefinedEnumValue", static_cast<T>(0) }
         };
 };
