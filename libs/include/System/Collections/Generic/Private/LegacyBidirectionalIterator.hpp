@@ -81,7 +81,7 @@ struct LegacyBidirectionalIteratorBase
 
         T &operator *()  { return *(*m_pimpl); }
 
-        T  operator ->() { return m_pimpl->operator ->(); }
+        T *operator ->() { return m_pimpl->operator ->(); }
 
         Iterator &operator ++()
         {
@@ -276,7 +276,7 @@ struct LegacyBidirectionalIteratorBase
 
         T &operator *()  { return *(*m_pimpl); }
 
-        T  operator ->() { return m_pimpl->operator ->(); }
+        T *operator ->() { return m_pimpl->operator ->(); }
 
         ReverseIterator &operator ++()
         {
