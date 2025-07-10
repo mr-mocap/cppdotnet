@@ -172,12 +172,16 @@ void IterateOverListAsIList()
         System::Collections::Generic::OrderedDictionary<int, std::string> list( { {2, "two"}, {0, "zero"}, {3, "three"}, {1, "one"} } );
         System::Collections::Generic::IList ilist{ list };
 
-#if 0
         for (const System::Collections::Generic::KeyValuePair<int, std::string> &i : ilist)
         {
             System::Console::WriteLine("pair = {}: {}", i.Key(), i.Value());
         }
-#endif
+
+        // Now, let's iterate over the indices
+        for (std::size_t i = 0; i < ilist.Count(); ++i)
+        {
+            System::Console::WriteLine("pair[{}] = {}: {}", i, ilist[i].Key(), ilist[i].Value());
+        }
     }
 }
 
