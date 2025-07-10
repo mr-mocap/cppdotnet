@@ -55,14 +55,12 @@ private:
 
         // Dictionary
               mapped_type &operator[](const key_type &key)       override { return data[key]; }
-              mapped_type &at(const key_type &key)               override { return data.at(key); }
         const mapped_type &at(const key_type &key)         const override { return data.at(key); }
+              mapped_type &at(const key_type &key)               override { return data.at(key); }
 
         void Add(const key_type &key, const mapped_type &value)             override { data.Add(key, value); }
-        bool TryAdd(const key_type &key, const mapped_type &value)          override { return data.TryAdd(key, value); }
         bool Remove(const key_type &key)                                    override { return data.Remove(key); }
         bool ContainsKey(const key_type &key)                         const override { return data.ContainsKey(key); }
-        bool ContainsValue(const mapped_type &value)                  const override { return data.ContainsValue(value); }
         bool TryGetValue(const key_type &key, mapped_type &value_out) const override { return data.TryGetValue(key, value_out); }
 
         ICollection<key_type>    Keys()   const override { return data.Keys(); }
@@ -144,14 +142,12 @@ public:
 
     // Dictionary
           mapped_type &operator[](const key_type &key)       { return m_pimpl->operator [](key); }
-          mapped_type &at(const key_type &key)               { return m_pimpl->at(key); }
     const mapped_type &at(const key_type &key)         const { return AsConst()->at(key); }
+          mapped_type &at(const key_type &key)               { return m_pimpl->at(key); }
 
     void Add(const key_type &key, const mapped_type &value)                   { m_pimpl->Add(key, value); }
-    bool TryAdd(const key_type &key, const mapped_type &value)                { return m_pimpl->TryAdd(key, value); }
     bool Remove(const key_type &key)                                          { return m_pimpl->Remove(key); }
     bool ContainsKey(const key_type &key)                               const { return AsConst()->ContainsKey(key); }
-    bool ContainsValue(const mapped_type &value)                        const { return AsConst()->ContainsValue(value); }
     bool TryGetValue(const key_type &key, const mapped_type &value_out) const { return AsConst()->TryGetValue(key, value_out); }
 
     ICollection<key_type>    Keys()   const { return AsConst()->Keys();   }

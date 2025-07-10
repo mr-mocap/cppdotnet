@@ -13,18 +13,15 @@ namespace TestIList
 
 void MoveConstructedWithDataType()
 {
-#if 0
     System::Console::WriteLine(__func__);
 
     System::Collections::Generic::IList<int> empty{ System::Collections::Generic::List<int>() };
 
     assert( empty.Count() == 0 );
-#endif
 }
 
 void ConstructedWithObjectMakesANewCopy()
 {
-#if 0
     System::Console::WriteLine(__func__);
 
     System::Collections::Generic::List<int> list;
@@ -52,12 +49,10 @@ void ConstructedWithObjectMakesANewCopy()
     assert( ilist.Contains(1) );
     assert( ilist.Contains(2) );
     assert( ilist.Contains(3) );
-#endif
 }
 
 void CopyConstructorMakesANewObject()
 {
-#if 0
     System::Console::WriteLine(__func__);
 
     System::Collections::Generic::List<int> list;
@@ -102,12 +97,10 @@ void CopyConstructorMakesANewObject()
     assert( ilist_copy.Contains(1) );
     assert( ilist_copy.Contains(2) );
     assert( ilist_copy.Contains(3) );
-#endif
 }
 
 void MoveConstructorLeavesOldObjectEmpty()
 {
-#if 0
     System::Console::WriteLine(__func__);
 
     System::Collections::Generic::List<int>  list;
@@ -136,12 +129,10 @@ void MoveConstructorLeavesOldObjectEmpty()
     assert( ilist_move.Contains(3) );
 
     assert( ilist.Count() == 0 );
-#endif
 }
 
 void ConstructWithListRef()
 {
-#if 0
     System::Console::WriteLine(__func__);
 
     int example_data[] = { 1, 2, 3 };
@@ -158,12 +149,10 @@ void ConstructWithListRef()
     assert( ilistref.Contains(1) );
     assert( ilistref.Contains(2) );
     assert( ilistref.Contains(3) );
-#endif
 }
 
 void IterateOverListAsIList()
 {
-#if 0
     System::Console::WriteLine(__func__);
 
     // Iterate Over List...
@@ -190,7 +179,6 @@ void IterateOverListAsIList()
         }
 #endif
     }
-#endif
 }
 
 void Run()

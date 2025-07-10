@@ -166,21 +166,45 @@ public:
 
     constexpr size_type Capacity() const { return Count(); }  // NOTE: This isn't really implementable, is it?
 
+    // ICollection interface
+    constexpr size_type Count() const { return m_data.size(); }
+
+    bool IsReadOnly() const { return true; }
+    bool IsReadOnly()       { return false; }
+
+    bool IsSynchronized() const { return false; }
+
+    constexpr void Add(const value_type &item)
+    {
+        Add( item.Key(), item.Value() );
+    }
+
+    bool Remove(const value_type &kvp)
+    {
+        return Remove( kvp.Key() );
+    }
+
+    constexpr void Clear()
+    {
+        m_data.clear();
+
+        POSTCONDITION( m_data.empty() );
+    }
+
+    constexpr bool Contains(const KeyValuePair<TKey, TValue> &key_value_pair) const
+    {
+        for (const std::pair<const TKey, TValue> &iCurrentIteration : m_data)
+        {
+            if ( iCurrentIteration == key_value_pair )
+                return true;
+        }
+        return false;
+    }
+
+    // IDictionary
     constexpr mapped_type &operator[](const key_type &key)
     {
         return m_data[key];
-    }
-
-    constexpr mapped_type &at(const key_type &key)
-    {
-        try
-        {
-            return m_data.at( key );
-        }
-        catch(const std::out_of_range &)
-        {
-            ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
-        }
     }
 
     constexpr const mapped_type &at(const key_type &key) const
@@ -195,12 +219,38 @@ public:
         }
     }
 
-    constexpr bool TryAdd(const key_type &key, const mapped_type &value)
+    constexpr mapped_type &at(const key_type &key)
     {
+        try
+        {
+            return m_data.at( key );
+        }
+        catch(const std::out_of_range &)
+        {
+            ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
+        }
+    }
+
+    constexpr void Add(const key_type &key, const mapped_type &value)
+    {
+        using namespace std::literals;
+
         if ( m_data.contains( key ) )
-            return false;
-        m_data[ key ] = value;
-        return true;
+            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the Dictionary", key), "key"sv ) );
+        else
+            m_data[ key ] = value;
+        
+        POSTCONDITION( ContainsKey(key) );
+    }
+
+    bool Remove(const key_type &key)
+    {
+        return m_data.erase( key );
+    }
+
+    constexpr bool ContainsKey(const key_type &key) const
+    {
+        return m_data.contains( key );
     }
 
     constexpr bool TryGetValue(const key_type &key, mapped_type &value_out) const
@@ -214,29 +264,6 @@ public:
         }
         value_out = iter->second;
         return true;
-    }
-
-    bool Remove(const value_type &kvp)
-    {
-        return Remove( kvp.Key() );
-    }
-
-    bool Remove(const key_type &key)
-    {
-        return m_data.erase( key );
-    }
-
-    constexpr bool ContainsKey(const key_type &key) const
-    {
-        return m_data.contains( key );
-    }
-
-    constexpr bool ContainsValue(const mapped_type &value) const
-    {
-        for (auto const &v : std::views::values( m_data ) )
-            if ( v == value )
-                return true;
-        return false;
     }
 
     KeyCollection Keys() const
@@ -257,45 +284,21 @@ public:
         return rv;
     }
 
-    // ICollection interface
-    constexpr size_type Count() const { return m_data.size(); }
+    // End of IDictionary interface
 
-    bool IsReadOnly() const { return true; }
-    bool IsReadOnly()       { return false; }
-
-    bool IsSynchronized() const { return false; }
-
-    constexpr void Add(const value_type &item)
+    constexpr bool TryAdd(const key_type &key, const mapped_type &value)
     {
-        Add( item.Key(), item.Value() );
-    }
-
-    constexpr void Add(const key_type &key, const mapped_type &value)
-    {
-        using namespace std::literals;
-
         if ( m_data.contains( key ) )
-            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the Dictionary", key), "key"sv ) );
-        else
-            m_data[ key ] = value;
-        
-        POSTCONDITION( ContainsKey(key) );
+            return false;
+        m_data[ key ] = value;
+        return true;
     }
 
-    constexpr void Clear()
+    constexpr bool ContainsValue(const mapped_type &value) const
     {
-        m_data.clear();
-
-        POSTCONDITION( m_data.empty() );
-    }
-
-    constexpr bool Contains(const KeyValuePair<TKey, TValue> &key_value_pair) const
-    {
-        for (const std::pair<const TKey, TValue> &iCurrentIteration : m_data)
-        {
-            if ( iCurrentIteration == key_value_pair )
+        for (auto const &v : std::views::values( m_data ) )
+            if ( v == value )
                 return true;
-        }
         return false;
     }
 

@@ -135,10 +135,107 @@ public:
         }
     };
 
+    struct SpecializedReverseIterator : public underlying_datatype::reverse_iterator
+    {
+        using Base = underlying_datatype::reverse_iterator;
+        using underlying_datatype::reverse_iterator::reverse_iterator;
+
+        SpecializedReverseIterator(Base i) : Base( i ) { }
+
+        OrderedDictionary::reference operator*() noexcept
+        {
+            return reinterpret_cast<OrderedDictionary::reference>( Base::operator *() );
+        }
+
+        OrderedDictionary::pointer operator->() noexcept
+        {
+            return reinterpret_cast<OrderedDictionary::pointer>( Base::operator ->() );
+        }
+
+        SpecializedReverseIterator &operator++() noexcept
+        {
+            Base::operator++();
+            return *this;
+        }
+
+        SpecializedReverseIterator operator++(int) noexcept
+        {
+            SpecializedReverseIterator tmp = Base::operator++(1);
+
+            return tmp;
+        }
+
+        SpecializedReverseIterator &operator--() noexcept
+        {
+            Base::operator--();
+            return *this;
+        }
+
+        SpecializedReverseIterator operator--(int) noexcept
+        {
+            SpecializedReverseIterator tmp = Base::operator--(1);
+
+            return tmp;
+        }
+
+        friend bool operator==(const SpecializedReverseIterator &left, const SpecializedReverseIterator &right) noexcept
+        {
+            return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
+        }
+    };
+
+    struct SpecializedConstReverseIterator : public underlying_datatype::const_reverse_iterator
+    {
+        using Base = underlying_datatype::const_reverse_iterator;
+        using underlying_datatype::const_reverse_iterator::const_reverse_iterator;
+
+        SpecializedConstReverseIterator(Base i) : Base( i ) { }
+
+        OrderedDictionary::const_reference operator*() noexcept
+        {
+            return reinterpret_cast<OrderedDictionary::const_reference>( Base::operator *() );
+        }
+
+        OrderedDictionary::const_pointer operator->() noexcept
+        {
+            return reinterpret_cast<OrderedDictionary::const_pointer>( Base::operator ->() );
+        }
+
+        SpecializedConstReverseIterator &operator++() noexcept
+        {
+            Base::operator++();
+            return *this;
+        }
+
+        SpecializedConstReverseIterator operator++(int) noexcept
+        {
+            SpecializedConstReverseIterator tmp = Base::operator++(1);
+
+            return tmp;
+        }
+
+        SpecializedConstReverseIterator &operator--() noexcept
+        {
+            Base::operator--();
+            return *this;
+        }
+
+        SpecializedConstReverseIterator operator--(int) noexcept
+        {
+            SpecializedConstReverseIterator tmp = Base::operator--(1);
+
+            return tmp;
+        }
+
+        friend bool operator==(const SpecializedConstReverseIterator &left, const SpecializedConstReverseIterator &right) noexcept
+        {
+            return reinterpret_cast<const Base &>(left) == reinterpret_cast<const Base &>(right);
+        }
+    };
     using iterator               = SpecializedIterator;
     using const_iterator         = SpecializedConstIterator;
-    using reverse_iterator       = std::reverse_iterator<SpecializedIterator>;
-    using const_reverse_iterator = std::reverse_iterator<SpecializedConstIterator>;
+    using reverse_iterator       = SpecializedReverseIterator;
+    using const_reverse_iterator = SpecializedConstReverseIterator;
 
     using KeyCollection   = List<key_type>;
     using ValueCollection = List<mapped_type>;
@@ -182,12 +279,44 @@ public:
 
     constexpr size_type Capacity() const { return Count(); }  // NOTE: This isn't really implementable, is it?
 
-    constexpr mapped_type &operator[](const key_type &key)
+    // ICollection interface
+    constexpr size_type Count() const { return _data.size(); }
+
+    bool IsReadOnly() const { return true; }
+    bool IsReadOnly()       { return false; }
+
+    bool IsSynchronized() const { return false; }
+
+    constexpr void Add(const value_type &item)
     {
-        return _data[key];
+        Add( item.Key(), item.Value() );
     }
 
-    constexpr const mapped_type &operator[](const key_type &key) const
+    bool Remove(const value_type &kvp)
+    {
+        return Remove( kvp.Key() );
+    }
+
+    constexpr void Clear()
+    {
+        _data.clear();
+
+        POSTCONDITION( _data.empty() );
+    }
+
+    constexpr bool Contains(const value_type &key_value_pair) const
+    {
+        for (const std::pair<const TKey, TValue> &iCurrentIteration : _data)
+        {
+            if ( iCurrentIteration == key_value_pair )
+                return true;
+        }
+        return false;
+    }
+
+    // From IDictionary interface
+
+    constexpr mapped_type &operator[](const key_type &key)
     {
         return _data[key];
     }
@@ -216,14 +345,135 @@ public:
         }
     }
 
-    const_reference GetAt(size_type index)
+    constexpr void Add(const key_type &key, const mapped_type &value)
+    {
+        using namespace std::literals;
+
+        if ( _data.contains( key ) )
+            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the OrderedDictionary", key), "key"sv ) );
+        else
+            _data[ key ] = value;
+        
+        POSTCONDITION( ContainsKey(key) );
+    }
+
+    bool Remove(const key_type &key)
+    {
+        return _data.erase( key );
+    }
+
+    constexpr bool ContainsKey(const key_type &key) const
+    {
+        return _data.contains( key );
+    }
+
+    constexpr bool TryGetValue(const key_type &key, mapped_type &value_out) const
+    {
+        auto iter = _data.find( key );
+
+        if ( iter == _data.end() )
+        {
+            value_out = mapped_type{};
+            return false;
+        }
+        value_out = iter->second;
+        return true;
+    }
+
+    KeyCollection Keys() const
+    {
+        std::vector<key_type> rv;
+
+        rv.reserve( Count() );
+        std::ranges::copy( std::views::keys( _data ), std::back_inserter( rv ) );
+        return rv;
+    }
+
+    ValueCollection Values() const
+    {
+        std::vector<mapped_type> rv;
+
+        rv.reserve( Count() );
+        std::ranges::copy( std::views::values( _data ), std::back_inserter( rv ) );
+        return rv;
+    }
+
+    // IList interface
+
+    int IndexOf(const value_type &item) const
+    {
+        auto iter = _data.find( item.Key() );
+
+        if ( iter == _data.end() )
+            return -1; // Not found
+        if ( iter->second != item.Value() )
+            return -1; // Not found
+
+        return std::distance( _data.begin(), iter );
+    }
+
+    void Insert(size_type index, const value_type &kvp)
+    {
+        using namespace std::literals;
+
+        if ( index > Count() )
+            ThrowWithTarget( ArgumentOutOfRangeException( std::format("Index '{}' is out of range for OrderedDictionary", index) ) );
+
+        if ( _data.contains( kvp.Key() ) )
+            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the OrderedDictionary", kvp.Key()), "key"sv ) );
+
+        auto iter = _data.begin();
+
+        std::advance( iter, index );
+        _data.insert( iter, kvp );
+    }
+
+    void RemoveAt(size_type index)
     {
         if ( index >= Count() )
             ThrowWithTarget( ArgumentOutOfRangeException( std::format("Index '{}' is out of range for OrderedDictionary", index) ) );
 
         auto iter = std::next( _data.begin(), index );
 
-        return *iter;
+        _data.erase( iter );
+    }
+
+    // End of IList interface
+
+    constexpr bool TryAdd(const key_type &key, const mapped_type &value)
+    {
+        if ( _data.contains( key ) )
+            return false;
+        _data[ key ] = value;
+        return true;
+    }
+
+    constexpr bool ContainsValue(const mapped_type &value) const
+    {
+        for (auto const &v : std::views::values( _data ) )
+            if ( v == value )
+                return true;
+        return false;
+    }
+
+    const_reference GetAt(size_type index) const
+    {
+        if ( index >= Count() )
+            ThrowWithTarget( ArgumentOutOfRangeException( std::format("Index '{}' is out of range for OrderedDictionary", index) ) );
+
+        auto iter = std::next( _data.begin(), index );
+
+        return static_cast<const_reference>(*iter);
+    }
+
+    reference GetAt(size_type index)
+    {
+        if ( index >= Count() )
+            ThrowWithTarget( ArgumentOutOfRangeException( std::format("Index '{}' is out of range for OrderedDictionary", index) ) );
+
+        auto iter = std::next( _data.begin(), index );
+
+        return static_cast<reference>(*iter);
     }
 
     void SetAt(size_type index, const key_type &key, const mapped_type &value)
@@ -251,63 +501,9 @@ public:
         iter->second = value; // Set the value at the given index
     }
 
-    int IndexOf(const key_type &key) const
-    {
-        auto iter = _data.find( key );
-
-        if ( iter == _data.end() )
-            return -1; // Not found
-
-        return std::distance( _data.begin(), iter );
-    }
-
-    constexpr void Add(const key_type &key, const mapped_type &value)
-    {
-        using namespace std::literals;
-
-        if ( _data.contains( key ) )
-            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the OrderedDictionary", key), "key"sv ) );
-        else
-            _data[ key ] = value;
-        
-        POSTCONDITION( ContainsKey(key) );
-    }
-
-    constexpr bool TryAdd(const key_type &key, const mapped_type &value)
-    {
-        if ( _data.contains( key ) )
-            return false;
-        _data[ key ] = value;
-        return true;
-    }
-
-    constexpr bool TryGetValue(const key_type &key, mapped_type &value_out) const
-    {
-        auto iter = _data.find( key );
-
-        if ( iter == _data.end() )
-        {
-            value_out = mapped_type{};
-            return false;
-        }
-        value_out = iter->second;
-        return true;
-    }
-
     void Insert(size_type index, const key_type &key, const mapped_type &value)
     {
-        using namespace std::literals;
-
-        if ( index > Count() )
-            ThrowWithTarget( ArgumentOutOfRangeException( std::format("Index '{}' is out of range for OrderedDictionary", index) ) );
-
-        if ( _data.contains( key ) )
-            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the OrderedDictionary", key), "key"sv ) );
-
-        auto iter = _data.begin();
-
-        std::advance( iter, index );
-        _data.insert( iter, std::make_pair( key, value ) );
+        Insert( index, KeyValuePair<key_type, mapped_type>( key, value ) );
     }
 
     bool Remove(const key_type &key, mapped_type &value_out)
@@ -323,85 +519,14 @@ public:
         return true;
     }
 
-    bool Remove(const key_type &key)
+    int IndexOf(const key_type &key) const
     {
-        return _data.erase( key );
-    }
+        auto iter = _data.find( key );
 
-    void RemoveAt(size_type index)
-    {
-        if ( index >= Count() )
-            ThrowWithTarget( ArgumentOutOfRangeException( std::format("Index '{}' is out of range for OrderedDictionary", index) ) );
+        if ( iter == _data.end() )
+            return -1; // Not found
 
-        auto iter = std::next( _data.begin(), index );
-
-        _data.erase( iter );
-    }
-
-    constexpr bool ContainsKey(const key_type &key) const
-    {
-        return _data.contains( key );
-    }
-
-    constexpr bool ContainsValue(const mapped_type &value) const
-    {
-        for (auto const &v : std::views::values( _data ) )
-            if ( v == value )
-                return true;
-        return false;
-    }
-
-    KeyCollection Keys() const
-    {
-        std::vector<key_type> rv;
-
-        rv.reserve( Count() );
-        std::ranges::copy( std::views::keys( _data ), std::back_inserter( rv ) );
-        return rv;
-    }
-
-    ValueCollection Values() const
-    {
-        std::vector<mapped_type> rv;
-
-        rv.reserve( Count() );
-        std::ranges::copy( std::views::values( _data ), std::back_inserter( rv ) );
-        return rv;
-    }
-
-    // ICollection interface
-    constexpr size_type Count() const { return _data.size(); }
-
-    bool IsReadOnly() const { return true; }
-    bool IsReadOnly()       { return false; }
-
-    bool IsSynchronized() const { return false; }
-
-    constexpr void Add(const value_type &item)
-    {
-        Add( item.Key(), item.Value() );
-    }
-
-    constexpr void Clear()
-    {
-        _data.clear();
-
-        POSTCONDITION( _data.empty() );
-    }
-
-    constexpr bool Contains(const KeyValuePair<TKey, TValue> &key_value_pair) const
-    {
-        for (const std::pair<const TKey, TValue> &iCurrentIteration : _data)
-        {
-            if ( iCurrentIteration == key_value_pair )
-                return true;
-        }
-        return false;
-    }
-
-    bool Remove(const value_type &kvp)
-    {
-        return Remove( kvp.Key() );
+        return std::distance( _data.begin(), iter );
     }
 
     // C++ speicfic stuff
@@ -436,5 +561,20 @@ OrderedDictionary(const std::map<TKey, TValue> &) -> OrderedDictionary<TKey, TVa
 
 template <class TKey, class TValue>
 OrderedDictionary(std::map<TKey, TValue> &&) -> OrderedDictionary<TKey, TValue>;
+
+}
+
+namespace System::Collections::Generic::Private
+{
+
+template <typename ...Args>
+struct IListIndexer<Generic::OrderedDictionary<Args...>>
+{
+    static typename Generic::OrderedDictionary<Args...>::const_reference GetAt(const Generic::OrderedDictionary<Args...> &d, std::size_t index) { return d.GetAt(index); }
+    static typename Generic::OrderedDictionary<Args...>::reference       GetAt(      Generic::OrderedDictionary<Args...> &d, std::size_t index) { return d.GetAt(index); }
+
+    static typename Generic::OrderedDictionary<Args...>::const_reference GetAt(const Generic::OrderedDictionary<Args...> *d, std::size_t index) { return d->GetAt(index); }
+    static typename Generic::OrderedDictionary<Args...>::reference       GetAt(      Generic::OrderedDictionary<Args...> *d, std::size_t index) { return d->GetAt(index); }
+};
 
 }

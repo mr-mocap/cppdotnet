@@ -12,12 +12,12 @@ struct IDictionaryInterface
 {
     virtual ~IDictionaryInterface() { }
 
+    // Collection
     virtual std::size_t Count() const = 0;
     virtual bool        IsReadOnly() const = 0;
     virtual bool        IsReadOnly()       = 0;
     virtual bool        IsSynchronized() const = 0;
 
-    // Collection
     virtual void Add(const KeyValuePair<KeyType, MappedType> &item)      = 0;
     virtual bool Remove(const KeyValuePair<KeyType, MappedType> &item)   = 0;
     virtual void Clear() = 0;
@@ -27,14 +27,12 @@ struct IDictionaryInterface
 
     // Dictionary
     virtual       MappedType &operator[](const KeyType &key) = 0;
-    virtual       MappedType &at(const KeyType &key)         = 0;
     virtual const MappedType &at(const KeyType &key) const   = 0;
+    virtual       MappedType &at(const KeyType &key)         = 0;
 
     virtual void Add(const KeyType &key, const MappedType &value)             = 0;
-    virtual bool TryAdd(const KeyType &key, const MappedType &value)          = 0;
     virtual bool Remove(const KeyType &key)                                   = 0;
     virtual bool ContainsKey(const KeyType &key)                        const = 0;
-    virtual bool ContainsValue(const MappedType &value)                 const = 0;
     virtual bool TryGetValue(const KeyType &key, MappedType &value_out) const = 0;
 
     virtual ICollection<KeyType>    Keys()   const = 0;

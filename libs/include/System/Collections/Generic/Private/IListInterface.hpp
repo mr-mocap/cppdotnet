@@ -11,6 +11,7 @@ struct IListInterface
 {
     virtual ~IListInterface() { }
 
+    // Collection
     virtual std::size_t Count() const = 0;
     virtual bool        IsReadOnly() const = 0;
     virtual bool        IsReadOnly()       = 0;
@@ -23,6 +24,7 @@ struct IListInterface
 
     // TODO: Add CopyTo() ?
 
+    // List
     virtual const T &operator [](std::size_t index) const = 0;
     virtual       T &operator [](std::size_t index)       = 0;
 
@@ -50,6 +52,16 @@ struct IListInterface
     virtual ReverseIteratorType       rend()       = 0;
     virtual ConstReverseIteratorType  rend() const = 0;
     virtual ConstReverseIteratorType crend() const = 0;
+};
+
+template <class ListType>
+struct IListIndexer
+{
+    static typename ListType::const_reference GetAt(const ListType &d, std::size_t index) { return d[index]; }
+    static typename ListType::reference       GetAt(      ListType &d, std::size_t index) { return d[index]; }
+
+    static typename ListType::const_reference GetAt(const ListType *d, std::size_t index) { return (*d)[index]; }
+    static typename ListType::reference       GetAt(      ListType *d, std::size_t index) { return (*d)[index]; }
 };
 
 }

@@ -52,8 +52,8 @@ private:
         void Clear() override { data.Clear(); }
         bool Contains(const T &item) override { return data.Contains(item); }
 
-        const T &operator [](std::size_t index) const override { return data[index]; }
-              T &operator [](std::size_t index)       override { return data[index]; }
+        const T &operator [](std::size_t index) const override { return Private::IListIndexer<ListType>::GetAt(data, index); }
+              T &operator [](std::size_t index)       override { return Private::IListIndexer<ListType>::GetAt(data, index); }
 
         std::size_t IndexOf(const T &item) const { return data.IndexOf(item); }
 
@@ -218,19 +218,17 @@ private:
         InterfaceModelPtr &operator =(InterfaceModelPtr &&) = default;
 
         std::size_t Count() const override { return data->Count(); }
-
-        bool IsReadOnly() const override { return data->IsReadOnly(); }
-        bool IsReadOnly()       override { return data->IsReadOnly(); }
-
-        bool IsSynchronized() const { return data->IsSynchronized(); }
+               bool IsReadOnly() const override { return data->IsReadOnly(); }
+               bool IsReadOnly()       override { return data->IsReadOnly(); }
+               bool IsSynchronized() const { return data->IsSynchronized(); }
 
         void Add(const T &item) override { data->Add(item); }
         bool Remove(const T &item) override { return data->Remove(item); }
         void Clear() override { data->Clear(); }
         bool Contains(const T &item) override { return data->Contains(item); }
 
-        const T &operator [](std::size_t index) const override { return (*data)[index]; }
-              T &operator [](std::size_t index)       override { return (*data)[index]; }
+        const T &operator [](std::size_t index) const override { return Private::IListIndexer<ListType>::GetAt(data, index); }
+              T &operator [](std::size_t index)       override { return Private::IListIndexer<ListType>::GetAt(data, index); }
 
         std::size_t IndexOf(const T &item) const { return data->IndexOf(item); }
 
