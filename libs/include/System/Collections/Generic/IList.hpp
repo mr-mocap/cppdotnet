@@ -23,7 +23,17 @@ public:
     using typename IteratorBase::const_reverse_iterator;
 
 private:
-    using Interface = Private::IListInterface<T, iterator, const_iterator, reverse_iterator, const_reverse_iterator>;
+    struct Policy
+    {
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
+        using ReverseIteratorType       = typename IteratorBase::reverse_iterator;
+        using ConstReverseIteratorType  = typename IteratorBase::const_reverse_iterator;
+    };
+
+    using Interface = Private::IListInterface<Policy>;
 
     template <class ListType>
     struct InterfaceModel : Interface
@@ -47,17 +57,17 @@ private:
 
         bool IsSynchronized() const { return data.IsSynchronized(); }
 
-        void Add(const T &item) override { data.Add(item); }
-        bool Remove(const T &item) override { return data.Remove(item); }
+        void Add(const value_type &item) override { data.Add(item); }
+        bool Remove(const value_type &item) override { return data.Remove(item); }
         void Clear() override { data.Clear(); }
-        bool Contains(const T &item) override { return data.Contains(item); }
+        bool Contains(const value_type &item) override { return data.Contains(item); }
 
-        const T &operator [](std::size_t index) const override { return Private::IListIndexer<ListType>::GetAt(data, index); }
-              T &operator [](std::size_t index)       override { return Private::IListIndexer<ListType>::GetAt(data, index); }
+        const value_type &operator [](std::size_t index) const override { return Private::IListIndexer<ListType>::GetAt(data, index); }
+              value_type &operator [](std::size_t index)       override { return Private::IListIndexer<ListType>::GetAt(data, index); }
 
-        std::size_t IndexOf(const T &item) const { return data.IndexOf(item); }
+        size_type IndexOf(const value_type &item) const { return data.IndexOf(item); }
 
-        void Insert(std::size_t index, const T &item) override { data.Insert(index, item); }
+        void Insert(std::size_t index, const value_type &item) override { data.Insert(index, item); }
         void RemoveAt(std::size_t index) override { data.RemoveAt(index); }
 
         std::unique_ptr<Interface> Clone() override { return std::make_unique<InterfaceModel<ListType>>(data); }
@@ -198,7 +208,17 @@ public:
     using typename IteratorBase::const_reverse_iterator;
 
 private:
-    using Interface = Private::IListInterface<T, iterator, const_iterator, reverse_iterator, const_reverse_iterator>;
+    struct Policy
+    {
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
+        using ReverseIteratorType       = typename IteratorBase::reverse_iterator;
+        using ConstReverseIteratorType  = typename IteratorBase::const_reverse_iterator;
+    };
+
+    using Interface = Private::IListInterface<Policy>;
 
     template <class ListType>
     struct InterfaceModelPtr : Interface

@@ -24,7 +24,15 @@ public:
     using typename IteratorBase::const_iterator;
 
 private:
-    using Interface = Private::ICollectionInterface<T, iterator, const_iterator>;
+    struct Policy
+    {
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
+    };
+
+    using Interface = Private::ICollectionInterface<Policy>;
 
     template <class CollectionType>
     struct InterfaceModel : Interface
@@ -176,7 +184,15 @@ public:
     using typename IteratorBase::const_iterator;
 
 private:
-    using Interface = Private::ICollectionInterface<T, iterator, const_iterator>;
+    struct Policy
+    {
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
+    };
+
+    using Interface = Private::ICollectionInterface<Policy>;
 
     template <class CollectionType>
     struct InterfaceModelPtr : Interface

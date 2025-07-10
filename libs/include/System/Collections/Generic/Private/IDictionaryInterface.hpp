@@ -7,8 +7,8 @@
 namespace System::Collections::Generic::Private
 {
 
-template <class KeyType, class MappedType, class IteratorType, class ConstIteratorType>
-struct IDictionaryInterface
+template <class Policy>
+struct IDictionaryInterface : Policy
 {
     virtual ~IDictionaryInterface() { }
 
@@ -18,37 +18,37 @@ struct IDictionaryInterface
     virtual bool        IsReadOnly()       = 0;
     virtual bool        IsSynchronized() const = 0;
 
-    virtual void Add(const KeyValuePair<KeyType, MappedType> &item)      = 0;
-    virtual bool Remove(const KeyValuePair<KeyType, MappedType> &item)   = 0;
+    virtual void Add(const typename Policy::value_type &item)      = 0;
+    virtual bool Remove(const typename Policy::value_type &item)   = 0;
     virtual void Clear() = 0;
-    virtual bool Contains(const KeyValuePair<KeyType, MappedType> &item) = 0;
+    virtual bool Contains(const typename Policy::value_type &item) = 0;
 
     // TODO: Add CopyTo() ?
 
     // Dictionary
-    virtual       MappedType &operator[](const KeyType &key) = 0;
-    virtual const MappedType &at(const KeyType &key) const   = 0;
-    virtual       MappedType &at(const KeyType &key)         = 0;
+    virtual       typename Policy::mapped_type &operator[](const typename Policy::key_type &key) = 0;
+    virtual const typename Policy::mapped_type &at(const typename Policy::key_type &key) const   = 0;
+    virtual       typename Policy::mapped_type &at(const typename Policy::key_type &key)         = 0;
 
-    virtual void Add(const KeyType &key, const MappedType &value)             = 0;
-    virtual bool Remove(const KeyType &key)                                   = 0;
-    virtual bool ContainsKey(const KeyType &key)                        const = 0;
-    virtual bool TryGetValue(const KeyType &key, MappedType &value_out) const = 0;
+    virtual void Add(const typename Policy::key_type &key, const typename Policy::mapped_type &value)             = 0;
+    virtual bool Remove(const typename Policy::key_type &key)                                                     = 0;
+    virtual bool ContainsKey(const typename Policy::key_type &key)                                          const = 0;
+    virtual bool TryGetValue(const typename Policy::key_type &key, typename Policy::mapped_type &value_out) const = 0;
 
-    virtual ICollection<KeyType>    Keys()   const = 0;
-    virtual ICollection<MappedType> Values() const = 0;
+    virtual ICollection<typename Policy::key_type>    Keys()   const = 0;
+    virtual ICollection<typename Policy::mapped_type> Values() const = 0;
 
     virtual std::unique_ptr<IDictionaryInterface> Clone() = 0;
     virtual std::unique_ptr<IDictionaryInterface> Empty() = 0;
 
     // Range-for compatibility
-    virtual IteratorType       begin()       = 0;
-    virtual ConstIteratorType  begin() const = 0;
-    virtual ConstIteratorType cbegin() const = 0;
+    virtual typename Policy::IteratorType       begin()       = 0;
+    virtual typename Policy::ConstIteratorType  begin() const = 0;
+    virtual typename Policy::ConstIteratorType cbegin() const = 0;
 
-    virtual IteratorType       end()       = 0;
-    virtual ConstIteratorType  end() const = 0;
-    virtual ConstIteratorType cend() const = 0;
+    virtual typename Policy::IteratorType       end()       = 0;
+    virtual typename Policy::ConstIteratorType  end() const = 0;
+    virtual typename Policy::ConstIteratorType cend() const = 0;
 };
 
 }

@@ -24,7 +24,17 @@ public:
     using typename IteratorBase::const_iterator;
 
 private:
-    using Interface = Private::IDictionaryInterface<KeyT, ValueT, iterator, const_iterator>;
+    struct Policy
+    {
+        using key_type    = KeyT;
+        using mapped_type = ValueT;
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
+    };
+
+    using Interface = Private::IDictionaryInterface<Policy>;
 
     template <class DictionaryType>
     struct InterfaceModel : Interface
@@ -48,10 +58,10 @@ private:
 
         bool IsSynchronized() const override { return data.IsSynchronized(); }
 
-        void Add(const KeyValuePair<KeyT, ValueT> &item)      override { data.Add(item); }
-        bool Remove(const KeyValuePair<KeyT, ValueT> &item)   override { return data.Remove(item); }
-        void Clear()                                          override { data.Clear(); }
-        bool Contains(const KeyValuePair<KeyT, ValueT> &item) override { return data.Contains(item); }
+        void Add(const value_type &item)      override { data.Add(item); }
+        bool Remove(const value_type &item)   override { return data.Remove(item); }
+        void Clear()                          override { data.Clear(); }
+        bool Contains(const value_type &item) override { return data.Contains(item); }
 
         // Dictionary
               mapped_type &operator[](const key_type &key)       override { return data[key]; }
