@@ -55,11 +55,19 @@ void WriteIfWithCategory()
     System::Diagnostics::Trace::WriteIf(true,  "This is a message when TRUE\n",  "Test.Category"); // We have to add newline here
 }
 
+void WriteIfWithArgs()
+{
+    std::cout << __func__ << std::endl;
+    
+    System::Diagnostics::Trace::WriteIf(true,  "This is a message with a parameter: {}\n", 42); // We have to add newline here
+}
+
 void WriteLine()
 {
     std::cout << __func__ << std::endl;
     
     System::Diagnostics::Trace::WriteLine("This is a message");
+    System::Diagnostics::Trace::WriteLine("This is a message with a parameter: {}", 42);
 }
 
 void WriteLineWithCategory()
@@ -67,6 +75,13 @@ void WriteLineWithCategory()
     std::cout << __func__ << std::endl;
     
     System::Diagnostics::Trace::WriteLine("This is a message", "Test.Category");
+}
+
+void WriteLineWithArgs()
+{
+    std::cout << __func__ << std::endl;
+    
+    System::Diagnostics::Trace::WriteLine("This is a message with a parameter: {}", 42);
 }
 
 void WriteLineIf()
@@ -83,6 +98,13 @@ void WriteLineIfWithCategory()
     
     System::Diagnostics::Trace::WriteLineIf(false, "This is a single-line message when FALSE", "Test.Category");
     System::Diagnostics::Trace::WriteLineIf(true, "This is a single-line message when TRUE", "Test.Category");
+}
+
+void WriteLineIfWithArgs()
+{
+    std::cout << __func__ << std::endl;
+    
+    System::Diagnostics::Trace::WriteLineIf(true, "This is a single-line message with a parameter: {}", 42);
 }
 
 void TraceAssert()
@@ -109,6 +131,13 @@ void TraceAssertWithMessageAndCategory()
     System::Diagnostics::Trace::Assert(true, "Trace Assert custom message (TRUE)", "Custom.Category");
 }
 
+void TraceAssertWithMessageAndArgs()
+{
+    std::cout << __func__ << std::endl;
+    
+    System::Diagnostics::Trace::Assert(false, "This is an Assert message with a parameter: {}", 42);
+}
+
 void TraceFail()
 {
     std::cout << __func__ << std::endl;
@@ -123,11 +152,25 @@ void TraceFailWithCategory()
     System::Diagnostics::Trace::Fail("This is a message for Fail", "Some.Category");
 }
 
+void TraceFailWithArgs()
+{
+    std::cout << __func__ << std::endl;
+    
+    System::Diagnostics::Trace::Fail("This is a message for Fail with a parameter: {}", 42);
+}
+
 void TraceError()
 {
     std::cout << __func__ << std::endl;
     
     System::Diagnostics::Trace::TraceError("This is a Trace Error message");
+}
+
+void TraceErrorWithArgs()
+{
+    std::cout << __func__ << std::endl;
+    
+    System::Diagnostics::Trace::TraceError("This is a Trace Error message with a parameter: {}", 42);
 }
 
 void TraceWarning()
@@ -137,11 +180,25 @@ void TraceWarning()
     System::Diagnostics::Trace::TraceWarning("This is a Trace Warning message");
 }
 
+void TraceWarningWithArgs()
+{
+    std::cout << __func__ << std::endl;
+    
+    System::Diagnostics::Trace::TraceWarning("This is a Trace Warning message with a parameter: {}", 42);
+}
+
 void TraceInformation()
 {
     std::cout << __func__ << std::endl;
     
     System::Diagnostics::Trace::TraceInformation("This is a Trace Information message");
+}
+
+void TraceInformationWithArgs()
+{
+    std::cout << __func__ << std::endl;
+    
+    System::Diagnostics::Trace::TraceInformation("This is a Trace Information message with a parameter: {}", 42);
 }
 
 void IndentLevel()
@@ -196,18 +253,26 @@ void Run()
         WriteWithCategory();
         WriteIf();
         WriteIfWithCategory();
+        WriteIfWithArgs();
         WriteLine();
         WriteLineWithCategory();
+        WriteLineWithArgs();
         WriteLineIf();
         WriteLineIfWithCategory();
+        WriteLineIfWithArgs();
         TraceAssert();
         TraceAssertWithMessage();
         TraceAssertWithMessageAndCategory();
+        TraceAssertWithMessageAndArgs();
         TraceFail();
         TraceFailWithCategory();
+        TraceFailWithArgs();
         TraceError();
+        TraceErrorWithArgs();
         TraceWarning();
+        TraceWarningWithArgs();
         TraceInformation();
+        TraceInformationWithArgs();
         IndentLevel();
         TestTraceLevel();
     }
