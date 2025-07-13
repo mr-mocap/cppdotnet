@@ -102,12 +102,23 @@ void Debug::Print(std::string_view message)
 
 void Debug::Assert(bool condition, const std::source_location source_location)
 {
+#ifndef NDEBUG
     Private::DebugAndTraceCommon::Assert( condition, source_location );
+#else
+    UNUSED(condition);
+    UNUSED(source_location);
+#endif
 }
 
 void Debug::Assert(bool condition, std::string_view message, const std::source_location source_location)
 {
+#ifndef NDEBUG
     Private::DebugAndTraceCommon::Assert( condition, message, source_location );
+#else
+    UNUSED(condition);
+    UNUSED(message);
+    UNUSED(source_location);
+#endif
 }
 
 void Debug::Assert(bool condition,
@@ -115,7 +126,14 @@ void Debug::Assert(bool condition,
                    std::string_view category,
                    const std::source_location source_location)
 {
+#ifndef NDEBUG
     Private::DebugAndTraceCommon::Assert( condition, message, category, source_location );
+#else
+    UNUSED(condition);
+    UNUSED(message);
+    UNUSED(category);
+    UNUSED(source_location);
+#endif
 }
 
 void Debug::Fail(std::string_view message)
