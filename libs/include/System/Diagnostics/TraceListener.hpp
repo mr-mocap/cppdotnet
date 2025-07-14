@@ -47,7 +47,7 @@ public:
 
     template <typename T, typename ...Args>
         requires (!std::convertible_to<T, std::string_view> || sizeof...(Args) > 0)
-    static void Write(std::format_string<T, Args...> &&fmt, T &&arg1, Args &&... args)
+    void Write(std::format_string<T, Args...> &&fmt, T &&arg1, Args &&... args)
     {
         Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( arg1, args... ) ) ) );
     }
@@ -57,7 +57,7 @@ public:
 
     template <typename T, typename ...Args>
         requires (!std::convertible_to<T, std::string_view> || sizeof...(Args) > 0)
-    static void WriteLine(std::format_string<T, Args...> &&fmt, T &&arg1, Args &&... args)
+    void WriteLine(std::format_string<T, Args...> &&fmt, T &&arg1, Args &&... args)
     {
         WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( arg1, args... ) ) ) );
     }
@@ -67,7 +67,7 @@ public:
 
     template <typename T, typename ...Args>
         requires (!std::convertible_to<T, std::string_view> || sizeof...(Args) > 0)
-    static void Fail(std::format_string<T, Args...> &&fmt, T &&arg1, Args &&... args)
+    void Fail(std::format_string<T, Args...> &&fmt, T &&arg1, Args &&... args)
     {
         Fail( std::string_view( std::vformat( fmt.get(), std::make_format_args( arg1, args... ) ) ) );
     }
