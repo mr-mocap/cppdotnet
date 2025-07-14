@@ -1,4 +1,5 @@
 #include "System/Diagnostics/Switch.hpp"
+#include "System/Diagnostics/Trace.hpp"
 
 #include <stdexcept>
 #include <set>
@@ -27,6 +28,9 @@ Switch::Switch(std::string_view display_name,
     _description(description),
     _defaultValue(default_value)
 {
+    // ASSUME: "default_value" has already been checked to be an
+    //         appropriate value.
+
     std::lock_guard<std::mutex> guard( GlobalSwitchesMutex );
 
     GlobalSwitches.insert( this );
@@ -56,7 +60,7 @@ bool Switch::InitializeWithStatus()
         OnInitializing();
 
         _value = _defaultValue;
-        OnValueChanged();
+        OnValueChanged(); // This shouldn't throw exceptions at this point
 
         _initialized = true;
         _initializing = false;
@@ -87,16 +91,11 @@ void Switch::OnSwitchSettingChanged()
 }
 
 void Switch::OnValueChanged()
-try
 {
     // Assume a string that is convertable to an int
-    int value_converted = std::stoi( _value );
+    int value_converted = std::stoi( _value ); // NOTE: Throws exceptions!
 
     SwitchSetting( value_converted );
-}
-catch (std::invalid_argument &ia)
-{
-    ;
 }
 
 std::string_view Switch::Value()
@@ -110,8 +109,20 @@ void Switch::Value(std::string_view new_value)
     Initialize();
     if ( _value != new_value )
     {
-        _value = new_value;
-        OnValueChanged();
+        auto backup_value = _value;
+
+        try
+        {
+            _value = new_value;
+            OnValueChanged();
+        }
+        catch(const std::invalid_argument &ia)
+        {
+            // Undo the operation...
+            _value = backup_value;
+            Trace::TraceError("Unable to set switch '{}' to new value '{}'", DisplayName(), new_value);
+        }
+        
     }
 }
 
