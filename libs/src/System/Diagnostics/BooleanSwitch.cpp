@@ -1,4 +1,5 @@
 #include "System/Diagnostics/BooleanSwitch.hpp"
+#include "System/Boolean.hpp"
 #include <stdexcept>
 
 
@@ -27,23 +28,12 @@ bool BooleanSwitch::Enabled()
 
 void BooleanSwitch::OnValueChanged()
 {
-    try
-    {
-        int new_value = std::stoi( _value );
-
-        if ( new_value == 0 || new_value == 1 )
-            SwitchSetting( new_value );
-        else
-            Switch::OnValueChanged();
-    }
-    catch (const std::invalid_argument &ex)
-    {
+    if ( _value == Boolean::FalseString )
+        SwitchSetting( 0 );
+    else if ( _value == Boolean::TrueString )
+        SwitchSetting( 1 );
+    else
         Switch::OnValueChanged();
-    }
-    catch (const std::out_of_range &ex)
-    {
-        // TODO: Implement out_of_range exception
-    }
 }
 
 }
