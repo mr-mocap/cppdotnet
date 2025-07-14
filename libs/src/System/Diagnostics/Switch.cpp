@@ -9,9 +9,8 @@
 namespace System::Diagnostics
 {
 
-std::set<Switch *> Switch::GlobalSwitches;
-static std::mutex  GlobalSwitchesMutex;
-
+static std::set<Switch *> GlobalSwitches;
+static std::mutex         GlobalSwitchesMutex;
 
 Switch::Switch(std::string_view display_name,
                std::string_view description)
@@ -70,6 +69,12 @@ void Switch::OnInitializing()
 {
     // Possibly read from external source...
     // TODO
+    if ( Initializing() )
+    {
+        InitializingSwitchEventArgs data( *this );
+
+        Initializing()( data );
+    }
 }
 
 void Switch::Initialize()
@@ -141,6 +146,13 @@ void Switch::RefreshAll()
 
     for (Switch *iCurrentSwitch : GlobalSwitches)
         iCurrentSwitch->Refresh();
+}
+
+System::EventHandler<InitializingSwitchEventArgs> &Switch::Initializing()
+{
+    static System::EventHandler<InitializingSwitchEventArgs> Handle;
+
+    return Handle;
 }
 
 }

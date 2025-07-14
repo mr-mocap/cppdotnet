@@ -1,6 +1,7 @@
 #pragma once
 
 #include "System/Collections/Specialized/StringDictionary.hpp"
+#include "System/EventHandler.hpp"
 #include <set>
 #include <string>
 #include <string_view>
@@ -9,6 +10,19 @@
 
 namespace System::Diagnostics
 {
+
+class Switch;
+
+class InitializingSwitchEventArgs : public EventArgs
+{
+public:
+    InitializingSwitchEventArgs(Diagnostics::Switch &s) : _switch(s) { }
+
+    const Diagnostics::Switch &Switch() const { return _switch; }
+          Diagnostics::Switch &Switch()       { return _switch; }
+protected:
+    Diagnostics::Switch &_switch;
+};
 
 class Switch {
 public:
@@ -28,6 +42,7 @@ public:
 
     static void RefreshAll();
 
+    static System::EventHandler<InitializingSwitchEventArgs> &Initializing();
 protected:
     std::string _displayName;
     std::string _description;
@@ -54,8 +69,6 @@ private:
     bool InitializeWithStatus();
     void OnInitializing();
     void Initialize();
-
-    static std::set<Switch *> GlobalSwitches;
 };
 
 }
