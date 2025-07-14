@@ -81,18 +81,6 @@ public:
     static void Assert(bool condition, const std::source_location = std::source_location::current());
     static void Assert(bool condition, std::string_view  message, const std::source_location = std::source_location::current());
     static void Assert(bool condition, std::string_view  message, std::string_view  category, const std::source_location = std::source_location::current());
-    // static void Assert(bool condition, const FormatCall &call, const std::source_location loc = std::source_location::current())
-    // {
-    //     Assert( condition, std::string_view(call), loc);
-    // }
-    // template <typename ...Args>
-    //     requires (sizeof...(Args) > 0)
-    // static void Assert(FormatTag, bool condition, std::format_string<Args...> &&fmt, Args &&... args)
-    // {
-    //     // TODO: Implement this properly (support std::source_location)
-    //     Assert( condition, std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
-    // }
-
 
     static void Fail(std::string_view message);
     static void Fail(std::string_view message, std::string_view category);
