@@ -67,15 +67,6 @@ StringBuilder &StringBuilder::Append(std::string_view value)
     return *this;
 }
 
-StringBuilder &StringBuilder::Append(const std::string &value)
-{
-    if ( (Length() + value.size()) > MaxCapacity() )
-        ThrowWithTarget( ArgumentOutOfRangeException{"value", "Operation forces object to exceed MaxCapacity"} );
-
-    _string.append( value );
-    return *this;
-}
-
 StringBuilder &StringBuilder::Append(const StringBuilder &other_builder)
 {
     if ( (Length() + other_builder.Length()) > MaxCapacity() )

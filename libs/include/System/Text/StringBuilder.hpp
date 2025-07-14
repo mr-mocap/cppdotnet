@@ -5,6 +5,7 @@
 #include <string_view>
 #if __cplusplus >= 202002L
 #include <format>
+#include <concepts>
 #endif
 #include <cstdint>
 #include <cstddef>
@@ -39,7 +40,6 @@ public:
     StringBuilder &Append(char value);
     StringBuilder &Append(const char *value);
     StringBuilder &Append(std::string_view value);
-    StringBuilder &Append(const std::string &value);
 
     StringBuilder &Append(const StringBuilder &other);
 
@@ -53,15 +53,24 @@ public:
     StringBuilder &Append(float value);
     StringBuilder &Append(double value);
 
+#ifdef __cpp_lib_format
+    template <typename ...Args>
+        requires (sizeof...(Args) > 0)
+    StringBuilder &Append(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        return Append( std::string_view( std::vformat(fmt.get(), std::make_format_args(args...)) ) );
+    }
+#endif
+
     StringBuilder &AppendLine();
     StringBuilder &AppendLine(std::string_view value);
 
 #ifdef __cpp_lib_format
     template <typename ...Args>
-    StringBuilder &AppendFormat(std::string_view fmt, Args&&... args)
+        requires (sizeof...(Args) > 0)
+    StringBuilder &AppendLine(std::format_string<Args...> &&fmt, Args &&... args)
     {
-        Append( std::vformat(fmt, std::make_format_args(args...)) );
-        return *this;
+        return AppendLine( std::string_view( std::vformat(fmt.get(), std::make_format_args(args...)) ) );
     }
 #endif
 
