@@ -5,9 +5,10 @@
 #include "System/Diagnostics/TraceEventCache.hpp"
 #include "System/Collections/Specialized/StringDictionary.hpp"
 #include <string>
-#include <format>
 #include <string_view>
+#include <format>
 #include <memory>
+#include <concepts>
 
 
 namespace System::Diagnostics
@@ -44,37 +45,31 @@ public:
     virtual void Write(std::string_view message) = 0;
     virtual void Write(std::string_view message, std::string_view category) = 0;
 
-    void Write(const char *message)
+    template <typename T, typename ...Args>
+        requires (!std::convertible_to<T, std::string_view> || sizeof...(Args) > 0)
+    static void Write(std::format_string<T, Args...> &&fmt, T &&arg1, Args &&... args)
     {
-        Write( std::string_view(message) );
-    }
-
-    template <typename ...Args>
-    void Write(std::format_string<Args...> &&fmt, Args &&... args)
-    {
-        Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+        Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( arg1, args... ) ) ) );
     }
 
     virtual void WriteLine(std::string_view message) = 0;
     virtual void WriteLine(std::string_view message, std::string_view category) = 0;
 
-    void WriteLine(const char *message)
+    template <typename T, typename ...Args>
+        requires (!std::convertible_to<T, std::string_view> || sizeof...(Args) > 0)
+    static void WriteLine(std::format_string<T, Args...> &&fmt, T &&arg1, Args &&... args)
     {
-        WriteLine( std::string_view(message) );
-    }
-
-    template <typename ...Args>
-    void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
-    {
-        WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+        WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( arg1, args... ) ) ) );
     }
 
     virtual void Fail(std::string_view message) = 0;
     virtual void Fail(std::string_view message, std::string_view detail) = 0;
 
-    void Fail(const char *message)
+    template <typename T, typename ...Args>
+        requires (!std::convertible_to<T, std::string_view> || sizeof...(Args) > 0)
+    static void Fail(std::format_string<T, Args...> &&fmt, T &&arg1, Args &&... args)
     {
-        Fail( std::string_view(message) );
+        Fail( std::string_view( std::vformat( fmt.get(), std::make_format_args( arg1, args... ) ) ) );
     }
 
     virtual void WriteIndent() = 0;
