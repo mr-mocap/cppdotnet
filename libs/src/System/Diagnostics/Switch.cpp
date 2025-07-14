@@ -94,7 +94,7 @@ catch (std::invalid_argument &ia)
     ;
 }
 
-const std::string &Switch::Value()
+std::string_view Switch::Value()
 {
     Initialize();
     return _value;

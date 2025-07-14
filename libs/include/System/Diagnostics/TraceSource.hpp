@@ -16,7 +16,7 @@ public:
 
     Diagnostics::SourceLevels DefaultLevel() const { return _level; }
 
-    const std::string &Name() const { return _name; }
+    std::string_view Name() const { return _name; }
 protected:
     std::string               _name;
     Diagnostics::SourceLevels _level{ Diagnostics::SourceLevels::Off };

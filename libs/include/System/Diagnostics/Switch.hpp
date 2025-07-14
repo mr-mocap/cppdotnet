@@ -15,12 +15,12 @@ public:
     virtual ~Switch();
 
 
-    const std::string &DisplayName() const  { return _displayName; }
-    const std::string &Description() const  { return _description; }
-    const std::string &DefaultValue() const { return _defaultValue; }
+    std::string_view DisplayName() const  { return _displayName; }
+    std::string_view Description() const  { return _description; }
+    std::string_view DefaultValue() const { return _defaultValue; }
 
-    const std::string &Value();
-          void         Value(std::string_view new_value);
+    std::string_view Value();
+    void             Value(std::string_view new_value);
     
     const Collections::Specialized::StringDictionary &Attributes() const { return _attributes; }
 
