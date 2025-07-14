@@ -21,8 +21,6 @@ namespace System
 template <>
 struct EnumPolicy<System::EnvironmentVariableTarget> : EnumTraitTypes<System::EnvironmentVariableTarget>
 {
-public:
-
     static constexpr std::string_view EnumName = "EnvironmentVariableTarget";
 
     static constexpr name_value_pair_type NameValueArray[] = {

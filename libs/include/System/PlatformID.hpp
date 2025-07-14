@@ -24,8 +24,6 @@ namespace System
 template <>
 struct EnumPolicy<System::PlatformID> : EnumTraitTypes<System::PlatformID>
 {
-public:
-
     static constexpr std::string_view EnumName = "PlatformID";
 
     static constexpr name_value_pair_type NameValueArray[] = {

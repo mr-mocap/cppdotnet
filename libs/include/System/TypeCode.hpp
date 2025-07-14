@@ -36,8 +36,6 @@ namespace System
 template <>
 struct EnumPolicy<System::TypeCode> : EnumTraitTypes<System::TypeCode>
 {
-public:
-
     static constexpr std::string_view EnumName = "TypeCode";
 
     static constexpr name_value_pair_type NameValueArray[] = {

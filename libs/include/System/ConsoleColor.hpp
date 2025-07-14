@@ -34,8 +34,6 @@ namespace System
 template <>
 struct EnumPolicy<System::ConsoleColor> : EnumTraitTypes<System::ConsoleColor>
 {
-public:
-
     static constexpr std::string_view EnumName = "ConsoleColor";
 
     static constexpr name_value_pair_type NameValueArray[] = {

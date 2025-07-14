@@ -23,8 +23,6 @@ namespace System
 template <>
 struct EnumPolicy<System::IO::FileMode> : EnumTraitTypes<System::IO::FileMode>
 {
-public:
-
     static constexpr std::string_view EnumName = "FileMode";
 
     static constexpr name_value_pair_type NameValueArray[] = {

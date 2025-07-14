@@ -25,8 +25,6 @@ namespace System
 template <>
 struct EnumPolicy<System::DayOfWeek> : EnumTraitTypes<System::DayOfWeek>
 {
-public:
-
     static constexpr std::string_view EnumName = "DayOfWeek";
 
     static constexpr name_value_pair_type NameValueArray[] = {

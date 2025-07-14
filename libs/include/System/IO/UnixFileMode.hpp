@@ -31,8 +31,6 @@ namespace System
 template <>
 struct EnumPolicy<System::IO::UnixFileMode> : EnumTraitTypes<System::IO::UnixFileMode>
 {
-public:
-
     static constexpr std::string_view EnumName = "UnixFileMode";
 
     static constexpr name_value_pair_type NameValueArray[] = {

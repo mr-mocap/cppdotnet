@@ -20,8 +20,6 @@ namespace System
 template <>
 struct EnumPolicy<System::IO::SeekOrigin> : EnumTraitTypes<System::IO::SeekOrigin>
 {
-public:
-
     static constexpr std::string_view EnumName = "SeekOrigin";
 
     static constexpr name_value_pair_type NameValueArray[] = {

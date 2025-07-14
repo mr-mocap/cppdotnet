@@ -20,8 +20,6 @@ namespace System
 template <>
 struct EnumPolicy<System::Base64FormattingOptions> : EnumTypeTraits<System::Base64FormattingOptions>
 {
-public:
-
     static constexpr std::string_view EnumName = "Base64FormattingOptions";
 
     static constexpr name_value_pair_type NameValueArray[] = {

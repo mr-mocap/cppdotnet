@@ -163,8 +163,6 @@ namespace System
 template <>
 struct EnumPolicy<System::ConsoleKey> : EnumTraitTypes<System::ConsoleKey>
 {
-public:
-
     static constexpr std::string_view EnumName = "ConsoleKey";
 
     static constexpr name_value_pair_type NameValueArray[] = {

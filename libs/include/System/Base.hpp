@@ -21,8 +21,6 @@ namespace System
 template <>
 struct EnumPolicy<System::Base> : EnumTraitTypes<System::Base>
 {
-public:
-
     static constexpr std::string_view EnumName = "Base";
 
     static constexpr name_value_pair_type NameValueArray[] = {

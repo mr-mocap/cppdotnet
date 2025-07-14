@@ -22,8 +22,6 @@ namespace System
 template <>
 struct EnumPolicy<ConsoleModifiers> : EnumTraitTypes<ConsoleModifiers>
 {
-public:
-
     static constexpr std::string_view EnumName = "ConsoleModifiers";
 
     static constexpr name_value_pair_type NameValueArray[] = {
