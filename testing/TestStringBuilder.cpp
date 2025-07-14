@@ -32,22 +32,24 @@ void AppendFormat()
     {
         System::Text::StringBuilder builder;
 
-        builder.AppendFormat("{}", "Test");
+        builder.Append("{}", "Test");
         assert( builder.ToString() == "Test" );
     }
 
     {
         System::Text::StringBuilder builder;
 
-        builder.AppendFormat("This is a {}", "Test");
+        builder.Append("This is a {}", "Test");
         assert( builder.ToString() == "This is a Test" );
     }
 
+#if 0
     try
     {
         System::Text::StringBuilder builder;
 
-        builder.AppendFormat("{} {}", "Test");
+
+        builder.Append("{} {}", "Test"); // This will fail to compile because we are missing an argument for the second placeholder
         assert( false );
     }
     catch (std::format_error &e)
@@ -56,11 +58,12 @@ void AppendFormat()
         std::cout << e.what() << std::endl;
         assert( true );
     }
+#endif
 
     {
         System::Text::StringBuilder builder;
 
-        builder.AppendFormat("{1} {0}", "a test", "This is");
+        builder.Append("{1} {0}", "a test", "This is");
         assert( builder.ToString() == "This is a test" );
     }
 #endif
