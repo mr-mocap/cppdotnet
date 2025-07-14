@@ -1,6 +1,8 @@
 #include "System/Diagnostics/DefaultTraceListener.hpp"
 #include "System/Diagnostics/Trace.hpp"
 #include "System/Diagnostics/Debugger.hpp"
+#include "System/IO/StreamWriter.hpp"
+#include "System/Console.hpp"
 #include "System/Convert.hpp"
 #include "System/Private/private.hpp"
 #include <format>
@@ -26,9 +28,11 @@ namespace System::Diagnostics
 
 DefaultTraceListener::DefaultTraceListener()
     :
-    TraceListener("Default")
+    TraceListener("Default"),
+    _log_stream( std::make_unique<System::IO::StreamWriter>( Console::OpenStandardError() ) )
 {
     INVARIANT( Name() == "Default" );
+    INVARIANT( _log_stream );
 
     _line_buffer.reserve( 512 );
 }
@@ -40,6 +44,7 @@ DefaultTraceListener::~DefaultTraceListener()
 std::string_view DefaultTraceListener::LogFileName() const
 {
     INVARIANT( Name() == "Default" );
+    INVARIANT( _log_stream );
 
     return _logFileName;
 }
@@ -47,6 +52,7 @@ std::string_view DefaultTraceListener::LogFileName() const
 void DefaultTraceListener::LogFileName(std::string_view filename)
 {
     INVARIANT( Name() == "Default" );
+    INVARIANT( _log_stream );
 
     _logFileName = filename;
     _log_stream = std::make_unique<System::IO::StreamWriter>( _logFileName );
@@ -55,22 +61,23 @@ void DefaultTraceListener::LogFileName(std::string_view filename)
 void DefaultTraceListener::Close()
 {
     INVARIANT( Name() == "Default" );
+    INVARIANT( _log_stream );
 
-    if ( _log_stream )
-        _log_stream->Close();
+    _log_stream->Close();
 }
 
 void DefaultTraceListener::Flush()
 {
     INVARIANT( Name() == "Default" );
+    INVARIANT( _log_stream );
 
-    if ( _log_stream )
-        _log_stream->Flush();
+    _log_stream->Flush();
 }
 
 void DefaultTraceListener::Write(std::string_view message)
 {
     INVARIANT( Name() == "Default" );
+    INVARIANT( _log_stream );
     
     WriteRaw( message );
 }
@@ -78,6 +85,7 @@ void DefaultTraceListener::Write(std::string_view message)
 void DefaultTraceListener::Write(std::string_view message, std::string_view category)
 {
     INVARIANT( Name() == "Default" );
+    INVARIANT( _log_stream );
 
     WriteRaw( GenerateMessage( message, category ) );
 }
@@ -85,6 +93,7 @@ void DefaultTraceListener::Write(std::string_view message, std::string_view cate
 void DefaultTraceListener::WriteLine(std::string_view message)
 {
     INVARIANT( Name() == "Default" );
+    INVARIANT( _log_stream );
 
     WriteLineRaw( message );
 }
@@ -92,6 +101,7 @@ void DefaultTraceListener::WriteLine(std::string_view message)
 void DefaultTraceListener::WriteLine(std::string_view message, std::string_view category)
 {
     INVARIANT( Name() == "Default" );
+    INVARIANT( _log_stream );
 
     WriteLineRaw( GenerateMessage( message, category ) );
 }
@@ -99,6 +109,7 @@ void DefaultTraceListener::WriteLine(std::string_view message, std::string_view 
 void DefaultTraceListener::Fail(std::string_view message)
 {
     INVARIANT( Name() == "Default" );
+    INVARIANT( _log_stream );
 
     WriteLineRaw( GenerateFailMessage( message ) );
 }
@@ -106,6 +117,7 @@ void DefaultTraceListener::Fail(std::string_view message)
 void DefaultTraceListener::Fail(std::string_view message, std::string_view detail)
 {
     INVARIANT( Name() == "Default" );
+    INVARIANT( _log_stream );
 
     WriteLineRaw( GenerateFailMessage( message, detail ) );
  }
@@ -113,8 +125,7 @@ void DefaultTraceListener::Fail(std::string_view message, std::string_view detai
 void DefaultTraceListener::WriteRaw(std::string_view data)
 {
     Debugger::Log( 1, "Default", data );
-    if ( _log_stream )
-        _log_stream->Write( data );
+    _log_stream->Write( data );
 }
 
 void DefaultTraceListener::WriteLineRaw(std::string_view data)
@@ -125,8 +136,7 @@ void DefaultTraceListener::WriteLineRaw(std::string_view data)
     if ( _needIndent )
         _line_buffer.append( _indentString );
 
-    if ( _log_stream )
-        _log_stream->WriteLine( _line_buffer.append( data ) );
+    _log_stream->WriteLine( _line_buffer.append( data ) );
 
     Debugger::Log( 1, "Default", _line_buffer );
 
