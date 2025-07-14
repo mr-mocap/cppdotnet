@@ -27,8 +27,6 @@ namespace System
 template <>
 struct EnumPolicy<System::Diagnostics::TraceLevel> : EnumTraitTypes<System::Diagnostics::TraceLevel>
 {
-public:
-
     static constexpr std::string_view EnumName = "TraceLevel";
 
     static constexpr name_value_pair_type NameValueArray[] = {
