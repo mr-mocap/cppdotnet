@@ -39,6 +39,23 @@ void WriteWithCategory()
     System::Diagnostics::Trace::Write("This is a message\n", "Test.Category"); // We have to add newline here
 }
 
+void WriteWithArgs()
+{
+    std::cout << __func__ << std::endl;
+    
+    // This will be interpreted as a message and category (cannot resolve the overload)
+    System::Diagnostics::Trace::Write( "This is a message with a parameter: '{}', but will be interpreted as a message and category\n", "string parameter"); // We have to add newline here
+
+    // But we can get around it by using FormatCall
+    System::Diagnostics::Trace::Write( System::Diagnostics::FormatCall("This is a message with a string parameter: '{}'\n", "string") ); // We have to add newline here
+
+    // Or by having more than one parameter
+    System::Diagnostics::Trace::Write( "This is a message with two parameters: '{}' {}\n", "string", 42); // We have to add newline here
+
+    // Or by using a single parameter that is not convertible to std::string_view
+    System::Diagnostics::Trace::Write( "This is a message with a parameter: '{}'\n", 42); // We have to add newline here
+}
+
 void WriteIf()
 {
     std::cout << __func__ << std::endl;
@@ -59,8 +76,22 @@ void WriteIfWithArgs()
 {
     std::cout << __func__ << std::endl;
     
-    System::Diagnostics::Trace::WriteIf(true,  "This is a message with a parameter: {}\n", 42); // We have to add newline here
+    // Won't be written
+    System::Diagnostics::Trace::WriteIf(false, "This is a message with a parameter: '{}', but will be interpreted as a message and category\n", "string parameter"); // We have to add newline here
+
+    // This will be interpreted as a message and category (cannot resolve the overload)
+    System::Diagnostics::Trace::WriteIf(true, "This is a message with a parameter: '{}', but will be interpreted as a message and category\n", "string parameter"); // We have to add newline here
+
+    // But we can get around it by using FormatCall
+    System::Diagnostics::Trace::WriteIf(true, System::Diagnostics::FormatCall("This is a message with a string parameter: '{}'\n", "string") ); // We have to add newline here
+
+    // Or by having more than one parameter
+    System::Diagnostics::Trace::WriteIf(true, "This is a message with two parameters: '{}' {}\n", "string", 42); // We have to add newline here
+
+    // Or by using a single parameter that is not convertible to std::string_view
+    System::Diagnostics::Trace::WriteIf(true, "This is a message with a parameter: '{}'\n", 42); // We have to add newline here
 }
+
 
 void WriteLine()
 {
@@ -81,7 +112,17 @@ void WriteLineWithArgs()
 {
     std::cout << __func__ << std::endl;
     
-    System::Diagnostics::Trace::WriteLine("This is a message with a parameter: {}", 42);
+    // This will be interpreted as a message and category (cannot resolve the overload)
+    System::Diagnostics::Trace::WriteLine( "This is a message with a parameter: '{}', but will be interpreted as a message and category\n", "string parameter");
+
+    // But we can get around it by using FormatCall
+    System::Diagnostics::Trace::WriteLine( System::Diagnostics::FormatCall("This is a message with a string parameter: '{}'", "string") );
+
+    // Or by having more than one parameter
+    System::Diagnostics::Trace::WriteLine( "This is a message with two parameters: '{}' {}", "string", 42);
+
+    // Or by using a single parameter that is not convertible to std::string_view
+    System::Diagnostics::Trace::WriteLine( "This is a message with a parameter: '{}'", 42);
 }
 
 void WriteLineIf()
@@ -104,7 +145,20 @@ void WriteLineIfWithArgs()
 {
     std::cout << __func__ << std::endl;
     
-    System::Diagnostics::Trace::WriteLineIf(true, "This is a single-line message with a parameter: {}", 42);
+    // Won't be written
+    System::Diagnostics::Trace::WriteLineIf(false, "This is a message with a parameter: '{}', but will be interpreted as a message and category", "string parameter");
+
+    // This will be interpreted as a message and category (cannot resolve the overload)
+    System::Diagnostics::Trace::WriteLineIf(true, "This is a message with a parameter: '{}', but will be interpreted as a message and category", "string parameter");
+
+    // But we can get around it by using FormatCall
+    System::Diagnostics::Trace::WriteLineIf(true, System::Diagnostics::FormatCall("This is a message with a string parameter: '{}'", "string") );
+
+    // Or by having more than one parameter
+    System::Diagnostics::Trace::WriteLineIf(true, "This is a message with two parameters: '{}' {}", "string", 42);
+
+    // Or by using a single parameter that is not convertible to std::string_view
+    System::Diagnostics::Trace::WriteLineIf(true, "This is a message with a parameter: '{}'", 42);
 }
 
 void TraceAssert()
@@ -135,7 +189,7 @@ void TraceAssertWithMessageAndArgs()
 {
     std::cout << __func__ << std::endl;
     
-    System::Diagnostics::Trace::Assert(false, "This is an Assert message with a parameter: {}", 42);
+    System::Diagnostics::Trace::Assert(false, System::Diagnostics::FormatCall("This is an Assert message with a string parameter: '{}'", "string") );
 }
 
 void TraceFail()
@@ -156,7 +210,17 @@ void TraceFailWithArgs()
 {
     std::cout << __func__ << std::endl;
     
-    System::Diagnostics::Trace::Fail("This is a message for Fail with a parameter: {}", 42);
+    // This will be interpreted as a message and category (cannot resolve the overload)
+    System::Diagnostics::Trace::Fail( "This is a Fail message with a parameter: '{}', but will be interpreted as a message and category\n", "string parameter");
+
+    // But we can get around it by using FormatCall
+    System::Diagnostics::Trace::Fail( System::Diagnostics::FormatCall("This is a Fail message with a string parameter: '{}'", "string") );
+
+    // Or by having more than one parameter
+    System::Diagnostics::Trace::Fail( "This is a Fail message with two parameters: '{}' {}", "string", 42);
+
+    // Or by using a single parameter that is not convertible to std::string_view
+    System::Diagnostics::Trace::Fail( "This is a Fail message with a parameter: '{}'", 42);
 }
 
 void TraceError()
@@ -251,6 +315,7 @@ void Run()
     {
         Write();
         WriteWithCategory();
+        WriteWithArgs();
         WriteIf();
         WriteIfWithCategory();
         WriteIfWithArgs();
