@@ -1,7 +1,8 @@
 #pragma once
 
-#include "System/DateTime.hpp"
 #include "System/TimeSpan.hpp"
+#include "System/DateTime.hpp"
+#include "System/DayOfWeek.hpp"
 
 
 namespace System
@@ -11,16 +12,16 @@ class DateTimeOffset
 {
 public:
     constexpr DateTimeOffset() = default;
-    constexpr DateTimeOffset(const DateTime &dt) : _date_time( dt ) { }
-    constexpr DateTimeOffset(const DateTime &dt, const TimeSpan &offset) : _date_time( dt ), _offset_from_utc( offset ) { }
+    constexpr DateTimeOffset(const System::DateTime &dt) : _date_time( dt ) { }
+    constexpr DateTimeOffset(const System::DateTime &dt, const System::TimeSpan &offset) : _date_time( dt ), _offset_from_utc( offset ) { }
 
     const System::DateTime &DateTime() const { return _date_time; }
-    const TimeSpan &Offset() const { return _offset_from_utc; }
+    const System::TimeSpan &Offset() const { return _offset_from_utc; }
 
     System::DateTime Date() const { return _date_time.Date(); }
 
-    enum DayOfWeek DayOfWeek() const { return _date_time.DayOfWeek(); }
-               int DayOfYear() const { return _date_time.DayOfYear(); }
+    constexpr enum DayOfWeek DayOfWeek() const { return _date_time.DayOfWeek(); }
+                         int DayOfYear() const { return _date_time.DayOfYear(); }
     
     int      Year() const { return _date_time.Year(); }
     int      Month() const { return _date_time.Month(); }
@@ -34,9 +35,9 @@ public:
 
     long     Ticks() const { return _date_time.Ticks(); }
 
-    static constexpr DateTimeOffset MinValue()  { return DateTimeOffset( DateTime::MinValue() ); }
-    static constexpr DateTimeOffset MaxValue()  { return DateTimeOffset( DateTime::MaxValue() ); }
-    static           DateTimeOffset UnixEpoch() { return DateTimeOffset( DateTime::UnixEpoch() ); }
+    static constexpr DateTimeOffset MinValue()  { return DateTimeOffset( System::DateTime::MinValue() ); }
+    static constexpr DateTimeOffset MaxValue()  { return DateTimeOffset( System::DateTime::MaxValue() ); }
+    static           DateTimeOffset UnixEpoch() { return DateTimeOffset( System::DateTime::UnixEpoch() ); }
 
     static           DateTimeOffset Now();
     static           DateTimeOffset UtcNow();

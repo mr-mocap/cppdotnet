@@ -17,11 +17,11 @@ public:
     static constexpr double PI  = std::numbers::pi;
     static constexpr double Tau = 2.0 * std::numbers::pi;
 
-    static constexpr short  Abs(short value)  { return static_cast<short>( std::abs() ); }
-    static constexpr int    Abs(int value)    { return std::abs(value); }
-    static constexpr long   Abs(long value)   { return std::abs(value); }
-    static constexpr float  Abs(float value)  { return std::fabs(value); }
-    static constexpr double Abs(double value) { return std::fabs(value); }
+    static short  Abs(short value)  { return static_cast<short>( std::abs(value) ); }
+    static int    Abs(int value)    { return std::abs(value); }
+    static long   Abs(long value)   { return std::abs(value); }
+    static float  Abs(float value)  { return std::fabs(value); }
+    static double Abs(double value) { return std::fabs(value); }
 
     static float  Ceiling(float value)  { return std::ceil(value); }
     static double Ceiling(double value) { return std::ceil(value); }
@@ -62,7 +62,7 @@ public:
         if constexpr ( std::is_floating_point_v<T> )
             return std::fmin(v1, v2);
         else
-            return std::min(v1, v2); }
+            return std::min(v1, v2);
     }
 
     template <class T>
@@ -77,7 +77,7 @@ public:
     template <class T>
     static int Sign(T value)
     {
-        if constexpr ( std::is_integrali_v<T> )
+        if constexpr ( std::is_integral_v<T> )
         {
             if ( value < 0 )
                 return -1;
@@ -107,8 +107,8 @@ public:
     static float  Atan(float value) { return std::atan(value); }
     static double Atan(double value) { return std::atan(value); }
 
-    static float  Atan2(float value) { return std::atan2(value); }
-    static double Atan2(double value) { return std::atan2(value); }
+    static float  Atan2(float x, float y) { return std::atan2(x,y); }
+    static double Atan2(double x, double y) { return std::atan2(x,y); }
 
     static float  Cos(float value) { return std::cos(value); }
     static double Cos(double value) { return std::cos(value); }

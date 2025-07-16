@@ -1,13 +1,21 @@
 #pragma once
 
-#include "System/IO/TextWriter.hpp"
-#include "System/IO/TextReader.hpp"
-#include "System/IO/ConsoleStream.hpp"
 #include <memory>
 #include <format>
+#include <string>
+#include <string_view>
+#include <cstdint>
 
 namespace System
 {
+
+namespace IO
+{
+class TextReader;
+class TextWriter;
+class Stream;
+}
+
 
 class Console final
 {
@@ -23,10 +31,10 @@ public:
     static void SetError(std::unique_ptr<IO::TextWriter> &&new_input_writer);
     static void SetLog(std::unique_ptr<IO::TextWriter> &&new_input_writer);
 
-    static std::unique_ptr<IO::ConsoleStream> OpenStandardInput();
-    static std::unique_ptr<IO::ConsoleStream> OpenStandardOutput();
-    static std::unique_ptr<IO::ConsoleStream> OpenStandardError();
-    static std::unique_ptr<IO::ConsoleStream> OpenStandardLog();
+    static std::unique_ptr<IO::Stream> OpenStandardInput();
+    static std::unique_ptr<IO::Stream> OpenStandardOutput();
+    static std::unique_ptr<IO::Stream> OpenStandardError();
+    static std::unique_ptr<IO::Stream> OpenStandardLog();
 
     static bool IsInputRedirected();
     static bool IsOutputRedirected();

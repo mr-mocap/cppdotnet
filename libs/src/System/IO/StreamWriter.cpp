@@ -5,19 +5,9 @@
 namespace System::IO
 {
 
-StreamWriter::StreamWriter()
-{
-}
-
 StreamWriter::StreamWriter(std::string_view filename)
     :
     _stream{ std::make_unique<FileStream>( filename ) }
-{
-}
-
-StreamWriter::StreamWriter(std::unique_ptr<Stream> &&stream)
-    :
-    _stream{ std::move(stream) }
 {
 }
 

@@ -3,7 +3,6 @@
 #include "System/IO/StreamWriter.hpp"
 #include "System/IO/StreamReader.hpp"
 #include "System/Exception.hpp"
-#include <mutex>
 
 
 
@@ -173,22 +172,22 @@ void Console::SetLog(std::unique_ptr<IO::TextWriter> &&new_input_writer)
     GetLog() = std::move(new_input_writer);
 }
 
-std::unique_ptr<IO::ConsoleStream> Console::OpenStandardInput()
+std::unique_ptr<IO::Stream> Console::OpenStandardInput()
 {
     return std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::In);
 }
 
-std::unique_ptr<IO::ConsoleStream> Console::OpenStandardOutput()
+std::unique_ptr<IO::Stream> Console::OpenStandardOutput()
 {
     return std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::Out);
 }
 
-std::unique_ptr<IO::ConsoleStream> Console::OpenStandardError()
+std::unique_ptr<IO::Stream> Console::OpenStandardError()
 {
     return std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::Error);
 }
 
-std::unique_ptr<IO::ConsoleStream> Console::OpenStandardLog()
+std::unique_ptr<IO::Stream> Console::OpenStandardLog()
 {
     return std::make_unique<IO::ConsoleStream>(IO::ConsoleStream::Log);
 }

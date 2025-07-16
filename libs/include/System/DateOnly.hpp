@@ -8,6 +8,7 @@
 #include "System/Private/private.hpp"
 #include <chrono>
 #include <compare>
+#include <string>
 
 
 namespace System
@@ -74,11 +75,11 @@ public:
         return static_cast<int>( num_days.time_since_epoch().count() );
     }
 
-    constexpr enum DayOfWeek DayOfWeek() const
+    constexpr enum System::DayOfWeek DayOfWeek() const
     {
         std::chrono::weekday wd{ std::chrono::sys_days( _year_month_day ) };
 
-        return static_cast<enum DayOfWeek>( wd.c_encoding() );
+        return static_cast<enum System::DayOfWeek>( wd.c_encoding() );
     }
 
     int DayOfYear() const;
@@ -86,7 +87,7 @@ public:
     static constexpr DateOnly MinValue() { return DateOnly( 1, 1, 1 ); }
     static constexpr DateOnly MaxValue() { return DateOnly( 9999, 12, 31 ); }
 
-    static DateOnly FromDateTime(const DateTime &dt);
+    static DateOnly FromDateTime(const System::DateTime &dt);
     static DateOnly FromDayNumber(int day_number);
 
     DateOnly AddDays(int num_days) const;
@@ -136,6 +137,6 @@ struct std::formatter<System::DateOnly>
     template <typename FormatContext>
     auto format(const System::DateOnly &object, FormatContext &ctx) const
     {
-        return std::format_to( ctx.out(), "{}", std::chrono::year_month_day(object) );
+        return std::format_to( ctx.out(), "{}", object.ToString() );
     }
 };

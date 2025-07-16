@@ -18,7 +18,7 @@ namespace System
 {
 
 template <>
-struct EnumPolicy<System::Base64FormattingOptions> : EnumTypeTraits<System::Base64FormattingOptions>
+struct EnumPolicy<System::Base64FormattingOptions> : EnumTraitTypes<System::Base64FormattingOptions>
 {
     static constexpr std::string_view EnumName = "Base64FormattingOptions";
 

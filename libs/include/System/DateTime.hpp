@@ -57,7 +57,7 @@ public:
 
     long Ticks() const;
 
-    constexpr enum DayOfWeek DayOfWeek() const { return _date_only.DayOfWeek(); }
+    constexpr enum System::DayOfWeek DayOfWeek() const { return _date_only.DayOfWeek(); }
                int DayOfYear() const { return _date_only.DayOfYear(); }
 
     static DateTime Now();

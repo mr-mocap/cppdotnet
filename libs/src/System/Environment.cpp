@@ -158,11 +158,6 @@ Collections::Specialized::StringDictionary Environment::GetEnvironmentVariables(
     return retval;
 }
 
-std::string_view Environment::NewLine()
-{
-    return "\n";
-}
-
 std::string Environment::StackTrace()
 {
 #if __cpp_lib_stacktrace > 202011L

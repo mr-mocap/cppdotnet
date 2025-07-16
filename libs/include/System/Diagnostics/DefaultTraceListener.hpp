@@ -1,7 +1,7 @@
 #pragma once
 
 #include "System/Diagnostics/TraceListener.hpp"
-#include "System/IO/TextWriter.hpp"
+#include "System/IO/StreamWriter.hpp"
 
 
 namespace System::Diagnostics
@@ -36,7 +36,7 @@ public:
 protected:
     std::string _logFileName;
     std::string _line_buffer;
-    std::unique_ptr<System::IO::TextWriter> _log_stream;
+    std::unique_ptr<System::IO::StreamWriter> _log_stream;
     bool        _ui_enabled = false;
 
     void WriteRaw(std::string_view data);

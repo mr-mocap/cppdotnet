@@ -47,7 +47,7 @@ OBJS = TestDefaultTraceListener.o \
 	main.o
 
 EXTERNAL_LIBS = -l$(LIB_BASE_NAME) -luuid
-CXXFLAGS=-std=c++20 -W -Wall -Wextra -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
+CXXFLAGS=-std=c++20 -fmodules-ts -W -Wall -Wextra -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
 LDFLAGS=-L$(LIB_BUILD_DIR)
 
 #%.o: %.cpp

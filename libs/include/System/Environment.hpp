@@ -21,7 +21,10 @@ public:
 
     static std::string ExpandEnvironmentVariables(std::string_view input);
 
-    static std::string_view NewLine();
+    constexpr static std::string_view NewLine()
+    {
+        return "\n"; // TODO: Make correct under other OSs
+    }
 
     static std::string StackTrace();
 
