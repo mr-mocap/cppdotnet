@@ -11,7 +11,8 @@ EXTRA_LIBS = -luuid
 
 CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I . $(INC_PARAMS) $(DEBUG_FLAGS)
 CXXFLAGS_PCM=-std=c++20 -fmodules-ts -x c++-header -I . $(INC_PARAMS)
-CXXFLAGS_MODULE = -std=c++20 -fmodules-ts
+CXXFLAGS_MODULE_HEADER_UNIT = -std=c++20 -fmodules-ts
+CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts
 
 LIB_SRC  = $(wildcard *.cpp \
                       src/System/*.cpp \
@@ -48,13 +49,19 @@ SYSTEM_MODDULE_SRC = $(wildcard src/System/*.cpp)
 SYSTEM_MODULE_PCMS = $(patsubst %.hpp,%.pcm,${SYSTEM_MODULE_ENUMS}) $(patsubst %.hpp,%.pcm,${SYSTEM_MODULE_HEADERS})
 
 src/System/System.ixx: $(SYSTEM_MODULE_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE) -c src/System/System.ixx -o src/System/System.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_UNIT) -c src/System/System.ixx -o src/System/System.o
 
-# Create Header Units
+# Rule to create Header Units
 %.pcm : %.hpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_PCM) $< -o $(basename $@.pcm)
 
-System: $(SYSTEM_MODULE_PCMS) src/System/System.ixx
+src/System/%.cpp : src/System/%.o
+	#$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_IMP) -fmodule-file=$< -c $< -o $(basename $@.o)
+	echo "-fmodule-file=$< -c $< -o $(basename $@.o)"
+
+SystemModuleSources: $(SYSTEM_MODDULE_SRC)
+
+System: $(SYSTEM_MODULE_PCMS) SystemModuleSources
 
 build/%.o : %.cpp
 	mkdir -p ${dir $@}
