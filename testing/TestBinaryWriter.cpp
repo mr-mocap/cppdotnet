@@ -2,6 +2,7 @@
 #include "System/Console.hpp"
 #include "System/IO/MemoryStream.hpp"
 #include "System/IO/BinaryWriter.hpp"
+#include "System/IO/TextWriter.hpp"
 #include "System/ReadOnlySpan.hpp"
 #include <cassert>
 
