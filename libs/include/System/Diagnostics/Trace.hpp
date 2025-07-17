@@ -72,7 +72,7 @@ public:
 
     static void Assert(bool condition, const std::source_location = std::source_location::current());
     static void Assert(bool condition, std::string_view  message, const std::source_location = std::source_location::current());
-    static void Assert(bool condition, std::string_view  message, std::string_view  category, const std::source_location = std::source_location::current());
+    static void Assert(bool condition, std::string_view  message, std::string_view detail_message, const std::source_location = std::source_location::current());
 
     static void Fail(std::string_view message);
     static void Fail(std::string_view message, std::string_view category);
