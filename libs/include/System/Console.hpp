@@ -26,10 +26,10 @@ public:
     static IO::TextWriter &Error();
     static IO::TextWriter &Log();
 
-    static void SetIn(std::unique_ptr<IO::TextReader> &&new_input_reader);
-    static void SetOut(std::unique_ptr<IO::TextWriter> &&new_input_writer);
-    static void SetError(std::unique_ptr<IO::TextWriter> &&new_input_writer);
-    static void SetLog(std::unique_ptr<IO::TextWriter> &&new_input_writer);
+    static void SetIn(std::unique_ptr<IO::TextReader>    new_input_reader);
+    static void SetOut(std::unique_ptr<IO::TextWriter>   new_input_writer);
+    static void SetError(std::unique_ptr<IO::TextWriter> new_input_writer);
+    static void SetLog(std::unique_ptr<IO::TextWriter>   new_input_writer);
 
     static std::unique_ptr<IO::Stream> OpenStandardInput();
     static std::unique_ptr<IO::Stream> OpenStandardOutput();

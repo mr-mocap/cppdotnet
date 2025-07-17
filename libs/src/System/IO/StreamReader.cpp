@@ -15,12 +15,6 @@ StreamReader::StreamReader(std::string_view filename)
 {
 }
 
-StreamReader::StreamReader(std::unique_ptr<Stream> &&stream)
-    :
-    _stream{ std::move(stream) }
-{
-}
-
 StreamReader::~StreamReader()
 {
 }
