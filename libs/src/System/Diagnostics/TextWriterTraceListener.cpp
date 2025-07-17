@@ -27,28 +27,14 @@ TextWriterTraceListener::TextWriterTraceListener()
 {
 }
 
-TextWriterTraceListener::TextWriterTraceListener(std::unique_ptr<System::IO::TextWriter> &&new_writer)
-    :
-    _text_writer{ std::move(new_writer) }
-{
-}
-
-TextWriterTraceListener::TextWriterTraceListener(std::unique_ptr<System::IO::TextWriter> &&new_writer,
-                                                 std::string_view name)
-    :
-    TraceListener( name ),
-    _text_writer{ std::move(new_writer) }
-{
-}
-
-TextWriterTraceListener::TextWriterTraceListener(std::unique_ptr<System::IO::Stream> &&new_stream)
+TextWriterTraceListener::TextWriterTraceListener(std::unique_ptr<System::IO::Stream> new_stream)
     :
     _text_writer{ std::make_unique<System::IO::StreamWriter>( std::move(new_stream) ) }
 {
 
 }
 
-TextWriterTraceListener::TextWriterTraceListener(std::unique_ptr<System::IO::Stream> &&new_stream,
+TextWriterTraceListener::TextWriterTraceListener(std::unique_ptr<System::IO::Stream> new_stream,
                                                  std::string_view name)
     :
     TraceListener( name ),

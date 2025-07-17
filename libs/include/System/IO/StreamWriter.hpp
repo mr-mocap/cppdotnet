@@ -11,7 +11,12 @@ class StreamWriter : public TextWriter
 public:
     StreamWriter();
     StreamWriter(std::string_view filename);
-    StreamWriter(std::unique_ptr<Stream> &&stream);
+    StreamWriter(std::unique_ptr<Stream> stream)
+        :
+        _stream{ std::move(stream) }
+    {
+    }
+
    ~StreamWriter();
 
     void Close() override;

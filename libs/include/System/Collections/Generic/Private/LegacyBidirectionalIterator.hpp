@@ -43,7 +43,7 @@ struct LegacyBidirectionalIteratorBase
         Iterator() = default;
        ~Iterator() = default;
 
-        Iterator(std::unique_ptr<IteratorInterface> &&position)
+        Iterator(std::unique_ptr<IteratorInterface> position)
             :
             m_pimpl( std::move(position) )
         {
@@ -140,7 +140,7 @@ struct LegacyBidirectionalIteratorBase
         ConstIterator() = default;
        ~ConstIterator() = default;
 
-        ConstIterator(std::unique_ptr<ConstIteratorInterface> &&position)
+        ConstIterator(std::unique_ptr<ConstIteratorInterface> position)
             :
             m_pimpl( std::move(position) )
         {
@@ -238,7 +238,7 @@ struct LegacyBidirectionalIteratorBase
         ReverseIterator() = default;
        ~ReverseIterator() = default;
 
-        ReverseIterator(std::unique_ptr<ReverseIteratorInterface> &&position)
+        ReverseIterator(std::unique_ptr<ReverseIteratorInterface> position)
             :
             m_pimpl( std::move(position) )
         {
@@ -335,7 +335,7 @@ struct LegacyBidirectionalIteratorBase
         ConstReverseIterator() = default;
        ~ConstReverseIterator() = default;
 
-        ConstReverseIterator(std::unique_ptr<ConstReverseIteratorInterface> &&position)
+        ConstReverseIterator(std::unique_ptr<ConstReverseIteratorInterface> position)
             :
             m_pimpl( std::move(position) )
         {

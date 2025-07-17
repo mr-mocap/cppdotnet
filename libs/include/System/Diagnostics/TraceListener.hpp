@@ -110,7 +110,7 @@ public:
     const TraceFilter *Filter() const { return _filter.get(); }
           TraceFilter *Filter()       { return _filter.get(); }
     
-    void Filter(std::unique_ptr<TraceFilter> &&moved_ptr) { _filter = std::move(moved_ptr); }
+    void Filter(std::unique_ptr<TraceFilter> moved_ptr) { _filter = std::move(moved_ptr); }
 protected:
     std::string  _name;
     int          _indentLevel = 0;

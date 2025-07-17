@@ -73,7 +73,7 @@ IO::TextWriter &Console::Log()
     return *GetLog();
 }
 
-void Console::SetIn(std::unique_ptr<IO::TextReader> &&new_input_reader)
+void Console::SetIn(std::unique_ptr<IO::TextReader> new_input_reader)
 {
     using namespace std::literals;
 
@@ -98,7 +98,7 @@ void Console::SetIn(std::unique_ptr<IO::TextReader> &&new_input_reader)
     }
 }
 
-void Console::SetOut(std::unique_ptr<IO::TextWriter> &&new_output_writer)
+void Console::SetOut(std::unique_ptr<IO::TextWriter> new_output_writer)
 {
     using namespace std::literals;
 
@@ -123,7 +123,7 @@ void Console::SetOut(std::unique_ptr<IO::TextWriter> &&new_output_writer)
     }
 }
 
-void Console::SetError(std::unique_ptr<IO::TextWriter> &&new_output_writer)
+void Console::SetError(std::unique_ptr<IO::TextWriter> new_output_writer)
 {
     using namespace std::literals;
 
@@ -163,7 +163,7 @@ bool Console::IsErrorRedirected()
     return ErrorRedirected;
 }
 
-void Console::SetLog(std::unique_ptr<IO::TextWriter> &&new_input_writer)
+void Console::SetLog(std::unique_ptr<IO::TextWriter> new_input_writer)
 {
     using namespace std::literals;
 

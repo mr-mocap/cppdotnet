@@ -33,7 +33,7 @@ struct LegacyForwardIteratorBase
         using reference         = value_type &;
         using iterator_category = std::forward_iterator_tag;
 
-        Iterator(std::unique_ptr<IteratorInterface> &&position)
+        Iterator(std::unique_ptr<IteratorInterface> position)
             :
             m_pimpl( std::move(position) )
         {
@@ -108,7 +108,7 @@ struct LegacyForwardIteratorBase
         using reference         = const value_type &;
         using iterator_category = std::forward_iterator_tag;
 
-        ConstIterator(std::unique_ptr<ConstIteratorInterface> &&position)
+        ConstIterator(std::unique_ptr<ConstIteratorInterface> position)
             :
             m_pimpl( std::move(position) )
         {

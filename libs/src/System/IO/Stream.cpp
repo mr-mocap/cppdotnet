@@ -6,7 +6,7 @@
 namespace System::IO
 {
 
-Stream::Stream(std::unique_ptr<std::iostream> &&stream, bool can_read, bool can_write, bool can_seek)
+Stream::Stream(std::unique_ptr<std::iostream> stream, bool can_read, bool can_write, bool can_seek)
     :
     _stream{ std::move(stream) },
     _canRead{ can_read },

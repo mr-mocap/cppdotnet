@@ -41,7 +41,7 @@ struct LegacyRandomAccessIteratorBase
         using reference         = LegacyRandomAccessIteratorBase::reference;
         using iterator_category = std::random_access_iterator_tag;
 
-        Iterator(std::unique_ptr<IteratorInterface> &&position)
+        Iterator(std::unique_ptr<IteratorInterface> position)
             :
             m_pimpl( std::move(position) )
         {
@@ -152,7 +152,7 @@ struct LegacyRandomAccessIteratorBase
         using reference         = const LegacyRandomAccessIteratorBase::reference;
         using iterator_category = std::random_access_iterator_tag;
 
-        ConstIterator(std::unique_ptr<ConstIteratorInterface> &&position)
+        ConstIterator(std::unique_ptr<ConstIteratorInterface> position)
             :
             m_pimpl( std::move(position) )
         {
@@ -267,7 +267,7 @@ struct LegacyRandomAccessIteratorBase
         ReverseIterator() = default;
        ~ReverseIterator() = default;
 
-        ReverseIterator(std::unique_ptr<ReverseIteratorInterface> &&position)
+        ReverseIterator(std::unique_ptr<ReverseIteratorInterface> position)
             :
             m_pimpl( std::move(position) )
         {
@@ -386,7 +386,7 @@ struct LegacyRandomAccessIteratorBase
         ConstReverseIterator() = default;
        ~ConstReverseIterator() = default;
 
-        ConstReverseIterator(std::unique_ptr<ConstReverseIteratorInterface> &&position)
+        ConstReverseIterator(std::unique_ptr<ConstReverseIteratorInterface> position)
             :
             m_pimpl( std::move(position) )
         {

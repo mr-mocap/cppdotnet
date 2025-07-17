@@ -15,12 +15,6 @@ StreamWriter::StreamWriter(std::string_view filename)
 {
 }
 
-StreamWriter::StreamWriter(std::unique_ptr<Stream> &&stream)
-    :
-    _stream{ std::move(stream) }
-{
-}
-
 StreamWriter::~StreamWriter()
 {
 }

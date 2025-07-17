@@ -13,10 +13,20 @@ class TextWriterTraceListener : public TraceListener
 {
 public:
     TextWriterTraceListener();
-    TextWriterTraceListener(std::unique_ptr<System::IO::TextWriter> &&new_writer);
-    TextWriterTraceListener(std::unique_ptr<System::IO::TextWriter> &&new_writer, std::string_view name);
-    TextWriterTraceListener(std::unique_ptr<System::IO::Stream> &&new_stream);
-    TextWriterTraceListener(std::unique_ptr<System::IO::Stream> &&new_stream, std::string_view name);
+    TextWriterTraceListener(std::unique_ptr<System::IO::TextWriter> new_writer)
+        :
+        _text_writer{ std::move(new_writer) }
+    {
+    }
+    TextWriterTraceListener(std::unique_ptr<System::IO::TextWriter> new_writer, std::string_view name)
+        :
+        TraceListener( name ),
+        _text_writer{ std::move(new_writer) }
+    {
+    }
+
+    TextWriterTraceListener(std::unique_ptr<System::IO::Stream> new_stream);
+    TextWriterTraceListener(std::unique_ptr<System::IO::Stream> new_stream, std::string_view name);
 
     void Close() override;
     void Flush() override;
