@@ -10,7 +10,7 @@ DEBUG_FLAGS = -g3
 EXTRA_LIBS = -luuid
 
 CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I . $(INC_PARAMS) $(DEBUG_FLAGS)
-CXXFLAGS_PCM=-std=c++20 -fmodules-ts -x c++-header -I . $(INC_PARAMS)
+CXXFLAGS_PCM=-std=c++20 -fmodules-ts -x c++-header -MMD -MP -I . $(INC_PARAMS)
 CXXFLAGS_MODULE_HEADER_UNIT = -std=c++20 -fmodules-ts
 CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts
 
@@ -44,28 +44,36 @@ SYSTEM_MODULE_ENUMS = include/System/Base.hpp \
 					  include/System/TypeCode.hpp
 SYSTEM_MODULE_HEADERS = $(wildcard include/System/Private/*.hpp include/System/*.hpp)
 SYSTEM_MODDULE_SRC = $(wildcard src/System/*.cpp)
+SYSTEM_MODULE_OBJS = $(patsubst %.cpp,module_build/%.o,${SYSTEM_MODULE_SRC})
 
 # For some reason, I have to process all of the enum headers BEFORE they are used in other classes
 SYSTEM_MODULE_PCMS = $(patsubst %.hpp,%.pcm,${SYSTEM_MODULE_ENUMS}) $(patsubst %.hpp,%.pcm,${SYSTEM_MODULE_HEADERS})
 
+SYSTEM_MODULE_DEP = module_build/*.d module_build/src/System/*.d
+
 src/System/System.ixx: $(SYSTEM_MODULE_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_UNIT) -c src/System/System.ixx -o src/System/System.o
+
+#src/System/%.cpp : src/System/%.o
+#	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_IMP) -fmodule-file=$< -c $< -o $(basename $@.o)
+#	echo "-fmodule-file=$< -c $< -o $(basename $@.o)"
+
+
+System: $(SYSTEM_MODULE_OBJS)
+	echo Building module "System"...
 
 # Rule to create Header Units
 %.pcm : %.hpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_PCM) $< -o $(basename $@.pcm)
 
-src/System/%.cpp : src/System/%.o
-	#$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_IMP) -fmodule-file=$< -c $< -o $(basename $@.o)
-	echo "-fmodule-file=$< -c $< -o $(basename $@.o)"
-
-SystemModuleSources: $(SYSTEM_MODDULE_SRC)
-
-System: $(SYSTEM_MODULE_PCMS) SystemModuleSources
+# Module implementation files
+module_build/%.o : %.cpp
+	mkdir -p ${dir $@}
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_IMP) -fmodule-file=$(basename $@.pcm) $< -c -o $@
 
 build/%.o : %.cpp
 	mkdir -p ${dir $@}
-	$(CXX) -o $@ $< -c $(CPPFLAGS) $(CXXFLAGS) $(MODULES)
+	$(CXX) -o $@ $< -c $(CPPFLAGS) $(CXXFLAGS)
 	
 all: $(LIB_OBJS)
 	ar -crs $(LIB_PATH) $(LIB_OBJS)
@@ -80,4 +88,5 @@ clean:
 	rm -rf build
 	rm -rf gcm.cache
 
--include $(LIB_DEP)
+#-include $(LIB_DEP)
+-include $(SYSTEM_MODULE_DEP)
