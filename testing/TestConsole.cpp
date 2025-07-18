@@ -4,6 +4,7 @@
 #include "System/IO/StringWriter.hpp"
 #include "System/IO/StreamReader.hpp"
 #include "System/IO/StreamWriter.hpp"
+#include "System/IO/ConsoleStream.hpp"
 #include <iostream>
 #include <string_view>
 

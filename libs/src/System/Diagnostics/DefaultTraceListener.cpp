@@ -5,6 +5,7 @@
 #include "System/Console.hpp"
 #include "System/Convert.hpp"
 #include "System/Private/private.hpp"
+#include "System/IO/ConsoleStream.hpp"
 #include <format>
 
 

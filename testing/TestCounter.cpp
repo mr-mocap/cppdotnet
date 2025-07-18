@@ -1,6 +1,7 @@
 #include "TestCounter.hpp"
 #include "System/Console.hpp"
 #include "System/Diagnostics/Metrics/Meter.hpp"
+#include "System/IO/TextWriter.hpp"
 #include <cassert>
 
 

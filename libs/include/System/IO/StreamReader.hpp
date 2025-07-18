@@ -1,10 +1,13 @@
 #pragma once
 
 #include "System/IO/TextReader.hpp"
-#include "System/IO/Stream.hpp"
+#include <memory>
+#include <string_view>
 
 namespace System::IO
 {
+
+class Stream;
 
 class StreamReader : public TextReader
 {

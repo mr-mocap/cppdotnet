@@ -1,13 +1,20 @@
 #pragma once
 
-#include "System/IO/TextWriter.hpp"
-#include "System/IO/TextReader.hpp"
-#include "System/IO/ConsoleStream.hpp"
 #include <memory>
 #include <format>
+#include <string>
+#include <string_view>
+#include <cstdint>
 
 namespace System
 {
+
+namespace IO
+{
+class TextReader;
+class TextWriter;
+class ConsoleStream;
+}
 
 class Console final
 {

@@ -1,10 +1,11 @@
 #pragma once
 
 #include "System/IO/TextWriter.hpp"
-#include "System/IO/Stream.hpp"
 
 namespace System::IO
 {
+
+class Stream;
 
 class StreamWriter : public TextWriter
 {

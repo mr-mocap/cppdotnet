@@ -2,6 +2,7 @@
 #include "System/Console.hpp"
 #include "System/ValueTuple.hpp"
 #include "System/Private/private.hpp"
+#include "System/IO/TextWriter.hpp"
 #include <cassert>
 
 
