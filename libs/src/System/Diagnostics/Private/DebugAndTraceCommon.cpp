@@ -243,7 +243,7 @@ void DebugAndTraceCommon::Assert(bool condition,
     // TODO: Output the call stack
 
     // For now, just print souce code info
-    WriteLineIf( !condition, FormatAssertMessageCategory(location, message, category) );
+    WriteLineIf( !condition, FormatAssertMessageCategory(location, message, detail_message) );
 }
 
 void DebugAndTraceCommon::Fail(std::string_view message)
