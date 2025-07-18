@@ -123,11 +123,11 @@ void Debug::Assert(bool condition, std::string_view message, const std::source_l
 
 void Debug::Assert(bool condition,
                    std::string_view message,
-                   std::string_view category,
+                   std::string_view detail_message,
                    const std::source_location source_location)
 {
 #ifndef NDEBUG
-    Private::DebugAndTraceCommon::Assert( condition, message, category, source_location );
+    Private::DebugAndTraceCommon::Assert( condition, message, detail_message, source_location );
 #else
     UNUSED(condition);
     UNUSED(message);

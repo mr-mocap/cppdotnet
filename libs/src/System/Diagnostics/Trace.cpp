@@ -93,10 +93,10 @@ void Trace::Assert(bool condition,
 
 void Trace::Assert(bool condition,
                    std::string_view message,
-                   std::string_view category,
+                   std::string_view detail_message,
                    const std::source_location location)
 {
-    Private::DebugAndTraceCommon::Assert( condition, message, category, location);
+    Private::DebugAndTraceCommon::Assert( condition, message, detail_message, location);
 }
 
 void Trace::Fail(std::string_view message)

@@ -237,7 +237,7 @@ void DebugAndTraceCommon::Assert(bool condition,
 
 void DebugAndTraceCommon::Assert(bool condition,
                                  std::string_view message,
-                                 std::string_view category,
+                                 std::string_view detail_message,
                                  const std::source_location location)
 {
     // TODO: Output the call stack

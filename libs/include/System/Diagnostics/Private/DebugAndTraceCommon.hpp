@@ -64,7 +64,7 @@ public:
     static void Assert(bool condition, std::string_view message, const std::source_location);
     static void Assert(bool condition,
                        std::string_view message,
-                       std::string_view category,
+                       std::string_view detail_message,
                        const std::source_location);
 
     static void Fail(std::string_view message);
