@@ -1,7 +1,6 @@
 #pragma once
 
 #include "System/Private/enum.hpp"
-#include <algorithm>
 
 namespace System::Diagnostics
 {
