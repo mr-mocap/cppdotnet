@@ -3,6 +3,7 @@
 #include "System/Collections/Generic/List.hpp"
 #include "System/Collections/Generic/KeyValuePair.hpp"
 #include "System/Collections/Generic/KeyNotFoundException.hpp"
+#include "System/Collections/Generic/Private/IListInterface.hpp"
 #include "System/Private/private.hpp"
 #include <map>
 #include <format>
@@ -567,14 +568,14 @@ OrderedDictionary(std::map<TKey, TValue> &&) -> OrderedDictionary<TKey, TValue>;
 namespace System::Collections::Generic::Private
 {
 
-template <typename ...Args>
-struct IListIndexer<Generic::OrderedDictionary<Args...>>
+template <typename KeyT, typename ValueT>
+struct IListIndexer<Generic::OrderedDictionary<KeyT, ValueT>>
 {
-    static typename Generic::OrderedDictionary<Args...>::const_reference GetAt(const Generic::OrderedDictionary<Args...> &d, std::size_t index) { return d.GetAt(index); }
-    static typename Generic::OrderedDictionary<Args...>::reference       GetAt(      Generic::OrderedDictionary<Args...> &d, std::size_t index) { return d.GetAt(index); }
+    static typename Generic::OrderedDictionary<KeyT, ValueT>::const_reference GetAt(const Generic::OrderedDictionary<KeyT, ValueT> &d, std::size_t index) { return d.GetAt(index); }
+    static typename Generic::OrderedDictionary<KeyT, ValueT>::reference       GetAt(      Generic::OrderedDictionary<KeyT, ValueT> &d, std::size_t index) { return d.GetAt(index); }
 
-    static typename Generic::OrderedDictionary<Args...>::const_reference GetAt(const Generic::OrderedDictionary<Args...> *d, std::size_t index) { return d->GetAt(index); }
-    static typename Generic::OrderedDictionary<Args...>::reference       GetAt(      Generic::OrderedDictionary<Args...> *d, std::size_t index) { return d->GetAt(index); }
+    static typename Generic::OrderedDictionary<KeyT, ValueT>::const_reference GetAt(const Generic::OrderedDictionary<KeyT, ValueT> *d, std::size_t index) { return d->GetAt(index); }
+    static typename Generic::OrderedDictionary<KeyT, ValueT>::reference       GetAt(      Generic::OrderedDictionary<KeyT, ValueT> *d, std::size_t index) { return d->GetAt(index); }
 };
 
 }
