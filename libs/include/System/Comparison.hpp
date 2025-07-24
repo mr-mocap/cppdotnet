@@ -1,4 +1,4 @@
-#praga once
+#pragma once
 
 #include "System/Private/Delegate.hpp"
 
