@@ -92,31 +92,29 @@ struct CommonItems
     static std::string_view TypeName()
     {
         if constexpr (std::is_same_v<T, bool>)
-            return std::string_view{"bool"};
+            return "bool";
         else if constexpr (std::is_same_v<T, std::int8_t>)
-            return std::string_view{"int8_t"};
+            return "int8_t";
         else if constexpr (std::is_same_v<T, std::int16_t>)
-            return std::string_view{"int16_t"};
+            return "int16_t";
         else if constexpr (std::is_same_v<T, std::int32_t>)
-            return std::string_view{"int32_t"};
+            return "int32_t";
         else if constexpr (std::is_same_v<T, std::int64_t>)
-            return std::string_view{"int64_t"};
+            return "int64_t";
         else if constexpr (std::is_same_v<T, std::uint8_t>)
-            return std::string_view{"uint8_t"};
+            return "uint8_t";
         else if constexpr (std::is_same_v<T, std::uint16_t>)
-            return std::string_view{"uint16_t"};
+            return "uint16_t";
         else if constexpr (std::is_same_v<T, std::uint32_t>)
-            return std::string_view{"uint32_t"};
+            return "uint32_t";
         else if constexpr (std::is_same_v<T, std::uint64_t>)
-            return std::string_view{"uint64_t"};
+            return "uint64_t";
     }
 
     static T Parse(std::string_view s)
     {
-        using namespace std::literals;
-
         if ( s.empty() )
-            ThrowWithTarget( ArgumentNullException("s"sv) );
+            ThrowWithTarget( ArgumentNullException("s") );
 
         if constexpr (std::is_integral_v<T>)
         {
@@ -127,11 +125,11 @@ struct CommonItems
                 auto [ptr, ec] = std::from_chars( s.data(), s.data() + s.size(), converted, 2);
                 
                 if ( ec == std::errc::invalid_argument )
-                    ThrowWithTarget( System::FormatException{ "Parameter 's' is not in the correct format"sv } );
+                    ThrowWithTarget( System::FormatException( "Parameter 's' is not in the correct format" ) );
                 else if ( ec == std::errc::result_out_of_range )
-                    ThrowWithTarget( System::OverflowException{ "Parameter 's' is not representable by bool"sv } );
+                    ThrowWithTarget( System::OverflowException( "Parameter 's' is not representable by bool" ) );
                 else if ( ec != std::errc() )
-                    ThrowWithTarget( System::ArgumentException{ "Argument does not contain bool information", "s" } );
+                    ThrowWithTarget( System::ArgumentException( "Argument does not contain bool information", "s" ) );
 
                 return converted;
 
@@ -143,11 +141,11 @@ struct CommonItems
                 auto [ptr, ec] = std::from_chars( s.data(), s.data() + s.size(), converted);
                 
                 if ( ec == std::errc::invalid_argument )
-                    ThrowWithTarget( System::FormatException{ "Parameter 's' is not in the correct format"sv } );
+                    ThrowWithTarget( System::FormatException( "Parameter 's' is not in the correct format" ) );
                 else if ( ec == std::errc::result_out_of_range )
-                    ThrowWithTarget( System::OverflowException{ std::format("Parameter 's' is not representable by {}"sv, TypeName()) } );
+                    ThrowWithTarget( System::OverflowException( std::format("Parameter 's' is not representable by {}", TypeName()) ) );
                 else if ( ec != std::errc() )
-                    ThrowWithTarget( System::ArgumentException{ "Argument does not contain integer information", "s" } );
+                    ThrowWithTarget( System::ArgumentException( "Argument does not contain integer information", "s" ) );
 
                 return converted;
             }
