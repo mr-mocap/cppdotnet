@@ -133,7 +133,7 @@ std::string Environment::ExpandEnvironmentVariables(std::string_view input)
 
 Collections::Specialized::StringDictionary Environment::GetEnvironmentVariables()
 {
-    std::unordered_map<std::string, std::string> retval;
+    Collections::Specialized::StringDictionary retval;
 
     // "environ" is a UNIX standard (POSIX?) variable containing the process environment variables
     for (char **current_variable = environ; current_variable; ++current_variable)
