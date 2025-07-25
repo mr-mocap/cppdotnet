@@ -12,6 +12,7 @@
 #include <ranges>
 #include <compare>
 #include <algorithm>
+#include <utility>
 
 namespace System::Collections::Generic
 {
@@ -202,12 +203,12 @@ public:
     }
 
     // IDictionary
-    constexpr mapped_type &operator[](const key_type &key)
+    mapped_type &operator[](const key_type &key)
     {
         return m_data[key];
     }
 
-    constexpr const mapped_type &at(const key_type &key) const
+    const mapped_type &at(const key_type &key) const
     {
         try
         {
@@ -219,7 +220,19 @@ public:
         }
     }
 
-    constexpr mapped_type &at(const key_type &key)
+    // Support Heterogenous Lookup
+    template <typename K>
+    const mapped_type &at(const K &key) const
+    {
+        auto found = m_data.find( key );
+
+        if ( found == m_data.end() )
+            ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
+        
+        return found->second;
+    }
+
+    mapped_type &at(const key_type &key)
     {
         try
         {
@@ -231,14 +244,24 @@ public:
         }
     }
 
-    constexpr void Add(const key_type &key, const mapped_type &value)
+    // Support Heterogenous Lookup
+    template <typename K>
+    mapped_type &at(const K &key)
     {
-        using namespace std::literals;
+        auto found = m_data.find( key );
 
-        if ( m_data.contains( key ) )
-            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the Dictionary", key), "key"sv ) );
-        else
-            m_data[ key ] = value;
+        if ( found == m_data.end() )
+            ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
+        
+        return found->second;
+    }
+
+    void Add(const key_type &key, const mapped_type &value)
+    {
+        if ( ContainsKey( key ) )
+            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the Dictionary", key), "key" ) );
+
+        m_data[ key ] = value;
         
         POSTCONDITION( ContainsKey(key) );
     }
@@ -253,7 +276,29 @@ public:
         return m_data.contains( key );
     }
 
+    // Support Heterogenous Lookup
+    template <class K>
+    constexpr bool ContainsKey(const K &key) const
+    {
+        return m_data.contains( key );
+    }
+
     constexpr bool TryGetValue(const key_type &key, mapped_type &value_out) const
+    {
+        auto iter = m_data.find( key );
+
+        if ( iter == m_data.end() )
+        {
+            value_out = mapped_type{};
+            return false;
+        }
+        value_out = iter->second;
+        return true;
+    }
+
+    // Support Heterogenous Lookup
+    template <class K>
+    constexpr bool TryGetValue(const K &key, mapped_type &value_out) const
     {
         auto iter = m_data.find( key );
 
@@ -288,7 +333,7 @@ public:
 
     constexpr bool TryAdd(const key_type &key, const mapped_type &value)
     {
-        if ( m_data.contains( key ) )
+        if ( Contains( key ) )
             return false;
         m_data[ key ] = value;
         return true;
