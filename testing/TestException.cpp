@@ -28,7 +28,7 @@ void WithMessage()
 
     // Message Automatically filled in
     {
-        ArgumentNullException ex{ "parameter"sv };
+        ArgumentNullException ex( "parameter" );
 
         assert( !ex.Message().empty() );
         assert( !ex.InnerException() );
@@ -36,12 +36,12 @@ void WithMessage()
     }
 
     {
-        auto msg = "Some kind of error occurred"sv;
-        ArgumentNullException ex{ "parameter"sv, msg };
+        auto msg = "Some kind of error occurred";
+        ArgumentNullException ex( "parameter", msg );
 
         assert( !ex.Message().empty() );
         assert( ex.Message() == msg );
-        assert( ex.ParamName() == "parameter"sv );
+        assert( ex.ParamName() == "parameter" );
         assert( !ex.InnerException() );
         assert( &ex.GetBaseException() == &ex );
     }
@@ -56,7 +56,7 @@ void WithMessageAndInnerException()
 
     // Copy inner exception into outer
     {
-        InvalidOperationException outer{ msg_outer, ArgumentNullException{ "field"sv, msg } };
+        InvalidOperationException outer{ msg_outer, ArgumentNullException( "field", msg ) };
 
         assert( !outer.Message().empty() );
         assert( outer.Message() == msg_outer );
