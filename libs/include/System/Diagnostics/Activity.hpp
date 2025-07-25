@@ -3,10 +3,11 @@
 #include "System/ReadOnlySpan.hpp"
 #include "System/EventArgs.hpp"
 #include "System/EventHandler.hpp"
-#include "System/DateTime.hpp"
+#include "System/DateTimeOffset.hpp"
 #include "System/Diagnostics/ActivityTraceId.hpp"
 #include "System/Diagnostics/ActivitySpanId.hpp"
 #include "System/Private/enum.hpp"
+#include "System/Collections/Generic/ICollection.hpp"
 #include "System/Collections/Specialized/StringDictionary.hpp"
 #include <array>
 #include <string>
@@ -86,17 +87,36 @@ protected:
 };
 
 
+// TODO: Second template parameter of ActivityTagsCollection SHOULD be a base Object instead of a std::string
+using ActivityTagsCollection = System::Collections::Specialized::StringDictionary;
+
 class ActivityEvent
 {
 public:
     ActivityEvent(std::string_view name)
         :
-        _name( name )
+        ActivityEvent( name, System::DateTimeOffset::Now(), ActivityTagsCollection() )
+    {
+    }
+    ActivityEvent(std::string_view name,
+                  const System::DateTimeOffset &timestamp,
+                  const ActivityTagsCollection &tags)
+        :
+        _name( name ),
+        _timestamp( timestamp ),
+        _activity_tags( tags )
     {
     }
 
+    std::string_view Name() const { return _name; }
+
+    const ActivityTagsCollection &Tags() const { return _activity_tags; }
+
+    const System::DateTimeOffset &Timestamp() const { return _timestamp; }
 protected:
     std::string _name;
+    System::DateTimeOffset _timestamp;
+    ActivityTagsCollection _activity_tags;
 };
 
 class Activity;
@@ -137,11 +157,30 @@ struct ActivityCreationOptions
 class ActivityLink
 {
 public:
-    ActivityLink(const ActivityContext &context);
+    ActivityLink(const ActivityContext &context, const ActivityTagsCollection &tags)
+        :
+        _context( context ),
+        _activity_tags( tags )
+    {
+    }
 
     const ActivityContext &Context() const { return _context; }
+
+    const ActivityTagsCollection &Tags() const { return _activity_tags; }
+
+    bool operator ==(const ActivityLink &)
+    {
+        return false; // TODO: FIXME!
+    }
+
+    bool operator !=(const ActivityLink &)
+    {
+        return true; // TODO: FIXME!
+    }
 protected:
-    ActivityContext _context;
+    ActivityContext        _context;
+    ActivityTagsCollection _activity_tags;
+
 };
 
 class Activity
@@ -152,18 +191,13 @@ public:
       _operation_name( operation_name )
     {
     }
-    Activity(const char *operation_name)
-      :
-      _operation_name( operation_name )
-    {
-    }
 
     Activity(const Activity &) = default;
     Activity(Activity &&) = default;
     Activity &operator =(const Activity &) = default;
     Activity &operator =(Activity &&) = default;
 
-    const std::string &DisplayName() const { return _display_name; }
+    std::string_view DisplayName() const { return _display_name; }
     void DisplayName(std::string_view dn) { _display_name = dn; }
     
     const std::string &StatusDescription() const { return _status_description; }
@@ -173,11 +207,18 @@ public:
     
     enum ActivityKind Kind() const { return _activity_kind; }
 
-    const std::string &Id() const { return _id; }
+    std::string_view Id() const { return _id; }
+    std::string_view ParentId() const;
+
+    const Activity *Parent() const { return _parent; }
+
+    ActivityIdFormat IdFormat() const { return _activity_id_format; }
 
     const std::string &OperationName() const { return _operation_name; }
 
     TimeSpan Duration() const;
+
+    virtual void Dispose();
 
     bool Recorded() const { return _activity_trace_flags == ActivityTraceFlags::Recorded; }
 
@@ -204,28 +245,35 @@ public:
 
     Activity &AddBaggage(std::string_view key, std::string_view value);
 
+    Activity &AddEvent(const ActivityEvent &event);
+
     Activity &AddTag(std::string_view key, std::string_view value);
 
-    const System::Collections::Generic::List<std::unique_ptr<System::Diagnostics::ActivityEvent>> &Events() const { return _activity_events; }
+    Activity &SetBaggage(std::string_view key, std::string_view value);
+
+    const System::Collections::Generic::List<System::Diagnostics::ActivityEvent> &Events() const { return _activity_events; }
 
     static EventHandler<ActivityChangedEventArgs> CurrentChanged;
 protected:
     std::string _operation_name;
     std::string _display_name;
     std::string _id;
-    enum ActivityKind  _activity_kind = ActivityKind::Internal;
+    enum ActivityKind       _activity_kind        = ActivityKind::Internal;
     enum ActivityTraceFlags _activity_trace_flags = ActivityTraceFlags::None;
+    enum ActivityIdFormat   _activity_id_format   = ActivityIdFormat::W3C;
     ActivityStatusCode _status = ActivityStatusCode::Unset;
     std::string        _status_description;
     ActivityTraceId    _trace_id;
     ActivityContext    _activity_context;
     System::Collections::Specialized::StringDictionary _tags_to_log;
     System::Collections::Specialized::StringDictionary _baggage;
-    System::Collections::Generic::List<std::unique_ptr<System::Diagnostics::ActivityEvent>> _activity_events;
+    System::Collections::Generic::List<System::Diagnostics::ActivityEvent> _activity_events;
     Activity          *_parent = nullptr;
     DateTime           _start_time;
     DateTime           _end_time;
     bool               _stopped = true;
+
+    virtual void Dispose(bool disposing);
 };
 
 }

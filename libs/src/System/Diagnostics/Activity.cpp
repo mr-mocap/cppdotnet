@@ -1,7 +1,8 @@
 #include "System/Diagnostics/Activity.hpp"
 #include "System/Diagnostics/ActivitySource.hpp"
-#include "System/Span.hpp"
 #include "System/Convert.hpp"
+#include "System/Guid.hpp"
+#include "System/Span.hpp"
 #include <random>
 #include <algorithm>
 
@@ -9,12 +10,6 @@
 
 namespace System::Diagnostics
 {
-
-ActivityLink::ActivityLink(const ActivityContext &context)
-    :
-    _context( context )
-{
-}
 
 static Activity  DefaultActivity("No Activity");
 static Activity *CurrentActivity = nullptr;
@@ -38,10 +33,35 @@ void Activity::Current(Activity &new_activity)
         CurrentChanged( data );
 }
 
+std::string_view Activity::ParentId() const
+{
+    if ( Parent() )
+        return Parent()->Id();
+    return {};
+}
+
 Activity &Activity::Start()
 {
-    _parent = &Current();
+    _parent = CurrentActivity;
     Current( *this );
+
+    // Set the Id
+    {
+        // First, set ActivityId...
+        if ( IdFormat() == ActivityIdFormat::W3C )
+            _trace_id = ActivityTraceId::CreateRandom();
+        else
+            _trace_id = ActivityTraceId();
+
+        // NOW set Id
+        _id.clear();
+        if ( Parent() )
+        {
+            _id = ParentId();
+            _id += '.';
+        }
+        _id.append( _trace_id.ToHexString() );
+    }
 
     _stopped = false;
     return SetStartTime( DateTime::Now() );
@@ -52,10 +72,13 @@ void Activity::Stop()
     SetEndTime( DateTime::Now() );
     _stopped = true;
 
-    if ( _parent )
-        Current( *_parent );
-    else
-        Current( DefaultActivity );
+    // Change the current activity...
+    {
+        ActivityChangedEventArgs data( CurrentActivity, _parent );
+
+        CurrentActivity = _parent;
+        CurrentChanged( data );
+    }
 }
 
 Activity &Activity::SetStartTime(DateTime time)
@@ -103,10 +126,45 @@ Activity &Activity::AddBaggage(std::string_view key, std::string_view value)
     return *this;
 }
 
+Activity &Activity::AddEvent(const ActivityEvent &event)
+{
+    _activity_events.Add( event );
+    return *this;
+}
+
 Activity &Activity::AddTag(std::string_view key, std::string_view value)
 {
     _tags_to_log.Add( key, value );
     return *this;
+}
+
+Activity &Activity::SetBaggage(std::string_view key, std::string_view value)
+{
+    if ( value.empty() )
+    {
+        if ( _baggage.ContainsKey( key ) )
+            _baggage.Remove( key );
+    }
+    else
+        _baggage[ key ] = value;
+
+    return *this;
+}
+
+void Activity::Dispose()
+{
+    if ( !IsStopped() )
+    {
+        Stop();
+        // TODO: Notify event listeners...
+    }
+}
+
+void Activity::Dispose(bool disposing)
+{
+    UNUSED( disposing );
+
+    // NOTE: We should only ever act when disposing is true
 }
 
 }
