@@ -61,22 +61,22 @@ public:
 
     void AddFirst(const T &item)
     {
-        _list.push_front( item );
+        _list.emplace_front( item );
     }
 
     void AddFirst(T &&item)
     {
-        _list.push_front( std::move(item) );
+        _list.emplace_front( std::move(item) );
     }
 
     void AddLast(const T &item)
     {
-        _list.push_back( item );
+        _list.emplace_back( item );
     }
 
     void AddLast(T &&item)
     {
-        _list.push_back( std::move(item) );
+        _list.emplace_back( std::move(item) );
     }
 
 
