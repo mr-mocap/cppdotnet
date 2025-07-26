@@ -155,10 +155,8 @@ public:
 
     bool Remove(const T &item)
     {
-        using namespace std::literals;
-
         if ( IsReadOnly() )
-            ThrowWithTarget( System::NotSupportedException( "LinkedList is read-only"sv ) );
+            ThrowWithTarget( System::NotSupportedException( "LinkedList is read-only" ) );
 
         auto iter_found = Find( item );
 

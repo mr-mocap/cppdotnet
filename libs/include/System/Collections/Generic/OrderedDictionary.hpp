@@ -348,10 +348,8 @@ public:
 
     constexpr void Add(const key_type &key, const mapped_type &value)
     {
-        using namespace std::literals;
-
         if ( _data.contains( key ) )
-            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the OrderedDictionary", key), "key"sv ) );
+            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the OrderedDictionary", key), "key" ) );
         else
             _data[ key ] = value;
         
@@ -415,13 +413,11 @@ public:
 
     void Insert(size_type index, const value_type &kvp)
     {
-        using namespace std::literals;
-
         if ( index > Count() )
             ThrowWithTarget( ArgumentOutOfRangeException( std::format("Index '{}' is out of range for OrderedDictionary", index) ) );
 
         if ( _data.contains( kvp.Key() ) )
-            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the OrderedDictionary", kvp.Key()), "key"sv ) );
+            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the OrderedDictionary", kvp.Key()), "key" ) );
 
         auto iter = _data.begin();
 

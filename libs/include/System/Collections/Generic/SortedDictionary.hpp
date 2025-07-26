@@ -295,10 +295,8 @@ public:
 
     constexpr void Add(const key_type &key, const mapped_type &value)
     {
-        using namespace std::literals;
-
         if ( _data.contains( key ) )
-            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the SortedDictionary", key), "key"sv ) );
+            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the SortedDictionary", key), "key" ) );
         else
             _data[ key ] = value;
         

@@ -72,20 +72,16 @@ public:
     
     const_reference operator [](size_type pos) const
     {
-      using namespace std::literals;
-
       if ( pos >= Count() )
-          ThrowWithTarget( ArgumentOutOfRangeException( "pos"sv, "Index out-of-range"sv ) );
+          ThrowWithTarget( ArgumentOutOfRangeException( "pos", "Index out-of-range" ) );
 
       return _list[pos];
     }
 
     reference operator [](size_type pos)
     {
-      using namespace std::literals;
-
       if ( pos >= Count() )
-          ThrowWithTarget( ArgumentOutOfRangeException( "pos"sv, "Index out-of-range"sv ) );
+          ThrowWithTarget( ArgumentOutOfRangeException( "pos", "Index out-of-range" ) );
 
       return _list[pos];
     }
@@ -173,12 +169,10 @@ public:
 
     void Insert(size_type index, const T&item)
     {
-        using namespace std::literals;
-
         if ( IsReadOnly() )
-            ThrowWithTarget( System::NotSupportedException( "List is read-only"sv ) );
+            ThrowWithTarget( System::NotSupportedException( "List is read-only" ) );
         if ( index > Count() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException( "index"sv, "Index out-of-range"sv ) );
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
         
         // OK to insert at end(), which is when index == Count()
         _list.emplace( std::next( begin(), index ), item );
@@ -186,12 +180,10 @@ public:
 
     void RemoveAt(size_type index)
     {
-        using namespace std::literals;
-
         if ( IsReadOnly() )
-            ThrowWithTarget( System::NotSupportedException( "List is read-only"sv ) );
+            ThrowWithTarget( System::NotSupportedException( "List is read-only" ) );
         if ( index >= Count() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException( "index"sv, "Index out-of-range"sv ) );
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
       
         _list.erase( std::next( begin(), index ) );
     }

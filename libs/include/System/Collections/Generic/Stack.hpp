@@ -77,10 +77,8 @@ public:
 
     ElementType Pop()
     {
-        using namespace std::literals;
-
         if ( _stack.empty() )
-          ThrowWithTarget( InvalidOperationException( "Stack is empty"sv ) );
+          ThrowWithTarget( InvalidOperationException( "Stack is empty" ) );
 
         ElementType r = _stack.top();
 
@@ -90,10 +88,8 @@ public:
 
     const ElementType &Peek() const
     {
-        using namespace std::literals;
-
         if ( _stack.empty() )
-          ThrowWithTarget( InvalidOperationException( "Stack is empty"sv ) );
+          ThrowWithTarget( InvalidOperationException( "Stack is empty" ) );
 
         return _stack.top();
     }
