@@ -1,10 +1,12 @@
 #pragma once
 
 #include "System/Diagnostics/Activity.hpp"
+#include "System/Diagnostics/ActivitySource.hpp"
 #include "System/Diagnostics/SampleActivity.hpp"
 #include "System/Diagnostics/ExceptionRecorder.hpp"
 #include "System/Action.hpp"
 #include "System/Func.hpp"
+#include <string>
 
 
 namespace System::Diagnostics
@@ -25,17 +27,17 @@ public:
     const Action<Diagnostics::Activity> &ActivityStopped() const { return _activity_stopped; }
                                    void  ActivityStopped(Action<Diagnostics::Activity> &callback) { _activity_stopped = callback; }
 
-    ExceptionRecorder &ExceptionRecorder() { return _exception_recorder; }
-    void               ExceptionRecorder(ExceptionRecorder new_value) { _exception_recorder = new_value; }
+    const struct ExceptionRecorder &ExceptionRecorder() { return _exception_recorder; }
+                               void ExceptionRecorder(struct ExceptionRecorder new_value) { _exception_recorder = new_value; }
 
     const SampleActivity<ActivityContext> &Sample() const { return _sample; }
-                                     void  Sample(SampleActivity<ActivityContext> &s) { _sample = s; }
+                                     void  Sample(const SampleActivity<ActivityContext> &s) { _sample = s; }
 
     const SampleActivity<std::string> &SampleUsingParentId() const { return _sample_using_parent_id; }
-                                 void  SampleUsingParentId(SampleActivity<std::string> &callback) const { return _sample_using_parent_id = callback; }
+                                 void  SampleUsingParentId(const SampleActivity<std::string> &callback) { _sample_using_parent_id = callback; }
 
     const Func<ActivitySource, bool> &ShouldListenTo() const { return _should_listen_to; }
-                                void  ShouldListenTo(Func<ActivitySource, bool> &func) const { _should_listen_to = func; }
+                                void  ShouldListenTo(const Func<ActivitySource, bool> &func) { _should_listen_to = func; }
 
     void Dispose();
 protected:
@@ -44,7 +46,7 @@ protected:
     SampleActivity<Diagnostics::ActivityContext> _sample;
     SampleActivity<std::string>   _sample_using_parent_id;
     Func<ActivitySource, bool>    _should_listen_to;
-    ExceptionRecorder             _exception_recorder;
+    struct ExceptionRecorder      _exception_recorder;
 };
 
 }

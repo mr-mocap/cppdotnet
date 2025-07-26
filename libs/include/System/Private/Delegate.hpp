@@ -23,17 +23,11 @@ public:
     {
     }
 
-    Delegate(const Delegate &other)
-        :
-        _callable( other._callable )
-    {
-    }
+    Delegate(const Delegate &other) = default;
+    Delegate(Delegate &&other) noexcept = default;
 
-    Delegate(Delegate &&other) noexcept
-        :
-        _callable( std::move(other._callable) )
-    {
-    }
+    Delegate &operator =(const Delegate &) = default;
+    Delegate &operator =(Delegate &&) = default;
 
     Delegate &operator =(const std::function<RetType (ArgTypes ...)> &fn)
     {

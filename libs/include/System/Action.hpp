@@ -14,6 +14,7 @@ template <typename ...ArgTypes>
 struct Action : Delegate<void, ArgTypes...>
 {
     using Delegate<void, ArgTypes...>::Delegate;
+    using Delegate<void, ArgTypes...>::operator =;
 };
 
 // Deduction guides

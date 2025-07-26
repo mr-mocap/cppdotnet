@@ -16,6 +16,7 @@ template <typename RetType, typename ...ArgTypes>
 struct Func : Delegate<RetType, ArgTypes...>
 {
     using Delegate<RetType, ArgTypes...>::Delegate;
+    using Delegate<RetType, ArgTypes...>::operator =;
 };
 
 }
