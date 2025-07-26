@@ -8,6 +8,7 @@
 #include "System/Diagnostics/ActivityTraceId.hpp"
 #include "System/Diagnostics/ActivitySpanId.hpp"
 #include "System/Private/enum.hpp"
+#include "System/Collections/Generic/List.hpp"
 #include "System/Collections/Generic/ICollection.hpp"
 #include "System/Collections/Specialized/StringDictionary.hpp"
 #include <array>
@@ -140,21 +141,6 @@ protected:
     Activity *_previous = nullptr;
 };
 
-template <class T>
-    requires ( std::same_as<T, std::string> || std::same_as<T, ActivityContext> )
-struct ActivityCreationOptions
-{
-    ActivityKind     Kind = ActivityKind::Internal;
-    std::string      Name;
-#if 0
-    T            Parent;
-    ActivityTagsCollection SamplingTags;
-#endif
-    ActivitySource  *Source = nullptr;
-    ActivityTraceId  TraceId;
-    std::string      TraceState;
-};
-
 class ActivityLink
 {
 public:
@@ -181,6 +167,23 @@ public:
 protected:
     ActivityContext        _context;
     ActivityTagsCollection _activity_tags;
+};
+
+template <class T>
+    requires ( std::same_as<T, std::string> || std::same_as<T, ActivityContext> )
+struct ActivityCreationOptions
+{
+    ActivityKind     Kind = ActivityKind::Internal;
+    Collections::Generic::List<ActivityLink> Links;
+    std::string            Name;
+    T                      Parent;
+    ActivityTagsCollection SamplingTags;
+    ActivitySource        *Source = nullptr;
+#if 0
+                           Tags;
+#endif
+    ActivityTraceId        TraceId;
+    std::string            TraceState;
 };
 
 class Activity
