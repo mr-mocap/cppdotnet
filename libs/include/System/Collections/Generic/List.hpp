@@ -181,7 +181,7 @@ public:
             ThrowWithTarget( System::ArgumentOutOfRangeException( "index"sv, "Index out-of-range"sv ) );
         
         // OK to insert at end(), which is when index == Count()
-        _list.insert( std::next( begin(), index ), item );
+        _list.emplace( std::next( begin(), index ), item );
     }
 
     void RemoveAt(size_type index)
@@ -203,12 +203,12 @@ public:
 
     void Add(const T &item)
     {
-        _list.push_back( item );
+        _list.emplace_back( item );
     }
 
     void Add(T &&item)
     {
-        _list.push_back( std::move(item) );
+        _list.emplace_back( std::move(item) );
     }
 
     bool Remove(const T &item)
