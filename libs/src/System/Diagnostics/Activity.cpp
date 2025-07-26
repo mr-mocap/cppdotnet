@@ -14,6 +14,7 @@ namespace System::Diagnostics
 static Activity  DefaultActivity("No Activity");
 static Activity *CurrentActivity = nullptr;
 EventHandler<ActivityChangedEventArgs> Activity::CurrentChanged;
+Func<ActivityTraceId>                  Activity::TraceIdGenerator;
 
 
 Activity &Activity::Current()
@@ -40,6 +41,17 @@ std::string_view Activity::ParentId() const
     return {};
 }
 
+std::string_view Activity::RootId() const
+{
+    if ( !ParentId().empty() )
+        return Parent()->RootId();
+
+    if ( !Id().empty() )
+        return Id();
+
+    return {};
+}
+
 Activity &Activity::Start()
 {
     _parent = CurrentActivity;
@@ -47,9 +59,15 @@ Activity &Activity::Start()
 
     // Set the Id
     {
-        // First, set ActivityId...
+        // First, set IdFormat...
+        if ( Parent() )
+            _activity_id_format = Parent()->IdFormat();
+        else
+            _activity_id_format = DefaultIdFormat();
+
+        // Now the Activity Id
         if ( IdFormat() == ActivityIdFormat::W3C )
-            _trace_id = ActivityTraceId::CreateRandom();
+            _trace_id = (TraceIdGenerator) ? TraceIdGenerator() : ActivityTraceId::CreateRandom();
         else
             _trace_id = ActivityTraceId();
 

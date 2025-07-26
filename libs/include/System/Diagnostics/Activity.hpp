@@ -4,6 +4,7 @@
 #include "System/EventArgs.hpp"
 #include "System/EventHandler.hpp"
 #include "System/DateTimeOffset.hpp"
+#include "System/Func.hpp"
 #include "System/Diagnostics/ActivityTraceId.hpp"
 #include "System/Diagnostics/ActivitySpanId.hpp"
 #include "System/Private/enum.hpp"
@@ -180,7 +181,6 @@ public:
 protected:
     ActivityContext        _context;
     ActivityTagsCollection _activity_tags;
-
 };
 
 class Activity
@@ -200,7 +200,7 @@ public:
     std::string_view DisplayName() const { return _display_name; }
     void DisplayName(std::string_view dn) { _display_name = dn; }
     
-    const std::string &StatusDescription() const { return _status_description; }
+    std::string_view StatusDescription() const { return _status_description; }
 
     enum ActivityTraceFlags ActivityTraceFlags() const { return _activity_trace_flags; }
                        void ActivityTraceFlags(enum ActivityTraceFlags flags) { _activity_trace_flags = flags; }
@@ -209,12 +209,16 @@ public:
 
     std::string_view Id() const { return _id; }
     std::string_view ParentId() const;
+    std::string_view RootId() const;
 
     const Activity *Parent() const { return _parent; }
 
     ActivityIdFormat IdFormat() const { return _activity_id_format; }
 
-    const std::string &OperationName() const { return _operation_name; }
+    ActivityIdFormat DefaultIdFormat() const { return _default_activity_id_format; }
+    void DefaultIdFormat(ActivityIdFormat new_value) { _default_activity_id_format = new_value; }
+
+    std::string_view OperationName() const { return _operation_name; }
 
     TimeSpan Duration() const;
 
@@ -251,23 +255,30 @@ public:
 
     Activity &SetBaggage(std::string_view key, std::string_view value);
 
-    const System::Collections::Generic::List<System::Diagnostics::ActivityEvent> &Events() const { return _activity_events; }
+    const Collections::Specialized::StringDictionary &Baggage() const { return _baggage; }
+
+    const Collections::Specialized::StringDictionary &Tags() const { return _tags_to_log; }
+
+    const Collections::Generic::List<Diagnostics::ActivityEvent> &Events() const { return _activity_events; }
 
     static EventHandler<ActivityChangedEventArgs> CurrentChanged;
+
+    static Func<ActivityTraceId> TraceIdGenerator;
 protected:
     std::string _operation_name;
     std::string _display_name;
     std::string _id;
     enum ActivityKind       _activity_kind        = ActivityKind::Internal;
     enum ActivityTraceFlags _activity_trace_flags = ActivityTraceFlags::None;
-    enum ActivityIdFormat   _activity_id_format   = ActivityIdFormat::W3C;
+    enum ActivityIdFormat   _activity_id_format         = ActivityIdFormat::W3C;
+    enum ActivityIdFormat   _default_activity_id_format = ActivityIdFormat::W3C;
     ActivityStatusCode _status = ActivityStatusCode::Unset;
     std::string        _status_description;
     ActivityTraceId    _trace_id;
     ActivityContext    _activity_context;
-    System::Collections::Specialized::StringDictionary _tags_to_log;
-    System::Collections::Specialized::StringDictionary _baggage;
-    System::Collections::Generic::List<System::Diagnostics::ActivityEvent> _activity_events;
+    Collections::Specialized::StringDictionary _tags_to_log;
+    Collections::Specialized::StringDictionary _baggage;
+    Collections::Generic::List<Diagnostics::ActivityEvent> _activity_events;
     Activity          *_parent = nullptr;
     DateTime           _start_time;
     DateTime           _end_time;
