@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-
+#include <concepts>
 
 namespace System
 {
@@ -17,9 +17,23 @@ public:
     {
     }
 
-    Delegate(std::function<RetType (ArgTypes ...)> fn)
+    Delegate(const std::function<RetType (ArgTypes ...)> &fn)
         :
         _callable( fn )
+    {
+    }
+
+    Delegate(std::function<RetType (ArgTypes ...)> &&fn)
+        :
+        _callable( std::move(fn) )
+    {
+    }
+
+    template <class Functor>
+        //requires std::invocable<Functor>
+    Delegate(Functor &&f)
+        :
+        _callable( std::forward<Functor>(f) )
     {
     }
 
@@ -41,9 +55,22 @@ public:
         return *this;
     }
 
+    template <typename Functor>
+        //requires std::invocable<Functor> && std::convertible_to<Functor, decltype(std::function<RetType (ArgTypes ...))>>
+    Delegate &operator =(Functor &&f)
+    {
+        std::function<RetType (ArgTypes ...)>( std::forward<Functor>(f) ).swap( *this );
+        return *this;
+    }
+
     bool HasSingleTarget() const { return true; }
 
     RetType operator()(ArgTypes ...args) const
+    {
+        return _callable(args...);
+    }
+
+    RetType operator()(ArgTypes ...args)
     {
         return _callable(args...);
     }

@@ -201,7 +201,7 @@ public:
     Activity &operator =(Activity &&) = default;
 
     std::string_view DisplayName() const { return _display_name; }
-    void DisplayName(std::string_view dn) { _display_name = dn; }
+                void DisplayName(std::string_view dn) { _display_name = dn; }
     
     std::string_view StatusDescription() const { return _status_description; }
 
@@ -219,7 +219,7 @@ public:
     ActivityIdFormat IdFormat() const { return _activity_id_format; }
 
     ActivityIdFormat DefaultIdFormat() const { return _default_activity_id_format; }
-    void DefaultIdFormat(ActivityIdFormat new_value) { _default_activity_id_format = new_value; }
+                void DefaultIdFormat(ActivityIdFormat new_value) { _default_activity_id_format = new_value; }
 
     std::string_view OperationName() const { return _operation_name; }
 

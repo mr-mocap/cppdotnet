@@ -36,8 +36,8 @@ public:
     const SampleActivity<std::string> &SampleUsingParentId() const { return _sample_using_parent_id; }
                                  void  SampleUsingParentId(const SampleActivity<std::string> &callback) { _sample_using_parent_id = callback; }
 
-    const Func<ActivitySource, bool> &ShouldListenTo() const { return _should_listen_to; }
-                                void  ShouldListenTo(const Func<ActivitySource, bool> &func) { _should_listen_to = func; }
+    const Func<const ActivitySource &, bool> &ShouldListenTo() const { return _should_listen_to; }
+                                        void  ShouldListenTo(const Func<const ActivitySource &, bool> &func) { _should_listen_to = func; }
 
     void Dispose();
 protected:
@@ -45,7 +45,7 @@ protected:
     Action<Diagnostics::Activity> _activity_stopped;
     SampleActivity<Diagnostics::ActivityContext> _sample;
     SampleActivity<std::string>   _sample_using_parent_id;
-    Func<ActivitySource, bool>    _should_listen_to;
+    Func<const ActivitySource &, bool>  _should_listen_to;
     struct ExceptionRecorder      _exception_recorder;
 };
 

@@ -3,6 +3,7 @@
 #include "System/Diagnostics/Activity.hpp"
 #include <string>
 #include <string_view>
+#include <optional>
 
 
 namespace System::Diagnostics
@@ -13,18 +14,9 @@ class ActivityListener;
 class ActivitySource final
 {
 public:
-    ActivitySource(std::string_view name)
-        :
-        _name( name )
-    {
-    }
-
-    ActivitySource(std::string_view name, std::string_view version)
-        :
-        _name( name ),
-        _version( version )
-    {
-    }
+    ActivitySource(std::string_view name);
+    ActivitySource(std::string_view name, std::string_view version);
+   ~ActivitySource();
 
     std::string_view Name() const { return _name; }
 
@@ -36,12 +28,14 @@ public:
 
     bool HasListeners() const;
 
-    Activity CreateActivity(std::string_view  name,
-                            ActivityKind      kind,
-                            ActivityContext  &parent_context,
-                            ActivityIdFormat  id_format);
+    std::optional<Activity> CreateActivity(std::string_view  name,
+                                           ActivityKind      kind,
+                                           ActivityContext  &parent_context,
+                                           ActivityIdFormat  id_format);
 
     static void AddActivityListener(const ActivityListener &listener);
+
+    void Dispose();
 protected:
     std::string _name;
     std::string _version;
