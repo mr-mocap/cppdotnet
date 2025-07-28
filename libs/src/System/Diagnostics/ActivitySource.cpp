@@ -30,7 +30,7 @@ ActivitySource::~ActivitySource()
     Dispose();
 }
 
-std::optional<Activity> ActivitySource::CreateActivity(std::string_view  name,
+std::optional<Activity> ActivitySource::CreateActivity(std::string_view  operation_name,
                                                        ActivityKind      kind,
                                                        ActivityContext  &parent_context,
                                                        ActivityIdFormat  id_format)
@@ -41,12 +41,36 @@ std::optional<Activity> ActivitySource::CreateActivity(std::string_view  name,
 
     if ( HasListeners() )
     {
-        Activity activity(name);
+        Activity activity(operation_name);
 
         return activity;
     }
 
     return {};
+}
+
+std::optional<Activity> ActivitySource::CreateActivity(std::string_view operation_name,
+                                                       ActivityKind     kind)
+{
+    UNUSED( kind );
+
+    if ( HasListeners() )
+    {
+        Activity activity(operation_name);
+
+        return activity;
+    }
+    return {};
+}
+
+std::optional<Activity> ActivitySource::StartActivity(std::string_view operation_name,
+                                                      ActivityKind     kind)
+{
+    std::optional<Activity> activity = CreateActivity( operation_name, kind );
+
+    if ( activity )
+        activity.value().Start();
+    return activity;
 }
 
 void ActivitySource::AddActivityListener(const ActivityListener &listener)

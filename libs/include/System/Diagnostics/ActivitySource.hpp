@@ -28,10 +28,16 @@ public:
 
     bool HasListeners() const;
 
-    std::optional<Activity> CreateActivity(std::string_view  name,
+    std::optional<Activity> CreateActivity(std::string_view  operation_name,
                                            ActivityKind      kind,
                                            ActivityContext  &parent_context,
                                            ActivityIdFormat  id_format);
+
+    std::optional<Activity> CreateActivity(std::string_view operation_name,
+                                           ActivityKind     kind);
+
+    std::optional<Activity> StartActivity(std::string_view operation_name,
+                                          ActivityKind     kind = ActivityKind::Internal);
 
     static void AddActivityListener(const ActivityListener &listener);
 
