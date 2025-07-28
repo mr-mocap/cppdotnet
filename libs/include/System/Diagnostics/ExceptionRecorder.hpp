@@ -8,10 +8,10 @@
 namespace System::Diagnostics
 {
 
-struct ExceptionRecorder : Delegate<void, const Activity &, Exception &&, const TagList &>
+struct ExceptionRecorder : Delegate<void, const Activity &, const Exception &, const TagList &>
 {
-    using Delegate<void, const Activity &, Exception &&, const TagList &>::Delegate;
-    using Delegate<void, const Activity &, Exception &&, const TagList &>::operator =;
+    using Delegate<void, const Activity &, const Exception &, const TagList &>::Delegate;
+    using Delegate<void, const Activity &, const Exception &, const TagList &>::operator =;
 };
 
 }
