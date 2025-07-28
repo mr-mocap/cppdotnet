@@ -30,7 +30,6 @@ public:
     }
 
     template <class Functor>
-        //requires std::invocable<Functor>
     Delegate(Functor &&f)
         :
         _callable( std::forward<Functor>(f) )
@@ -56,7 +55,6 @@ public:
     }
 
     template <typename Functor>
-        //requires std::invocable<Functor> && std::convertible_to<Functor, decltype(std::function<RetType (ArgTypes ...))>>
     Delegate &operator =(Functor &&f)
     {
         std::function<RetType (ArgTypes ...)>( std::forward<Functor>(f) ).swap( _callable );
@@ -66,11 +64,6 @@ public:
     bool HasSingleTarget() const { return true; }
 
     RetType operator()(ArgTypes ...args) const
-    {
-        return _callable(args...);
-    }
-
-    RetType operator()(ArgTypes ...args)
     {
         return _callable(args...);
     }
