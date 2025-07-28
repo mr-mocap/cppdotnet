@@ -63,7 +63,7 @@ public:
                     const ActivitySpanId  &span_id,
                     ActivityTraceFlags     trace_flags,
                     std::string_view       trace_state,
-                    const bool             is_remote)
+                    bool                   is_remote = false)
         :
         _trace_id( trace_id ),
         _span_id( span_id ),
@@ -173,7 +173,7 @@ template <class T>
     requires ( std::same_as<T, std::string> || std::same_as<T, ActivityContext> )
 struct ActivityCreationOptions
 {
-    ActivityKind     Kind = ActivityKind::Internal;
+    ActivityKind           Kind = ActivityKind::Internal;
     Collections::Generic::List<ActivityLink> Links;
     std::string            Name;
     T                      Parent;
