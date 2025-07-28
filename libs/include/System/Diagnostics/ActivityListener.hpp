@@ -16,10 +16,15 @@ class ActivityListener final
 {
 public:
     ActivityListener() = default;
+    ActivityListener(const ActivityListener &) = default;
+    ActivityListener(ActivityListener &&) = default;
    ~ActivityListener()
-   {
+    {
         Dispose();
-   }
+    }
+
+    ActivityListener &operator =(const ActivityListener &) = default;
+    ActivityListener &operator =(ActivityListener &&) = default;
 
     const Action<Diagnostics::Activity> &ActivityStarted() const { return _activity_started; }
                                    void  ActivityStarted(Action<Diagnostics::Activity> &callback) { _activity_started = callback; }
