@@ -59,7 +59,7 @@ public:
         //requires std::invocable<Functor> && std::convertible_to<Functor, decltype(std::function<RetType (ArgTypes ...))>>
     Delegate &operator =(Functor &&f)
     {
-        std::function<RetType (ArgTypes ...)>( std::forward<Functor>(f) ).swap( *this );
+        std::function<RetType (ArgTypes ...)>( std::forward<Functor>(f) ).swap( _callable );
         return *this;
     }
 
