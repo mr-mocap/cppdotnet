@@ -5,6 +5,16 @@
 namespace System
 {
 
+namespace Private
+{
+
+struct EmptyDisposable
+{
+  void Dispose() { }
+};
+
+}
+
 class IDisposable
 {
     struct Interface
