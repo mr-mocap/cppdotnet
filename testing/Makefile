@@ -44,6 +44,7 @@ OBJS = TestDefaultTraceListener.o \
 	TestStopwatch.o \
 	TestCounter.o \
 	TestGuid.o \
+	TestActivity.o \
 	main.o
 
 EXTERNAL_LIBS = -l$(LIB_BASE_NAME) -luuid
