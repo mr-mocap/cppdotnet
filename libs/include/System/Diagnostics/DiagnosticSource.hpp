@@ -23,7 +23,7 @@ public:
     void StopActivity(Activity &activity, const T &args);
 
     template <typename T>
-    void Write(std::string_view name, const T &value);
+    void Write(std::string_view event_name, const T &value);
 
 protected:
     virtual void WritePayload(std::string_view payload) = 0;
