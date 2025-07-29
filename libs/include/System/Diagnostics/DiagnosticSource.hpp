@@ -6,12 +6,15 @@
 namespace System::Diagnostics
 {
 
+class Activity;
+
 class DiagnosticSource
 {
 public:
     DiagnosticSource() = default;
 
-    virtual bool IsEnabled(std::string_view name);
+    virtual bool IsEnabled() const = 0;
+    virtual bool IsEnabled(std::string_view name) const = 0;
 
     template <typename T>
     Activity &StartActivity(Activity &activity, const T &args);
