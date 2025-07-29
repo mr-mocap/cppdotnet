@@ -1,6 +1,10 @@
 #pragma once
 
 #include "System/Private/private.hpp"
+#include "System/Diagnostics/Private/CommonTypes.hpp"
+#include "System/Diagnostics/Metrics/Concepts.hpp"
+#include "System/Collections/Generic/List.hpp"
+#include "System/Collections/Generic/KeyValuePair.hpp"
 #include <string>
 #include <string_view>
 #include <memory>
@@ -11,11 +15,12 @@ namespace System::Diagnostics::Metrics
 
 class Meter;
 
+
 class Instrument
 {
 public:
 
-    template <class T>
+    template <Concepts::InstrumentType T>
     class SpecificInstrument
     {
     public:
@@ -34,7 +39,7 @@ public:
 
         std::string_view Unit() const { return _unit; }
 
-        // TODO: Implement Tags
+        const Diagnostics::Types::NameObjectPairList &Tags() const { return _tags; }
 
         virtual std::string ToString() const
         {
@@ -45,6 +50,7 @@ public:
         std::string  _name;
         std::string  _description;
         std::string  _unit;
+        Diagnostics::Types::NameObjectPairList _tags;
 
         SpecificInstrument(class Meter &meter, std::string_view name)
             :
@@ -54,14 +60,28 @@ public:
         }
 
         SpecificInstrument(class Meter &meter,
-                std::string_view name,
-                std::string_view unit,
-                std::string_view description)
+                      std::string_view  name,
+                      std::string_view  unit,
+                      std::string_view  description)
             :
             _meter( meter ),
             _name( name ),
             _description( description ),
             _unit( unit )
+        {
+        }
+
+        SpecificInstrument(class Meter &meter,
+                      std::string_view  name,
+                      std::string_view  unit,
+                      std::string_view  description,
+                      Diagnostics::Types::NameObjectPairList &tags)
+            :
+            _meter( meter ),
+            _name( name ),
+            _description( description ),
+            _unit( unit ),
+            _tags( tags )
         {
         }
 
