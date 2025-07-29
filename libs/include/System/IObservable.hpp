@@ -1,6 +1,7 @@
 #pragma once
 
 #include "System/IObserver.hpp"
+#include "System/IDisposable.hpp"
 
 namespace System
 {
@@ -9,7 +10,7 @@ template <class T>
 class IObservable
 {
 public:
-    virtual void Subscribe(IObserver<T> &observer) = 0;
+    virtual IDisposable Subscribe(IObserver<T> &observer) = 0;
 };
 
 }

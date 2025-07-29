@@ -10,10 +10,10 @@ namespace System
 
 template <class TEventArgs = EventArgs>
     requires std::derived_from<TEventArgs, EventArgs>
-struct EventHandler : public Delegate<void, TEventArgs &>
+struct EventHandler : public Delegate<void, const TEventArgs &>
 {
-    using Delegate<void, TEventArgs &>::Delegate;
-    using Delegate<void, TEventArgs &>::operator =;
+    using Delegate<void, const TEventArgs &>::Delegate;
+    using Delegate<void, const TEventArgs &>::operator =;
 };
 
 }

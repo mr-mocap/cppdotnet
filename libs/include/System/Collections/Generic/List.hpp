@@ -26,7 +26,7 @@ public:
     using const_iterator         = underlying_type::const_iterator;
     using reverse_iterator       = underlying_type::reverse_iterator;
     using const_reverse_iterator = underlying_type::const_reverse_iterator;
-    using predicate       = System::Predicate<T>;
+    using predicate       = System::Predicate<const T &>;
 
     constexpr List() = default;
 

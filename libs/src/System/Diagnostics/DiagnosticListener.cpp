@@ -1,4 +1,5 @@
 #include "System/Diagnostics/DiagnosticListener.hpp"
+#include "System/Private/private.hpp"
 
 namespace
 {
@@ -35,6 +36,10 @@ DiagnosticListener::DiagnosticListener(std::string_view name)
 {
 }
 
+DiagnosticListener::~DiagnosticListener()
+{
+}
+
 bool DiagnosticListener::IsEnabled() const
 {
     return _observers.Count() > 0;
@@ -42,22 +47,32 @@ bool DiagnosticListener::IsEnabled() const
 
 bool DiagnosticListener::IsEnabled(std::string_view name) const
 {
+    UNUSED( name );
+
     if ( !IsEnabled() )
         return false;
+
     return _observers.Exists(
-        [](IObserver<Collections::Generic::KeyValuePair<std::string, void *>> &observer)
+        [&](const Collections::Generic::KeyValuePair<std::string, void *> &object)
         {
-            return observer
+            return object.Key() == name;
         } );
 }
 
 IDisposable DiagnosticListener::Subscribe(IObserver<Collections::Generic::KeyValuePair<std::string, void *>> &observer)
 {
+    UNUSED( observer );
+
     return IDisposable( System::Private::EmptyDisposable() );
 }
 
 void DiagnosticListener::Dispose()
 {
+}
+
+void DiagnosticListener::WritePayload(std::string_view payload)
+{
+    UNUSED( payload );
 }
 
 }

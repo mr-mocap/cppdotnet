@@ -16,10 +16,10 @@ struct Predicate : Delegate<bool, T>
 };
 
 // Deduction guides
-template <typename T>
-Predicate(std::function<bool (const T &)> )   -> Predicate<T>;
+// template <typename T>
+// Predicate(std::function<bool (const T &)> )   -> Predicate<T>;
 
-template <typename T>
-Predicate(std::function<bool (const T &)> &&) -> Predicate<T>;
+// template <typename T>
+// Predicate(std::function<bool (const T &)> &&) -> Predicate<T>;
 
 }

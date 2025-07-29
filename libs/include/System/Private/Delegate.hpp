@@ -30,6 +30,7 @@ public:
     }
 
     template <class Functor>
+        requires std::convertible_to<Functor, std::function<RetType (ArgTypes ...)>>
     Delegate(Functor &&f)
         :
         _callable( std::forward<Functor>(f) )
@@ -73,6 +74,9 @@ protected:
     std::function<RetType (ArgTypes ...args)> _callable;
 };
 
+// Deduction Guides
+template <class R, class ...ArgTypes>
+Delegate( R (*)(ArgTypes...) ) -> Delegate<R, ArgTypes...>;
 
 template <typename RetType, typename ...ArgTypes>
 class MulticastDelegate
