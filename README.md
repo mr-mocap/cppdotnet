@@ -69,7 +69,7 @@ I also plan on writing better unit tests for this so I can practice doing that a
 * Adding your own formatting code that integrates with std::format()
     * Specialize std::formatter<> for the type you want to affect
 * Type Erasure!
-    * Currently only used in the ICollection/ICollectionRef classes.
+    * Currently only used in the ICollection/ICollectionRef, IDisposable, IList, ICollection, and IDictionary classes.
 * Experimenting with an "enum traits" type of templated class (System/Private/enum.hpp)
     * Specialize for each enum type you want to implement
     * Basically used as a reflection mechanism to allow retrieving the names/values of the enum type
@@ -85,3 +85,7 @@ I also plan on writing better unit tests for this so I can practice doing that a
           (ex: std::format("value is {:s}", SomeEnumType::AnEnumerationWithinTheEnum))
           (ex: std::format("value is {:s10}", SomeEnumType::AnEnumerationWithinTheEnum) will print the value within a 10 character
           width field)
+    * NOTE: Look at MagicEnum on GitHub for inspiration!
+* Heterogenous Lookup for C++ map-type data structure
+    * Implemented in System::Collections::Specialized::StringDictionary
+        * You can take advantage of this to allow lookup of, say, a std::string key with a std::string_view or even a const char *
