@@ -6,7 +6,7 @@
 namespace System::Collections::Specialized
 {
 
-namespace Private
+namespace Types
 {
 
 struct StringDictionaryTransparentHash
@@ -55,13 +55,13 @@ struct StringDictionaryTransparentEqual
 //       but make it all default template parameters AND not be
 //       syntactically unwieldy?
 class StringDictionary : public Generic::Dictionary<std::string, std::string,
-                                                    Private::StringDictionaryTransparentHash,
-                                                    Private::StringDictionaryTransparentEqual>
+                                                    Types::StringDictionaryTransparentHash,
+                                                    Types::StringDictionaryTransparentEqual>
 {
 public:
     using Base = Generic::Dictionary<std::string, std::string,
-                                     Private::StringDictionaryTransparentHash,
-                                     Private::StringDictionaryTransparentEqual>;
+                                     Types::StringDictionaryTransparentHash,
+                                     Types::StringDictionaryTransparentEqual>;
 
     using Base::Dictionary;
     using Base::operator =;

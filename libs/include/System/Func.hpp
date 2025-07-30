@@ -7,7 +7,7 @@
 namespace System
 {
 
-namespace Private
+namespace Types
 {
 
 // Trait to reverse the order: takes ArgTypes..., RetType
@@ -52,9 +52,9 @@ struct FuncImpl<RetType, std::tuple<ArgTypes...>> : Delegate<RetType, ArgTypes..
 
 // Public-facing Func
 template <typename... Args>
-using Func = Private::FuncImpl<
-    typename Private::SplitArgs<Args...>::RetType,
-    typename Private::SplitArgs<Args...>::ArgTypesTuple
+using Func = Types::FuncImpl<
+    typename Types::SplitArgs<Args...>::RetType,
+    typename Types::SplitArgs<Args...>::ArgTypesTuple
 >;
 #if 0
 /** Encapsulates a method that returns any type of value and takes any type or amount of parameters
