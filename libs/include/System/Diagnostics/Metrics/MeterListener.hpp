@@ -31,6 +31,8 @@ public:
     }
 
     std::string ToString() const;
+
+    void Dispose();
 protected:
     Action<Instrument &, MeterListener &> _instrument_published_delegate;
     Action<Instrument &>                  _measurements_completed_delegate;

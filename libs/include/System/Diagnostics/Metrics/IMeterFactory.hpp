@@ -15,6 +15,7 @@ public:
 
     virtual Meter Create(const MeterOptions &options);
 
+    void Dispose();
 protected:
     std::vector<Meter> _cached_meters;
 };

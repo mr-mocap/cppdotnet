@@ -19,8 +19,12 @@ Meter IMeterFactory::Create(const MeterOptions &options)
         return *found;
     
     // We need to create one since it doesn't exist
-    _cached_meters.push_back( Meter( options ) );
+    _cached_meters.emplace_back( options );
     return _cached_meters.back();
+}
+
+void IMeterFactory::Dispose()
+{
 }
 
 }
