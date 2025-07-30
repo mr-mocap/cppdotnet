@@ -12,6 +12,7 @@ class SourceFilter : public TraceFilter
 public:
     SourceFilter() = delete;
     SourceFilter(std::string_view source) : _source( source ) { }
+   ~SourceFilter() = default;
 
     const std::string &Source() const { return _source; }
           void         Source(std::string_view new_source) { _source = new_source; }

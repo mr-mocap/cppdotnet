@@ -27,6 +27,7 @@ public:
 
     TextWriterTraceListener(std::unique_ptr<System::IO::Stream> new_stream);
     TextWriterTraceListener(std::unique_ptr<System::IO::Stream> new_stream, std::string_view name);
+   ~TextWriterTraceListener() = default;
 
     void Close() override;
     void Flush() override;

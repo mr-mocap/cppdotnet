@@ -21,6 +21,7 @@ public:
         Switch( display_name, description, default_switch_value )
     {
     }
+   ~TraceSwitch() = default;
 
     TraceLevel Level() const { return _trace_level; }
     void       Level(TraceLevel new_level)

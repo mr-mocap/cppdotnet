@@ -10,6 +10,7 @@ class Counter : public Instrument::SpecificInstrument<T>
 {
 public:
     Counter() = delete;
+   ~Counter() = default;
 
     void Add(T delta)
     {

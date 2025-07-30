@@ -12,6 +12,7 @@ class DiagnosticSource
 {
 public:
     DiagnosticSource() = default;
+    virtual ~DiagnosticSource() = 0;
 
     virtual bool IsEnabled() const = 0;
     virtual bool IsEnabled(std::string_view name) const = 0;

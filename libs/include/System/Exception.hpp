@@ -91,6 +91,7 @@ public:
     using Exception::Exception;
 
     SystemException() = default;
+    virtual ~SystemException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -127,6 +128,7 @@ public:
     using SystemException::SystemException;
 
     ArgumentException() = default;
+   ~ArgumentException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -187,6 +189,7 @@ public:
     using ArgumentException::ArgumentException;
 
     ArgumentNullException() = default;
+   ~ArgumentNullException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -225,6 +228,7 @@ public:
     using ArgumentException::ArgumentException;
 
     ArgumentOutOfRangeException() = default;
+   ~ArgumentOutOfRangeException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -263,6 +267,7 @@ public:
     using SystemException::SystemException;
 
     NotSupportedException() = default;
+   ~NotSupportedException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -295,6 +300,7 @@ public:
     using SystemException::SystemException;
 
     InvalidOperationException() = default;
+   ~InvalidOperationException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -327,6 +333,7 @@ public:
     using InvalidOperationException::InvalidOperationException;
 
     ObjectDisposedException() = default;
+   ~ObjectDisposedException() = default;
     
     /** Remove the ability to copy objects of this class
      *
@@ -371,6 +378,7 @@ public:
     using SystemException::SystemException;
 
     FormatException() = default;
+   ~FormatException() = default;
 
     explicit FormatException(std::string_view message) : SystemException( message ) { }
 
@@ -405,6 +413,7 @@ public:
     using SystemException::SystemException;
 
     ArithmeticException() = default;
+   ~ArithmeticException() = default;
 
     explicit ArithmeticException(std::string_view message) : SystemException( message ) { }
 
@@ -439,6 +448,7 @@ public:
     using SystemException::SystemException;
 
     OverflowException() = default;
+   ~OverflowException() = default;
 
     explicit OverflowException(std::string_view message) : SystemException( message ) { }
 

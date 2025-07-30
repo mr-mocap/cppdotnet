@@ -25,6 +25,7 @@ public:
     {
     public:
         SpecificInstrument() = delete;
+        virtual ~SpecificInstrument() = default;
 
         bool Enabled() const { return false; } // TODO: FIXME
 
