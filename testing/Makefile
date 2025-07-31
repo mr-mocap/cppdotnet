@@ -237,7 +237,7 @@ all: $(PASSING_TESTS)
 clean:
 	rm -f ./*.o
 	rm -f ./*.d
-	rm -f $(TESTS)
+	rm -f $(TEST_BINARIES)
 	rm -f $(PASSING_TESTS)
 
 .PHONY: cleanlib
