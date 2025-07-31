@@ -35,5 +35,5 @@
 .vscode/*
 
 # Project Level
-testing/code_tests
-
+testing/*.pass
+testing/Test*
