@@ -1,4 +1,3 @@
-#include "TestEnum.hpp"
 #include "System/Enum.hpp"
 #include <iostream>
 #include <array>
@@ -319,8 +318,13 @@ void Run()
     Assignment();
     GetValuesAsUnderlyingType();
     GetTypeCode();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestEnum::Run();
+
+    return EXIT_SUCCESS;
 }

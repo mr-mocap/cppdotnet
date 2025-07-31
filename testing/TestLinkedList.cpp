@@ -1,4 +1,3 @@
-#include "TestLinkedList.hpp"
 #include "System/Collections/Generic/LinkedList.hpp"
 #include <iostream>
 #include <cassert>
@@ -355,8 +354,13 @@ void Run()
     Contains();
     Find();
     FindLast();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestLinkedList::Run();
+
+    return EXIT_SUCCESS;
 }

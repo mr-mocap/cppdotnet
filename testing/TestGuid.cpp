@@ -1,4 +1,3 @@
-#include "TestGuid.hpp"
 #include "System/Guid.hpp"
 #include <cassert>
 #include <iostream>
@@ -517,8 +516,13 @@ void Run()
     ParseValidBFormatString();
     ParseValidPFormatString();
     ParseValidXFormatString();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestGuid::Run();
+
+    return EXIT_SUCCESS;
 }

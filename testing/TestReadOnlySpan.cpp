@@ -1,4 +1,3 @@
-#include "TestReadOnlySpan.hpp"
 #include "System/ReadOnlySpan.hpp"
 #include <iostream>
 #include <cassert>
@@ -407,8 +406,13 @@ void Run()
     CopyTo();
     TryCopyTo();
     AsBytes();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestReadOnlySpan::Run();
+
+    return EXIT_SUCCESS;
 }

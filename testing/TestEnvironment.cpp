@@ -1,4 +1,3 @@
-#include "TestEnvironment.hpp"
 #include "System/Environment.hpp"
 #include "System/Exception.hpp"
 #include "System/Console.hpp"
@@ -64,7 +63,12 @@ void Run()
     GetEnvrionmentVariable();
     SetEnvironmentVariable();
     GetEnvironmentVariables();
-
-    std::cout << "PASSED!" << std::endl;
 }
+}
+
+int main(void)
+{
+    TestEnvironment::Run();
+
+    return EXIT_SUCCESS;
 }

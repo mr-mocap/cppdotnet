@@ -1,4 +1,3 @@
-#include "TestDateTimeOffset.hpp"
 #include "System/DateTimeOffset.hpp"
 #include <iostream>
 #include <cassert>
@@ -65,8 +64,13 @@ void Run()
 
     ConstructWithDateTime();
     ConstructWithDateTimeAndTimeSpan();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestDateTimeOffset::Run();
+
+    return EXIT_SUCCESS;
 }

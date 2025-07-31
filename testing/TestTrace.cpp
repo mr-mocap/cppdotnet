@@ -1,4 +1,3 @@
-#include "TestTrace.hpp"
 #include "System/Diagnostics/Trace.hpp"
 #include "System/Diagnostics/TraceLevel.hpp"
 #include "System/Diagnostics/ConsoleTraceListener.hpp"
@@ -342,8 +341,13 @@ void Run()
         TestTraceLevel();
     }
     TestTeardown();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestTrace::Run();
+
+    return EXIT_SUCCESS;
 }

@@ -1,7 +1,7 @@
-#include "TestBitConverter.hpp"
 #include "System/BitConverter.hpp"
 #include <iostream>
 #include <cassert>
+#include <cstdlib>
 
 namespace TestBitConverter
 {
@@ -154,8 +154,12 @@ void Run()
     GetAndToAreInverses();
 
     ByteSwap();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestBitConverter::Run();
+    return EXIT_SUCCESS;
 }

@@ -1,4 +1,3 @@
-#include "TestVersion.hpp"
 #include "System/Version.hpp"
 #include "System/Exception.hpp"
 #include <iostream>
@@ -160,8 +159,13 @@ void Run()
     ConstructWithMajorAndMinorAndBuildAndRevision();
     ConstructWithString();
     ToStringWithParameter();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestVersion::Run();
+
+    return EXIT_SUCCESS;
 }

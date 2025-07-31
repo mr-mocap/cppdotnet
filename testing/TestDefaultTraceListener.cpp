@@ -1,4 +1,3 @@
-#include "TestDefaultTraceListener.hpp"
 #include "Diagnostics.hpp"
 #include <iostream>
 #include <memory>
@@ -26,8 +25,13 @@ void Run()
     std::cout << "Running DefaultTraceListener Tests..." << std::endl;
 
     AccessingListenersFirstTimeCreatesDefaultTraceListener();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestDefaultTraceListener::Run();
+
+    return EXIT_SUCCESS;
 }

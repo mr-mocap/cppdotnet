@@ -352,8 +352,13 @@ void Run()
     Slice();
     CopyTo();
     TryCopyTo();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestSpan::Run();
+
+    return EXIT_SUCCESS;
 }

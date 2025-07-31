@@ -1,4 +1,3 @@
-#include "TestDebug.hpp"
 #include "System/Diagnostics/ConsoleTraceListener.hpp"
 #include "System/Diagnostics/Debug.hpp"
 #include <string_view>
@@ -63,8 +62,13 @@ void Run()
     std::cout << "Running Debug Tests..." << std::endl;
 
     CommonUsage();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestDebug::Run();
+
+    return EXIT_SUCCESS;
 }

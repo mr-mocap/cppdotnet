@@ -1,4 +1,3 @@
-#include "TestStopwatch.hpp"
 #include "System/Diagnostics/Stopwatch.hpp"
 #include "System/Console.hpp"
 #include "System/IO/TextWriter.hpp"
@@ -87,8 +86,13 @@ void Run()
     StartNewCreatesANewRunningStopwatch();
     StopStopsTheStopwatch();
     ResetStopsMeasurementAndClearsElapsedTime();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestStopwatch::Run();
+
+    return EXIT_SUCCESS;
 }

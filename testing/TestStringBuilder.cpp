@@ -1,4 +1,3 @@
-#include "TestStringBuilder.hpp"
 #include "System/Text/StringBuilder.hpp"
 #include <iostream>
 #include <cassert>
@@ -75,8 +74,13 @@ void Run()
 
     ReplaceSubstrings();
     AppendFormat();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestStringBuilder::Run();
+
+    return EXIT_SUCCESS;
 }

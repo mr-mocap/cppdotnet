@@ -1,4 +1,3 @@
-#include "TestConsoleTraceListener.hpp"
 #include "Diagnostics.hpp"
 #include <iostream>
 #include <cassert>
@@ -39,8 +38,13 @@ void Run()
     std::cout << "Running ConsoleTraceListener Tests..." << std::endl;
 
     CommonUsage();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestConsoleTraceListener::Run();
+
+    return EXIT_SUCCESS;
 }

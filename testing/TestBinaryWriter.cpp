@@ -1,4 +1,3 @@
-#include "TestBinaryWriter.hpp"
 #include "System/Console.hpp"
 #include "System/IO/MemoryStream.hpp"
 #include "System/IO/BinaryWriter.hpp"
@@ -97,8 +96,12 @@ void Run()
     WriteBoolIncreasesOutputStreamLengthByOne();
     WriteCharIncreasesOutputStreamLengthByOne();
     WriteReadOnlySpanWritesThoseBytes();
-
-    System::Console::Out().WriteLine("PASSED!");
 }
 
+}
+
+int main(void)
+{
+    TestBinaryWriter::Run();
+    return EXIT_SUCCESS;
 }

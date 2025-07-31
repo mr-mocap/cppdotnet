@@ -1,4 +1,3 @@
-#include "TestStringReader.hpp"
 #include <iostream>
 #include <cassert>
 
@@ -9,8 +8,13 @@ void Run()
 {
     std::cout << "Running StringReader Tests..." << std::endl;
 
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestStringReader::Run();
+
+    return EXIT_SUCCESS;
 }

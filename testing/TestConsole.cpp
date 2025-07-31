@@ -1,4 +1,3 @@
-#include "TestConsole.hpp"
 #include "System/Console.hpp"
 #include "System/IO/StringReader.hpp"
 #include "System/IO/StringWriter.hpp"
@@ -107,8 +106,13 @@ void Run()
     SetIn();
     SetOut();
     SetError();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestConsole::Run();
+
+    return EXIT_SUCCESS;
 }

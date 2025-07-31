@@ -1,4 +1,3 @@
-#include "TestDateOnly.hpp"
 #include "System/DateOnly.hpp"
 #include "System/DateTime.hpp"
 #include <iostream>
@@ -431,8 +430,13 @@ void Run()
     FromDateTime();
     Deconstruct();
     ToString();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestDateOnly::Run();
+
+    return EXIT_SUCCESS;
 }

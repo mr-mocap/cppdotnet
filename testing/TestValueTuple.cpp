@@ -1,4 +1,3 @@
-#include "TestValueTuple.hpp"
 #include "System/Console.hpp"
 #include "System/ValueTuple.hpp"
 #include "System/Private/private.hpp"
@@ -36,8 +35,13 @@ void Run()
     System::Console::Out().WriteLine("Running ValueTuple Tests...");
 
     DefaultConstructed();
-
-    System::Console::Out().WriteLine("PASSED!");
 }
 
+}
+
+int main(void)
+{
+    TestValueTuple::Run();
+
+    return EXIT_SUCCESS;
 }

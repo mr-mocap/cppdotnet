@@ -1,7 +1,7 @@
-#include "TestActivity.hpp"
 #include "System/Console.hpp"
 #include "System/IO/TextWriter.hpp"
 #include "System/Diagnostics/ActivitySource.hpp"
+#include <cstdlib>
 
 namespace TestActivity
 {
@@ -24,9 +24,12 @@ void Run()
     System::Console::Out().WriteLine("Running Activity Tests...");
 
     BasicActivity();
-
-    System::Console::Out().WriteLine("PASSED!");
+}
 
 }
 
+int main(void)
+{
+    TestActivity::Run();
+    return EXIT_SUCCESS;
 }

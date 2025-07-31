@@ -1,4 +1,3 @@
-#include "TestConvert.hpp"
 #include "System/Convert.hpp"
 #include <iostream>
 #include <cassert>
@@ -562,8 +561,13 @@ void Run()
     FromBase64String();
     ToBase85String();
     ToBase();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestConvert::Run();
+
+    return EXIT_SUCCESS;
 }

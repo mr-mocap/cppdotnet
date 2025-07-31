@@ -1,4 +1,3 @@
-#include "TestDictionary.hpp"
 #include "System/Collections/Generic/Dictionary.hpp"
 #include "System/Console.hpp"
 #include <iostream>
@@ -372,8 +371,13 @@ void Run()
     TryGetValueReturnsFalseAndSetsValueToDefaultIfKeyIsNotFound();
     KeysReturnsTheKeysInTheDictionary();
     IteratingAsKeyValuePair();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestDictionary::Run();
+
+    return EXIT_SUCCESS;
 }

@@ -1,4 +1,3 @@
-#include "TestTimeOnly.hpp"
 #include "System/TimeOnly.hpp"
 #include <iostream>
 #include <cassert>
@@ -172,8 +171,13 @@ void Run()
     ConstructWithDifferentHours();
     ConstructWithDifferentMinutes();
     AddHoursWithExcessDaysCaptured();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestTimeOnly::Run();
+
+    return EXIT_SUCCESS;
 }

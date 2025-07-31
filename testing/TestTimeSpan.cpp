@@ -1,4 +1,3 @@
-#include "TestTimeSpan.hpp"
 #include "System/TimeSpan.hpp"
 #include "Utility.hpp"
 #include <iostream>
@@ -764,8 +763,13 @@ void Run()
     Subtraction();
     Multiplication();
     Division();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestTimeSpan::Run();
+
+    return EXIT_SUCCESS;
 }

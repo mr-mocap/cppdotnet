@@ -1,4 +1,3 @@
-#include "TestIList.hpp"
 #include "System/Collections/Generic/IList.hpp"
 #include "System/Collections/Generic/List.hpp"
 #include "System/Collections/Generic/OrderedDictionary.hpp"
@@ -196,8 +195,13 @@ void Run()
 
     ConstructWithListRef();
     IterateOverListAsIList();
-
-    System::Console::WriteLine("PASSED!");
 }
 
+}
+
+int main(void)
+{
+    TestIList::Run();
+
+    return EXIT_SUCCESS;
 }

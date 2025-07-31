@@ -1,4 +1,3 @@
-#include "TestNullable.hpp"
 #include "System/Nullable.hpp"
 #include <iostream>
 #include <cassert>
@@ -263,8 +262,13 @@ void Run()
     ConversionOperator();
     OperatorEquals();
     OperatorEqualsEquals();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestNullable::Run();
+
+    return EXIT_SUCCESS;
 }

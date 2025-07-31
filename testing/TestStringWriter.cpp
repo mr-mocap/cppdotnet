@@ -1,4 +1,3 @@
-#include "TestStringWriter.hpp"
 #include "System/IO/StringWriter.hpp"
 #include <iostream>
 #include <cassert>
@@ -54,8 +53,13 @@ void Run()
 
     DefaultConstructed();
     VerifyWrite();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestStringWriter::Run();
+
+    return EXIT_SUCCESS;
 }

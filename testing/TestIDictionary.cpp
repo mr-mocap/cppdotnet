@@ -1,4 +1,3 @@
-#include "TestIDictionary.hpp"
 #include "System/Collections/Generic/IDictionary.hpp"
 #include "System/Collections/Generic/Dictionary.hpp"
 #include <iostream>
@@ -193,8 +192,13 @@ void Run()
     IterateOverLinkedList();
 #endif
     IterateOverDictionary();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestIDictionary::Run();
+
+    return EXIT_SUCCESS;
 }

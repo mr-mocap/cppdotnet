@@ -1,4 +1,3 @@
-#include "TestException.hpp"
 #include "System/Exception.hpp"
 #include "System/Console.hpp"
 #include "System/Diagnostics/Trace.hpp"
@@ -75,8 +74,13 @@ void Run()
     DefaultConstruction();
     WithMessage();
     WithMessageAndInnerException();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestException::Run();
+
+    return EXIT_SUCCESS;
 }

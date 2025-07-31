@@ -1,4 +1,3 @@
-#include "TestList.hpp"
 #include "System/Collections/Generic/List.hpp"
 #include "System/Collections/Generic/LinkedList.hpp"
 #include "System/Collections/Generic/ICollection.hpp"
@@ -493,8 +492,13 @@ void Run()
     FindAll();
 
     TestIListInterface();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestList::Run();
+
+    return EXIT_SUCCESS;
 }

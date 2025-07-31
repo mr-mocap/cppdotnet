@@ -1,4 +1,3 @@
-#include "TestICollection.hpp"
 #include "System/Collections/Generic/ICollection.hpp"
 #include "System/Collections/Generic/LinkedList.hpp"
 #include "System/Collections/Generic/List.hpp"
@@ -335,8 +334,13 @@ void Run()
     IterateOverList();
     IterateOverLinkedList();
     IterateOverDictionary();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestICollection::Run();
+
+    return EXIT_SUCCESS;
 }

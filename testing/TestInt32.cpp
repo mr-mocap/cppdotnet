@@ -1,4 +1,3 @@
-#include "TestInt32.hpp"
 #include "System/Int32.hpp"
 #include "System/Private/private.hpp"
 #include <iostream>
@@ -423,8 +422,13 @@ void Run()
     Parse();
     TryParse();
     Addition();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestInt32::Run();
+
+    return EXIT_SUCCESS;
 }

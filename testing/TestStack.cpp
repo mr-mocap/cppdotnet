@@ -1,4 +1,3 @@
-#include "TestStack.hpp"
 #include "System/Collections/Generic/Stack.hpp"
 #include <iostream>
 #include <cassert>
@@ -216,8 +215,13 @@ void Run()
     TryPeekReturnsFalseWhenStackIsEmpty();
     TryPopReturnsTrueAndCopiesValueToOutputParameter();
     TryPopReturnsFalseWhenStackIsEmpty();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestStack::Run();
+
+    return EXIT_SUCCESS;
 }

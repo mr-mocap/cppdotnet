@@ -1,4 +1,3 @@
-#include "TestPath.hpp"
 #include "System/IO/Path.hpp"
 #include <iostream>
 #include <cassert>
@@ -69,8 +68,13 @@ void Run()
     ChangeExtension();
     CombineTwo();
     EndsInDirectorySeparator();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestPath::Run();
+
+    return EXIT_SUCCESS;
 }

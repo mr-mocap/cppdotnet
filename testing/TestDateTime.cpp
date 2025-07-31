@@ -1,4 +1,3 @@
-#include "TestDateTime.hpp"
 #include "System/DateTime.hpp"
 #include <iostream>
 #include <cassert>
@@ -716,8 +715,13 @@ void Run()
     AddDays();
     AddHours();
     SubtractingTwoDateTimesReturnsATimeSpan();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestDateTime::Run();
+
+    return EXIT_SUCCESS;
 }

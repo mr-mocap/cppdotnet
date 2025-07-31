@@ -1,4 +1,3 @@
-#include "TestCounter.hpp"
 #include "System/Console.hpp"
 #include "System/Diagnostics/Metrics/Meter.hpp"
 #include "System/IO/TextWriter.hpp"
@@ -75,8 +74,13 @@ void Run()
     CounterUnit();
     CounterContainsExternalMeter();
     AddingAMeasurement();
-
-    System::Console::Out().WriteLine("PASSED!");
 }
 
+}
+
+int main(void)
+{
+    TestCounter::Run();
+
+    return EXIT_SUCCESS;
 }

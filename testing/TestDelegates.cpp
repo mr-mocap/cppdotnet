@@ -1,4 +1,3 @@
-#include "TestDelegates.hpp"
 #include "System/Action.hpp"
 #include "System/Func.hpp"
 #include <iostream>
@@ -150,8 +149,13 @@ void Run()
     std::cout << "Running Delegate Tests..." << std::endl;
 
     TestActions();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestDelegates::Run();
+
+    return EXIT_SUCCESS;
 }

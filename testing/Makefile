@@ -7,54 +7,67 @@ LIB_NAME = $(LIB_BASE_NAME).a
 LIB_PATH = $(LIB_BUILD_DIR)/lib$(LIB_NAME)
 INC_PARAMS = $(INCLUDE_DIRS:%=-I%)
 DEBUG_FLAGS = -g3
-OBJS = TestDefaultTraceListener.o \
-	TestConsoleTraceListener.o \
-	TestConsole.o \
-	TestDebug.o \
-	TestTrace.o \
-	TestException.o \
-	TestEnvironment.o \
-	TestVersion.o \
-	TestStringReader.o \
-	TestStringWriter.o \
-	TestEnum.o \
-	TestBitConverter.o \
-	TestConvert.o \
-	TestSpan.o \
-	TestReadOnlySpan.o \
-	TestStringBuilder.o \
-	TestInt32.o \
-	TestNullable.o \
-	TestDelegates.o \
-	TestLinkedList.o \
-	TestList.o \
-	TestTimeSpan.o \
-	TestDateTime.o \
-	TestICollection.o \
-	TestIDictionary.o \
-	TestIList.o \
-	TestDictionary.o \
-	TestTimeOnly.o \
-	TestDateTimeOffset.o \
-	TestDateOnly.o \
-	TestStack.o \
-	TestPath.o \
-	TestValueTuple.o \
-	TestBinaryWriter.o \
-	TestStopwatch.o \
-	TestCounter.o \
-	TestGuid.o \
-	TestActivity.o \
-	main.o
+# OBJS = TestDefaultTraceListener.o \
+# 	TestConsoleTraceListener.o \
+# 	TestConsole.o \
+# 	TestDebug.o \
+# 	TestTrace.o \
+# 	TestException.o \
+# 	TestEnvironment.o \
+# 	TestVersion.o \
+# 	TestStringReader.o \
+# 	TestStringWriter.o \
+# 	TestEnum.o \
+# 	TestBitConverter.o \
+# 	TestConvert.o \
+# 	TestSpan.o \
+# 	TestReadOnlySpan.o \
+# 	TestStringBuilder.o \
+# 	TestInt32.o \
+# 	TestNullable.o \
+# 	TestDelegates.o \
+# 	TestLinkedList.o \
+# 	TestList.o \
+# 	TestTimeSpan.o \
+# 	TestDateTime.o \
+# 	TestICollection.o \
+# 	TestIDictionary.o \
+# 	TestIList.o \
+# 	TestDictionary.o \
+# 	TestTimeOnly.o \
+# 	TestDateTimeOffset.o \
+# 	TestDateOnly.o \
+# 	TestStack.o \
+# 	TestPath.o \
+# 	TestValueTuple.o \
+# 	TestBinaryWriter.o \
+# 	TestStopwatch.o \
+# 	TestCounter.o \
+# 	TestGuid.o \
+# 	TestActivity.o \
+# 	main.o
 
 EXTERNAL_LIBS = -l$(LIB_BASE_NAME) -luuid
 CXXFLAGS=-std=c++20 -W -Wall -Wextra -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
 LDFLAGS=-L$(LIB_BUILD_DIR)
 
-#%.o: %.cpp
-	#$(CXX) -o $@ $< -c $(CPPFLAGS) $(CXXFLAGS)
+TESTS = Activity BinaryWriter BitConverter Console ConsoleTraceListener Convert \
+		Counter DateOnly DateTime DateTimeOffset Debug DefaultTraceListener Delegates \
+		Dictionary Enum Environment Exception Guid ICollection IDictionary IList Int32 \
+		LinkedList List Nullable Path ReadOnlySpan Span Stack Stopwatch StringBuilder \
+		StringReader StringWriter TimeOnly TimeSpan Trace ValueTuple Version
+TEST_BINARIES = $(patsubst %,Test%,${TESTS})
+PASSING_TESTS = $(patsubst %,%.pass,${TEST_BINARIES})
 
-default: test
+%: %.cpp
+	@echo Building $@
+	$(CXX) -o $@ $< $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(EXTERNAL_LIBS)
+
+%.pass: %
+	./$<
+	touch $@
+
+default: all
 
 $(LIB_BUILD_DIR):
 	cd .. && $(MAKE) lib
@@ -66,19 +79,166 @@ $(LIB_PATH): $(LIB_BUILD_DIR)
 lib: $(LIB_PATH)
 	cd .. && $(MAKE) lib
 
-$(BINARY_NAME): $(LIB_PATH) $(OBJS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(OBJS) -o $(BINARY_NAME) $(LDFLAGS) $(EXTERNAL_LIBS)
+TestVersion: TestVersion.cpp
 
-.PHONY: test
-test: $(LIB_PATH) $(BINARY_NAME)
+TestVersion.pass: TestVersion
 
-run_test: test
-	./$(BINARY_NAME)
+TestValueTuple: TestValueTuple.cpp
+
+TestValueTuple.pass: TestValueTuple
+
+TestTrace: TestTrace.cpp
+
+TestTrace.pass: TestTrace
+
+TestTimeSpan: TestTimeSpan.cpp
+
+TestTimeSpan.pass: TestTimeSpan
+
+TestTimeOnly: TestTimeOnly.cpp
+
+TestTimeOnly.pass: TestTimeOnly
+
+TestStringWriter: TestStringWriter.cpp
+
+TestStringWriter.pass: TestStringWriter
+
+TestStringReader: TestStringReader.cpp
+
+TestStringReader.pass: TestStringReader
+
+TestStringBuilder: TestStringBuilder.cpp
+
+TestStringBuilder.pass: TestStringBuilder
+
+TestStopwatch: TestStopwatch.cpp
+
+TestStopwatch.pass: TestStopwatch
+
+TestStack: TestStack.cpp
+
+TestStack.pass: TestStack
+
+TestSpan: TestSpan.cpp
+
+TestSpan.pass: TestSpan
+
+TestReadOnlySpan: TestReadOnlySpan.cpp
+
+TestReadOnlySpan.pass: TestReadOnlySpan
+
+TestPath: TestPath.cpp
+
+TestPath.pass: TestPath
+
+TestNullable: TestNullable.cpp
+
+TestNullable.pass: TestNullable
+
+TestList: TestList.cpp
+
+TestList.pass: TestList
+
+TestLinkedList: TestLinkedList.cpp
+
+TestLinkedList.pass: TestLinkedList
+
+TestInt32: TestInt32.cpp
+
+TestInt32.pass: TestInt32
+
+TestIList: TestIList.cpp
+
+TestIList.pass: TestIList
+
+TestIDictionary: TestIDictionary.cpp
+
+TestIDictionary.pass: TestIDictionary
+
+TestICollection: TestICollection.cpp
+
+TestICollection.pass: TestICollection
+
+TestGuid: TestGuid.cpp
+
+TestGuid.pass: TestGuid
+
+TestException: TestException.cpp
+
+TestException.pass: TestException
+
+TestEnvironment: TestEnvironment.cpp
+
+TestEnvironment.pass: TestEnvironment
+
+TestEnum: TestEnum.cpp
+
+TestEnum.pass: TestEnum
+
+TestDictionary: TestDictionary.cpp
+
+TestDictionary.pass: TestDictionary
+
+TestDelegates: TestDelegates.cpp
+
+TestDelegates.pass: TestDelegates
+
+TestDefaultTraceListener: TestDefaultTraceListener.cpp
+
+TestDefaultTraceListener.pass: TestDefaultTraceListener
+
+TestDebug: TestDebug.cpp
+
+TestDebug.pass: TestDebug
+
+TestDateTimeOffset: TestDateTimeOffset.cpp
+
+TestDateTimeOffset.pass: TestDateTimeOffset
+
+TestDateTime: TestDateTime.cpp
+
+TestDateTime.pass: TestDateTime
+
+TestDateOnly: TestDateOnly.cpp
+
+TestDateOnly.pass: TestDateOnly
+
+TestCounter: TestCounter.cpp
+
+TestCounter.pass: TestCounter
+
+TestConvert: TestConvert.cpp
+
+TestConvert.pass: TestConvert
+
+TestConsoleTraceListener: TestConsoleTraceListener.cpp
+
+TestConsoleTraceListener.pass: TestConsoleTraceListener
+
+TestConsole: TestConsole.cpp
+
+TestConsole.pass: TestConsole
+
+TestBitConverter: TestBitConverter.cpp
+
+TestBitConverter.pass: TestBitConverter
+
+TestBinaryWriter: TestBinaryWriter.cpp
+
+TestBinaryWriter.pass: TestBinaryWriter
+
+TestActivity: TestActivity.cpp
+
+TestActivity.pass: TestActivity
+
+all: $(PASSING_TESTS)
 
 .PHONY: clean
 clean:
 	rm -f ./*.o
-	rm -f ./$(BINARY_NAME)
+	rm -f ./*.d
+	rm -f $(TESTS)
+	rm -f $(PASSING_TESTS)
 
 .PHONY: cleanlib
 cleanlib:
