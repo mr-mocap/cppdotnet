@@ -12,7 +12,7 @@ namespace System::Diagnostics::Metrics
 class MeterListener
 {
 public:
-    MeterListener();
+    MeterListener() = default;
 
     Action<Instrument &, MeterListener &> &InstrumentPublished() { return _instrument_published_delegate; }
     Action<Instrument &>                  &MeasurementsCompleted() { return _measurements_completed_delegate; }

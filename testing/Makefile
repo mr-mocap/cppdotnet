@@ -54,18 +54,19 @@ LDFLAGS=-L$(LIB_BUILD_DIR)
 TESTS = Activity BinaryWriter BitConverter Console ConsoleTraceListener Convert \
 		Counter DateOnly DateTime DateTimeOffset Debug DefaultTraceListener Delegates \
 		Dictionary Enum Environment Exception Guid ICollection IDictionary IList Int32 \
-		LinkedList List Nullable Path ReadOnlySpan Span Stack Stopwatch StringBuilder \
+		LinkedList List Meter Nullable Path ReadOnlySpan Span Stack Stopwatch StringBuilder \
 		StringReader StringWriter TimeOnly TimeSpan Trace ValueTuple Version
 TEST_BINARIES = $(patsubst %,Test%,${TESTS})
 PASSING_TESTS = $(patsubst %,%.pass,${TEST_BINARIES})
 
 %: %.cpp
 	@echo Building $@
-	$(CXX) -o $@ $< $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(EXTERNAL_LIBS)
+	@$(CXX) -o $@ $< $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(EXTERNAL_LIBS)
 
 %.pass: %
-	./$<
-	touch $@
+	@echo Running $<
+	@./$<
+	@touch $@
 
 default: all
 
@@ -134,6 +135,10 @@ TestPath.pass: TestPath
 TestNullable: TestNullable.cpp
 
 TestNullable.pass: TestNullable
+
+TestMeter: TestMeter.cpp
+
+TestMeter.pass: TestMeter
 
 TestList: TestList.cpp
 

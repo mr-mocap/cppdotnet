@@ -29,7 +29,7 @@ public:
 
         bool Enabled() const { return false; } // TODO: FIXME
 
-        virtual bool IsObservable() const { return false; }
+        virtual bool IsObservable() const { return _observable; }
 
         const class Meter &Meter() const { return _meter; }
               class Meter &Meter()       { return _meter; }
@@ -52,6 +52,7 @@ public:
         std::string  _description;
         std::string  _unit;
         Diagnostics::Types::NameObjectPairList _tags;
+        bool         _observable = false;
 
         SpecificInstrument(class Meter &meter, std::string_view name)
             :
@@ -63,12 +64,14 @@ public:
         SpecificInstrument(class Meter &meter,
                       std::string_view  name,
                       std::string_view  unit,
-                      std::string_view  description)
+                      std::string_view  description,
+                                  bool  observable)
             :
             _meter( meter ),
             _name( name ),
             _description( description ),
-            _unit( unit )
+            _unit( unit ),
+            _observable( observable )
         {
         }
 
@@ -76,13 +79,15 @@ public:
                       std::string_view  name,
                       std::string_view  unit,
                       std::string_view  description,
+                                  bool  observable,
                       Diagnostics::Types::NameObjectPairList &tags)
             :
             _meter( meter ),
             _name( name ),
             _description( description ),
             _unit( unit ),
-            _tags( tags )
+            _tags( tags ),
+            _observable( observable )
         {
         }
 

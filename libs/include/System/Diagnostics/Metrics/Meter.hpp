@@ -40,14 +40,14 @@ public:
     template <class T>
     Counter<T> CreateCounter(std::string_view name, std::string_view unit, std::string_view description)
     {
-        return Counter<T>(*this, name, unit, description);
+        return Counter<T>(*this, name, unit, description, false);
     }
 
     template <class T>
     Counter<T> CreateCounter(std::string_view name, std::string_view unit, std::string_view description,
                              const Diagnostics::Types::NameObjectPairList &tags)
     {
-        return Counter<T>(*this, name, unit, description);
+        return Counter<T>(*this, name, unit, description, false, tags);
     }
 
     void Dispose();
