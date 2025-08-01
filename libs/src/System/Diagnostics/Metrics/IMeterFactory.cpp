@@ -12,14 +12,19 @@ Meter IMeterFactory::Create(const MeterOptions &options)
                                        {
                                             return (current_meter.Name()    == options.Name) &&
                                                    (current_meter.Version() == options.Version);
+                                                   // TODO: Add Tags() to check
                                        }
                                        );
 
     if ( found != _cached_meters.end() )
         return *found;
     
+    MeterOptions modified_options = options;
+
+    modified_options.Scope = this;
+
     // We need to create one since it doesn't exist
-    _cached_meters.emplace_back( options );
+    _cached_meters.emplace_back( modified_options );
     return _cached_meters.back();
 }
 
