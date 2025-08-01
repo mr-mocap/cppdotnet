@@ -236,7 +236,7 @@ TestActivity: TestActivity.cpp
 
 TestActivity.pass: TestActivity
 
-all: $(PASSING_TESTS)
+all: $(PASSING_TESTS) $(LIB_PATH)
 
 .PHONY: clean
 clean:
