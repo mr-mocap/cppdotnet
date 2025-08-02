@@ -11,8 +11,51 @@
 namespace System::Collections::Generic
 {
 
+template <typename T> class List;
+
+template <typename T>
+class ListIListInterfaceCustomization
+{
+public:
+    template <typename U>
+    size_t IndexOf(U &&item) const
+    {
+        return static_cast<const List<T> &>(*this).IListInterfaceCustomizationIndexOf( std::forward<U>(item) );
+    }
+
+    template <typename U>
+    void Insert(size_t index, U &&item)
+    {
+        static_cast<List<T> &>(*this).IListInterfaceCustomizationInsert( index, std::forward<U>(item) );
+    }
+};
+
+template <typename T>
+class ListICollectionInterfaceCustomization
+{
+public:
+    template <typename U>
+    void Add(U &&item)
+    {
+        static_cast<List<T> &>(*this).ICollectionInterfaceCustomizationAdd( std::forward<U>(item) );
+    }
+
+    template <typename U>
+    bool Remove(U &&item)
+    {
+        return static_cast<List<T> &>(*this).ICollectionInterfaceCustomizationRemove( std::forward<U>(item) );
+    }
+
+    template <typename U>
+    bool Contains(U &&item) const
+    {
+        return static_cast<const List<T> &>(*this).ICollectionInterfaceCustomizationContains( std::forward<U>(item) );
+    }
+};
+
 template <class T>
-class List
+class List : public ListIListInterfaceCustomization<T>,
+             public ListICollectionInterfaceCustomization<T>
 {
 public:
     using underlying_type = std::vector<T>;
@@ -157,27 +200,6 @@ public:
     }
 
     // IList-specific methods
-    size_type IndexOf(const T &item) const
-    {
-        auto iter_found = std::find( begin(), end(), item );
-
-        if ( iter_found == end() )
-            return -1;
-        
-        return std::distance( _list.begin(), iter_found );
-    }
-
-    void Insert(size_type index, const T&item)
-    {
-        if ( IsReadOnly() )
-            ThrowWithTarget( System::NotSupportedException( "List is read-only" ) );
-        if ( index > Count() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
-        
-        // OK to insert at end(), which is when index == Count()
-        _list.emplace( std::next( begin(), index ), item );
-    }
-
     void RemoveAt(size_type index)
     {
         if ( IsReadOnly() )
@@ -192,31 +214,6 @@ public:
     size_type Count() const { return _list.size(); }
 
     void Clear() noexcept { _list.clear(); }
-
-    void Add(const T &item)
-    {
-        _list.emplace_back( item );
-    }
-
-    void Add(T &&item)
-    {
-        _list.emplace_back( std::move(item) );
-    }
-
-    bool Remove(const T &item)
-    {
-        auto iter_found = std::find( begin(), end(), item );
-
-        if ( iter_found == end() )
-            return false;
-        _list.erase( iter_found );
-        return true;
-    }
-
-    bool Contains(const T &item) const
-    {
-        return std::find( begin(), end(), item ) != _list.end();
-    }
 
     bool IsReadOnly() const { return true; }
     bool IsReadOnly()       { return false; }
@@ -241,6 +238,56 @@ public:
     const_reverse_iterator crend() const noexcept { return _list.crend(); }
 protected:
     std::vector<T> _list;
+
+private:
+    template <typename U>
+    size_type IListInterfaceCustomizationIndexOf(U &&item) const
+    {
+        auto iter_found = std::find( begin(), end(), std::forward<U>(item) );
+
+        if ( iter_found == end() )
+            return -1;
+        
+        return std::distance( _list.begin(), iter_found );
+    }
+
+    template <typename U>
+    void IListInterfaceCustomizationInsert(size_t index, U &&item)
+    {
+        if ( IsReadOnly() )
+            ThrowWithTarget( System::NotSupportedException( "List is read-only" ) );
+        if ( index > Count() )
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
+        
+        // OK to insert at end(), which is when index == Count()
+        _list.emplace( std::next( begin(), index ), std::forward<U>(item) );
+    }
+
+    template <typename U>
+    void ICollectionInterfaceCustomizationAdd(U &&item)
+    {
+        _list.emplace_back( std::forward<U>(item) );
+    }
+
+    template <typename U>
+    bool ICollectionInterfaceCustomizationRemove(U &&item)
+    {
+        auto iter_found = std::find( begin(), end(), std::forward<U>(item) );
+
+        if ( iter_found == end() )
+            return false;
+        _list.erase( iter_found );
+        return true;
+    }
+
+    template <typename U>
+    bool ICollectionInterfaceCustomizationContains(U &&item) const
+    {
+        return std::find( begin(), end(), std::forward<U>(item) ) != _list.end();
+    }
+
+    friend class ListIListInterfaceCustomization<T>;
+    friend class ListICollectionInterfaceCustomization<T>;
 };
 
 }
