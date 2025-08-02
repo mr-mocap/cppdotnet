@@ -7,45 +7,6 @@ LIB_NAME = $(LIB_BASE_NAME).a
 LIB_PATH = $(LIB_BUILD_DIR)/lib$(LIB_NAME)
 INC_PARAMS = $(INCLUDE_DIRS:%=-I%)
 DEBUG_FLAGS = -g3
-# OBJS = TestDefaultTraceListener.o \
-# 	TestConsoleTraceListener.o \
-# 	TestConsole.o \
-# 	TestDebug.o \
-# 	TestTrace.o \
-# 	TestException.o \
-# 	TestEnvironment.o \
-# 	TestVersion.o \
-# 	TestStringReader.o \
-# 	TestStringWriter.o \
-# 	TestEnum.o \
-# 	TestBitConverter.o \
-# 	TestConvert.o \
-# 	TestSpan.o \
-# 	TestReadOnlySpan.o \
-# 	TestStringBuilder.o \
-# 	TestInt32.o \
-# 	TestNullable.o \
-# 	TestDelegates.o \
-# 	TestLinkedList.o \
-# 	TestList.o \
-# 	TestTimeSpan.o \
-# 	TestDateTime.o \
-# 	TestICollection.o \
-# 	TestIDictionary.o \
-# 	TestIList.o \
-# 	TestDictionary.o \
-# 	TestTimeOnly.o \
-# 	TestDateTimeOffset.o \
-# 	TestDateOnly.o \
-# 	TestStack.o \
-# 	TestPath.o \
-# 	TestValueTuple.o \
-# 	TestBinaryWriter.o \
-# 	TestStopwatch.o \
-# 	TestCounter.o \
-# 	TestGuid.o \
-# 	TestActivity.o \
-# 	main.o
 
 EXTERNAL_LIBS = -l$(LIB_BASE_NAME) -luuid
 CXXFLAGS=-std=c++20 -W -Wall -Wextra -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
@@ -54,7 +15,7 @@ LDFLAGS=-L$(LIB_BUILD_DIR)
 TESTS = Activity BinaryWriter BitConverter Console ConsoleTraceListener Convert \
 		Counter DateOnly DateTime DateTimeOffset Debug DefaultTraceListener Delegates \
 		Dictionary Enum Environment Exception Guid ICollection IDictionary IList Int32 \
-		LinkedList List Meter Nullable Path ReadOnlySpan Span Stack Stopwatch StringBuilder \
+		LinkedList List Nullable Path ReadOnlySpan Span Stack Stopwatch StringBuilder \
 		StringReader StringWriter TimeOnly TimeSpan Trace ValueTuple Version
 TEST_BINARIES = $(patsubst %,Test%,${TESTS})
 PASSING_TESTS = $(patsubst %,%.pass,${TEST_BINARIES})
