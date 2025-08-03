@@ -286,7 +286,7 @@ void Add()
 
         assert( list.Contains("one") );
 
-        list.Add( std::string_view{numbers}.substr(4, 3) );
+        list.Add( std::string_view{numbers}.substr(4, 3) ); // Add a string_view!
 
         assert( list.Contains("two") );
     }
