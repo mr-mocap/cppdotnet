@@ -6,7 +6,6 @@
 #include <initializer_list>
 #include <string_view>
 #include <algorithm>
-#include <concepts>
 
 
 namespace System::Collections::Generic
