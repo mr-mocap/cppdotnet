@@ -19,7 +19,6 @@ class ListIListInterfaceCustomization
 {
 public:
     template <typename U>
-        requires std::convertible_to<U, T>
     size_t IListIndexOf(U &&item) const
     {
         const List<T> &derived_class = static_cast<const List<T> &>(*this);
@@ -33,7 +32,6 @@ public:
     }
 
     template <typename U>
-        requires std::convertible_to<U, T>
     void IListInsert(size_t index, U &&item)
     {
         List<T> &derived_class = static_cast<List<T> &>(*this);
@@ -53,7 +51,6 @@ class ListICollectionInterfaceCustomization
 {
 public:
     template <typename U>
-        requires std::convertible_to<U, T>
     void ICollectionAdd(U &&item)
     {
         List<T> &derived_class = static_cast<List<T> &>(*this);
