@@ -8,23 +8,17 @@ namespace TestReadOnlySpan
 
 void Empty()
 {
-    std::cout << __func__ << std::endl;
-
     assert( System::ReadOnlySpan<int>::Empty().IsEmpty() );
     assert( System::ReadOnlySpan<int>::Empty().Length() == 0 );
 }
 
 void DefaultConstructedSpanIsEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     assert( System::ReadOnlySpan<short>().IsEmpty() );
 }
 
 void SingleObject()
 {
-    std::cout << __func__ << std::endl;
-
     // Dynamic extent
     {
         float var = 3.3;
@@ -50,8 +44,6 @@ void SingleObject()
 
 void MultipleObjectsFromBuiltInArray()
 {
-    std::cout << __func__ << std::endl;
-
     // Dynamic extent
     {
         int builtin_array[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -101,8 +93,6 @@ void MultipleObjectsFromBuiltInArray()
 
 void MultipleObjectsFromStdArray()
 {
-    std::cout << __func__ << std::endl;
-
     // Non-const
     { // Dynamic extent
         std::array<int, 6> a{ 1, 2, 3, 4, 5, 6 };
@@ -219,8 +209,6 @@ void MultipleObjectsFromStdArray()
 
 void Assignment()
 {
-    std::cout << __func__ << std::endl;
-
     float var = 6.6f;
     System::ReadOnlySpan<float> one_item{ var };
     System::ReadOnlySpan<float> new_item;
@@ -243,8 +231,6 @@ void Assignment()
 
 void Slice()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     System::ReadOnlySpan<int> span_a( a );
 
@@ -299,8 +285,6 @@ void Slice()
 
 void CopyTo()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     int b[] = { 5, 5, 5, 5, 5 };
     System::ReadOnlySpan<int> span_a( a );
@@ -343,8 +327,6 @@ void CopyTo()
 
 void TryCopyTo()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     int b[] = { 5, 5, 5, 5, 5 };
     System::ReadOnlySpan<int> span_a( a );
@@ -380,8 +362,6 @@ void TryCopyTo()
 
 void AsBytes()
 {
-    std::cout << __func__ << std::endl;
-
     // ReadOnlySpan of the underlying bytes is the correct size
     {
         std::array<const int, 3> a{ 1, 2, 3 };

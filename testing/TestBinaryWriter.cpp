@@ -11,8 +11,6 @@ namespace TestBinaryWriter
 
 void DefaultConstructedEatsDataWritten()
 {
-    System::Console::Out().WriteLine(__func__);
-
     System::IO::BinaryWriter bw;
 
     assert( bw.OutStream().Length() == 0 );
@@ -28,8 +26,6 @@ void DefaultConstructedEatsDataWritten()
 
 void WriteBoolIncreasesOutputStreamLengthByOne()
 {
-    System::Console::Out().WriteLine(__func__);
-
     std::shared_ptr<System::IO::MemoryStream> mem_stream{ std::make_shared<System::IO::MemoryStream>() };
     System::IO::BinaryWriter bw( mem_stream );
 
@@ -47,8 +43,6 @@ void WriteBoolIncreasesOutputStreamLengthByOne()
 
 void WriteCharIncreasesOutputStreamLengthByOne()
 {
-    System::Console::Out().WriteLine(__func__);
-
     std::shared_ptr<System::IO::MemoryStream> mem_stream{ std::make_shared<System::IO::MemoryStream>() };
     System::IO::BinaryWriter bw( mem_stream );
 
@@ -66,8 +60,6 @@ void WriteCharIncreasesOutputStreamLengthByOne()
 
 void WriteReadOnlySpanWritesThoseBytes()
 {
-    System::Console::Out().WriteLine(__func__);
-
     std::shared_ptr<System::IO::MemoryStream> mem_stream{ std::make_shared<System::IO::MemoryStream>() };
     System::IO::BinaryWriter bw( mem_stream );
 

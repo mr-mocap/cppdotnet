@@ -11,8 +11,6 @@ namespace TestLinkedList
 
 void DefaultConstructsToEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::LinkedList<int> empty_list;
 
     assert( empty_list.Count() == 0 );
@@ -20,8 +18,6 @@ void DefaultConstructsToEmpty()
 
 void ConstructWithExternalSequence()
 {
-    std::cout << __func__ << std::endl;
-
     // From built-in array
     {
         int a[] = { 1, 2, 3 };
@@ -57,8 +53,6 @@ void ConstructWithExternalSequence()
 
 void AddFirstAddsItemToFirstPosition()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::LinkedList<int> list;
 
     assert( list.Count() == 0 );
@@ -87,8 +81,6 @@ void AddFirstAddsItemToFirstPosition()
 
 void AddLastAddsItemToLastPosition()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::LinkedList<int> list;
 
     assert( list.Count() == 0 );
@@ -117,8 +109,6 @@ void AddLastAddsItemToLastPosition()
 
 void ClearEmptiesTheList()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::LinkedList<int> list;
 
     list.AddFirst( 2 );
@@ -134,8 +124,6 @@ void ClearEmptiesTheList()
 
 void RemoveFirstRemovesTheFirstItem()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::LinkedList<int> list;
 
     list.AddFirst( 2 );
@@ -168,8 +156,6 @@ void RemoveFirstRemovesTheFirstItem()
 
 void RemoveLastRemovesTheLastItem()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::LinkedList<int> list;
 
     list.AddFirst( 2 );
@@ -202,8 +188,6 @@ void RemoveLastRemovesTheLastItem()
 
 void IsSynchronized()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::LinkedList<int> list;
 
     assert( !list.IsSynchronized() );
@@ -211,8 +195,6 @@ void IsSynchronized()
 
 void IsReadOnly()
 {
-    std::cout << __func__ << std::endl;
-
     {
         Collections::Generic::LinkedList<int> list;
 
@@ -227,8 +209,6 @@ void IsReadOnly()
 
 void RemoveRemovesTheFirstFoundItem()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::LinkedList<int> list;
 
     list.AddLast( 1 );
@@ -255,8 +235,6 @@ void RemoveRemovesTheFirstFoundItem()
 
 void Contains()
 {
-    std::cout << __func__ << std::endl;
-
     // It contains the data
     {
         Collections::Generic::LinkedList<int> list;
@@ -277,8 +255,6 @@ void Contains()
 
 void Find()
 {
-    std::cout << __func__ << std::endl;
-
     // Empty list won't contain the data
     {
         Collections::Generic::LinkedList<int> list;
@@ -300,8 +276,6 @@ void Find()
 
 void FindLast()
 {
-    std::cout << __func__ << std::endl;
-
     // Empty list won't contain the data
     {
         Collections::Generic::LinkedList<int> list;

@@ -10,8 +10,6 @@ namespace TestStopwatch
 
 void DefaultConstructed()
 {
-    std::cout << __func__ << std::endl;
-
     System::Diagnostics::Stopwatch sw;
 
     assert( !sw.IsRunning() );
@@ -24,8 +22,6 @@ void DefaultConstructed()
 
 void StartNewCreatesANewRunningStopwatch()
 {
-    std::cout << __func__ << std::endl;
-
     System::Diagnostics::Stopwatch sw = System::Diagnostics::Stopwatch::StartNew();
 
     assert( sw.IsRunning() );
@@ -34,8 +30,6 @@ void StartNewCreatesANewRunningStopwatch()
 
 void StopStopsTheStopwatch()
 {
-    std::cout << __func__ << std::endl;
-
     System::Diagnostics::Stopwatch sw = System::Diagnostics::Stopwatch::StartNew();
 
     assert( sw.IsRunning() );
@@ -50,8 +44,6 @@ void StopStopsTheStopwatch()
 
 void ResetStopsMeasurementAndClearsElapsedTime()
 {
-    std::cout << __func__ << std::endl;
-
     System::Diagnostics::Stopwatch sw = System::Diagnostics::Stopwatch::StartNew();
 
     assert( sw.IsRunning() );
@@ -65,8 +57,6 @@ void ResetStopsMeasurementAndClearsElapsedTime()
 
 void RestartClearsElapsedTimeAndStartsRunning()
 {
-    std::cout << __func__ << std::endl;
-
     System::Diagnostics::Stopwatch sw = System::Diagnostics::Stopwatch::StartNew();
 
     assert( sw.IsRunning() );

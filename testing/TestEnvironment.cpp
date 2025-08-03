@@ -14,16 +14,12 @@ void GetEnvrionmentVariable()
 {
     using namespace std::literals;
 
-    std::cout << __func__ << std::endl;
-
     assert( System::Environment::GetEnvironmentVariable( "DISPLAY"sv ) == ":0" );
 }
 
 void SetEnvironmentVariable()
 {
     using namespace std::literals;
-
-    std::cout << __func__ << std::endl;
 
     assert( System::Environment::GetEnvironmentVariable( "MY_VAR"sv ).empty() );
 
@@ -51,8 +47,6 @@ void SetEnvironmentVariable()
 
 void GetEnvironmentVariables()
 {
-    std::cout << __func__ << std::endl;
-
     auto variables = System::Environment::GetEnvironmentVariables();
 }
 

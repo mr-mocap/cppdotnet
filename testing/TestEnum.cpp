@@ -101,8 +101,6 @@ using MyTraceLevel = System::Enum<MyTraceLevelPolicy>;
 
 void CheckGetNames()
 {
-    std::cout << __func__ << std::endl;
-
     MyTraceLevel t;
 
     std::cout << "GetNames() =\t";
@@ -112,8 +110,6 @@ void CheckGetNames()
 
 void CheckGetValues()
 {
-    std::cout << __func__ << std::endl;
-
     MyTraceLevel t;
 
     std::cout << "GetValues() =\t";
@@ -123,8 +119,6 @@ void CheckGetValues()
 
 void IsDefined()
 {
-    std::cout << __func__ << std::endl;
-
     MyTraceLevel t;
 
     assert( t.IsDefined( MyTraceLevel::Off ) );
@@ -144,8 +138,6 @@ void IsDefined()
 
 void GetName()
 {
-    std::cout << __func__ << std::endl;
-
     assert( MyTraceLevel::GetName( MyTraceLevel::Off ) == "Off" );
     assert( MyTraceLevel::GetName( MyTraceLevel::Error ) == "Error" );
     assert( MyTraceLevel::GetName( MyTraceLevel::Warning ) == "Warning" );
@@ -163,8 +155,6 @@ void GetName()
 
 void Parse()
 {
-    std::cout << __func__ << std::endl;
-
     try
     {
         assert( MyTraceLevel::Parse("Off") == MyTraceLevel::Off );
@@ -194,8 +184,6 @@ void Parse()
 
 void TryParse()
 {
-    std::cout << __func__ << std::endl;
-
     // Success... using names
     assert( MyTraceLevel::TryParse("Off") && (MyTraceLevel::TryParse("Off").value() == MyTraceLevel::Off) );
     assert( MyTraceLevel::TryParse("Error") && (MyTraceLevel::TryParse("Error").value() == MyTraceLevel::Error) );
@@ -220,8 +208,6 @@ void TryParse()
 
 void Construct()
 {
-    std::cout << __func__ << std::endl;
-
     {
         MyTraceLevel t;
 
@@ -261,8 +247,6 @@ void Construct()
 
 void Assignment()
 {
-    std::cout << __func__ << std::endl;
-
     MyTraceLevel t;
 
     assert( t == 0 );
@@ -274,8 +258,6 @@ void Assignment()
 
 void GetValuesAsUnderlyingType()
 {
-    std::cout << __func__ << std::endl;
-
     auto array{ MyTraceLevel::GetValuesAsUnderlyingType() };
 
     assert( array[0] == 0 );
@@ -287,14 +269,11 @@ void GetValuesAsUnderlyingType()
 
 void GetTypeCode()
 {
-    std::cout << __func__ << std::endl;
-
     assert( MyTraceLevel{}.GetTypeCode() == System::TypeCode::UInt32 );
 }
 
 void GenericEnum()
 {
-    std::cout << __func__ << std::endl;
 #if 0
     System::Enum t;
 

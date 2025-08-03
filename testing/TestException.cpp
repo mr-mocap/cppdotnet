@@ -12,8 +12,6 @@ namespace TestException
 
 void DefaultConstruction()
 {
-    std::cout << __func__ << std::endl;
-
     ArgumentNullException e;
 
     assert( e.Message().empty() );
@@ -23,8 +21,6 @@ void DefaultConstruction()
 
 void WithMessage()
 {
-    std::cout << __func__ << std::endl;
-
     // Message Automatically filled in
     {
         ArgumentNullException ex( "parameter" );
@@ -48,8 +44,6 @@ void WithMessage()
 
 void WithMessageAndInnerException()
 {
-    std::cout << __func__ << std::endl;
-
     auto msg = "Some Kind of Exception occurred"sv;
     auto msg_outer = "This is the outer Exception"sv;
 

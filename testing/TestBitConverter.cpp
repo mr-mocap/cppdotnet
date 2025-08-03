@@ -8,8 +8,6 @@ namespace TestBitConverter
 
 void GetBytesBool()
 {
-    std::cout << __func__ << std::endl;
-
     std::vector<std::byte> result = System::BitConverter::GetBytes(true);
 
     assert( result.size() == sizeof(bool) );
@@ -23,8 +21,6 @@ void GetBytesBool()
 
 void GetBytesChar()
 {
-    std::cout << __func__ << std::endl;
-
     char input = 3;
     std::vector<std::byte> result = System::BitConverter::GetBytes(input);
 
@@ -40,8 +36,6 @@ void GetBytesChar()
 
 void GetBytesFloat()
 {
-    std::cout << __func__ << std::endl;
-
     float input = 0;
     std::vector<std::byte> result = System::BitConverter::GetBytes(input);
 
@@ -57,8 +51,6 @@ void GetBytesFloat()
 
 void GetAndToAreInverses()
 {
-    std::cout << __func__ << std::endl;
-
     // Boolean
     {
         bool input = false;
@@ -101,8 +93,6 @@ void GetAndToAreInverses()
 
 void ByteSwap()
 {
-    std::cout << __func__ << std::endl;
-
     // bool
     {
         bool origin = true;

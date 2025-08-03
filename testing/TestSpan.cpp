@@ -8,23 +8,17 @@ namespace TestSpan
 
 void Empty()
 {
-    std::cout << __func__ << std::endl;
-
     assert( System::Span<int>::Empty().IsEmpty() );
     assert( System::Span<int>::Empty().Length() == 0 );
 }
 
 void DefaultConstructedSpanIsEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     assert( System::Span<short>().IsEmpty() );
 }
 
 void SingleObject()
 {
-    std::cout << __func__ << std::endl;
-
     float var = 3.3;
     System::Span<float> one_item{ var };
 
@@ -35,8 +29,6 @@ void SingleObject()
 
 void MultipleObjectsFromBuiltInArray()
 {
-    std::cout << __func__ << std::endl;
-
     int builtin_array[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     System::Span<int> span_of_items( builtin_array );
 
@@ -59,8 +51,6 @@ void MultipleObjectsFromBuiltInArray()
 
 void MultipleObjectsFromStdArray()
 {
-    std::cout << __func__ << std::endl;
-
     // Non-const
     {
         std::array<int, 6> a{ 1, 2, 3, 4, 5, 6 };
@@ -147,8 +137,6 @@ void MultipleObjectsFromStdArray()
 
 void Assignment()
 {
-    std::cout << __func__ << std::endl;
-
     float var = 6.6f;
     System::Span<float> one_item{ var };
     System::Span<float> new_item;
@@ -171,8 +159,6 @@ void Assignment()
 
 void Clear()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     System::Span<int> span_a( a );
 
@@ -189,8 +175,6 @@ void Clear()
 
 void Fill()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     System::Span<int> span_a( a );
 
@@ -207,8 +191,6 @@ void Fill()
 
 void Slice()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     System::Span<int> span_a( a );
 
@@ -263,8 +245,6 @@ void Slice()
 
 void CopyTo()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     int b[] = { 5, 5, 5, 5, 5 };
     System::Span<int> span_a( a );
@@ -305,8 +285,6 @@ void CopyTo()
 
 void TryCopyTo()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     int b[] = { 5, 5, 5, 5, 5 };
     System::Span<int> span_a( a );

@@ -8,8 +8,6 @@ namespace TestNullable
 
 void DefaultConstructsToNull()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable;
 
     assert( !variable.HasValue() );
@@ -17,8 +15,6 @@ void DefaultConstructsToNull()
 
 void ConstructWithValueSetValueAndHasValueToTrue()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::Nullable<int> variable{ 6 };
 
@@ -36,8 +32,6 @@ void ConstructWithValueSetValueAndHasValueToTrue()
 
 void AccessingValueWhenHasValueIsFalseThrowsException()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable;
 
     assert( !variable.HasValue() );
@@ -56,8 +50,6 @@ void AccessingValueWhenHasValueIsFalseThrowsException()
 
 void AccessingValueWhenHasValueIsTrueDoesNotThrowException()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable{ 2 };
 
     assert( variable.HasValue() );
@@ -66,8 +58,6 @@ void AccessingValueWhenHasValueIsTrueDoesNotThrowException()
 
 void GetValueOrDefaultReturnsDefaultWhenHasValueIsFalse()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable;
 
     assert( !variable.HasValue() );
@@ -76,8 +66,6 @@ void GetValueOrDefaultReturnsDefaultWhenHasValueIsFalse()
 
 void GetValueOrDefaultReturnsValueWhenHasValueIsTrue()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable{ 32768 };
 
     assert( variable.HasValue() );
@@ -86,8 +74,6 @@ void GetValueOrDefaultReturnsValueWhenHasValueIsTrue()
 
 void GetValueOrDefaultWithNoParameters()
 {
-    std::cout << __func__ << std::endl;
-
     // Returns Default Value when !HasValue()
     {
         System::Nullable<int> variable;
@@ -107,8 +93,6 @@ void GetValueOrDefaultWithNoParameters()
 
 void ConversionOperator()
 {
-    std::cout << __func__ << std::endl;
-
     // Returns Default Value when !HasValue()
     {
         System::Nullable<int> variable;
@@ -137,8 +121,6 @@ void ConversionOperator()
 
 void OperatorEquals()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable;
 
     // Assigning a value to an empty Nullable
@@ -209,8 +191,6 @@ void OperatorEquals()
 
 void OperatorEqualsEquals()
 {
-    std::cout << __func__ << std::endl;
-
     // Both Null
     {
         System::Nullable<int> variable;

@@ -12,8 +12,6 @@ namespace TestIList
 
 void MoveConstructedWithDataType()
 {
-    System::Console::WriteLine(__func__);
-
     System::Collections::Generic::IList<int> empty{ System::Collections::Generic::List<int>() };
 
     assert( empty.Count() == 0 );
@@ -21,8 +19,6 @@ void MoveConstructedWithDataType()
 
 void ConstructedWithObjectMakesANewCopy()
 {
-    System::Console::WriteLine(__func__);
-
     System::Collections::Generic::List<int> list;
 
     list.Add(1);
@@ -52,8 +48,6 @@ void ConstructedWithObjectMakesANewCopy()
 
 void CopyConstructorMakesANewObject()
 {
-    System::Console::WriteLine(__func__);
-
     System::Collections::Generic::List<int> list;
 
     list.Add(1);
@@ -100,8 +94,6 @@ void CopyConstructorMakesANewObject()
 
 void MoveConstructorLeavesOldObjectEmpty()
 {
-    System::Console::WriteLine(__func__);
-
     System::Collections::Generic::List<int>  list;
 
     list.Add(1);
@@ -132,8 +124,6 @@ void MoveConstructorLeavesOldObjectEmpty()
 
 void ConstructWithListRef()
 {
-    System::Console::WriteLine(__func__);
-
     int example_data[] = { 1, 2, 3 };
     System::Collections::Generic::List<int>  list(example_data);
 
@@ -152,8 +142,6 @@ void ConstructWithListRef()
 
 void IterateOverListAsIList()
 {
-    System::Console::WriteLine(__func__);
-
     // Iterate Over List...
     System::Console::WriteLine("Iterating over List...");
     {

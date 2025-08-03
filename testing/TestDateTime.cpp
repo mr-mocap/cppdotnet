@@ -8,8 +8,6 @@ namespace TestDateTime
 
 void DefaultConstruct()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime t;
 
     assert( t == System::DateTime().MinValue() );
@@ -17,8 +15,6 @@ void DefaultConstruct()
 
 void MinValueIsJanuaryFirstOnYearZeroAtMidnight()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime t = System::DateTime::MinValue();
 
     assert( t.Year() == 1 );
@@ -31,8 +27,6 @@ void MinValueIsJanuaryFirstOnYearZeroAtMidnight()
 
 void ConstructYearMonthDay()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime t( 1980, 1, 1 );
 
     assert( t.Year() == 1980 );
@@ -42,8 +36,6 @@ void ConstructYearMonthDay()
 
 void ConstructYearMonthDayHourMinuteSecond()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::DateTime t( 1980, 1, 1, 9, 30, 2 );
 
@@ -58,8 +50,6 @@ void ConstructYearMonthDayHourMinuteSecond()
 
 void DayOfWeek()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime t( 2025, 3, 6 );
 
     assert( t.Day() == 6 );
@@ -68,30 +58,22 @@ void DayOfWeek()
 
 void DayOfYear()
 {
-    std::cout << __func__ << std::endl;
-
     assert( System::DateTime( 2025, 1, 1 ).DayOfYear() == 1 );
     assert( System::DateTime( 2025, 3, 6 ).DayOfYear() == 65 );
 }
 
 void Now()
 {
-    std::cout << __func__ << std::endl;
-
     std::cout << "The time is now: " << System::DateTime::Now().ToString() << std::endl;
 }
 
 void UtcNow()
 {
-    std::cout << __func__ << std::endl;
-
     std::cout << "The time is now: " << System::DateTime::UtcNow().ToString() << std::endl;
 }
 
 void Today()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime today = System::DateTime::Today();
 
     assert( today.Hour() == 0 );
@@ -101,8 +83,6 @@ void Today()
 
 void Date()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime t( 2025, 3, 6, 12, 30, 30 );
     System::DateTime date = t.Date();
 
@@ -130,8 +110,6 @@ void Date()
 
 void Hour()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime t( 2025, 3, 6 );
 
     assert( t.Hour() == 0 );
@@ -139,8 +117,6 @@ void Hour()
 
 void Minute()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime t( 2025, 3, 6, 1, 46, 33 );
 
     assert( t.Minute() == 46 );
@@ -148,8 +124,6 @@ void Minute()
 
 void Second()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime t( 2025, 3, 6, 1, 46, 33 );
 
     assert( t.Second() == 33 );
@@ -157,8 +131,6 @@ void Second()
 
 void UnixEpoch()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime unix_epoch = System::DateTime::UnixEpoch();
 
     assert( unix_epoch.Year() == 1970 );
@@ -171,8 +143,6 @@ void UnixEpoch()
 
 void OperatorEquals()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime unix_epoch = System::DateTime::UnixEpoch();
     System::DateTime unix_epoch2 = unix_epoch;
     System::DateTime now = System::DateTime::Now();
@@ -183,8 +153,6 @@ void OperatorEquals()
 
 void OperatorSpaceship()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime unix_epoch = System::DateTime::UnixEpoch();
     System::DateTime now = System::DateTime::Now();
 
@@ -195,8 +163,6 @@ void OperatorSpaceship()
 
 void RelationalOperators()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime unix_epoch = System::DateTime::UnixEpoch();
     System::DateTime now = System::DateTime::Now();
 
@@ -212,8 +178,6 @@ void RelationalOperators()
 
 void Add()
 {
-    std::cout << __func__ << std::endl;
-
     // Use only Datetime & TimeSpan
     {
         System::DateTime unix_epoch = System::DateTime::UnixEpoch();
@@ -226,8 +190,6 @@ void Add()
 
 void AddCPlusPlusOperators()
 {
-    std::cout << __func__ << std::endl;
-
     // DateTiem + TimeSpan
     {
         System::DateTime unix_epoch = System::DateTime::UnixEpoch();
@@ -273,8 +235,6 @@ void AddCPlusPlusOperators()
 
 void AddYears()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime unix_epoch = System::DateTime::UnixEpoch();
 
     // Setup
@@ -332,8 +292,6 @@ void AddYears()
 
 void AddMonths()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime unix_epoch = System::DateTime::UnixEpoch();
 
     // Setup
@@ -420,8 +378,6 @@ void AddMonths()
 
 void AddDays()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime unix_epoch = System::DateTime::UnixEpoch();
 
     // Setup
@@ -495,8 +451,6 @@ void AddDays()
 
 void AddHours()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime unix_epoch = System::DateTime::UnixEpoch();
 
     // Setup
@@ -574,8 +528,6 @@ void AddHours()
 
 void SubtractingTwoDateTimesReturnsATimeSpan()
 {
-    std::cout << __func__ << std::endl;
-
     // A single day...
     {
         System::TimeSpan result = System::DateTime(1980, 1, 2) - System::DateTime(1980, 1, 1);

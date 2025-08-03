@@ -8,8 +8,6 @@ namespace TestActivity
 
 void BasicActivity()
 {
-    System::Console::Out().WriteLine(__func__);
-
     System::Diagnostics::ActivitySource source("Example Activity Source");
     std::optional<System::Diagnostics::Activity> activity = source.StartActivity("Example Operation");
 

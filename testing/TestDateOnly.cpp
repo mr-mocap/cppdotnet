@@ -9,8 +9,6 @@ namespace TestDateOnly
 
 void MinValueIsJanuaryFirstOnYearZeroAtMidnight()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateOnly t{ System::DateOnly::MinValue() };
 
     assert( t.Year() == 1 );
@@ -20,8 +18,6 @@ void MinValueIsJanuaryFirstOnYearZeroAtMidnight()
 
 void MaxValueIsTheLastDayOfYear9999()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateOnly t{ System::DateOnly::MaxValue() };
 
     assert( t.Year() == 9999 );
@@ -31,8 +27,6 @@ void MaxValueIsTheLastDayOfYear9999()
 
 void ConstructYearMonthDay()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::DateOnly t( 1980, 3, 14 );
 
@@ -44,8 +38,6 @@ void ConstructYearMonthDay()
 
 void DayOfWeek()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::DateOnly t( 2025, 3, 6 );
 
@@ -92,8 +84,6 @@ void DayOfWeek()
 
 void DayOfYear()
 {
-    std::cout << __func__ << std::endl;
-
     assert( System::DateOnly( 2025, 1, 1 ).DayOfYear() == 1 );
     
     // Jan - 31 days, Feb - 28 days, Mar - 6 days
@@ -102,8 +92,6 @@ void DayOfYear()
 
 void OperatorEquals()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateOnly first_date( 1929, 6, 9);
     System::DateOnly second_date( 1929, 6, 9 );
     System::DateOnly third_date( 2011, 9, 11 );
@@ -119,8 +107,6 @@ void OperatorEquals()
 
 void OperatorSpaceship()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateOnly first_date( 1980, 1, 1);
     System::DateOnly second_date( 1990, 6, 9 );
     
@@ -131,8 +117,6 @@ void OperatorSpaceship()
 
 void RelationalOperators()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateOnly unix_epoch(1970, 1, 1);
     System::DateOnly now(2025, 3, 19);
 
@@ -148,8 +132,6 @@ void RelationalOperators()
 
 void AddYears()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateOnly unix_epoch(1970, 1, 1);
 
     // Setup
@@ -208,8 +190,6 @@ void AddYears()
 
 void AddMonths()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateOnly unix_epoch(1970, 1, 1);
 
     // Setup
@@ -297,8 +277,6 @@ void AddMonths()
 
 void AddDays()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateOnly unix_epoch(1970, 1, 1);
 
     // Setup
@@ -373,8 +351,6 @@ void AddDays()
 
 void FromDateTime()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime dt(1999, 12, 31);
     System::DateOnly t = System::DateOnly::FromDateTime( dt );
 
@@ -385,8 +361,6 @@ void FromDateTime()
 
 void Deconstruct()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateOnly dateonly(1949, 8, 4);
     int y = 0;
     int m = 0;
@@ -405,8 +379,6 @@ void Deconstruct()
 
 void ToString()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateOnly dateonly(1949, 8, 4);
 
     std::cout << dateonly.ToString() << std::endl;

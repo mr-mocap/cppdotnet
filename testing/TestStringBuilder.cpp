@@ -7,8 +7,6 @@ namespace TestStringBuilder
 
 void ReplaceSubstrings()
 {
-    std::cout << __func__ << std::endl;
-
     const char *init = "This is just a test of the ability of the StringBuilder "
                        "to handle the proper replacement of substrings that are "
                        "larger than what is being searched for";
@@ -26,8 +24,6 @@ void ReplaceSubstrings()
 void AppendFormat()
 {
 #ifdef __cpp_lib_format
-    std::cout << __func__ << std::endl;
-
     {
         System::Text::StringBuilder builder;
 

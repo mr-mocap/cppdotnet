@@ -8,8 +8,6 @@ namespace TestPath
 
 void ChangeExtension()
 {
-    std::cout << __func__ << std::endl;
-
     // Remove the extension
     assert( System::IO::Path::ChangeExtension("/this/is/a/path.txt") == "/this/is/a/path" );
 
@@ -27,8 +25,6 @@ void ChangeExtension()
 void CombineTwo()
 {
     using namespace System::IO;
-
-    std::cout << __func__ << std::endl;
 
     assert( Path::Combine("a", "b") == "a/b");
     assert( Path::Combine("/a", "b") == "/a/b");
@@ -52,8 +48,6 @@ void CombineTwo()
 void EndsInDirectorySeparator()
 {
     using namespace System::IO;
-
-    std::cout << __func__ << std::endl;
 
     assert( Path::EndsInDirectorySeparator("a/") );
     assert( !Path::EndsInDirectorySeparator("a:") );

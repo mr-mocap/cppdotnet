@@ -9,8 +9,6 @@ void CommonUsage()
 {
     using namespace std::literals;
 
-    std::cout << __func__ << std::endl;
-
     std::unique_ptr<System::Diagnostics::ConsoleTraceListener> consoleListener = std::make_unique<System::Diagnostics::ConsoleTraceListener>();
 
     assert( System::Diagnostics::Trace::Listeners().Count() == 1);

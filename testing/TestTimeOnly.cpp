@@ -8,8 +8,6 @@ namespace TestTimeOnly
     
 void DefaultConstructed()
 {
-    std::cout << __func__ << std::endl;
-
     System::TimeOnly t;
 
     assert( t == System::TimeOnly::MinValue() );
@@ -23,8 +21,6 @@ void DefaultConstructed()
 
 void ConstructWithDifferentHours()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::TimeOnly t( 1, 0 );
 
@@ -83,8 +79,6 @@ void ConstructWithDifferentHours()
 
 void ConstructWithDifferentMinutes()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::TimeOnly t( 0, 1 );
 
@@ -143,8 +137,6 @@ void ConstructWithDifferentMinutes()
 
 void AddHoursWithExcessDaysCaptured()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::TimeOnly t( 6, 0 );
 

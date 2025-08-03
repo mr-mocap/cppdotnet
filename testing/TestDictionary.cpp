@@ -11,8 +11,6 @@ namespace TestDictionary
 
 void DefaultConstruction()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
 
     assert( d.Count() == 0 );
@@ -20,8 +18,6 @@ void DefaultConstruction()
 
 void ConstructWithInitializerList()
 {
-    std::cout << __func__ << std::endl;
-
     // Directly
     System::Collections::Generic::Dictionary<std::string, int> d
     {
@@ -41,8 +37,6 @@ void ConstructWithInitializerList()
 
 void ConstructWithMap()
 {
-    std::cout << __func__ << std::endl;
-
     // From a std::map
     {
         std::unordered_map<std::string, int> m{ { {"b", 1}, {"c", 2}, {"a", 3}, {"d", 4} } };
@@ -117,8 +111,6 @@ void ConstructWithMap()
 
 void AddAddsNonexistingKey()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
 
     assert( d.Count() == 0 );
@@ -131,8 +123,6 @@ void AddAddsNonexistingKey()
 
 void AddKeyThrowsExceptionWhenAddingIdenticalKey()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
 
     d.Add("one", 1);
@@ -154,8 +144,6 @@ void AddKeyThrowsExceptionWhenAddingIdenticalKey()
 
 void ClearClearsAllItemsInDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
 
     d.Add("one", 1);
@@ -170,8 +158,6 @@ void ClearClearsAllItemsInDictionary()
 
 void ContainsKeyReturnsFalseWhenKeyIsNotInDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
 
     d.Add("one", 1);
@@ -184,8 +170,6 @@ void ContainsKeyReturnsFalseWhenKeyIsNotInDictionary()
 
 void ContainsKeyReturnsTrueWhenKeyIsInDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
 
     d.Add("one", 1);
@@ -198,8 +182,6 @@ void ContainsKeyReturnsTrueWhenKeyIsInDictionary()
 
 void ContainsValueReturnsFalseWhenValueIsNotInDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
 
     d.Add("one", 1);
@@ -212,8 +194,6 @@ void ContainsValueReturnsFalseWhenValueIsNotInDictionary()
 
 void ContainsValueReturnsTrueWhenValueIsInDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
 
     d.Add("one", 1);
@@ -226,8 +206,6 @@ void ContainsValueReturnsTrueWhenValueIsInDictionary()
 
 void RemoveReturnsTrueIfKeyIsRemoved()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
 
     d.Add("one", 1);
@@ -242,8 +220,6 @@ void RemoveReturnsTrueIfKeyIsRemoved()
 
 void RemoveReturnsFalseIfKeyIsNotRemoved()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
 
     d.Add("one", 1);
@@ -264,8 +240,6 @@ void RemoveReturnsFalseIfKeyIsNotRemoved()
 
 void TryGetValueReturnsTrueAndSetsValueIfKeyIsFound()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
     int retrieved_value = 0;
 
@@ -282,8 +256,6 @@ void TryGetValueReturnsTrueAndSetsValueIfKeyIsFound()
 
 void TryGetValueReturnsFalseAndSetsValueToDefaultIfKeyIsNotFound()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
     int retrieved_value = -1;
 
@@ -300,8 +272,6 @@ void TryGetValueReturnsFalseAndSetsValueToDefaultIfKeyIsNotFound()
 
 void KeysReturnsTheKeysInTheDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d;
 
     d.Add("one", 1);
@@ -328,8 +298,6 @@ void KeysReturnsTheKeysInTheDictionary()
 
 void IteratingAsKeyValuePair()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<std::string, int> d
     {
         {"a", 1},

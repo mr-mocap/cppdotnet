@@ -9,8 +9,6 @@ namespace TestTimeSpan
 
 void DefaultConstructed()
 {
-    std::cout << __func__ << std::endl;
-
     System::TimeSpan t;
 
     assert( t.Ticks() == 0 );
@@ -19,8 +17,6 @@ void DefaultConstructed()
 
 void DifferentConstructors()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::TimeSpan t( 1, 0, 0, 0 );
 
@@ -33,8 +29,6 @@ void DifferentConstructors()
 
 void ConstructedWithDifferentDays()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::TimeSpan t( 2, 0, 0, 0 );
 
@@ -55,8 +49,6 @@ void ConstructedWithDifferentDays()
 
 void ConstructedWithDifferentHours()
 {
-    std::cout << __func__ << std::endl;
-
     // We will cover some simple cases only.
 
     {
@@ -172,8 +164,6 @@ void ConstructedWithDifferentHours()
 
 void ConstructedWithDifferentMinutes()
 {
-    std::cout << __func__ << std::endl;
-
     // We will cover some simple cases only.
 
     {
@@ -233,8 +223,6 @@ void ConstructedWithDifferentMinutes()
 
 void ConstructedWithDifferentSeconds()
 {
-    std::cout << __func__ << std::endl;
-
     // We will cover some simple cases only.
 
     {
@@ -274,8 +262,6 @@ void ConstructedWithDifferentSeconds()
 
 void ConstructedWithDifferentMilliseconds()
 {
-    std::cout << __func__ << std::endl;
-
     // We will cover some simple cases only.
 
     {
@@ -318,8 +304,6 @@ void ConstructedWithDifferentMilliseconds()
 
 void ConstructedWithDifferentTicks()
 {
-    std::cout << __func__ << std::endl;
-
     // We will cover some simple cases only.
 
     {
@@ -341,8 +325,6 @@ void ConstructedWithDifferentTicks()
 
 void ConstantProperties()
 {
-    std::cout << __func__ << std::endl;
-
     assert( System::TimeSpan::HoursPerDay() == 24 );
     assert( System::TimeSpan::MinutesPerDay() == 1440 );
     assert( System::TimeSpan::MinutesPerHour() == 60 );
@@ -358,8 +340,6 @@ void ConstantProperties()
 
 void TotalDays()
 {
-    std::cout << __func__ << std::endl;
-
     // We will cover some simple cases only.
 
     {
@@ -412,8 +392,6 @@ void TotalDays()
 
 void TotalHours()
 {
-    std::cout << __func__ << std::endl;
-
     // We will cover some simple cases only.
 
     {
@@ -455,8 +433,6 @@ void TotalHours()
 
 void TotalNanoseconds()
 {
-    std::cout << __func__ << std::endl;
-
     // We will cover some simple cases only.
 
     {
@@ -507,8 +483,6 @@ void TotalNanoseconds()
 
 void RelationalOperators()
 {
-    std::cout << __func__ << std::endl;
-
     System::TimeSpan t;
 
     // Equality
@@ -551,8 +525,6 @@ void RelationalOperators()
 
 void PlusEqualsOperator()
 {
-    std::cout << __func__ << std::endl;
-
     // Add a std::chrono::duration
     {
         System::TimeSpan t;
@@ -590,8 +562,6 @@ void PlusEqualsOperator()
 
 void MinusEqualsOperator()
 {
-    std::cout << __func__ << std::endl;
-
     // Add a std::chrono::duration
     {
         System::TimeSpan t;
@@ -629,8 +599,6 @@ void MinusEqualsOperator()
 
 void NegationOperator()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::TimeSpan ts( 6 );
 
@@ -648,8 +616,6 @@ void NegationOperator()
 
 void Addition()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::TimeSpan ts;
         System::TimeSpan new_ts = ts + std::chrono::hours( 2 );
@@ -671,8 +637,6 @@ void Addition()
 
 void Subtraction()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::TimeSpan ts;
         System::TimeSpan new_ts = ts - std::chrono::hours( 2 );
@@ -694,8 +658,6 @@ void Subtraction()
 
 void Multiplication()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::TimeSpan ts;
         System::TimeSpan new_ts = ts * 2;
@@ -719,8 +681,6 @@ void Multiplication()
 
 void Division()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::TimeSpan ts( 2, 0, 0 );
         System::TimeSpan new_ts = ts / 2;

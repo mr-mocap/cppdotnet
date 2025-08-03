@@ -20,22 +20,16 @@ namespace TestDelegates
 
 void ActionDefaultConstructsToEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     System::Action example_action;
 }
 
 void ActionConstructWithFunction()
 {
-    std::cout << __func__ << std::endl;
-
     System::Action example_action( IncrementStaticVariable );
 }
 
 void ActionConstructWithLambda()
 {
-    std::cout << __func__ << std::endl;
-
     int a = 0;
 
     System::Action example_action( [&a]() { ++a; } );
@@ -43,8 +37,6 @@ void ActionConstructWithLambda()
 
 void ActionAlwaysHasSingleTargetTrue()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::Action example_action;
 
@@ -60,8 +52,6 @@ void ActionAlwaysHasSingleTargetTrue()
 
 void ActionCalledCallsFunction()
 {
-    std::cout << __func__ << std::endl;
-
     // Normal Function
     {
         System::Action example_action( IncrementStaticVariable );
@@ -96,15 +86,11 @@ void TestActions()
 
 void FuncDefaultConstructsToEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     System::Func<int> example_func;
 }
 
 void FuncConstructWithFunction()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::Func<int> example_func( AlwaysReturns99 );
     }
@@ -112,15 +98,11 @@ void FuncConstructWithFunction()
 
 void FuncConstructWithLambda()
 {
-    std::cout << __func__ << std::endl;
-
     System::Func<int> example_func( []() { return 800; }) ;
 }
 
 void FuncCalledCallsFunction()
 {
-    std::cout << __func__ << std::endl;
-
     // Normal Function
     {
         System::Func<int> example_func( AlwaysReturns99 );

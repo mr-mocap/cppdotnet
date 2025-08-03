@@ -10,8 +10,6 @@ namespace TestValueTuple
 
 void DefaultConstructed()
 {
-    System::Console::Out().WriteLine(__func__);
-
     {
         System::ValueTuple<> t;
 

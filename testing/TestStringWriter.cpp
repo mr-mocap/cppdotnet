@@ -16,8 +16,6 @@ bool CheckWriter(WriteType input, std::string_view expected_output)
 
 void DefaultConstructed()
 {
-    std::cout << __func__ << std::endl;
-
     System::IO::StringWriter writer;
 
     assert( writer.GetStringBuilder().Length() == 0 );
@@ -26,8 +24,6 @@ void DefaultConstructed()
 void VerifyWrite()
 {
     using namespace std::literals;
-
-    std::cout << __func__ << std::endl;
 
     CheckWriter('a', "a");
     CheckWriter("This is a string"sv, "This is a string"sv);

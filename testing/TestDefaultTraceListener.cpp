@@ -8,8 +8,6 @@ namespace TestDefaultTraceListener
 
 void AccessingListenersFirstTimeCreatesDefaultTraceListener()
 {
-    std::cout << __func__ << std::endl;
-
     assert( System::Diagnostics::Trace::Listeners().Count() == 1 );
     assert( System::Diagnostics::Trace::Listeners()["Default"] );
 

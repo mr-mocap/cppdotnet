@@ -13,8 +13,6 @@ namespace TestList
 
 void DefaultConstructsToEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::List<int> empty_list;
 
     assert( empty_list.Count() == 0 );
@@ -22,8 +20,6 @@ void DefaultConstructsToEmpty()
 
 void ConstructWithExternalSequence()
 {
-    std::cout << __func__ << std::endl;
-
     // From built-in array
     {
         int a[] = { 1, 2, 3 };
@@ -67,8 +63,6 @@ void ConstructWithExternalSequence()
 
 void ClearEmptiesTheList()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::List<int> list;
 
     list.Add( 2 );
@@ -84,8 +78,6 @@ void ClearEmptiesTheList()
 
 void Remove()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::List<int> list;
 
     list.Add( 1 );
@@ -138,8 +130,6 @@ void Remove()
 
 void RemoveAt()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::List<int> list;
 
     list.Add( 2 );
@@ -182,8 +172,6 @@ void RemoveAt()
 
 void Contains()
 {
-    std::cout << __func__ << std::endl;
-
     // It contains the data
     {
         Collections::Generic::List<int> list;
@@ -204,8 +192,6 @@ void Contains()
 
 void IsReadOnly()
 {
-    std::cout << __func__ << std::endl;
-
     {
         Collections::Generic::List<int> list;
 
@@ -220,8 +206,6 @@ void IsReadOnly()
 
 void Count()
 {
-    std::cout << __func__ << std::endl;
-
     {
         Collections::Generic::List<int> list;
 
@@ -246,8 +230,6 @@ void Count()
 
 void ElementAccess()
 {
-    std::cout << __func__ << std::endl;
-
     {
         Collections::Generic::List<int> list;
 
@@ -273,8 +255,6 @@ void ElementAccess()
 
 void Add()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::List<int> list;
 
     assert( list.Count() == 0 );
@@ -297,8 +277,6 @@ void Add()
 
 void IndexOf()
 {
-    std::cout << __func__ << std::endl;
-
     std::array<int, 6> a{ 1, 2, 3, 4, 5, 6 };
     Collections::Generic::List<int> list( a.begin(), a.end() );
 
@@ -312,8 +290,6 @@ void IndexOf()
 
 void Insert()
 {
-    std::cout << __func__ << std::endl;
-
     // Insert into empty list
     {
         Collections::Generic::List<int> list;
@@ -386,8 +362,6 @@ void GenericTest()
 
 void TestIListInterface()
 {
-    std::cout << __func__ << std::endl;
-
     Count();
     IsReadOnly();
     ElementAccess();
@@ -400,13 +374,10 @@ void TestIListInterface()
     RemoveAt();
 
     GenericTest();
-    std::cout << "PASSED!" << std::endl;
 }
 
 void Find()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     Collections::Generic::List<int> list( a );
     Predicate<int> is_equal_to_one{ [](int item) { return item == 1; } };
@@ -432,8 +403,6 @@ public:
 
 void FindLast()
 {
-    std::cout << __func__ << std::endl;
-
     // Empty list won't contain the data
     {
         Collections::Generic::List<int> list;
@@ -470,8 +439,6 @@ void FindLast()
 
 void FindAll()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 2, 3, 3, 3, 4, 4, 4, 4 };
     Collections::Generic::List<int> list( a );
 

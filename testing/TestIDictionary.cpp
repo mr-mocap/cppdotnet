@@ -27,8 +27,6 @@ System::Collections::Generic::IDictionary<int,int> TestMoveFromDictionary()
 
 void MoveConstructedWithDataType()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::IDictionary<int, std::string> empty{ DictionaryType() };
 
     assert( empty.Count() == 0 );
@@ -36,8 +34,6 @@ void MoveConstructedWithDataType()
 
 void ConstructedWithObjectMakesANewCopy()
 {
-    std::cout << __func__ << std::endl;
-
     std::unique_ptr<DictionaryType> dictionary = std::make_unique<DictionaryType>();
 
     dictionary->Add(1, "one");
@@ -67,8 +63,6 @@ void ConstructedWithObjectMakesANewCopy()
 
 void CopyConstructorMakesANewObject()
 {
-    std::cout << __func__ << std::endl;
-
     std::unique_ptr<DictionaryType> dictionary = std::make_unique<DictionaryType>();
 
     dictionary->Add(1, "one");
@@ -115,8 +109,6 @@ void CopyConstructorMakesANewObject()
 
 void MoveConstructorLeavesOldObjectEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     DictionaryType  dictionary;
 
     dictionary.Add(1, "one");
@@ -147,8 +139,6 @@ void MoveConstructorLeavesOldObjectEmpty()
 
 void MovedFromFunctionAsDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::IDictionary<int, int> data = TestMoveFromDictionary();
 
     assert( data.Count() == 4 );
@@ -160,8 +150,6 @@ void MovedFromFunctionAsDictionary()
 
 void IterateOverDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<int, std::string> dictionary( { {0, "zero"}, {1, "one"}, {2, "two"}, {3, "three"} });
 
     {

@@ -14,8 +14,6 @@ void TestOut()
 {
     using namespace std::literals;
 
-    std::cout << __func__ << std::endl;
-
     System::Console::WriteLine("This is a line of text!"sv);
     System::Console::WriteLine("Integer Value: {}"sv, 42);
     System::Console::WriteLine("Here is a string: \"{}\""sv, "WaHoo!  We Did It!");
@@ -36,8 +34,6 @@ void TestOut()
 
 void SetIn()
 {
-    std::cout << __func__ << std::endl;
-
     std::string initial_data = "This is a line\nThe second line.";
 
     // It is NOT redirected initially
@@ -60,8 +56,6 @@ void SetIn()
 
 void SetOut()
 {
-    std::cout << __func__ << std::endl;
-
     // It is NOT redirected initially
     assert( !System::Console::IsOutputRedirected() );
 
@@ -80,8 +74,6 @@ void SetOut()
 
 void SetError()
 {
-    std::cout << __func__ << std::endl;
-
     // It is NOT redirected initially
     assert( !System::Console::IsErrorRedirected() );
 

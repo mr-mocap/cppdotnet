@@ -10,8 +10,6 @@ void CommonUsage()
     using namespace std::literals;
     using namespace System::Diagnostics;
 
-    std::cout << __func__ << std::endl;
-
     std::unique_ptr<System::Diagnostics::ConsoleTraceListener> consoleListener = std::make_unique<System::Diagnostics::ConsoleTraceListener>();
     
     Debug::Listeners().Add(consoleListener.get());

@@ -12,8 +12,6 @@ static unsigned char AllOneBits[16] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 
 void ConstructWithSpanOfBytes()
 {
-    std::cout << __func__ << std::endl;
-
     // All 0's
     {
         System::Guid guid( std::as_bytes( std::span(AllZeroBits) ) );
@@ -37,8 +35,6 @@ void ConstructWithSpanOfBytes()
 
 void ConstructWithNFormatString()
 {
-    std::cout << __func__ << std::endl;
-
     System::Guid guid("7e44885fb76d4c05a6f2460a803d8f28");
 
     System::ReadOnlySpan<std::byte, 16> bytes = guid.ToByteArray();
@@ -68,8 +64,6 @@ void ConstructWithNFormatString()
 
 void ConstructWithDFormatString()
 {
-    std::cout << __func__ << std::endl;
-
     System::Guid object( "7e44885f-b76d-4c05-a6f2-460a803d8f28" );
     System::ReadOnlySpan<std::byte, 16> bytes = object.ToByteArray();
 
@@ -98,8 +92,6 @@ void ConstructWithDFormatString()
 
 void ConstructWithBFormatString()
 {
-    std::cout << __func__ << std::endl;
-
     System::Guid object( "{7e44885f-b76d-4c05-a6f2-460a803d8f28}" );
     System::ReadOnlySpan<std::byte, 16> bytes = object.ToByteArray();
 
@@ -128,8 +120,6 @@ void ConstructWithBFormatString()
 
 void ConstructWithPFormatString()
 {
-    std::cout << __func__ << std::endl;
-
     System::Guid object = System::Guid::Parse( "(7e44885f-b76d-4c05-a6f2-460a803d8f28)" );
     System::ReadOnlySpan<std::byte, 16> bytes = object.ToByteArray();
 
@@ -158,8 +148,6 @@ void ConstructWithPFormatString()
 
 void ConstructWithXFormatString()
 {
-    std::cout << __func__ << std::endl;
-
     System::Guid object = System::Guid::Parse( "{0x7e44885f,0xb76d,0x4c05,{0xa6,0xf2,0x46,0x0a,0x80,0x3d,0x8f,0x28}}" );
     System::ReadOnlySpan<std::byte, 16> bytes = object.ToByteArray();
 
@@ -188,8 +176,6 @@ void ConstructWithXFormatString()
 
 void EmptyProducesAllZeros()
 {
-    std::cout << __func__ << std::endl;
-
     System::Guid empty = System::Guid::Empty();
     System::ReadOnlySpan<std::byte, 16> converted_to_array = empty.ToByteArray();
 
@@ -200,8 +186,6 @@ void EmptyProducesAllZeros()
 
 void AllBitsSetProducesAllBitsSet()
 {
-    std::cout << __func__ << std::endl;
-
     System::Guid all_bits_set = System::Guid::AllBitsSet();
     System::ReadOnlySpan<std::byte, 16> converted_to_array = all_bits_set.ToByteArray();
 
@@ -212,8 +196,6 @@ void AllBitsSetProducesAllBitsSet()
 
 void ToArrayReturnsUnderlyingValues()
 {
-    std::cout << __func__ << std::endl;
-
     unsigned char init_array[16] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
     System::Guid guid( std::as_bytes( std::span(init_array) ) );
     System::ReadOnlySpan<std::byte, 16> converted_to_array = guid.ToByteArray();
@@ -225,8 +207,6 @@ void ToArrayReturnsUnderlyingValues()
 
 void ToStringNoParameter()
 {
-    std::cout << __func__ << std::endl;
-
     std::string s = System::Guid::NewGuid().ToString();
 
     std::cout << s << std::endl;
@@ -240,8 +220,6 @@ void ToStringNoParameter()
 
 void ToStringNParameter()
 {
-    std::cout << __func__ << std::endl;
-
     std::string s = System::Guid::NewGuid().ToString("N");
 
     std::cout << s << std::endl;
@@ -253,8 +231,6 @@ void ToStringNParameter()
 void ToStringDParameter()
 {
     // Same as no parameter
-    std::cout << __func__ << std::endl;
-
     std::string s = System::Guid::NewGuid().ToString();
 
     std::cout << s << std::endl;
@@ -269,8 +245,6 @@ void ToStringDParameter()
 void ToStringBParameter()
 {
     // Same as no parameter
-    std::cout << __func__ << std::endl;
-
     std::string s = System::Guid::NewGuid().ToString("B");
 
     std::cout << s << std::endl;
@@ -287,8 +261,6 @@ void ToStringBParameter()
 void ToStringPParameter()
 {
     // Same as no parameter
-    std::cout << __func__ << std::endl;
-
     std::string s = System::Guid::NewGuid().ToString("P");
 
     std::cout << s << std::endl;
@@ -305,8 +277,6 @@ void ToStringPParameter()
 void ToStringXParameter()
 {
     // Same as no parameter
-    std::cout << __func__ << std::endl;
-
     std::string s = System::Guid::NewGuid().ToString("X");
 
     std::cout << s << std::endl;
@@ -335,8 +305,6 @@ void ToStringXParameter()
 void ParseValidNFormatString()
 {
     using namespace std::literals::string_view_literals;
-
-    std::cout << __func__ << std::endl;
 
     System::Guid object = System::Guid::Parse( "7e44885fb76d4c05a6f2460a803d8f28"sv );
     System::ReadOnlySpan<std::byte, 16> bytes = object.ToByteArray();
@@ -368,8 +336,6 @@ void ParseValidDFormatString()
 {
     using namespace std::literals::string_view_literals;
 
-    std::cout << __func__ << std::endl;
-
     System::Guid object = System::Guid::Parse( "7e44885f-b76d-4c05-a6f2-460a803d8f28"sv );
     System::ReadOnlySpan<std::byte, 16> bytes = object.ToByteArray();
 
@@ -399,8 +365,6 @@ void ParseValidDFormatString()
 void ParseValidBFormatString()
 {
     using namespace std::literals::string_view_literals;
-
-    std::cout << __func__ << std::endl;
 
     System::Guid object = System::Guid::Parse( "{7e44885f-b76d-4c05-a6f2-460a803d8f28}"sv );
     System::ReadOnlySpan<std::byte, 16> bytes = object.ToByteArray();
@@ -432,8 +396,6 @@ void ParseValidPFormatString()
 {
     using namespace std::literals::string_view_literals;
 
-    std::cout << __func__ << std::endl;
-
     System::Guid object = System::Guid::Parse( "(7e44885f-b76d-4c05-a6f2-460a803d8f28)"sv );
     System::ReadOnlySpan<std::byte, 16> bytes = object.ToByteArray();
 
@@ -463,8 +425,6 @@ void ParseValidPFormatString()
 void ParseValidXFormatString()
 {
     using namespace std::literals::string_view_literals;
-
-    std::cout << __func__ << std::endl;
 
     System::Guid object = System::Guid::Parse( "{0x7e44885f,0xb76d,0x4c05,{0xa6,0xf2,0x46,0x0a,0x80,0x3d,0x8f,0x28}}"sv );
     System::ReadOnlySpan<std::byte, 16> bytes = object.ToByteArray();

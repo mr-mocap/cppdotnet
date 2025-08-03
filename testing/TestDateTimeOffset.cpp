@@ -8,8 +8,6 @@ namespace TestDateTimeOffset
 
 void ConstructWithDateTime()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime dt( 1980, 6, 9 );
 
     assert( dt.Year() == 1980 );
@@ -27,8 +25,6 @@ void ConstructWithDateTime()
 
 void ConstructWithDateTimeAndTimeSpan()
 {
-    std::cout << __func__ << std::endl;
-
     System::DateTime dt( 1980, 6, 9 );
 
     assert( dt.Year() == 1980 );
