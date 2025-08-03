@@ -6,6 +6,7 @@
 #include <initializer_list>
 #include <string_view>
 #include <algorithm>
+#include <concepts>
 
 
 namespace System::Collections::Generic
@@ -18,15 +19,32 @@ class ListIListInterfaceCustomization
 {
 public:
     template <typename U>
-    size_t IndexOf(U &&item) const
+        requires std::convertible_to<U, T>
+    size_t IListIndexOf(U &&item) const
     {
-        return static_cast<const List<T> &>(*this).IListInterfaceCustomizationIndexOf( std::forward<U>(item) );
+        const List<T> &derived_class = static_cast<const List<T> &>(*this);
+
+        auto iter_found = std::find( derived_class.begin(), derived_class.end(), std::forward<U>(item) );
+
+        if ( iter_found == derived_class.end() )
+            return -1;
+        
+        return std::distance( derived_class.begin(), iter_found );
     }
 
     template <typename U>
-    void Insert(size_t index, U &&item)
+        requires std::convertible_to<U, T>
+    void IListInsert(size_t index, U &&item)
     {
-        static_cast<List<T> &>(*this).IListInterfaceCustomizationInsert( index, std::forward<U>(item) );
+        List<T> &derived_class = static_cast<List<T> &>(*this);
+
+        if ( derived_class.IsReadOnly() )
+            ThrowWithTarget( System::NotSupportedException( "List is read-only" ) );
+        if ( index > derived_class.Count() )
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
+        
+        // OK to insert at end(), which is when index == Count()
+        derived_class._list.emplace( std::next( derived_class.begin(), index ), std::forward<U>(item) );
     }
 };
 
@@ -35,27 +53,39 @@ class ListICollectionInterfaceCustomization
 {
 public:
     template <typename U>
-    void Add(U &&item)
+        requires std::convertible_to<U, T>
+    void ICollectionAdd(U &&item)
     {
-        static_cast<List<T> &>(*this).ICollectionInterfaceCustomizationAdd( std::forward<U>(item) );
+        List<T> &derived_class = static_cast<List<T> &>(*this);
+
+        derived_class._list.emplace_back( std::forward<U>(item) );
     }
 
     template <typename U>
-    bool Remove(U &&item)
+    bool ICollectionRemove(U &&item)
     {
-        return static_cast<List<T> &>(*this).ICollectionInterfaceCustomizationRemove( std::forward<U>(item) );
+        List<T> &derived_class = static_cast<List<T> &>(*this);
+
+        auto iter_found = std::find( derived_class.begin(), derived_class.end(), std::forward<U>(item) );
+
+        if ( iter_found == derived_class.end() )
+            return false;
+        derived_class._list.erase( iter_found );
+        return true;
     }
 
     template <typename U>
-    bool Contains(U &&item) const
+    bool ICollectionContains(U &&item) const
     {
-        return static_cast<const List<T> &>(*this).ICollectionInterfaceCustomizationContains( std::forward<U>(item) );
+        const List<T> &derived_class = static_cast<const List<T> &>(*this);
+
+        return std::find( derived_class.begin(), derived_class.end(), std::forward<U>(item) ) != derived_class.end();
     }
 };
 
 template <class T>
-class List : public ListIListInterfaceCustomization<T>,
-             public ListICollectionInterfaceCustomization<T>
+class List : public ListICollectionInterfaceCustomization<T>,
+             public ListIListInterfaceCustomization<T>
 {
 public:
     using underlying_type = std::vector<T>;
@@ -200,6 +230,18 @@ public:
     }
 
     // IList-specific methods
+    template <typename U>
+    size_t IndexOf(U &&item) const
+    {
+        return this->IListIndexOf( std::forward<U>(item) );
+    }
+
+    template <typename U>
+    void Insert(size_t index, U &&item)
+    {
+        this->IListInsert( index, std::forward<U>(item) );
+    }
+
     void RemoveAt(size_type index)
     {
         if ( IsReadOnly() )
@@ -220,6 +262,24 @@ public:
 
     bool IsSynchronized() const { return false; }
 
+    template <typename U>
+    void Add(U &&item)
+    {
+        this->ICollectionAdd( std::forward<U>(item) );
+    }
+
+    template <typename U>
+    bool Remove(U &&item)
+    {
+        return this->ICollectionRemove( std::forward<U>(item) );
+    }
+
+    template <typename U>
+    bool Contains(U &&item) const
+    {
+        return this->ICollectionContains( std::forward<U>(item) );
+    }
+
     // Range-for compatibility
           iterator  begin()       { return _list.begin(); }
     const_iterator  begin() const { return _list.begin(); }
@@ -238,53 +298,6 @@ public:
     const_reverse_iterator crend() const noexcept { return _list.crend(); }
 protected:
     std::vector<T> _list;
-
-private:
-    template <typename U>
-    size_type IListInterfaceCustomizationIndexOf(U &&item) const
-    {
-        auto iter_found = std::find( begin(), end(), std::forward<U>(item) );
-
-        if ( iter_found == end() )
-            return -1;
-        
-        return std::distance( _list.begin(), iter_found );
-    }
-
-    template <typename U>
-    void IListInterfaceCustomizationInsert(size_t index, U &&item)
-    {
-        if ( IsReadOnly() )
-            ThrowWithTarget( System::NotSupportedException( "List is read-only" ) );
-        if ( index > Count() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
-        
-        // OK to insert at end(), which is when index == Count()
-        _list.emplace( std::next( begin(), index ), std::forward<U>(item) );
-    }
-
-    template <typename U>
-    void ICollectionInterfaceCustomizationAdd(U &&item)
-    {
-        _list.emplace_back( std::forward<U>(item) );
-    }
-
-    template <typename U>
-    bool ICollectionInterfaceCustomizationRemove(U &&item)
-    {
-        auto iter_found = std::find( begin(), end(), std::forward<U>(item) );
-
-        if ( iter_found == end() )
-            return false;
-        _list.erase( iter_found );
-        return true;
-    }
-
-    template <typename U>
-    bool ICollectionInterfaceCustomizationContains(U &&item) const
-    {
-        return std::find( begin(), end(), std::forward<U>(item) ) != _list.end();
-    }
 
     friend class ListIListInterfaceCustomization<T>;
     friend class ListICollectionInterfaceCustomization<T>;
