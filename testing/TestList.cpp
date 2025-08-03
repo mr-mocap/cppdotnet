@@ -255,24 +255,41 @@ void ElementAccess()
 
 void Add()
 {
-    Collections::Generic::List<int> list;
+    {
+        Collections::Generic::List<int> list;
 
-    assert( list.Count() == 0 );
+        assert( list.Count() == 0 );
 
-    list.Add( 6 );
+        list.Add( 6 );
 
-    assert( list.Count() == 1 );
+        assert( list.Count() == 1 );
 
-    // Use STL to get to the underlying sequence
-    assert( *list.begin() == 6 );
-    assert( list[ list.Count() - 1 ] == 6 );
-    assert( list.Contains( 6 ) ); // Weakest condition.  List only contains what we added.
+        // Use STL to get to the underlying sequence
+        assert( *list.begin() == 6 );
+        assert( list[ list.Count() - 1 ] == 6 );
+        assert( list.Contains( 6 ) ); // Weakest condition.  List only contains what we added.
 
-    list.Add( 12 );
+        list.Add( 12 );
 
-    assert( list.Count() == 2 );
-    assert( list.Contains( 6 ) );
-    assert( list.Contains( 12 ) );
+        assert( list.Count() == 2 );
+        assert( list.Contains( 6 ) );
+        assert( list.Contains( 12 ) );
+        assert( list[ list.Count() - 1 ] == 12 );
+    }
+
+    // Add Different, but equivalent types...
+    {
+        std::string numbers = "one two three";
+        Collections::Generic::List<std::string> list;
+
+        list.Add( numbers.substr(0, 3) ); // Add as native type
+
+        assert( list.Contains("one") );
+
+        list.Add( std::string_view{numbers}.substr(4, 3) );
+
+        assert( list.Contains("two") );
+    }
 }
 
 void IndexOf()
@@ -341,23 +358,58 @@ System::Collections::Generic::ICollection<int> LifetimeTest()
     Collections::Generic::LinkedList<int> linked_list( array );
     System::Collections::Generic::ICollection<int> collection( linked_list );
 
-    std::cout << "Blah = " << collection.Count() << std::endl;
     return collection;
 }
 
-void GenericTest()
+void ListCanBeConvertedIntoAnICollection()
 {
     int array[] = { 1, 2, 3, 4 };
     Collections::Generic::List<int> list( array );
-    Collections::Generic::LinkedList<int> linked_list( array );
-    System::Collections::Generic::ICollection<int> collection( list );
-    System::Collections::Generic::ICollection<int> collection2( linked_list );
-    System::Collections::Generic::ICollection<int> collection3( LifetimeTest() );
+    
+    assert( list.Count() == 4 );
+    assert( list.Contains(1) );
+    assert( list.Contains(2) );
+    assert( list.Contains(3) );
+    assert( list.Contains(4) );
 
-    std::cout << "Blah2 = " << collection3.Count() << std::endl;
-    std::cout << "collection.Count() = " << collection.Count() << std::endl;
-    std::cout << "collection2.Count() = " << collection2.Count() << std::endl;
-    std::cout << "collection3.Count() = " << collection3.Count() << std::endl;
+    System::Collections::Generic::ICollection<int> collection( list );
+
+    assert( collection.Count() == 4 );
+    assert( collection.Contains(1) );
+    assert( collection.Contains(2) );
+    assert( collection.Contains(3) );
+    assert( collection.Contains(4) );
+}
+
+void LinkedListCanBeConvertedIntoAnICollection()
+{
+    int array[] = { 1, 2, 3, 4 };
+    Collections::Generic::LinkedList<int> linked_list( array );
+
+    assert( linked_list.Count() == 4 );
+    assert( linked_list.Contains(1) );
+    assert( linked_list.Contains(2) );
+    assert( linked_list.Contains(3) );
+    assert( linked_list.Contains(4) );
+
+    System::Collections::Generic::ICollection<int> collection( linked_list );
+
+    assert( collection.Count() == 4 );
+    assert( collection.Contains(1) );
+    assert( collection.Contains(2) );
+    assert( collection.Contains(3) );
+    assert( collection.Contains(4) );
+}
+
+void ListReturnedAsICollectionFromFunction()
+{
+    System::Collections::Generic::ICollection<int> collection( LifetimeTest() );
+
+    assert( collection.Count() == 4 );
+    assert( collection.Contains(1) );
+    assert( collection.Contains(2) );
+    assert( collection.Contains(3) );
+    assert( collection.Contains(4) );
 }
 
 void TestIListInterface()
@@ -373,7 +425,9 @@ void TestIListInterface()
     Remove();
     RemoveAt();
 
-    GenericTest();
+    ListCanBeConvertedIntoAnICollection();
+    LinkedListCanBeConvertedIntoAnICollection();
+    ListReturnedAsICollectionFromFunction();
 }
 
 void Find()
