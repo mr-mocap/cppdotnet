@@ -12,16 +12,16 @@ class IDictionary : public Private::LegacyForwardIteratorBase<KeyValuePair<KeyT,
 public:
     using IteratorBase = Private::LegacyForwardIteratorBase<KeyValuePair<KeyT, ValueT>>;
 
-    using key_type    = KeyT;
-    using mapped_type = ValueT;
-    using typename IteratorBase::value_type;
-    using typename IteratorBase::size_type;
-    using typename IteratorBase::reference;
-    using typename IteratorBase::const_reference;
-    using typename IteratorBase::pointer;
-    using typename IteratorBase::const_pointer;
-    using typename IteratorBase::iterator;
-    using typename IteratorBase::const_iterator;
+    using key_type        = KeyT;
+    using mapped_type     = ValueT;
+    using value_type      = IteratorBase::value_type;
+    using size_type       = IteratorBase::size_type;
+    using reference       = IteratorBase::reference;
+    using const_reference = IteratorBase::const_reference;
+    using pointer         = IteratorBase::pointer;
+    using const_pointer   = IteratorBase::const_pointer;
+    using iterator        = IteratorBase::iterator;
+    using const_iterator  = IteratorBase::const_iterator;
 
 private:
     struct Policy

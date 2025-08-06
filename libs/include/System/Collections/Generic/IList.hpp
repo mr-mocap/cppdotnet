@@ -12,15 +12,15 @@ class IList : public Private::LegacyBidirectionalIteratorBase<T>
 public:
     using IteratorBase = Private::LegacyBidirectionalIteratorBase<T>;
 
-    using typename IteratorBase::difference_type;
-    using typename IteratorBase::size_type;
-    using typename IteratorBase::value_type;
-    using typename IteratorBase::pointer;
-    using typename IteratorBase::reference;
-    using typename IteratorBase::iterator;
-    using typename IteratorBase::const_iterator;
-    using typename IteratorBase::reverse_iterator;
-    using typename IteratorBase::const_reverse_iterator;
+    using difference_type  = IteratorBase::difference_type;
+    using size_type        = IteratorBase::size_type;
+    using value_type       = IteratorBase::value_type;
+    using pointer          = IteratorBase::pointer;
+    using reference        = IteratorBase::reference;
+    using iterator         = IteratorBase::iterator;
+    using const_iterator   = IteratorBase::const_iterator;
+    using reverse_iterator = IteratorBase::reverse_iterator;
+    using const_reverse_iterator = IteratorBase::const_reverse_iterator;
 
 private:
     struct Policy

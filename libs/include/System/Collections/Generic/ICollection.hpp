@@ -13,23 +13,23 @@ class ICollection : public Private::LegacyForwardIteratorBase<T>
 public:
     using IteratorBase = Private::LegacyForwardIteratorBase<T>;
 
-    using typename IteratorBase::value_type;
-    using typename IteratorBase::size_type;
-    using typename IteratorBase::difference_type;
-    using typename IteratorBase::reference;
-    using typename IteratorBase::const_reference;
-    using typename IteratorBase::pointer;
-    using typename IteratorBase::const_pointer;
-    using typename IteratorBase::iterator;
-    using typename IteratorBase::const_iterator;
+    using value_type       = IteratorBase::value_type;
+    using size_type        = IteratorBase::size_type;
+    using difference_type  = IteratorBase::difference_type;
+    using pointer          = IteratorBase::pointer;
+    using reference        = IteratorBase::reference;
+    using const_pointer    = IteratorBase::const_pointer;
+    using const_reference  = IteratorBase::const_reference;
+    using iterator         = IteratorBase::iterator;
+    using const_iterator   = IteratorBase::const_iterator;
 
 private:
     struct Policy
     {
-        using value_type         = typename IteratorBase::value_type;
-        using size_type          = typename IteratorBase::size_type;
-        using IteratorType       = typename IteratorBase::iterator;
-        using ConstIteratorType  = typename IteratorBase::const_iterator;
+        using value_type         = IteratorBase::value_type;
+        using size_type          = IteratorBase::size_type;
+        using IteratorType       = IteratorBase::iterator;
+        using ConstIteratorType  = IteratorBase::const_iterator;
     };
 
     using Interface = Private::ICollectionInterface<Policy>;
