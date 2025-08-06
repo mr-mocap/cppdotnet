@@ -18,31 +18,17 @@ class ListIListInterfaceCustomization
 {
 public:
     template <typename U>
-    size_t IListIndexOf(U &&item) const
+    size_t IndexOf(const U &item) const
     {
-        const List<T> &derived_class = static_cast<const List<T> &>(*this);
-
-        auto iter_found = std::find( derived_class.begin(), derived_class.end(), std::forward<U>(item) );
-
-        if ( iter_found == derived_class.end() )
-            return -1;
-        
-        return std::distance( derived_class.begin(), iter_found );
+        return static_cast<const List<T> &>(*this).IListIndexOf( item );
     }
 
     template <typename U>
-    void IListInsert(size_t index, U &&item)
+    void Insert(size_t index, const U &item)
     {
-        List<T> &derived_class = static_cast<List<T> &>(*this);
-
-        if ( derived_class.IsReadOnly() )
-            ThrowWithTarget( System::NotSupportedException( "List is read-only" ) );
-        if ( index > derived_class.Count() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
-        
-        // OK to insert at end(), which is when index == Count()
-        derived_class._list.emplace( std::next( derived_class.begin(), index ), std::forward<U>(item) );
+        static_cast<List<T> &>(*this).IListInsert( index, item );
     }
+
 };
 
 template <typename T>
@@ -50,32 +36,21 @@ class ListICollectionInterfaceCustomization
 {
 public:
     template <typename U>
-    void ICollectionAdd(U &&item)
+    void Add(const U &item)
     {
-        List<T> &derived_class = static_cast<List<T> &>(*this);
-
-        derived_class._list.emplace_back( std::forward<U>(item) );
+        static_cast<List <T> &>(*this).ICollectionAdd( item );
     }
 
     template <typename U>
-    bool ICollectionRemove(U &&item)
+    bool Remove(const U &item)
     {
-        List<T> &derived_class = static_cast<List<T> &>(*this);
-
-        auto iter_found = std::find( derived_class.begin(), derived_class.end(), std::forward<U>(item) );
-
-        if ( iter_found == derived_class.end() )
-            return false;
-        derived_class._list.erase( iter_found );
-        return true;
+        return static_cast<List <T> &>(*this).ICollectionRemove( item );
     }
 
     template <typename U>
-    bool ICollectionContains(U &&item) const
+    bool Contains(const U &item) const
     {
-        const List<T> &derived_class = static_cast<const List<T> &>(*this);
-
-        return std::find( derived_class.begin(), derived_class.end(), std::forward<U>(item) ) != derived_class.end();
+        return static_cast<const List <T> &>(*this).ICollectionContains( item );
     }
 };
 
@@ -226,18 +201,6 @@ public:
     }
 
     // IList-specific methods
-    template <typename U>
-    size_t IndexOf(U &&item) const
-    {
-        return this->IListIndexOf( std::forward<U>(item) );
-    }
-
-    template <typename U>
-    void Insert(size_t index, U &&item)
-    {
-        this->IListInsert( index, std::forward<U>(item) );
-    }
-
     void RemoveAt(size_type index)
     {
         if ( IsReadOnly() )
@@ -258,24 +221,6 @@ public:
 
     bool IsSynchronized() const { return false; }
 
-    template <typename U>
-    void Add(U &&item)
-    {
-        this->ICollectionAdd( std::forward<U>(item) );
-    }
-
-    template <typename U>
-    bool Remove(U &&item)
-    {
-        return this->ICollectionRemove( std::forward<U>(item) );
-    }
-
-    template <typename U>
-    bool Contains(U &&item) const
-    {
-        return this->ICollectionContains( std::forward<U>(item) );
-    }
-
     // Range-for compatibility
           iterator  begin()       { return _list.begin(); }
     const_iterator  begin() const { return _list.begin(); }
@@ -294,6 +239,53 @@ public:
     const_reverse_iterator crend() const noexcept { return _list.crend(); }
 protected:
     std::vector<T> _list;
+
+    // Default implementations...
+    template <typename U>
+    size_t IListIndexOf(const U &item) const
+    {
+        auto iter_found = std::find( begin(), end(), item );
+
+        if ( iter_found == end() )
+            return -1;
+        
+        return std::distance( begin(), iter_found );
+    }
+
+    template <typename U>
+    void IListInsert(size_t index, const U &item)
+    {
+        if ( IsReadOnly() )
+            ThrowWithTarget( System::NotSupportedException( "List is read-only" ) );
+        if ( index > Count() )
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
+        
+        // OK to insert at end(), which is when index == Count()
+        _list.emplace( std::next( begin(), index ), item );
+    }
+
+    template <typename U>
+    void ICollectionAdd(const U &item)
+    {
+        _list.emplace_back( item );
+    }
+
+    template <typename U>
+    bool ICollectionRemove(const U &item)
+    {
+        auto iter_found = std::find( begin(), end(), item );
+
+        if ( iter_found == end() )
+            return false;
+        _list.erase( iter_found );
+        return true;
+    }
+
+    template <typename U>
+    bool ICollectionContains(const U &item) const
+    {
+        return std::find( begin(), end(), item ) != end();
+    }
 
     friend class ListIListInterfaceCustomization<T>;
     friend class ListICollectionInterfaceCustomization<T>;
