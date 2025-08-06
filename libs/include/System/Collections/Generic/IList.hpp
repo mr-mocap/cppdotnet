@@ -25,12 +25,12 @@ public:
 private:
     struct Policy
     {
-        using value_type         = typename IteratorBase::value_type;
-        using size_type          = typename IteratorBase::size_type;
-        using IteratorType       = typename IteratorBase::iterator;
-        using ConstIteratorType  = typename IteratorBase::const_iterator;
-        using ReverseIteratorType       = typename IteratorBase::reverse_iterator;
-        using ConstReverseIteratorType  = typename IteratorBase::const_reverse_iterator;
+        using value_type         = IteratorBase::value_type;
+        using size_type          = IteratorBase::size_type;
+        using IteratorType       = IteratorBase::iterator;
+        using ConstIteratorType  = IteratorBase::const_iterator;
+        using ReverseIteratorType       = IteratorBase::reverse_iterator;
+        using ConstReverseIteratorType  = IteratorBase::const_reverse_iterator;
     };
 
     using Interface = Private::IListInterface<Policy>;
@@ -50,29 +50,79 @@ private:
         InterfaceModel &operator =(const InterfaceModel &) = default;
         InterfaceModel &operator =(InterfaceModel &&) = default;
 
-        std::size_t Count() const override { return data.Count(); }
+        std::size_t Count() const override
+        {
+            return data.Count();
+        }
 
-        bool IsReadOnly() const override { return data.IsReadOnly(); }
-        bool IsReadOnly()       override { return data.IsReadOnly(); }
+        bool IsReadOnly() const override
+        {
+            return data.IsReadOnly();
+        }
 
-        bool IsSynchronized() const { return data.IsSynchronized(); }
+        bool IsReadOnly() override
+        {
+            return data.IsReadOnly();
+        }
 
-        void Add(const value_type &item) override { data.Add(item); }
-        bool Remove(const value_type &item) override { return data.Remove(item); }
-        void Clear() override { data.Clear(); }
-        bool Contains(const value_type &item) override { return data.Contains(item); }
+        bool IsSynchronized() const
+        {
+            return data.IsSynchronized();
+        }
 
-        const value_type &operator [](std::size_t index) const override { return Private::IListIndexer<ListType>::GetAt(data, index); }
-              value_type &operator [](std::size_t index)       override { return Private::IListIndexer<ListType>::GetAt(data, index); }
+        void Add(const value_type &item) override
+        {
+            data.Add(item);
+        }
 
-        size_type IndexOf(const value_type &item) const { return data.IndexOf(item); }
+        bool Remove(const value_type &item) override
+        {
+            return data.Remove(item);
+        }
 
-        void Insert(std::size_t index, const value_type &item) override { data.Insert(index, item); }
-        void RemoveAt(std::size_t index) override { data.RemoveAt(index); }
+        void Clear() override
+        {
+            data.Clear();
+        }
 
-        std::unique_ptr<Interface> Clone() override { return std::make_unique<InterfaceModel<ListType>>(data); }
+        bool Contains(const value_type &item) override
+        {
+            return data.Contains(item);
+        }
 
-        std::unique_ptr<Interface> Empty() override { return std::make_unique_for_overwrite<InterfaceModel<ListType>>(); }
+        const value_type &operator [](std::size_t index) const override
+        {
+            return Private::IListIndexer<ListType>::GetAt(data, index);
+        }
+        value_type &operator[](std::size_t index) override
+        {
+            return Private::IListIndexer<ListType>::GetAt(data, index);
+        }
+
+        size_type IndexOf(const value_type &item) const
+        {
+            return data.IndexOf(item);
+        }
+
+        void Insert(std::size_t index, const value_type &item) override
+        {
+            data.Insert(index, item);
+        }
+
+        void RemoveAt(std::size_t index) override
+        {
+            data.RemoveAt(index);
+        }
+
+        std::unique_ptr<Interface> Clone() override
+        {
+            return std::make_unique<InterfaceModel<ListType>>(data);
+        }
+
+        std::unique_ptr<Interface> Empty() override
+        {
+            return std::make_unique_for_overwrite<InterfaceModel<ListType>>();
+        }
 
         // Range-for compatibility
               iterator  begin()       override { return iterator( std::make_unique<typename IteratorBase::IteratorModel<ListType>>( data.begin() ) ); }
@@ -210,12 +260,12 @@ public:
 private:
     struct Policy
     {
-        using value_type         = typename IteratorBase::value_type;
-        using size_type          = typename IteratorBase::size_type;
-        using IteratorType       = typename IteratorBase::iterator;
-        using ConstIteratorType  = typename IteratorBase::const_iterator;
-        using ReverseIteratorType       = typename IteratorBase::reverse_iterator;
-        using ConstReverseIteratorType  = typename IteratorBase::const_reverse_iterator;
+        using value_type         = IteratorBase::value_type;
+        using size_type          = IteratorBase::size_type;
+        using IteratorType       = IteratorBase::iterator;
+        using ConstIteratorType  = IteratorBase::const_iterator;
+        using ReverseIteratorType       = IteratorBase::reverse_iterator;
+        using ConstReverseIteratorType  = IteratorBase::const_reverse_iterator;
     };
 
     using Interface = Private::IListInterface<Policy>;
@@ -237,27 +287,80 @@ private:
         InterfaceModelPtr &operator =(const InterfaceModelPtr &) = default;
         InterfaceModelPtr &operator =(InterfaceModelPtr &&) = default;
 
-        std::size_t Count() const override { return data->Count(); }
-               bool IsReadOnly() const override { return data->IsReadOnly(); }
-               bool IsReadOnly()       override { return data->IsReadOnly(); }
-               bool IsSynchronized() const { return data->IsSynchronized(); }
+        std::size_t Count() const override
+        {
+            return data->Count();
+        }
 
-        void Add(const T &item) override { data->Add(item); }
-        bool Remove(const T &item) override { return data->Remove(item); }
-        void Clear() override { data->Clear(); }
-        bool Contains(const T &item) override { return data->Contains(item); }
+        bool IsReadOnly() const override
+        {
+            return data->IsReadOnly();
+        }
 
-        const T &operator [](std::size_t index) const override { return Private::IListIndexer<ListType>::GetAt(data, index); }
-              T &operator [](std::size_t index)       override { return Private::IListIndexer<ListType>::GetAt(data, index); }
+        bool IsReadOnly() override
+        {
+            return data->IsReadOnly();
+        }
+        
+        bool IsSynchronized() const
+        {
+            return data->IsSynchronized();
+        }
 
-        std::size_t IndexOf(const T &item) const { return data->IndexOf(item); }
+        void Add(const T &item) override
+        {
+            data->Add(item);
+        }
 
-        void Insert(std::size_t index, const T &item) override { data->Insert(index, item); }
-        void RemoveAt(std::size_t index) override { data->RemoveAt(index); }
+        bool Remove(const T &item) override
+        {
+            return data->Remove(item);
+        }
 
-        std::unique_ptr<Interface> Clone() override { return std::make_unique<InterfaceModelPtr<ListType>>(data); }
+        void Clear() override
+        {
+            data->Clear();
+        }
 
-        std::unique_ptr<Interface> Empty() override { return std::make_unique_for_overwrite<InterfaceModelPtr<ListType>>(); }
+        bool Contains(const T &item) override
+        {
+            return data->Contains(item);
+        }
+
+        const T &operator[](std::size_t index) const override
+        {
+            return Private::IListIndexer<ListType>::GetAt(data, index);
+        }
+
+        T &operator[](std::size_t index) override
+        {
+            return Private::IListIndexer<ListType>::GetAt(data, index);
+        }
+
+        std::size_t IndexOf(const T &item) const
+        {
+            return data->IndexOf(item);
+        }
+
+        void Insert(std::size_t index, const T &item) override
+        {
+            data->Insert(index, item);
+        }
+
+        void RemoveAt(std::size_t index) override
+        {
+            data->RemoveAt(index);
+        }
+
+        std::unique_ptr<Interface> Clone() override
+        {
+            return std::make_unique<InterfaceModelPtr<ListType>>(data);
+        }
+
+        std::unique_ptr<Interface> Empty() override
+        {
+            return std::make_unique_for_overwrite<InterfaceModelPtr<ListType>>();
+        }
 
         // Range-for compatibility
               iterator  begin()       override { return iterator( std::make_unique<typename IteratorBase::IteratorModel<ListType>>( data->begin() ) ); }
