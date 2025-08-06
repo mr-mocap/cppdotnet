@@ -28,10 +28,10 @@ private:
     {
         using key_type    = KeyT;
         using mapped_type = ValueT;
-        using value_type         = typename IteratorBase::value_type;
-        using size_type          = typename IteratorBase::size_type;
-        using IteratorType       = typename IteratorBase::iterator;
-        using ConstIteratorType  = typename IteratorBase::const_iterator;
+        using value_type         = IteratorBase::value_type;
+        using size_type          = IteratorBase::size_type;
+        using IteratorType       = IteratorBase::iterator;
+        using ConstIteratorType  = IteratorBase::const_iterator;
     };
 
     using Interface = Private::IDictionaryInterface<Policy>;
@@ -51,30 +51,91 @@ private:
         InterfaceModel &operator =(const InterfaceModel &) = default;
         InterfaceModel &operator =(InterfaceModel &&) = default;
 
-        std::size_t Count() const override { return data.Count(); }
+        std::size_t Count() const override
+        {
+            return data.Count();
+        }
 
-        bool IsReadOnly() const override { return data.IsReadOnly(); }
-        bool IsReadOnly()       override { return data.IsReadOnly(); }
+        bool IsReadOnly() const override
+        {
+            return data.IsReadOnly();
+        }
 
-        bool IsSynchronized() const override { return data.IsSynchronized(); }
+        bool IsReadOnly() override
+        {
+            return data.IsReadOnly();
+        }
 
-        void Add(const value_type &item)      override { data.Add(item); }
-        bool Remove(const value_type &item)   override { return data.Remove(item); }
-        void Clear()                          override { data.Clear(); }
-        bool Contains(const value_type &item) override { return data.Contains(item); }
+        bool IsSynchronized() const override
+        {
+            return data.IsSynchronized();
+        }
+
+        void Add(const value_type &item) override
+        {
+            data.Add(item);
+        }
+
+        bool Remove(const value_type &item) override
+        {
+            return data.Remove(item);
+        }
+
+        void Clear() override
+        {
+            data.Clear();
+        }
+
+        bool Contains(const value_type &item) override
+        {
+            return data.Contains(item);
+        }
 
         // Dictionary
-              mapped_type &operator[](const key_type &key)       override { return data[key]; }
-        const mapped_type &at(const key_type &key)         const override { return data.at(key); }
-              mapped_type &at(const key_type &key)               override { return data.at(key); }
+        mapped_type &operator[](const key_type &key) override
+        {
+            return data[key];
+        }
 
-        void Add(const key_type &key, const mapped_type &value)             override { data.Add(key, value); }
-        bool Remove(const key_type &key)                                    override { return data.Remove(key); }
-        bool ContainsKey(const key_type &key)                         const override { return data.ContainsKey(key); }
-        bool TryGetValue(const key_type &key, mapped_type &value_out) const override { return data.TryGetValue(key, value_out); }
+        const mapped_type &at(const key_type &key) const override
+        {
+            return data.at(key);
+        }
 
-        ICollection<key_type>    Keys()   const override { return data.Keys(); }
-        ICollection<mapped_type> Values() const override { return data.Values(); }
+        mapped_type &at(const key_type &key) override
+        {
+            return data.at(key);
+        }
+
+        void Add(const key_type &key, const mapped_type &value) override
+        {
+            data.Add(key, value);
+        }
+
+        bool Remove(const key_type &key) override
+        {
+            return data.Remove(key);
+        }
+
+        bool ContainsKey(const key_type &key) const override
+        {
+            return data.ContainsKey(key);
+        }
+
+        bool TryGetValue(const key_type &key, mapped_type &value_out) const override
+        {
+            return data.TryGetValue(key, value_out);
+        }
+
+        ICollection<key_type> Keys() const override
+        {
+            return data.Keys();
+        }
+
+        ICollection<mapped_type> Values() const override
+        {
+            return data.Values();
+        }
 
         iterator        begin()       override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<DictionaryType>>( data.begin() ) }; }
         const_iterator  begin() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.begin() ) }; }
