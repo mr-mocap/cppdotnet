@@ -44,14 +44,6 @@ struct IListInterface : Policy
     virtual typename Policy::IteratorType       end()       = 0;
     virtual typename Policy::ConstIteratorType  end() const = 0;
     virtual typename Policy::ConstIteratorType cend() const = 0;
-
-    virtual typename Policy::ReverseIteratorType       rbegin()       = 0;
-    virtual typename Policy::ConstReverseIteratorType  rbegin() const = 0;
-    virtual typename Policy::ConstReverseIteratorType crbegin() const = 0;
-
-    virtual typename Policy::ReverseIteratorType       rend()       = 0;
-    virtual typename Policy::ConstReverseIteratorType  rend() const = 0;
-    virtual typename Policy::ConstReverseIteratorType crend() const = 0;
 };
 
 template <class ListType>

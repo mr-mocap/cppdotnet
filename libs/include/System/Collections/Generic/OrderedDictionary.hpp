@@ -313,14 +313,6 @@ public:
           iterator  end()                { return _dictionary.end(); }
     const_iterator  end()  const         { return _dictionary.end(); }
     const_iterator cend() const noexcept { return _dictionary.cend(); }
-
-    //       reverse_iterator  rbegin()                { return _dictionary.rbegin(); }
-    // const_reverse_iterator  rbegin() const          { return _dictionary.rbegin(); }
-    // const_reverse_iterator crbegin() const noexcept { return _dictionary.crbegin(); }
-
-    //       reverse_iterator  rend()                { return _dictionary.rend(); }
-    // const_reverse_iterator  rend() const          { return _dictionary.rend(); }
-    // const_reverse_iterator crend() const noexcept { return _dictionary.crend(); }
 protected:
     List<TKey>   _list;
     Dictionary<TKey, TValue, Hash, KeyEqual, Allocator> _dictionary;

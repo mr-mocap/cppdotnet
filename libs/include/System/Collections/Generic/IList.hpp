@@ -1,16 +1,16 @@
 #pragma once
 
-#include "System/Collections/Generic/Private/LegacyBidirectionalIterator.hpp"
+#include "System/Collections/Generic/Private/LegacyForwardIterator.hpp"
 #include "System/Collections/Generic/Private/IListInterface.hpp"
 
 namespace System::Collections::Generic
 {
 
 template <class T>
-class IList : public Private::LegacyBidirectionalIteratorBase<T>
+class IList : public Private::LegacyForwardIteratorBase<T>
 {
 public:
-    using IteratorBase = Private::LegacyBidirectionalIteratorBase<T>;
+    using IteratorBase = Private::LegacyForwardIteratorBase<T>;
 
     using difference_type  = IteratorBase::difference_type;
     using size_type        = IteratorBase::size_type;
@@ -19,8 +19,6 @@ public:
     using reference        = IteratorBase::reference;
     using iterator         = IteratorBase::iterator;
     using const_iterator   = IteratorBase::const_iterator;
-    using reverse_iterator = IteratorBase::reverse_iterator;
-    using const_reverse_iterator = IteratorBase::const_reverse_iterator;
 
 private:
     struct Policy
@@ -29,8 +27,6 @@ private:
         using size_type          = IteratorBase::size_type;
         using IteratorType       = IteratorBase::iterator;
         using ConstIteratorType  = IteratorBase::const_iterator;
-        using ReverseIteratorType       = IteratorBase::reverse_iterator;
-        using ConstReverseIteratorType  = IteratorBase::const_reverse_iterator;
     };
 
     using Interface = Private::IListInterface<Policy>;
@@ -133,14 +129,6 @@ private:
         const_iterator  end() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data.end() ) ); }
         const_iterator cend() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data.cend() ) ); }
 
-              reverse_iterator  rbegin()       override { return reverse_iterator( std::make_unique<typename IteratorBase::ReverseIteratorModel<ListType>>( data.rbegin() ) ); }
-        const_reverse_iterator  rbegin() const override { return const_reverse_iterator( std::make_unique<typename IteratorBase::ConstReverseIteratorModel<ListType>>( data.rbegin() ) ); }
-        const_reverse_iterator crbegin() const override { return const_reverse_iterator( std::make_unique<typename IteratorBase::ConstReverseIteratorModel<ListType>>( data.crbegin() ) ); }
-
-              reverse_iterator  rend()       override { return reverse_iterator( std::make_unique<typename IteratorBase::ReverseIteratorModel<ListType>>( data.rend() ) ); }
-        const_reverse_iterator  rend() const override { return const_reverse_iterator( std::make_unique<typename IteratorBase::ConstReverseIteratorModel<ListType>>( data.rend() ) ); }
-        const_reverse_iterator crend() const override { return const_reverse_iterator( std::make_unique<typename IteratorBase::ConstReverseIteratorModel<ListType>>( data.crend() ) ); }
-
         ListType data;
     };
 
@@ -219,14 +207,6 @@ public:
           iterator  end()       { return m_pimpl->end();  }
     const_iterator  end() const { return AsConst()->end(); }
     const_iterator cend() const { return AsConst()->cend(); }
-
-          reverse_iterator  rbegin()       { return m_pimpl->rbegin();  }
-    const_reverse_iterator  rbegin() const { return AsConst()->rbegin(); }
-    const_reverse_iterator crbegin() const { return AsConst()->crbegin(); }
-
-          reverse_iterator  rend()       { return m_pimpl->rend();  }
-    const_reverse_iterator  rend() const { return AsConst()->rend(); }
-    const_reverse_iterator crend() const { return AsConst()->crend(); }
 protected:
     std::unique_ptr<Interface> m_pimpl;
 
@@ -242,10 +222,10 @@ template <class ListType>
 IList(ListType &input) -> IList<typename ListType::value_type>;
 
 template <class T>
-class IListRef : public Private::LegacyBidirectionalIteratorBase<T>
+class IListRef : public Private::LegacyForwardIteratorBase<T>
 {
 public:
-    using IteratorBase = Private::LegacyBidirectionalIteratorBase<T>;
+    using IteratorBase = Private::LegacyForwardIteratorBase<T>;
 
     using typename IteratorBase::difference_type;
     using typename IteratorBase::size_type;
@@ -254,8 +234,6 @@ public:
     using typename IteratorBase::reference;
     using typename IteratorBase::iterator;
     using typename IteratorBase::const_iterator;
-    using typename IteratorBase::reverse_iterator;
-    using typename IteratorBase::const_reverse_iterator;
 
 private:
     struct Policy
@@ -264,8 +242,6 @@ private:
         using size_type          = IteratorBase::size_type;
         using IteratorType       = IteratorBase::iterator;
         using ConstIteratorType  = IteratorBase::const_iterator;
-        using ReverseIteratorType       = IteratorBase::reverse_iterator;
-        using ConstReverseIteratorType  = IteratorBase::const_reverse_iterator;
     };
 
     using Interface = Private::IListInterface<Policy>;
@@ -371,14 +347,6 @@ private:
         const_iterator  end() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data->end() ) ); }
         const_iterator cend() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data->cend() ) ); }
 
-              reverse_iterator  rbegin()       override { return reverse_iterator( std::make_unique<typename IteratorBase::ReverseIteratorModel<ListType>>( data->rbegin() ) ); }
-        const_reverse_iterator  rbegin() const override { return const_reverse_iterator( std::make_unique<typename IteratorBase::ConstReverseIteratorModel<ListType>>( data->rbegin() ) ); }
-        const_reverse_iterator crbegin() const override { return const_reverse_iterator( std::make_unique<typename IteratorBase::ConstReverseIteratorModel<ListType>>( data->crbegin() ) ); }
-
-              reverse_iterator  rend()       override { return reverse_iterator( std::make_unique<typename IteratorBase::ReverseIteratorModel<ListType>>( data->rend() ) ); }
-        const_reverse_iterator  rend() const override { return const_reverse_iterator( std::make_unique<typename IteratorBase::ConstReverseIteratorModel<ListType>>( data->rend() ) ); }
-        const_reverse_iterator crend() const override { return const_reverse_iterator( std::make_unique<typename IteratorBase::ConstReverseIteratorModel<ListType>>( data->crend() ) ); }
-
         ListType *data = nullptr;
     };
 
@@ -453,14 +421,6 @@ public:
           iterator  end()       { return m_pimpl->end();  }
     const_iterator  end() const { return AsConst()->end(); }
     const_iterator cend() const { return AsConst()->cend(); }
-
-          reverse_iterator  rbegin()       { return m_pimpl->rbegin();  }
-    const_reverse_iterator  rbegin() const { return AsConst()->rbegin(); }
-    const_reverse_iterator crbegin() const { return AsConst()->crbegin(); }
-
-          reverse_iterator  rend()       { return m_pimpl->rend();  }
-    const_reverse_iterator  rend() const { return AsConst()->rend(); }
-    const_reverse_iterator crend() const { return AsConst()->crend(); }
 protected:
     std::unique_ptr<Interface> m_pimpl;
 
