@@ -21,25 +21,25 @@ TEST_BINARIES = $(patsubst %,Test%,${TESTS})
 PASSING_TESTS = $(patsubst %,%.pass,${TEST_BINARIES})
 
 %: %.cpp
-	@echo Building $@
+	@echo -n $@ [BUILDING] ...
 	@$(CXX) -o $@ $< $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(EXTERNAL_LIBS)
 
 %.pass: %
-	@echo Running $<
 	@./$< >/dev/null 2>/dev/null
+	@echo [PASSED]
 	@touch $@
 
 default: all
 
 $(LIB_BUILD_DIR):
-	cd .. && $(MAKE) lib
+	@cd .. && $(MAKE) lib
 
 $(LIB_PATH): $(LIB_BUILD_DIR)
-	cd .. && $(MAKE) lib
+	@cd .. && $(MAKE) lib
 
 .PHONY: lib
 lib: $(LIB_PATH)
-	cd .. && $(MAKE) lib
+	@cd .. && $(MAKE) lib
 
 TestVersion: TestVersion.cpp
 
@@ -201,13 +201,13 @@ all: $(PASSING_TESTS) $(LIB_PATH)
 
 .PHONY: clean
 clean:
-	rm -f ./*.o
-	rm -f ./*.d
-	rm -f $(TEST_BINARIES)
-	rm -f $(PASSING_TESTS)
+	@rm -f ./*.o
+	@rm -f ./*.d
+	@rm -f $(TEST_BINARIES)
+	@rm -f $(PASSING_TESTS)
 
 .PHONY: cleanlib
 cleanlib:
-	cd .. && make cleanlib
+	@cd .. && make cleanlib
 
 -include *.d

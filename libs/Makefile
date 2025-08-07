@@ -30,18 +30,17 @@ LIB_DEP  = $(LIB_PATH)/*.d \
 		   $(LIB_PATH)/src/System/Text/*.d
 
 build/%.o : %.cpp
-	echo Making build directory...
-	mkdir -p ${dir $@}
+	@mkdir -p ${dir $@}
 	$(CXX) -o $@ $< -c $(CPPFLAGS) $(CXXFLAGS)
 	
 all: $(LIB_OBJS)
-	ar -crs $(LIB_PATH) $(LIB_OBJS)
-	ranlib $(LIB_PATH)
+	@ar -crs $(LIB_PATH) $(LIB_OBJS)
+	@ranlib $(LIB_PATH)
 
 lib: all
 
 .PHONY: clean
 clean:
-	rm -rf build
+	@rm -rf build
 
 -include $(LIB_DEP)
