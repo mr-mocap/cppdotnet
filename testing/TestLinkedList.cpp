@@ -314,8 +314,6 @@ void FindLast()
 
 void Run()
 {
-    std::cout << "Running LinkedList Tests..." << std::endl;
-
     DefaultConstructsToEmpty();
     ConstructWithExternalSequence();
     AddFirstAddsItemToFirstPosition();

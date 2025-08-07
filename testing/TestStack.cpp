@@ -177,8 +177,6 @@ void TryPopReturnsFalseWhenStackIsEmpty()
 
 void Run()
 {
-    std::cout << "Running Version Tests..." << std::endl;
-
     DefaultConstructed();
     PushIncreasesTheCountByOne();
     PushAddsTheItemToTheTop();

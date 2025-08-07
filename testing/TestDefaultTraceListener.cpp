@@ -20,8 +20,6 @@ void AccessingListenersFirstTimeCreatesDefaultTraceListener()
 
 void Run()
 {
-    std::cout << "Running DefaultTraceListener Tests..." << std::endl;
-
     AccessingListenersFirstTimeCreatesDefaultTraceListener();
 }
 

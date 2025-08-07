@@ -52,8 +52,6 @@ void GetEnvironmentVariables()
 
 void Run()
 {
-    std::cout << "Running Environment Tests..." << std::endl;
-
     GetEnvrionmentVariable();
     SetEnvironmentVariable();
     GetEnvironmentVariables();

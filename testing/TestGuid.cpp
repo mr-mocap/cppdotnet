@@ -454,8 +454,6 @@ void ParseValidXFormatString()
 
 void Run()
 {
-    std::cout << "Running Guid Tests..." << std::endl;
-
     ConstructWithSpanOfBytes();
     ConstructWithNFormatString();
     ConstructWithDFormatString();

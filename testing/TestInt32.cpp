@@ -369,8 +369,6 @@ void Addition()
 
 void Run()
 {
-    std::cout << "Running Int32 Tests..." << std::endl;
-
     DefaultConstructsToZero();
     ConstructingFromAConstantInteger();
     AutomaticConversionToStdInt32WhenCallingFunction();

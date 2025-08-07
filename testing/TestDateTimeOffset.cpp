@@ -56,8 +56,6 @@ void ConstructWithDateTimeAndTimeSpan()
 
 void Run()
 {
-    std::cout << "Running DateTimeOffset Tests..." << std::endl;
-
     ConstructWithDateTime();
     ConstructWithDateTimeAndTimeSpan();
 }

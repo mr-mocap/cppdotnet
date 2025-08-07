@@ -45,8 +45,6 @@ void VerifyWrite()
 
 void Run()
 {
-    std::cout << "Running StringWriter Tests..." << std::endl;
-
     DefaultConstructed();
     VerifyWrite();
 }

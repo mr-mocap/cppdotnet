@@ -321,8 +321,6 @@ void IteratingAsKeyValuePair()
 
 void Run()
 {
-    std::cout << "Running Dictionary Tests..." << std::endl;
-
     DefaultConstruction();
     ConstructWithInitializerList();
     ConstructWithMap();

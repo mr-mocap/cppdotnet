@@ -57,8 +57,6 @@ void CommonUsage()
 
 void Run()
 {
-    std::cout << "Running Debug Tests..." << std::endl;
-
     CommonUsage();
 }
 

@@ -317,8 +317,6 @@ void TryCopyTo()
 
 void Run()
 {
-    std::cout << "Running Span Tests..." << std::endl;
-
     Empty();
     DefaultConstructedSpanIsEmpty();
     SingleObject();

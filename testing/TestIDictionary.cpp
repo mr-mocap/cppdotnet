@@ -164,8 +164,6 @@ void IterateOverDictionary()
 
 void Run()
 {
-    std::cout << "Running IDictionary Tests..." << std::endl;
-
     MoveConstructedWithDataType();
     ConstructedWithObjectMakesANewCopy();
     CopyConstructorMakesANewObject();

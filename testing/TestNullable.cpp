@@ -230,8 +230,6 @@ void OperatorEqualsEquals()
 
 void Run()
 {
-    std::cout << "Running Nullable Tests..." << std::endl;
-
     DefaultConstructsToNull();
     ConstructWithValueSetValueAndHasValueToTrue();
     AccessingValueWhenHasValueIsFalseThrowsException();

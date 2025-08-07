@@ -641,8 +641,6 @@ void SubtractingTwoDateTimesReturnsATimeSpan()
 
 void Run()
 {
-    std::cout << "Running DateTime Tests..." << std::endl;
-
     DefaultConstruct();
     MinValueIsJanuaryFirstOnYearZeroAtMidnight();
     ConstructYearMonthDay();

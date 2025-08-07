@@ -33,8 +33,6 @@ void CommonUsage()
 
 void Run()
 {
-    std::cout << "Running ConsoleTraceListener Tests..." << std::endl;
-
     CommonUsage();
 }
 

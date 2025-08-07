@@ -504,8 +504,6 @@ void FindAll()
 
 void Run()
 {
-    std::cout << "Running List Tests..." << std::endl;
-
     DefaultConstructsToEmpty();
     ConstructWithExternalSequence();
     Find();

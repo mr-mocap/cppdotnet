@@ -92,8 +92,6 @@ void SetError()
 
 void Run()
 {
-    std::cout << "Running Console Tests..." << std::endl;
-
     TestOut();
     SetIn();
     SetOut();

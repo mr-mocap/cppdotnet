@@ -128,8 +128,6 @@ void TestFuncs()
 
 void Run()
 {
-    std::cout << "Running Delegate Tests..." << std::endl;
-
     TestActions();
 }
 

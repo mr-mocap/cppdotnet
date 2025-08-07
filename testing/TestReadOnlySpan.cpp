@@ -374,8 +374,6 @@ void AsBytes()
 
 void Run()
 {
-    std::cout << "Running ReadOnlySpan Tests..." << std::endl;
-
     Empty();
     DefaultConstructedSpanIsEmpty();
     SingleObject();

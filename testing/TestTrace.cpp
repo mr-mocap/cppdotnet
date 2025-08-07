@@ -254,8 +254,6 @@ void TestTraceLevel()
 
 void Run()
 {
-    std::cout << "Running Trace Tests..." << std::endl;
-
     TestSetup();
     {
         Write();

@@ -26,7 +26,7 @@ PASSING_TESTS = $(patsubst %,%.pass,${TEST_BINARIES})
 
 %.pass: %
 	@echo Running $<
-	@./$<
+	@./$< >/dev/null 2>/dev/null
 	@touch $@
 
 default: all

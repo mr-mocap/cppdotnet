@@ -70,8 +70,6 @@ void RestartClearsElapsedTimeAndStartsRunning()
 
 void Run()
 {
-    std::cout << "Running Stopwatch Tests..." << std::endl;
-
     DefaultConstructed();
     StartNewCreatesANewRunningStopwatch();
     StopStopsTheStopwatch();

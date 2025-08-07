@@ -386,8 +386,6 @@ void ToString()
 
 void Run()
 {
-    std::cout << "Running DateOnly Tests..." << std::endl;
-
     MinValueIsJanuaryFirstOnYearZeroAtMidnight();
     MaxValueIsTheLastDayOfYear9999();
     ConstructYearMonthDay();

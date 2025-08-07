@@ -285,8 +285,6 @@ void GenericEnum()
 
 void Run()
 {
-    std::cout << "Running Enum Tests..." << std::endl;
-
     CheckGetNames();
     CheckGetValues();
     IsDefined();

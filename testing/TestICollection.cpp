@@ -291,8 +291,6 @@ void IterateOverDictionary()
 
 void Run()
 {
-    std::cout << "Running ICollection Tests..." << std::endl;
-
     MoveConstructedWithDataType();
     ConstructWithLinkedListObject();
     ConstructedWithObjectMakesANewCopy();

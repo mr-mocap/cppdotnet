@@ -57,8 +57,6 @@ void EndsInDirectorySeparator()
 
 void Run()
 {
-    std::cout << "Running Path Tests..." << std::endl;
-
     ChangeExtension();
     CombineTwo();
     EndsInDirectorySeparator();

@@ -66,8 +66,6 @@ void AppendFormat()
 
 void Run()
 {
-    std::cout << "Running StringBuilder Tests..." << std::endl;
-
     ReplaceSubstrings();
     AppendFormat();
 }

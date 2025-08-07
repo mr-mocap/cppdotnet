@@ -82,8 +82,6 @@ void WriteReadOnlySpanWritesThoseBytes()
 
 void Run()
 {
-    System::Console::Out().WriteLine("Running BinaryWriter Tests...");
-
     DefaultConstructedEatsDataWritten();
     WriteBoolIncreasesOutputStreamLengthByOne();
     WriteCharIncreasesOutputStreamLengthByOne();

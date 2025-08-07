@@ -63,8 +63,6 @@ void WithMessageAndInnerException()
 
 void Run()
 {
-    std::cout << "Running Exception Tests..." << std::endl;
-
     DefaultConstruction();
     WithMessage();
     WithMessageAndInnerException();

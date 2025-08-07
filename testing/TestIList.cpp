@@ -174,8 +174,6 @@ void IterateOverListAsIList()
 
 void Run()
 {
-    System::Console::WriteLine("Running IList Tests...");
-
     MoveConstructedWithDataType();
     ConstructedWithObjectMakesANewCopy();
     CopyConstructorMakesANewObject();

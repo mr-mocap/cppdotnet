@@ -135,8 +135,6 @@ void ByteSwap()
 
 void Run()
 {
-    std::cout << "Running BitConverter Tests..." << std::endl;
-
     GetBytesBool();
     GetBytesChar();
     GetBytesFloat();

@@ -19,8 +19,6 @@ void BasicActivity()
 
 void Run()
 {
-    System::Console::Out().WriteLine("Running Activity Tests...");
-
     BasicActivity();
 }
 

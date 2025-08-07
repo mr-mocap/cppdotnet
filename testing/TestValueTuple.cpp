@@ -30,8 +30,6 @@ void DefaultConstructed()
 
 void Run()
 {
-    System::Console::Out().WriteLine("Running ValueTuple Tests...");
-
     DefaultConstructed();
 }
 

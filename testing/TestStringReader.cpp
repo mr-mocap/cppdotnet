@@ -6,8 +6,6 @@ namespace TestStringReader
 
 void Run()
 {
-    std::cout << "Running StringReader Tests..." << std::endl;
-
 }
 
 }

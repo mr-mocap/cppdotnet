@@ -701,8 +701,6 @@ void Division()
 
 void Run()
 {
-    std::cout << "Running TimeSpan Tests..." << std::endl;
-
     ConstantProperties();
     DefaultConstructed();
     DifferentConstructors();

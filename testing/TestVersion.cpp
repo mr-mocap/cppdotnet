@@ -139,8 +139,6 @@ void ToStringWithParameter()
 
 void Run()
 {
-    std::cout << "Running Version Tests..." << std::endl;
-
     DefaultConstructed();
     ConstructWithMajorAndMinor();
     ConstructWithMajorAndMinorAndBuild();

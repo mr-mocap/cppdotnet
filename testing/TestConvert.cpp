@@ -539,8 +539,6 @@ void ToBase()
 
 void Run()
 {
-    std::cout << "Running Convert Tests..." << std::endl;
-
     FromHexString();
     ToHexString();
     ToBase64String();

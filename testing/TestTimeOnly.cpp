@@ -157,8 +157,6 @@ void AddHoursWithExcessDaysCaptured()
 
 void Run()
 {
-    std::cout << "Running TimeOnly Tests..." << std::endl;
-
     DefaultConstructed();
     ConstructWithDifferentHours();
     ConstructWithDifferentMinutes();
