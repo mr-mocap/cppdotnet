@@ -18,6 +18,10 @@ public:
         _data{ init_value }
     {
     }
+    Nullable(const Nullable &) = default;
+    Nullable(Nullable &&) = default;
+    Nullable &operator =(const Nullable &) = default;
+    Nullable &operator =(Nullable &&) = default;
 
     constexpr bool HasValue() const
     {
@@ -67,17 +71,17 @@ public:
         return *this;
     }
 
-    constexpr Nullable &operator =(const Nullable &other)
-    {
-        _data = other._data;
-        return *this;
-    }
+    // constexpr Nullable &operator =(const Nullable &other)
+    // {
+    //     _data = other._data;
+    //     return *this;
+    // }
 
-    constexpr Nullable &operator =(Nullable &&other) noexcept
-    {
-        _data = std::move( other );
-        return *this;
-    }
+    // constexpr Nullable &operator =(Nullable &&other) noexcept
+    // {
+    //     _data = std::move( other );
+    //     return *this;
+    // }
 
     template <class U = std::remove_cv_t<T>>
     constexpr Nullable &operator =(U &&new_value)

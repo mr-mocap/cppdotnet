@@ -1,6 +1,5 @@
 #include "System/Convert.hpp"
 #include "System/Boolean.hpp"
-#include "System/Exception.hpp"
 #include "System/BitConverter.hpp"
 #include <map>
 #include <span>

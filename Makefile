@@ -19,4 +19,8 @@ cleantest:
 
 .PHONY: run_test
 run_test: test
-	cd testing && $(MAKE) run_test
+	@cd testing && $(MAKE) run_test
+
+.PHONY: modules
+modules: 
+	@cd libs && $(MAKE) modules

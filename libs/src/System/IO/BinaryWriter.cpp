@@ -1,5 +1,4 @@
 #include "System/IO/BinaryWriter.hpp"
-#include <bit>
 
 
 namespace System::IO

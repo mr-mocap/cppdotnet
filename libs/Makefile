@@ -206,7 +206,7 @@ GenerateOtherHeaderUnits: $(SYSTEM_MODULE_OTHER_HEADER_GCMS) $(IO_OTHER_HEADER_G
 	@echo Other Header Units DONE!
 
 .PHONY: GenerateHeaderUnits
-GenerateHeaderUnits: GenerateHeaderOnlyUnits
+GenerateHeaderUnits: GenerateHeaderOnlyUnits GenerateOtherHeaderUnits
 	@echo Header Units Generated
 
 src/System/System.ixx: GenerateHeaderUnits $(SYSTEM_MODULE_OBJS)
@@ -218,8 +218,8 @@ build/%.o : %.cpp
 	
 all: $(LIB_OBJS)
 	@echo Creating static library
-	ar -crs $(LIB_PATH) $(LIB_OBJS)
-	ranlib $(LIB_PATH)
+	@ar -crs $(LIB_PATH) $(LIB_OBJS)
+	@ranlib $(LIB_PATH)
 
 lib: all
 
@@ -228,8 +228,8 @@ modules: src/System/System.ixx
 
 .PHONY: clean
 clean:
-	rm -rf build
-	rm -rf module_build
-	rm -rf gcm.cache
+	@rm -rf build
+	@rm -rf module_build
+	@rm -rf gcm.cache
 
 -include $(src/System/Dependencies.d)

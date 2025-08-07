@@ -1,5 +1,6 @@
 #include "System/IO/StreamReader.hpp"
 #include "System/IO/FileStream.hpp"
+#include "System/IO/Stream.hpp"
 
 
 namespace System::IO

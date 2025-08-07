@@ -1,11 +1,6 @@
 #pragma once
 
-#include "System/Exception.hpp"
-#include "System/Private/private.hpp"
 #include "System/Private/enum.hpp"
-#include <string_view>
-#include <variant>
-#include <algorithm>
 
 namespace System::Diagnostics
 {

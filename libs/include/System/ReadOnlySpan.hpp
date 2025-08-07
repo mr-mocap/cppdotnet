@@ -2,9 +2,6 @@
 
 #include "System/Span.hpp"
 
-#include <type_traits>
-#include <algorithm>
-
 namespace System
 {
 

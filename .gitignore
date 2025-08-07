@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+*.pass
 
 # Compiled Object files
 *.slo
@@ -35,5 +36,7 @@
 .vscode/*
 
 # Project Level
-testing/code_tests
+
+# Ignore the generated test binaries
+testing/Test*
 
