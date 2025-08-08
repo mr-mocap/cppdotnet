@@ -1,6 +1,4 @@
 # Prerequisites
-*.d
-*.pass
 
 # Compiled Object files
 *.slo
@@ -31,6 +29,12 @@
 *.exe
 *.out
 *.app
+
+# Test Results
+*.pass
+
+# Makefile Dependencies
+*.d
 
 # VSCode
 .vscode/*
