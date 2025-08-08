@@ -5,6 +5,7 @@
 #include <string_view>
 #include <memory>
 #include <source_location>
+#include <concepts>
 
 namespace System
 {
@@ -45,16 +46,11 @@ public:
      *  @{
      */
     template <class ExceptionType>
+        requires std::derived_from<ExceptionType, Exception>
     Exception(std::string_view message, const ExceptionType &inner_exception) = delete;
 
     template <class ExceptionType>
-    Exception(const char *message, ExceptionType &&inner_exception)
-        :
-        Exception( std::string_view{message}, std::move(inner_exception) )
-    {
-    }
-
-    template <class ExceptionType>
+        requires std::derived_from<ExceptionType, Exception>
     Exception(std::string_view message, ExceptionType &&inner_exception)
         :
         _message{ message },
@@ -95,6 +91,7 @@ public:
     using Exception::Exception;
 
     SystemException() = default;
+    virtual ~SystemException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -116,7 +113,6 @@ public:
     }
     /// @}
 
-    SystemException(const char *message) : SystemException( std::string_view{message} ) { }
     SystemException(std::string_view message)
         :
         Exception( message )
@@ -132,6 +128,7 @@ public:
     using SystemException::SystemException;
 
     ArgumentException() = default;
+    virtual ~ArgumentException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -159,21 +156,12 @@ public:
     }
     /// @}
 
-    explicit ArgumentException(const char *message) : ArgumentException( std::string_view{message} ) { }
     explicit ArgumentException(std::string_view message) : SystemException( message ) { }
 
-    explicit ArgumentException(const char *message, const char *param_name) : ArgumentException( std::string_view{message}, std::string_view{param_name} ) { }
     explicit ArgumentException(std::string_view message, std::string_view param_name)
         :
         SystemException( message ),
         _paramName{ param_name }
-    {
-    }
-    explicit ArgumentException(const char *message,
-                               const char *param_name,
-                               Exception &&inner_exception)
-        :
-        ArgumentException( std::string_view{message}, std::string_view{param_name}, std::move(inner_exception) )
     {
     }
     explicit ArgumentException(std::string_view message,
@@ -198,6 +186,7 @@ public:
     using ArgumentException::ArgumentException;
 
     ArgumentNullException() = default;
+   ~ArgumentNullException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -219,10 +208,8 @@ public:
     }
     /// @}
 
-    ArgumentNullException(const char *param_name) : ArgumentNullException( std::string_view{param_name} ) { }
     ArgumentNullException(std::string_view param_name);
 
-    ArgumentNullException(const char *param_name, const char *message) : ArgumentNullException( std::string_view{param_name}, std::string_view{message} ) { }
     ArgumentNullException(std::string_view param_name, std::string_view message)
         :
         ArgumentException( message, param_name )
@@ -238,6 +225,7 @@ public:
     using ArgumentException::ArgumentException;
 
     ArgumentOutOfRangeException() = default;
+   ~ArgumentOutOfRangeException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -259,10 +247,8 @@ public:
     }
     /// @}
 
-    ArgumentOutOfRangeException(const char *param_name) : ArgumentOutOfRangeException( std::string_view{param_name} ) { }
     ArgumentOutOfRangeException(std::string_view param_name);
 
-    ArgumentOutOfRangeException(const char *param_name, const char *message) : ArgumentOutOfRangeException( std::string_view{param_name}, std::string_view{message} ) { }
     ArgumentOutOfRangeException(std::string_view param_name, std::string_view message)
         :
         ArgumentException( message, param_name )
@@ -278,6 +264,7 @@ public:
     using SystemException::SystemException;
 
     NotSupportedException() = default;
+   ~NotSupportedException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -299,7 +286,6 @@ public:
     }
     /// @}
 
-    NotSupportedException(const char *message) : NotSupportedException( std::string_view{message} ) { }
     NotSupportedException(std::string_view message) : SystemException( message ) { }
 
     std::string_view ClassName() const override;
@@ -311,6 +297,7 @@ public:
     using SystemException::SystemException;
 
     InvalidOperationException() = default;
+    virtual ~InvalidOperationException() = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -332,7 +319,6 @@ public:
     }
     /// @}
 
-    InvalidOperationException(const char *message) : InvalidOperationException( std::string_view{message} ) { }
     InvalidOperationException(std::string_view message) : SystemException( message ) { }
 
     std::string_view ClassName() const override;
@@ -344,6 +330,7 @@ public:
     using InvalidOperationException::InvalidOperationException;
 
     ObjectDisposedException() = default;
+   ~ObjectDisposedException() = default;
     
     /** Remove the ability to copy objects of this class
      *
@@ -371,13 +358,11 @@ public:
     }
     /// @}
 
-    ObjectDisposedException(const char *disposed_object_name) : ObjectDisposedException( std::string_view{disposed_object_name} ) { }
     ObjectDisposedException(std::string_view disposed_object_name);
 
-    ObjectDisposedException(const char *disposed_object_name, const char *message);
     ObjectDisposedException(std::string_view disposed_object_name, std::string_view message);
 
-    const std::string ObjectName() const { return _objectName; }
+    std::string_view ObjectName() const { return _objectName; }
 
     std::string_view ClassName() const override;
 protected:
@@ -390,11 +375,10 @@ public:
     using SystemException::SystemException;
 
     FormatException() = default;
+   ~FormatException() = default;
 
-    explicit FormatException(const char *message) : FormatException( std::string_view{message} ) { }
     explicit FormatException(std::string_view message) : SystemException( message ) { }
 
-    explicit FormatException(const char *message, Exception &&inner_exception) : FormatException( std::string_view(message), std::move(inner_exception) ) { }
     explicit FormatException(std::string_view message, Exception &&inner_exception)
         :
         SystemException( message, std::move(inner_exception) )
@@ -426,11 +410,10 @@ public:
     using SystemException::SystemException;
 
     ArithmeticException() = default;
+   ~ArithmeticException() = default;
 
-    explicit ArithmeticException(const char *message) : ArithmeticException( std::string_view{message} ) { }
     explicit ArithmeticException(std::string_view message) : SystemException( message ) { }
 
-    explicit ArithmeticException(const char *message, Exception &&inner_exception) : ArithmeticException( std::string_view(message), std::move(inner_exception) ) { }
     explicit ArithmeticException(std::string_view message, Exception &&inner_exception)
         :
         SystemException( message, std::move(inner_exception) )
@@ -462,11 +445,10 @@ public:
     using SystemException::SystemException;
 
     OverflowException() = default;
+   ~OverflowException() = default;
 
-    explicit OverflowException(const char *message) : OverflowException( std::string_view{message} ) { }
     explicit OverflowException(std::string_view message) : SystemException( message ) { }
 
-    explicit OverflowException(const char *message, Exception &&inner_exception) : OverflowException( std::string_view(message), std::move(inner_exception) ) { }
     explicit OverflowException(std::string_view message, Exception &&inner_exception)
         :
         SystemException( message, std::move(inner_exception) )
