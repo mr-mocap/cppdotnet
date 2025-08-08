@@ -36,6 +36,7 @@
 .vscode/*
 
 # Project Level
+libs/gcm.cache
 
 # Ignore the generated test binaries
 testing/Test*
