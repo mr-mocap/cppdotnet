@@ -1,14 +1,11 @@
 #pragma once
 
 #include "System/DayOfWeek.hpp"
-#include "System/TimeSpan.hpp"
-#if 0
-#include "System/DateTime.hpp"
-#endif
 #include "System/Private/private.hpp"
 #include <chrono>
 #include <compare>
 #include <string>
+#include <format>
 
 
 namespace System
@@ -19,7 +16,7 @@ class DateTime;
 class DateOnly
 {
 public:
-    constexpr DateOnly() = default;
+    DateOnly() = default;
     explicit constexpr DateOnly(int year, int month, int day)
         :
         _year_month_day( std::chrono::year(year), std::chrono::month(month), std::chrono::day(day) )
@@ -44,10 +41,10 @@ public:
                   {
                   }
 
-    DateOnly(const DateOnly &) = default;
-    DateOnly &operator =(const DateOnly &) = default;
-    DateOnly(DateOnly &&) = default;
-    DateOnly &operator =(DateOnly &&) = default;
+    constexpr DateOnly(const DateOnly &) = default;
+    constexpr DateOnly &operator =(const DateOnly &) = default;
+    constexpr DateOnly(DateOnly &&) = default;
+    constexpr DateOnly &operator =(DateOnly &&) = default;
 
     constexpr int Day() const
     {
