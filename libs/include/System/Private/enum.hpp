@@ -1,6 +1,7 @@
 #pragma once
 
 #include <utility>
+#include <string>
 #include <string_view>
 #include <span>
 #include <ranges>
@@ -8,6 +9,7 @@
 #include <algorithm>
 #include <array>
 #include <type_traits>
+#include <variant>
 
 namespace System
 {
