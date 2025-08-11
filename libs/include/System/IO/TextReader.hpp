@@ -9,7 +9,7 @@ class TextReader
 {
 public:
     TextReader();
-    virtual ~TextReader();
+    virtual ~TextReader() = 0;
 
     virtual void Close() = 0;
 

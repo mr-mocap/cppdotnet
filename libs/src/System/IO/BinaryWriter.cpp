@@ -1,8 +1,15 @@
 #include "System/IO/BinaryWriter.hpp"
-
+#include "System/IO/Stream.hpp"
+#include <iostream>
 
 namespace System::IO
 {
+
+BinaryWriter::BinaryWriter()
+    :
+    BinaryWriter( Stream::Null() )
+{
+}
 
 void BinaryWriter::Close()
 {

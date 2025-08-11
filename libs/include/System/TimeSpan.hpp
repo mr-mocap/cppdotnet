@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <format>
+#include <compare>
 
 
 namespace System

@@ -11,8 +11,4 @@ TextReader::TextReader()
 {
 }
 
-TextReader::~TextReader()
-{
-}
-
 }

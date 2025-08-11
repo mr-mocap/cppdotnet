@@ -1,6 +1,8 @@
 #include "System/IO/Stream.hpp"
 #include "System/IO/NullStream.hpp"
 #include "System/IO/IOException.hpp"
+#include <utility>
+#include <iostream>
 
 
 namespace System::IO
@@ -13,6 +15,24 @@ Stream::Stream(std::unique_ptr<std::iostream> &&stream, bool can_read, bool can_
     _canWrite{ can_write },
     _canSeek{ can_seek }
 {
+}
+
+Stream::Stream(Stream &&other)
+    :
+    _stream{ std::move(other) },
+    _canRead{ other._canRead },
+    _canWrite{ other._canWrite },
+    _canSeek{ other._canSeek }
+{
+}
+
+Stream &Stream::operator =(Stream &&other)
+{
+    _stream = std::move(other._stream);
+    _canRead = other._canRead;
+    _canWrite = other._canWrite;
+    _canSeek = other._canSeek;
+    return *this;
 }
 
 std::unique_ptr<Stream> Stream::Null()

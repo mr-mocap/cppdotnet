@@ -1,22 +1,14 @@
 #include "System/IO/StreamReader.hpp"
-#include "System/IO/FileStream.hpp"
 #include "System/IO/Stream.hpp"
+#include "System/IO/FileStream.hpp"
 
 
 namespace System::IO
 {
 
-StreamReader::StreamReader()
-{
-}
-
 StreamReader::StreamReader(std::string_view filename)
     :
     _stream{ std::make_unique<FileStream>( filename ) }
-{
-}
-
-StreamReader::~StreamReader()
 {
 }
 

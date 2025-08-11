@@ -2,7 +2,7 @@
 
 #include "System/IO/SeekOrigin.hpp"
 #include "System/ReadOnlySpan.hpp"
-#include <iostream>
+#include <iosfwd>
 #include <memory>
 #include <string>
 #include <cstdint>
@@ -13,7 +13,12 @@ namespace System::IO
 class Stream
 {
 public:
+    Stream(const Stream &) = delete;
+    Stream(Stream &&);
     virtual ~Stream() = default;
+
+    Stream &operator =(const Stream &) = delete;
+    Stream &operator =(Stream &&);
 
     static std::unique_ptr<Stream> Null();
 

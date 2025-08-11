@@ -1,20 +1,27 @@
 #pragma once
 
-#include "System/IO/Stream.hpp"
 #include "System/IO/SeekOrigin.hpp"
 #include "System/ReadOnlySpan.hpp"
-#include <type_traits>
+#include <memory>
+#include <utility>
+#include <cstddef>
 
 
 namespace System::IO
 {
 
+class Stream;
+
 class BinaryWriter
 {
 public:
-    BinaryWriter() : BinaryWriter( Stream::Null() ) { }
+    BinaryWriter();
     BinaryWriter(std::unique_ptr<Stream> output) : _stream( std::move(output) ) { }
     BinaryWriter(std::shared_ptr<Stream> p) : _stream( p ) { }
+    BinaryWriter(const BinaryWriter &other) = default;
+    virtual ~BinaryWriter() = default;
+
+    BinaryWriter &operator =(const BinaryWriter &other) = default;
 
     static BinaryWriter Null() { return BinaryWriter(); }
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "System/IO/TextReader.hpp"
+#include <memory>
+#include <utility>
 #include <string_view>
 
 namespace System::IO
@@ -11,15 +13,20 @@ class Stream;
 class StreamReader : public TextReader
 {
 public:
-    StreamReader();
+    StreamReader() = default;
     StreamReader(std::string_view filename);
-    StreamReader(std::unique_ptr<Stream> stream)
+    StreamReader(const StreamReader &) = delete;
+    StreamReader(StreamReader &&) = default;
+    StreamReader(std::unique_ptr<System::IO::Stream> stream)
         :
         _stream{ std::move(stream) }
     {
     }
 
-   ~StreamReader();
+    StreamReader &operator =(const StreamReader &) = delete;
+    StreamReader &operator =(StreamReader &&) = default;
+
+   ~StreamReader() override = default;
 
     void Close() override;
 
@@ -27,9 +34,9 @@ public:
 
     std::string ReadLine() override;
 
-    Stream *BaseStream() const { return _stream.get(); }
+    System::IO::Stream *BaseStream() const { return _stream.get(); }
 protected:
-    std::unique_ptr<Stream> _stream;
+    std::unique_ptr<System::IO::Stream> _stream;
 };
 
 }

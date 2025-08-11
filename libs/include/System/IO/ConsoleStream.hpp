@@ -1,7 +1,6 @@
 #pragma once
 
 #include "System/IO/Stream.hpp"
-#include <string>
 
 namespace System::IO
 {
@@ -12,7 +11,7 @@ public:
     enum Which { In, Out, Error, Log };
 
     ConsoleStream(Which which);
-   ~ConsoleStream();
+   ~ConsoleStream() override;
 
     Which Type() const { return _which; }
 protected:
