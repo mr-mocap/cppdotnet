@@ -97,23 +97,15 @@ SYSTEM_MODULE_SRC = $(wildcard *.cpp \
 								src/System/Diagnostics/*.cpp \
 								src/System/Diagnostics/Metrics/*.cpp \
 								src/System/Diagnostics/Private/*.cpp \
+								src/System/Diagnostics/Tracing/*.cpp \
 								src/System/IO/*.cpp \
 								src/System/Text/*.cpp)
 SYSTEM_MODULE_OBJS = $(patsubst %.cpp,module_build/%.o,${SYSTEM_MODULE_SRC})
-SYSTEM_MODULE_DEP  = $(MODULE_BUILD_DIR)/*.d \
-					 $(MODULE_BUILD_DIR)/src/System/*.d \
-					 $(MODULE_BUILD_DIR)/src/System/Collections/Generic/*.d \
-					 $(MODULE_BUILD_DIR)/src/System/Collections/Specialized/*.d \
-					 $(MODULE_BUILD_DIR)/src/System/Diagnostics/*.d \
-					 $(MODULE_BUILD_DIR)/src/System/Diagnostics/Metrics/*.d \
-					 $(MODULE_BUILD_DIR)/src/System/Diagnostics/Private/*.d \
-					 $(MODULE_BUILD_DIR)/src/System/IO/*.d \
-					 $(MODULE_BUILD_DIR)/src/System/Text/*.d
 
 # For some reason, I have to process all of the enum headers BEFORE they are used in other classes
 #SYSTEM_MODULE_PCMS = $(patsubst %.hpp,${HEADER_UNIT_CACHE}/%.hpp.gcm,${SYSTEM_MODULE_HEADERS})
 
-SYSTEM_MODULE_DEP = $(MODULE_BUILD_DIR)/src/System/*.d
+SYSTEM_MODULE_DEP = $(patsubst %.cpp,module_build/%.d,${SYSTEM_MODULE_SRC})
 
 IO_HEADER_ONLY_FILES = include/System/IO/FileAccess.hpp \
                        include/System/IO/FileMode.hpp \
@@ -193,6 +185,16 @@ module_build/%.o : %.cpp
 	@mkdir -p ${dir $@}
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_IMP) -fmodule-file=$(basename $@.pcm) $< -c -o $@
 
+module_build/%.d : %.cpp
+	@mkdir -p ${dir $@}
+	@touch $@
+# 	Generate the .d file
+	$(CXX) -I. $(INC_PARAMS) -MM -MF $@ -MT $(patsubst %.d,%.o,$@) $<
+#   Concatenate all continuation lines in the .d file
+# 	NOTE: Don't forget that a literal $ has to be expressed as $$
+	@sed -e ':a' -e '/\\$$/N' -e 's/\\\n//g' -e 'ta' --in-place $@
+
+
 # Rule to create Header Units
 %.hpp.gcm : %.hpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_ONLY) $<
@@ -216,6 +218,9 @@ build/%.o : %.cpp
 	@mkdir -p ${dir $@}
 	$(CXX) -o $@ $< -c $(CPPFLAGS) $(CXXFLAGS)
 	
+dependencies: $(SYSTEM_MODULE_DEP)
+	@echo Compilation Dependencies Generated
+
 all: $(LIB_OBJS)
 	@echo Creating static library
 	@ar -crs $(LIB_PATH) $(LIB_OBJS)
@@ -224,7 +229,7 @@ all: $(LIB_OBJS)
 lib: all
 
 #modules: GenerateHeaderUnits src/System/System.ixx
-modules: src/System/System.ixx
+modules: dependencies src/System/System.ixx
 
 .PHONY: clean
 clean:
@@ -232,4 +237,11 @@ clean:
 	@rm -rf module_build
 	@rm -rf gcm.cache
 
--include $(src/System/Dependencies.d)
+-include $(module_build/src/System/*.d)
+-include $(module_build/src/System/IO/*.d)
+-include $(module_build/src/System/Text/*.d)
+-include $(module_build/src/System/Diagnostics/*.d)
+-include $(module_build/src/System/Diagnostics/Metrics/*.d)
+-include $(module_build/src/System/Diagnostics/Private/*.d)
+-include $(module_build/src/System/Collections/Generic/*.d)
+-include $(module_build/src/System/Collections/Specialized/*.d)
