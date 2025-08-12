@@ -1,12 +1,16 @@
-#include "System/Version.hpp"
-#include "System/Exception.hpp"
-#include "System/Convert.hpp"
-#include "System/Text/StringBuilder.hpp"
-#include <string>
-#include <vector>
-#include <cstring>
-#include <cstdlib>
-#include <format>
+module;
+
+module System;
+import "System/Version.hpp";
+import "System/Exception.hpp";
+import "System/Convert.hpp";
+
+//#include "System/Text/StringBuilder.hpp"
+import <string>;
+import <vector>;
+import <cstring>;
+import <cstdlib>;
+import <format>;
 
 
 namespace System
@@ -67,6 +71,7 @@ Version Version::Parse(std::string_view input)
 
 std::string Version::ToString() const
 {
+#if 0
     Text::StringBuilder result;
 
     result.Append( Major() ).Append('.').Append( Minor() );
@@ -78,6 +83,9 @@ std::string Version::ToString() const
         result.Append('.').Append( Revision() );
     
     return result;
+#else
+    return {};
+#endif
 }
 
 std::string Version::ToString(int field_count) const
@@ -94,7 +102,11 @@ std::string Version::ToString(int field_count) const
         return Convert::ToChars( Major() );
 
     if ( field_count == 2 )
+#if 0
         return Text::StringBuilder().Append( Major() ).Append('.').Append( Minor() );
+#else
+        return {};
+#endif
 
     if ( field_count == 3 )
     {

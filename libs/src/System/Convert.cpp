@@ -1,14 +1,17 @@
-#include "System/Convert.hpp"
-#include "System/Boolean.hpp"
-#include "System/BitConverter.hpp"
-#include <map>
-#include <span>
-#include <charconv>
-#include <cassert>
-#include <cstring>
-#include <cctype>
-#include <algorithm>
-#include <ranges>
+module;
+
+module System;
+import "System/Convert.hpp";
+//import "System/Boolean.hpp";
+import "System/BitConverter.hpp";
+import <map>;
+import <span>;
+import <charconv>;
+import <cassert>;
+import <cstring>;
+import <cctype>;
+import <algorithm>;
+import <ranges>;
 
 namespace System
 {
@@ -134,7 +137,11 @@ std::array<char, 2> Convert::FromByteTo2HexChars(std::byte input_byte, bool uppe
 
 std::string_view Convert::ToString(bool value)
 {
+#if 0
     return Boolean{value}.ToString();
+#else
+    return {};
+#endif
 }
 
 std::string Convert::ToString(std::byte value)
@@ -301,7 +308,7 @@ std::string Convert::ToString(uint64_t value, Base toBase)
     }
     return {};
 }
-
+#if 0
 std::string_view Convert::ToString(Diagnostics::SourceLevels sourcelevels_value)
 try
 {
@@ -426,7 +433,7 @@ catch(const std::exception& e)
     ThrowWithTarget( ArgumentOutOfRangeException( "string_value"sv ) );
     return {};
 }
-
+#endif
 std::vector<std::byte> Convert::FromHexString(std::string_view input_string)
 {
     std::vector<std::byte> result;

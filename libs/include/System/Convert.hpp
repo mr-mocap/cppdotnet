@@ -1,11 +1,11 @@
 #pragma once
 
-#include "System/Diagnostics/SourceLevels.hpp"
-#include "System/Diagnostics/TraceLevel.hpp"
-#include "System/Diagnostics/TraceOptions.hpp"
+// #include "System/Diagnostics/SourceLevels.hpp"
+// #include "System/Diagnostics/TraceLevel.hpp"
+// #include "System/Diagnostics/TraceOptions.hpp"
 #include "System/Exception.hpp"
 #include "System/Base.hpp"
-#include "System/Boolean.hpp"
+// #include "System/Boolean.hpp"
 #include "System/Private/private.hpp"
 #include <string>
 #include <string_view>
@@ -40,8 +40,8 @@ public:
     static std::string      ToString(uint32_t value, Base toBase = Base::Decimal);
     static std::string      ToString(uint64_t value, Base toBase = Base::Decimal);
 
-    static std::string_view ToString(Diagnostics::TraceOptions value);
-    static std::string_view ToString(Diagnostics::SourceLevels value);
+    // static std::string_view ToString(Diagnostics::TraceOptions value);
+    // static std::string_view ToString(Diagnostics::SourceLevels value);
 
     static std::vector<std::byte> FromHexString(std::string_view input_string); // Returns sequence as LITTLE-ENDIAN
     static std::string            ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase = true)
@@ -68,9 +68,9 @@ public:
     static std::vector<std::byte> FromBase85String(std::span<const char> input_string);
 
     // From IConvertable  (move there)
-    static Diagnostics::TraceLevel   ToType(std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
-    static Diagnostics::TraceOptions ToType(std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
-    static Diagnostics::SourceLevels ToType(std::string_view value, Diagnostics::SourceLevels this_is_here_to_select_the_correct_function);
+    // static Diagnostics::TraceLevel   ToType(std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
+    // static Diagnostics::TraceOptions ToType(std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
+    // static Diagnostics::SourceLevels ToType(std::string_view value, Diagnostics::SourceLevels this_is_here_to_select_the_correct_function);
 
     // C++ specific
     static std::string ToChars(auto ...format_args)
