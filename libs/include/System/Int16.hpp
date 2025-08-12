@@ -1,18 +1,21 @@
 #pragma once
 
-#include "System/IConvertible.hpp"
 #include "System/Numerics/INumber.hpp"
+#include "System/TypeCode.hpp"
 #include <cstdint>
+#include <cstddef>
 #include <limits>
+#include <string>
 #include <cmath>
 #include <algorithm>
+#include <optional>
+#include <utility>
 #include <compare>
 
 namespace System
 {
 
-class Int16 : public IConvertible,
-              public Numerics::INumber<Int16>
+class Int16 : public Numerics::INumber<Int16>
 {
 public:
     constexpr Int16() = default;
@@ -22,26 +25,26 @@ public:
     static constexpr Int16 MinValue() { return std::numeric_limits<std::int16_t>::min(); }
 
     // IConvertible Interface
-    TypeCode GetTypeCode() const override { return TypeCode::Int16; }
+    TypeCode GetTypeCode() const { return TypeCode::Int16; }
 
-    bool ToBoolean() const override { return _value; }
+    bool ToBoolean() const { return _value; }
 
-    std::byte ToByte() const override { return static_cast<std::byte>(_value); }
+    std::byte ToByte() const { return static_cast<std::byte>(_value); }
 
-    char ToChar() const override { return static_cast<char>(_value); }
+    char ToChar() const { return static_cast<char>(_value); }
 
-    std::int16_t ToInt16() const override { return _value; }
-    std::int32_t ToInt32() const override { return _value; }
-    std::int64_t ToInt64() const override { return _value; }
+    std::int16_t ToInt16() const { return _value; }
+    std::int32_t ToInt32() const { return _value; }
+    std::int64_t ToInt64() const { return _value; }
 
-    std::uint16_t ToUInt16() const override { return static_cast<std::uint16_t>(_value); }
-    std::uint32_t ToUInt32() const override { return static_cast<std::uint32_t>(_value); }
-    std::uint64_t ToUInt64() const override { return _value; }
+    std::uint16_t ToUInt16() const { return static_cast<std::uint16_t>(_value); }
+    std::uint32_t ToUInt32() const { return static_cast<std::uint32_t>(_value); }
+    std::uint64_t ToUInt64() const { return _value; }
 
-    float  ToSingle() const override { return static_cast<float>(_value); }
-    double ToDouble() const override { return static_cast<double>(_value); }
+    float  ToSingle() const { return static_cast<float>(_value); }
+    double ToDouble() const { return static_cast<double>(_value); }
 
-    std::string ToString() const override;
+    std::string ToString() const;
 
     // IComparable Interface
     int CompareTo(const Int16 &other) const;
