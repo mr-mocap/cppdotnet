@@ -26,6 +26,10 @@ Stream::Stream(Stream &&other)
 {
 }
 
+Stream::~Stream()
+{
+}
+
 Stream &Stream::operator =(Stream &&other)
 {
     _stream = std::move(other._stream);
