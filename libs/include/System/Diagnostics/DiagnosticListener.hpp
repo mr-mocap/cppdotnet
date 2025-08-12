@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Diagnostics/DiagnosticSource.hpp"
-#include <string>
+import "System/Diagnostics/DiagnosticSource.hpp";
+import <string>;
 
 
 namespace System::Diagnostics

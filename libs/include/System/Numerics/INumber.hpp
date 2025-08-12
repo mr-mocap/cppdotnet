@@ -1,9 +1,9 @@
 #pragma once
 
-#include "System/IComparable.hpp"
-#include "System/Numerics/INumberBase.hpp"
-#include <cstdint>
-#include <algorithm>
+import "System/IComparable.hpp";
+import "System/Numerics/INumberBase.hpp";
+import <cstdint>;
+import <algorithm>;
 
 namespace System::Numerics
 {

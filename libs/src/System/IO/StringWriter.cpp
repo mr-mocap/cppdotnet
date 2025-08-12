@@ -1,4 +1,4 @@
-#include "System/IO/StringWriter.hpp"
+import "System/IO/StringWriter.hpp";
 
 
 namespace System::IO

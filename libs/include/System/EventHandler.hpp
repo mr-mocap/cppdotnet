@@ -1,8 +1,8 @@
 #pragma once
 
-#include "System/Private/Delegate.hpp"
-#include "System/EventArgs.hpp"
-#include <concepts>
+import "System/Private/Delegate.hpp";
+import "System/EventArgs.hpp";
+import <concepts>;
 
 
 namespace System

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "System/Diagnostics/SourceLevels.hpp"
-#include <string>
-#include <string_view>
+import "System/Diagnostics/SourceLevels.hpp";
+import <string>;
+import <string_view>;
 
 
 namespace System::Diagnostics

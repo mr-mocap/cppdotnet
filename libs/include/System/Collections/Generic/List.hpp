@@ -1,11 +1,11 @@
 #pragma once
 
-#include "System/Exception.hpp"
-#include "System/Predicate.hpp"
-#include <vector>
-#include <initializer_list>
-#include <string_view>
-#include <algorithm>
+import "System/Exception.hpp";
+import "System/Predicate.hpp";
+import <vector>;
+import <initializer_list>;
+import <string_view>;
+import <algorithm>;
 
 
 namespace System::Collections::Generic

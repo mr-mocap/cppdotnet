@@ -1,8 +1,8 @@
 #pragma once
 
-#include <utility>
-#include <string>
-#include <span>
+import <utility>;
+import <string>;
+import <span>;
 
 class ExampleEnumPolicyWithInternalEnum
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Diagnostics/Metrics/Meter.hpp"
-#include <vector>
+import "System/Diagnostics/Metrics/Meter.hpp";
+import <vector>;
 
 
 namespace System::Diagnostics::Metrics

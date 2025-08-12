@@ -1,11 +1,11 @@
 #pragma once
 
-#include "System/DayOfWeek.hpp"
-#include "System/Private/private.hpp"
-#include <chrono>
-#include <compare>
-#include <string>
-#include <format>
+import "System/DayOfWeek.hpp";
+import "System/Private/private.hpp";
+import <chrono>;
+import <compare>;
+import <string>;
+import <format>;
 
 
 namespace System

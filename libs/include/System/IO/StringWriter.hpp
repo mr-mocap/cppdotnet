@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/IO/TextWriter.hpp"
-#include "System/Text/StringBuilder.hpp"
+import "System/IO/TextWriter.hpp";
+import "System/Text/StringBuilder.hpp";
 
 namespace System::IO
 {

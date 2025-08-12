@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Collections/Generic/Private/LegacyForwardIterator.hpp"
-#include "System/Collections/Generic/Private/IDictionaryInterface.hpp"
+import "System/Collections/Generic/Private/LegacyForwardIterator.hpp";
+import "System/Collections/Generic/Private/IDictionaryInterface.hpp";
 
 namespace System::Collections::Generic
 {

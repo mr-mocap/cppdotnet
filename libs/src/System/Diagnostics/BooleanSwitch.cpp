@@ -1,6 +1,6 @@
-#include "System/Diagnostics/BooleanSwitch.hpp"
-#include "System/Boolean.hpp"
-#include <stdexcept>
+import "System/Diagnostics/BooleanSwitch.hpp";
+import "System/Boolean.hpp";
+import <stdexcept>;
 
 
 namespace System::Diagnostics

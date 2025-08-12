@@ -1,9 +1,9 @@
 #pragma once
 
-#include "System/IConvertible.hpp"
-#include "System/Numerics/INumber.hpp"
-#include <string_view>
-#include <compare>
+import "System/IConvertible.hpp";
+import "System/Numerics/INumber.hpp";
+import <string_view>;
+import <compare>;
 
 namespace System
 {

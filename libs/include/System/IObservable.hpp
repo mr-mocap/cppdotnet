@@ -1,6 +1,6 @@
 #pragma once
 
-#include "System/IObserver.hpp"
+import "System/IObserver.hpp";
 
 namespace System
 {

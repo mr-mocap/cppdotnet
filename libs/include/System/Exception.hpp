@@ -1,11 +1,11 @@
 #pragma once
 
-#include <exception>
-#include <string>
-#include <string_view>
-#include <memory>
-#include <source_location>
-#include <concepts>
+import <exception>;
+import <string>;
+import <string_view>;
+import <memory>;
+import <source_location>;
+import <concepts>;
 
 namespace System
 {

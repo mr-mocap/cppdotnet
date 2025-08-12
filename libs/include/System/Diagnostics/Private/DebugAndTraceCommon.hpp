@@ -1,13 +1,13 @@
 #pragma once
 
-#include "System/Diagnostics/TraceListenerCollection.hpp"
-#include "System/Diagnostics/DefaultTraceListener.hpp"
-#include "System/Diagnostics/Private/DebugAndTraceCommon.hpp"
-#include <set>
-#include <string>
-#include <mutex>
-#include <memory>
-#include <source_location>
+import "System/Diagnostics/TraceListenerCollection.hpp";
+import "System/Diagnostics/DefaultTraceListener.hpp";
+import "System/Diagnostics/Private/DebugAndTraceCommon.hpp";
+import <set>;
+import <string>;
+import <mutex>;
+import <memory>;
+import <source_location>;
 
 
 namespace System::Diagnostics::Private

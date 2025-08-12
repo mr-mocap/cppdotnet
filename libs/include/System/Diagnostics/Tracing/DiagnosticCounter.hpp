@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Diagnostics/Tracing/EventSource.hpp"
-#include <string>
+import "System/Diagnostics/Tracing/EventSource.hpp";
+import <string>;
 
 namespace System::Diagnostics::Tracing
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Collections/Generic/Private/LegacyBidirectionalIterator.hpp"
-#include "System/Collections/Generic/Private/IListInterface.hpp"
+import "System/Collections/Generic/Private/LegacyBidirectionalIterator.hpp";
+import "System/Collections/Generic/Private/IListInterface.hpp";
 
 namespace System::Collections::Generic
 {

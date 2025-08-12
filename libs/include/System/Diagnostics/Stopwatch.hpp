@@ -1,10 +1,10 @@
 #pragma once
 
-#include "System/TimeSpan.hpp"
-#include "System/Private/private.hpp"
-#include <chrono>
-#include <format>
-#include <cstdint>
+import "System/TimeSpan.hpp";
+import "System/Private/private.hpp";
+import <chrono>;
+import <format>;
+import <cstdint>;
 
 
 namespace System::Diagnostics

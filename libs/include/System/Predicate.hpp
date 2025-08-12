@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Private/Delegate.hpp"
-#include <concepts>
+import "System/Private/Delegate.hpp";
+import <concepts>;
 
 
 namespace System

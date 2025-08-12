@@ -1,14 +1,14 @@
 #pragma once
 
-#include "System/Exception.hpp"
-#include <string>
-#include <string_view>
+import "System/Exception.hpp";
+import <string>;
+import <string_view>;
 #if __cplusplus >= 202002L
-#include <format>
-#include <concepts>
+import <format>;
+import <concepts>;
 #endif
-#include <cstdint>
-#include <cstddef>
+import <cstdint>;
+import <cstddef>;
 
 namespace System::Text
 {

@@ -1,16 +1,16 @@
 #pragma once
 
-#include "System/Numerics/INumber.hpp"
-#include "System/TypeCode.hpp"
-#include <cstdint>
-#include <cstddef>
-#include <limits>
-#include <string>
-#include <cmath>
-#include <algorithm>
-#include <optional>
-#include <utility>
-#include <compare>
+import "System/Numerics/INumber.hpp";
+import "System/TypeCode.hpp";
+import <cstdint>;
+import <cstddef>;
+import <limits>;
+import <string>;
+import <cmath>;
+import <algorithm>;
+import <optional>;
+import <utility>;
+import <compare>;
 
 namespace System
 {

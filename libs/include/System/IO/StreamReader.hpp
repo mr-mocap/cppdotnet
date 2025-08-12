@@ -1,10 +1,10 @@
 #pragma once
 
-#include "System/IO/TextReader.hpp"
-#include "System/IO/Stream.hpp"
-#include <memory>
-#include <utility>
-#include <string_view>
+import "System/IO/TextReader.hpp";
+import "System/IO/Stream.hpp";
+import <memory>;
+import <utility>;
+import <string_view>;
 
 namespace System::IO
 {

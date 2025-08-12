@@ -1,8 +1,8 @@
 #pragma once
 
-#include "System/IO/TextReader.hpp"
-#include <string>
-#include <string_view>
+import "System/IO/TextReader.hpp";
+import <string>;
+import <string_view>;
 
 namespace System::IO
 {

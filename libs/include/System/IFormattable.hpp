@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
-#include <string_view>
+import <string>;
+import <string_view>;
 
 namespace System
 {

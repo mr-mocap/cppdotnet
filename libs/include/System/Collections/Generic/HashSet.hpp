@@ -1,10 +1,10 @@
 #pragma once
 
-#include "System/Private/private.hpp"
-#include "System/Predicate.hpp"
-#include "System/Exception.hpp"
-#include <unordered_set>
-#include <algorithm>
+import "System/Private/private.hpp";
+import "System/Predicate.hpp";
+import "System/Exception.hpp";
+import <unordered_set>;
+import <algorithm>;
 
 
 namespace System::Collections::Generic

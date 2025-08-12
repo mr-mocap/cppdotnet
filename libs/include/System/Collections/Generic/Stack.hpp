@@ -1,9 +1,9 @@
 #pragma once
 
-#include "System/Private/private.hpp"
-#include "System/Exception.hpp"
-#include <stack>
-#include <algorithm>
+import "System/Private/private.hpp";
+import "System/Exception.hpp";
+import <stack>;
+import <algorithm>;
 
 
 namespace System::Collections::Generic

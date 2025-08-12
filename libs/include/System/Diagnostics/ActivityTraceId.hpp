@@ -1,8 +1,8 @@
 #pragma once
 
-#include "System/Guid.hpp"
-#include "System/Exception.hpp"
-#include <compare>
+import "System/Guid.hpp";
+import "System/Exception.hpp";
+import <compare>;
 
 
 namespace System::Diagnostics

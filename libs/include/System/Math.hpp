@@ -1,10 +1,10 @@
 #pragma once
 
-#include <numbers>
+import <numbers>;
 //#include <cstdlib>
-#include <cmath>
-#include <algorithm>
-#include <type_traits>
+import <cmath>;
+import <algorithm>;
+import <type_traits>;
 
 namespace System
 {

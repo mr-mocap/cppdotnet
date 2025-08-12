@@ -1,1 +1,1 @@
-#include "System/Enum.hpp"
+import "System/Enum.hpp";

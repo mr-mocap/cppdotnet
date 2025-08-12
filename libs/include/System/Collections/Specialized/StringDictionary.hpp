@@ -1,6 +1,6 @@
 #pragma once
 
-#include "System/Collections/Generic/Dictionary.hpp"
+import "System/Collections/Generic/Dictionary.hpp";
 
 
 namespace System::Collections::Specialized

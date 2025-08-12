@@ -1,7 +1,7 @@
-#include "System/Diagnostics/SourceSwitch.hpp"
-#include "System/Convert.hpp"
-#include "System/Exception.hpp"
-#include "System/Private/private.hpp"
+import "System/Diagnostics/SourceSwitch.hpp";
+import "System/Convert.hpp";
+import "System/Exception.hpp";
+import "System/Private/private.hpp";
 
 
 namespace System::Diagnostics

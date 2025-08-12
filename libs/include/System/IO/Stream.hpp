@@ -1,11 +1,11 @@
 #pragma once
 
-#include "System/IO/SeekOrigin.hpp"
-#include "System/ReadOnlySpan.hpp"
-#include <iosfwd>
-#include <memory>
-#include <string>
-#include <cstdint>
+import "System/IO/SeekOrigin.hpp";
+import "System/ReadOnlySpan.hpp";
+import <iosfwd>;
+import <memory>;
+import <string>;
+import <cstdint>;
 
 namespace System::IO
 {

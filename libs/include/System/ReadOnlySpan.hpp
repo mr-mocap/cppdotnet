@@ -1,6 +1,6 @@
 #pragma once
 
-#include "System/Span.hpp"
+import "System/Span.hpp";
 
 namespace System
 {

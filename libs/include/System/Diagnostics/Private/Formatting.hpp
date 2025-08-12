@@ -1,8 +1,8 @@
 #pragma once
 
-#include <format>
-#include <string>
-#include <string_view>
+import <format>;
+import <string>;
+import <string_view>;
 
 namespace System::Diagnostics
 {

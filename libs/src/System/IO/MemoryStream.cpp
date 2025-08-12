@@ -1,7 +1,7 @@
-#include "System/IO/MemoryStream.hpp"
-#include "System/Exception.hpp"
-#include <sstream>
-#include <algorithm>
+import "System/IO/MemoryStream.hpp";
+import "System/Exception.hpp";
+import <sstream>;
+import <algorithm>;
 
 
 namespace System::IO

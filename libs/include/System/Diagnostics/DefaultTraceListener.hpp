@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Diagnostics/TraceListener.hpp"
-#include "System/IO/StreamWriter.hpp"
+import "System/Diagnostics/TraceListener.hpp";
+import "System/IO/StreamWriter.hpp";
 
 
 namespace System::Diagnostics

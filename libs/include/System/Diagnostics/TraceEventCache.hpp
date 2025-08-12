@@ -1,8 +1,8 @@
 #pragma once
 
-#include "System/DateTime.hpp"
-#include <optional>
-#include <string>
+import "System/DateTime.hpp";
+import <optional>;
+import <string>;
 
 
 namespace System::Diagnostics

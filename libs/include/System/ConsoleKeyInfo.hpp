@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/ConsoleKey.hpp"
-#include "System/ConsoleModifiers.hpp"
+import "System/ConsoleKey.hpp";
+import "System/ConsoleModifiers.hpp";
 
 
 namespace System

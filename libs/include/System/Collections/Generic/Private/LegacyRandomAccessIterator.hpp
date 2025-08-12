@@ -1,8 +1,8 @@
 #pragma once
 
-#include <memory>
-#include <iterator>
-#include <compare>
+import <memory>;
+import <iterator>;
+import <compare>;
 
 namespace System::Collections::Generic::Private
 {

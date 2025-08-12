@@ -2,7 +2,7 @@ module;
 
 module System;
 import "System/Convert.hpp";
-//import "System/Boolean.hpp";
+import "System/Boolean.hpp";
 import "System/BitConverter.hpp";
 import <map>;
 import <span>;
@@ -137,11 +137,7 @@ std::array<char, 2> Convert::FromByteTo2HexChars(std::byte input_byte, bool uppe
 
 std::string_view Convert::ToString(bool value)
 {
-#if 0
     return Boolean{value}.ToString();
-#else
-    return {};
-#endif
 }
 
 std::string Convert::ToString(std::byte value)

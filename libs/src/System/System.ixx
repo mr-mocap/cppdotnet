@@ -10,57 +10,56 @@ export module System;
 // NOTE: These are ORDERED
 
 // Things that depend on NOTHING...
-export import "System/EventArgs.hpp";
+// export import "System/EventArgs.hpp";
 
 // Things that only depend on system-headers...
-export import "System/IDisposable.hpp";
+// export import "System/IDisposable.hpp";
 export import "System/Exception.hpp";
-export import "System/Version.hpp";
-export import "System/ValueTuple.hpp";
-export import "System/Private/Delegate.hpp";
-export import "System/Private/enum.hpp";
-export import "System/TimeSpan.hpp";
+// export import "System/Version.hpp";
+// export import "System/ValueTuple.hpp";
+// export import "System/Private/Delegate.hpp";
+// export import "System/Private/enum.hpp";
+// export import "System/TimeSpan.hpp";
 
 // Depends on System/Private/Delegate.hpp...
-export import "System/Action.hpp";
-export import "System/Comparison.hpp";
-export import "System/Converter.hpp";
-export import "System/Func.hpp";
-export import "System/Predicate.hpp";
+// export import "System/Action.hpp";
+// export import "System/Comparison.hpp";
+// export import "System/Converter.hpp";
+// export import "System/Func.hpp";
+// export import "System/Predicate.hpp";
 
 // Depends on System/Private/enum.hpp...
-export import "System/Base.hpp";
-export import "System/Base64FormattingOptions.hpp";
-export import "System/ConsoleColor.hpp";
-export import "System/ConsoleKey.hpp";
-export import "System/ConsoleModifiers.hpp";
-export import "System/DateTimeKind.hpp";
-export import "System/DayOfWeek.hpp";
-export import "System/EnvironmentVariableTarget.hpp";
-export import "System/EventHandler.hpp";
-export import "System/PlatformID.hpp";
-export import "System/TypeCode.hpp";
+// export import "System/Base.hpp";
+// export import "System/Base64FormattingOptions.hpp";
+// export import "System/ConsoleColor.hpp";
+// export import "System/ConsoleKey.hpp";
+// export import "System/ConsoleModifiers.hpp";
+// export import "System/DateTimeKind.hpp";
+// export import "System/DayOfWeek.hpp";
+// export import "System/EnvironmentVariableTarget.hpp";
+// export import "System/EventHandler.hpp";
+// export import "System/PlatformID.hpp";
+// export import "System/TypeCode.hpp";
 
 // Depends on Other System/. files...
-export import "System/BitConverter.hpp";
-export import "System/Convert.hpp";
-export import "System/ConsoleKeyInfo.hpp";
-export import "System/Span.hpp";
-export import "System/ReadOnlySpan.hpp";
-export import "System/Nullable.hpp";
-export import "System/Guid.hpp";
-export import "System/Enum.hpp";
-export import "System/OperatingSystem.hpp";
-export import "System/IObserver.hpp";
-export import "System/IObservable.hpp";
-export import "System/TimeOnly.hpp";
+// export import "System/BitConverter.hpp";
+// export import "System/Convert.hpp";
+// export import "System/ConsoleKeyInfo.hpp";
+// export import "System/Span.hpp";
+// export import "System/ReadOnlySpan.hpp";
+// export import "System/Nullable.hpp";
+// export import "System/Guid.hpp";
+// export import "System/Enum.hpp";
+// export import "System/OperatingSystem.hpp";
+// export import "System/IObserver.hpp";
+// export import "System/IObservable.hpp";
+// export import "System/TimeOnly.hpp";
 
 // Not Included Yet!
 //export import "Boolean.hpp";
 //export import "Byte.hpp";
 //export import "Concepts.hpp";
 //export import "Console.hpp";
-//export import "Convert.hpp";
 //export import "DateOnly.hpp";
 //export import "DateTime.hpp";
 //export import "DateTimeOffset.hpp";

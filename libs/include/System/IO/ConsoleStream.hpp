@@ -1,6 +1,6 @@
 #pragma once
 
-#include "System/IO/Stream.hpp"
+import "System/IO/Stream.hpp";
 
 namespace System::IO
 {

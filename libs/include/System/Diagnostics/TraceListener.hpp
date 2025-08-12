@@ -1,14 +1,14 @@
 #pragma once
 
-#include "System/Diagnostics/TraceOptions.hpp"
-#include "System/Diagnostics/TraceFilter.hpp"
-#include "System/Diagnostics/TraceEventCache.hpp"
-#include "System/Collections/Specialized/StringDictionary.hpp"
-#include <string>
-#include <string_view>
-#include <format>
-#include <memory>
-#include <concepts>
+import "System/Diagnostics/TraceOptions.hpp";
+import "System/Diagnostics/TraceFilter.hpp";
+import "System/Diagnostics/TraceEventCache.hpp";
+import "System/Collections/Specialized/StringDictionary.hpp";
+import <string>;
+import <string_view>;
+import <format>;
+import <memory>;
+import <concepts>;
 
 
 namespace System::Diagnostics

@@ -1,1 +1,1 @@
-#include "System/ConsoleModifiers.hpp"
+import "System/ConsoleModifiers.hpp";

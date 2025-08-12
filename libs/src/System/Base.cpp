@@ -1,1 +1,1 @@
-#include "System/Base.hpp"
+import "System/Base.hpp";

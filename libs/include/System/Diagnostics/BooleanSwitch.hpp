@@ -1,6 +1,6 @@
 #pragma once
 
-#include "System/Diagnostics/Switch.hpp"
+import "System/Diagnostics/Switch.hpp";
 
 
 namespace System::Diagnostics

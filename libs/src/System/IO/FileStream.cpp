@@ -1,5 +1,5 @@
-#include "System/IO/FileStream.hpp"
-#include <fstream>
+import "System/IO/FileStream.hpp";
+import <fstream>;
 
 
 namespace System::IO

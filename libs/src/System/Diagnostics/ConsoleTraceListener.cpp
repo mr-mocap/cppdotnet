@@ -1,5 +1,5 @@
-#include "System/Diagnostics/ConsoleTraceListener.hpp"
-#include "System/IO/ConsoleStream.hpp"
+import "System/Diagnostics/ConsoleTraceListener.hpp";
+import "System/IO/ConsoleStream.hpp";
 
 
 namespace System::Diagnostics

@@ -1,1 +1,1 @@
-#include "System/ReadOnlySpan.hpp"
+import "System/ReadOnlySpan.hpp";

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "System/Exception.hpp"
-#include <vector>
-#include <array>
-#include <span>
-#include <type_traits>
-#include <cstdint>
-#include <cstring>
-#include <bit>
+import "System/Exception.hpp";
+import <vector>;
+import <array>;
+import <span>;
+import <type_traits>;
+import <cstdint>;
+import <cstring>;
+import <bit>;
 
 namespace System
 {

@@ -1,4 +1,8 @@
-#include "System/DateTimeOffset.hpp"
+module
+
+module System;
+
+import "System/DateTimeOffset.hpp";
 
 
 namespace System

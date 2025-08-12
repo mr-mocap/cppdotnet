@@ -1,1 +1,1 @@
-#include "System/Comparison.hpp"
+import "System/Comparison.hpp";

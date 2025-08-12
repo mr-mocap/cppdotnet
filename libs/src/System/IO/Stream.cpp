@@ -1,8 +1,8 @@
-#include "System/IO/Stream.hpp"
-#include "System/IO/NullStream.hpp"
-#include "System/IO/IOException.hpp"
-#include <utility>
-#include <iostream>
+import "System/IO/Stream.hpp";
+import "System/IO/NullStream.hpp";
+import "System/IO/IOException.hpp";
+import <utility>;
+import <iostream>;
 
 
 namespace System::IO

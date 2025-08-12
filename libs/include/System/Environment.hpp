@@ -1,9 +1,9 @@
 #pragma once
 
-#include "System/Collections/Specialized/StringDictionary.hpp"
-#include <string>
-#include <string_view>
-#include <map>
+import "System/Collections/Specialized/StringDictionary.hpp";
+import <string>;
+import <string_view>;
+import <map>;
 
 namespace System
 {

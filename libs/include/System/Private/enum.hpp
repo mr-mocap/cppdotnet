@@ -1,15 +1,15 @@
 #pragma once
 
-#include <utility>
-#include <string>
-#include <string_view>
-#include <span>
-#include <ranges>
-#include <format>
-#include <algorithm>
-#include <array>
-#include <type_traits>
-#include <variant>
+import <utility>;
+import <string>;
+import <string_view>;
+import <span>;
+import <ranges>;
+import <format>;
+import <algorithm>;
+import <array>;
+import <type_traits>;
+import <variant>;
 
 namespace System
 {

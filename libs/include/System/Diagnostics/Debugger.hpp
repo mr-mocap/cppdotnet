@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string_view>
+import <string_view>;
 
 namespace System::Diagnostics
 {

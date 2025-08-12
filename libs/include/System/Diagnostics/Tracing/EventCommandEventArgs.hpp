@@ -1,6 +1,6 @@
 #pragma once
 
-#include "System/EventArgs.hpp"
+import "System/EventArgs.hpp";
 
 
 namespace System::Diagnostics::Tracing

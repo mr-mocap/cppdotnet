@@ -1,1 +1,1 @@
-#include "System/Private/enum.hpp"
+import "System/Private/enum.hpp";

@@ -1,1 +1,1 @@
-#include "System/IDisposable.hpp"
+import "System/IDisposable.hpp";

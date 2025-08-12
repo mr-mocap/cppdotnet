@@ -1,8 +1,8 @@
 #pragma once
 
-#include "System/Diagnostics/Activity.hpp"
-#include <string>
-#include <string_view>
+import "System/Diagnostics/Activity.hpp";
+import <string>;
+import <string_view>;
 
 
 namespace System::Diagnostics

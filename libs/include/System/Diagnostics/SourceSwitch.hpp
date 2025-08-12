@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Diagnostics/Switch.hpp"
-#include "System/Diagnostics/SourceLevels.hpp"
+import "System/Diagnostics/Switch.hpp";
+import "System/Diagnostics/SourceLevels.hpp";
 
 
 namespace System::Diagnostics

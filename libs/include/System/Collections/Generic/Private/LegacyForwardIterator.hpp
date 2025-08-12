@@ -1,7 +1,7 @@
 #pragma once
 
-#include <memory>
-#include <iterator>
+import <memory>;
+import <iterator>;
 
 namespace System::Collections::Generic::Private
 {

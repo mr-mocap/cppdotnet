@@ -1,5 +1,5 @@
-#include "System/Diagnostics/Metrics/IMeterFactory.hpp"
-#include <algorithm>
+import "System/Diagnostics/Metrics/IMeterFactory.hpp";
+import <algorithm>;
 
 
 namespace System::Diagnostics::Metrics

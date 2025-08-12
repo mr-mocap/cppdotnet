@@ -1,1 +1,1 @@
-#include "System/ConsoleKey.hpp"
+import "System/ConsoleKey.hpp";

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "System/Exception.hpp"
-#include <span>
-#include <type_traits>
-#include <algorithm>
+import "System/Exception.hpp";
+import <span>;
+import <type_traits>;
+import <algorithm>;
 
 namespace System
 {

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "System/Diagnostics/TraceListenerCollection.hpp"
-#include "System/Diagnostics/Private/Formatting.hpp"
-#include <string>
-#include <string_view>
-#include <format>
-#include <source_location>
-#include <concepts>
+import "System/Diagnostics/TraceListenerCollection.hpp";
+import "System/Diagnostics/Private/Formatting.hpp";
+import <string>;
+import <string_view>;
+import <format>;
+import <source_location>;
+import <concepts>;
 
 namespace System::Diagnostics
 {

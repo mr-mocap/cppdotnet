@@ -1,9 +1,9 @@
 #pragma once
 
-#include "System/Diagnostics/Activity.hpp"
-#include "System/Diagnostics/SampleActivity.hpp"
-#include "System/Action.hpp"
-#include "System/Func.hpp"
+import "System/Diagnostics/Activity.hpp";
+import "System/Diagnostics/SampleActivity.hpp";
+import "System/Action.hpp";
+import "System/Func.hpp";
 
 
 namespace System::Diagnostics

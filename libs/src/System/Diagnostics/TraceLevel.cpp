@@ -1,1 +1,1 @@
-#include "System/Diagnostics/TraceLevel.hpp"
+import "System/Diagnostics/TraceLevel.hpp";

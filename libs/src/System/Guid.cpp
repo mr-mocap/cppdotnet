@@ -1,10 +1,14 @@
-#include "System/Guid.hpp"
-#include "System/BitConverter.hpp"
-#include "System/Span.hpp"
-#include <algorithm>
-#include <format>
-#include <cctype>
-#include <uuid/uuid.h>
+module;
+
+module System;
+
+import "System/Guid.hpp";
+import "System/BitConverter.hpp";
+import "System/Span.hpp";
+import <algorithm>;
+import <format>;
+import <cctype>;
+import <uuid/uuid.h>;
 
 #if 0
 SPECIFIER | Format of return value

@@ -1,1 +1,1 @@
-#include "System/Byte.hpp"
+import "System/Byte.hpp";

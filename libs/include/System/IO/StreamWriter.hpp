@@ -1,9 +1,9 @@
 #pragma once
 
-#include "System/IO/TextWriter.hpp"
-#include "System/IO/Stream.hpp"
-#include <memory>
-#include <concepts>
+import "System/IO/TextWriter.hpp";
+import "System/IO/Stream.hpp";
+import <memory>;
+import <concepts>;
 
 namespace System::IO
 {

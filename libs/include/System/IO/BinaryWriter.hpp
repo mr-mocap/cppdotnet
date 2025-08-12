@@ -1,10 +1,10 @@
 #pragma once
 
-#include "System/IO/SeekOrigin.hpp"
-#include "System/ReadOnlySpan.hpp"
-#include <memory>
-#include <utility>
-#include <cstddef>
+import "System/IO/SeekOrigin.hpp";
+import "System/ReadOnlySpan.hpp";
+import <memory>;
+import <utility>;
+import <cstddef>;
 
 
 namespace System::IO

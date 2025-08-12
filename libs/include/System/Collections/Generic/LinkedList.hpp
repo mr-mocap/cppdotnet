@@ -1,10 +1,10 @@
 #pragma once
 
-#include "System/Exception.hpp"
-#include <list>
-#include <string_view>
-#include <algorithm>
-#include <type_traits>
+import "System/Exception.hpp";
+import <list>;
+import <string_view>;
+import <algorithm>;
+import <type_traits>;
 
 
 

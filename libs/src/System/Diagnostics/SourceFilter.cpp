@@ -1,4 +1,4 @@
-#include "System/Diagnostics/SourceFilter.hpp"
+import "System/Diagnostics/SourceFilter.hpp";
 
 
 namespace System::Diagnostics

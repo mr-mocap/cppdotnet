@@ -1,8 +1,8 @@
 #pragma once
 
-#include "System/Concepts.hpp"
-#include "System/Collections/Generic/KeyValuePair.hpp"
-#include <concepts>
+import "System/Concepts.hpp";
+import "System/Collections/Generic/KeyValuePair.hpp";
+import <concepts>;
 
 
 namespace System::Collections::Generic::Concepts

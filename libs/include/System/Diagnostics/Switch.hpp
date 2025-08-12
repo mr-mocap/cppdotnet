@@ -1,11 +1,11 @@
 #pragma once
 
-#include "System/Collections/Specialized/StringDictionary.hpp"
-#include "System/EventHandler.hpp"
-#include <set>
-#include <string>
-#include <string_view>
-#include <mutex>
+import "System/Collections/Specialized/StringDictionary.hpp";
+import "System/EventHandler.hpp";
+import <set>;
+import <string>;
+import <string_view>;
+import <mutex>;
 
 
 namespace System::Diagnostics

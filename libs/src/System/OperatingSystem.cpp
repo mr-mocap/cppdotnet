@@ -1,4 +1,8 @@
-#include "System/OperatingSystem.hpp"
+module;
+
+module System;
+
+import "System/OperatingSystem.hpp";
 
 
 namespace System

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "System/TypeCode.hpp"
-#include <cstddef>
-#include <cstdint>
-#include <string>
+import "System/TypeCode.hpp";
+import <cstddef>;
+import <cstdint>;
+import <string>;
 
 namespace System
 {

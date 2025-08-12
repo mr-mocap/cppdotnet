@@ -1,8 +1,8 @@
 #pragma once
 
-#include "System/Private/private.hpp"
-#include <set>
-#include <functional>
+import "System/Private/private.hpp";
+import <set>;
+import <functional>;
 
 namespace System::Collections::Generic
 {

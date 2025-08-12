@@ -1,7 +1,11 @@
-#include "System/TimeSpan.hpp"
-#include "System/Exception.hpp"
-#include "System/Private/private.hpp"
-#include <cmath>
+module;
+
+module System;
+
+import "System/TimeSpan.hpp";
+import "System/Exception.hpp";
+import "System/Private/private.hpp";
+import <cmath>;
 
 using namespace std::chrono;
 

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "System/TimeSpan.hpp"
-#include "System/Private/private.hpp"
-#include <chrono>
-#include <compare>
+import "System/TimeSpan.hpp";
+import "System/Private/private.hpp";
+import <chrono>;
+import <compare>;
 
 
 namespace System

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "System/Environment.hpp"
-#include <string>
-#include <string_view>
-#include <cstdint>
-#include <format>
+import "System/Environment.hpp";
+import <string>;
+import <string_view>;
+import <cstdint>;
+import <format>;
 
 namespace System::IO
 {

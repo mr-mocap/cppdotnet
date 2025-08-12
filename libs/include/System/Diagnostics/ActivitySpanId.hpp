@@ -1,9 +1,9 @@
 #pragma once
 
-#include "System/ReadOnlySpan.hpp"
-#include <cstddef>
-#include <array>
-#include <string>
+import "System/ReadOnlySpan.hpp";
+import <cstddef>;
+import <array>;
+import <string>;
 
 
 namespace System::Diagnostics

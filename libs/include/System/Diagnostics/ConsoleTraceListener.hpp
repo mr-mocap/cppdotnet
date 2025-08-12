@@ -1,6 +1,6 @@
 #pragma once
 
-#include "System/Diagnostics/TextWriterTraceListener.hpp"
+import "System/Diagnostics/TextWriterTraceListener.hpp";
 
 
 namespace System::Diagnostics

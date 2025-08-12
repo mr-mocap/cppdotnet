@@ -1,6 +1,7 @@
 module;
 
 module System;
+
 import "System/Exception.hpp";
 
 namespace System

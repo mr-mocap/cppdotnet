@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/IO/Stream.hpp"
-#include "System/IO/FileMode.hpp"
+import "System/IO/Stream.hpp";
+import "System/IO/FileMode.hpp";
 
 namespace System::IO
 {

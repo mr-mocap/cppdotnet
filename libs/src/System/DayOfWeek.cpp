@@ -1,1 +1,1 @@
-#include "System/DayOfWeek.hpp"
+import "System/DayOfWeek.hpp";

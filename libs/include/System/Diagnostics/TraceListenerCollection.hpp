@@ -1,7 +1,7 @@
 #pragma once
 
-#include <set>
-#include <string>
+import <set>;
+import <string>;
 
 
 namespace System::Diagnostics

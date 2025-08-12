@@ -1,6 +1,6 @@
-#include "System/Diagnostics/TraceListener.hpp"
-#include "System/Diagnostics/TraceEventCache.hpp"
-#include "System/Convert.hpp"
+import "System/Diagnostics/TraceListener.hpp";
+import "System/Diagnostics/TraceEventCache.hpp";
+import "System/Convert.hpp";
 
 
 namespace System::Diagnostics

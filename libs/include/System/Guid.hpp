@@ -1,13 +1,13 @@
 #pragma once
 
-#include "System/ReadOnlySpan.hpp"
-#include <cstdint>
-#include <cstddef>
-#include <string>
-#include <string_view>
-#include <compare>
-#include <optional>
-#include <uuid/uuid.h>
+import "System/ReadOnlySpan.hpp";
+import <cstdint>;
+import <cstddef>;
+import <string>;
+import <string_view>;
+import <compare>;
+import <optional>;
+import <uuid/uuid.h>;
 
 
 namespace System

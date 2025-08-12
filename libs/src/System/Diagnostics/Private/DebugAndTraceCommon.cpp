@@ -1,9 +1,9 @@
-#include "System/Diagnostics/Private/DebugAndTraceCommon.hpp"
-#include "System/Diagnostics/TraceListener.hpp"
-#include "System/Diagnostics/TraceLevel.hpp"
-#include "System/Diagnostics/Debug.hpp"
-#include <cstdlib>
-#include <format>
+import "System/Diagnostics/Private/DebugAndTraceCommon.hpp";
+import "System/Diagnostics/TraceListener.hpp";
+import "System/Diagnostics/TraceLevel.hpp";
+import "System/Diagnostics/Debug.hpp";
+import <cstdlib>;
+import <format>;
 
 
 namespace System::Diagnostics::Private

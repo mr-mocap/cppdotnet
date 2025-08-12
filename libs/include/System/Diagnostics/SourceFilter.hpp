@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Diagnostics/TraceFilter.hpp"
-#include <string>
+import "System/Diagnostics/TraceFilter.hpp";
+import <string>;
 
 
 namespace System::Diagnostics

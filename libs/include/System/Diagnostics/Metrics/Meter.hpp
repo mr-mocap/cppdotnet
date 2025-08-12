@@ -1,8 +1,8 @@
 #pragma once
 
 
-#include "System/Diagnostics/Metrics/MeterOptions.hpp"
-#include "System/Diagnostics/Metrics/Counter.hpp"
+import "System/Diagnostics/Metrics/MeterOptions.hpp";
+import "System/Diagnostics/Metrics/Counter.hpp";
 
 
 namespace System::Diagnostics::Metrics

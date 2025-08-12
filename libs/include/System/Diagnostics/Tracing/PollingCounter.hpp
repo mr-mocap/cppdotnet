@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Diagnostics/Tracing/DiagnosticCounter.hpp"
-#include "System/Func.hpp"
+import "System/Diagnostics/Tracing/DiagnosticCounter.hpp";
+import "System/Func.hpp";
 
 namespace System::Diagnostics::Tracing
 {

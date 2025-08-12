@@ -1,8 +1,8 @@
 #pragma once
 
-#include "System/Exception.hpp"
-#include <optional>
-#include <utility>
+import "System/Exception.hpp";
+import <optional>;
+import <utility>;
 
 
 namespace System

@@ -1,4 +1,4 @@
-#include "System/Diagnostics/ActivityTraceId.hpp"
+import "System/Diagnostics/ActivityTraceId.hpp";
 
 
 namespace System::Diagnostics

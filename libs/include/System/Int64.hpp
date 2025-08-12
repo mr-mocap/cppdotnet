@@ -1,12 +1,12 @@
 #pragma once
 
-#include "System/IConvertible.hpp"
-#include "System/Numerics/INumber.hpp"
-#include <cstdint>
-#include <limits>
-#include <cmath>
-#include <algorithm>
-#include <compare>
+import "System/IConvertible.hpp";
+import "System/Numerics/INumber.hpp";
+import <cstdint>;
+import <limits>;
+import <cmath>;
+import <algorithm>;
+import <compare>;
 
 namespace System
 {

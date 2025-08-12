@@ -1,11 +1,15 @@
-#include "System/Environment.hpp"
-#include "System/Exception.hpp"
-#include "System/Private/private.hpp"
-#include <tuple>
-#include <cstring>
-#include <stdlib.h>
+module
+
+module System;
+
+import "System/Environment.hpp";
+import "System/Exception.hpp";
+import "System/Private/private.hpp";
+import <tuple>;
+import <cstring>;
+import <stdlib.h>;
 #if __cpp_lib_stacktrace > 202011L
-#include <stacktrace>
+import <stacktrace>;
 #endif
 
 

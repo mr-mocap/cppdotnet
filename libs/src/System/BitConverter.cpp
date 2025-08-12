@@ -1,1 +1,1 @@
-#include "System/BitConverter.hpp"
+import "System/BitConverter.hpp";

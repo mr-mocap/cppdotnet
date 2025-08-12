@@ -1,6 +1,6 @@
 #pragma once
 
-#include "System/Exception.hpp"
+import "System/Exception.hpp";
 
 
 namespace System::IO

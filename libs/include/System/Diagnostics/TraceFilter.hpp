@@ -1,8 +1,8 @@
 #pragma once
 
-#include "System/Private/private.hpp"
-#include "System/Diagnostics/TraceEventType.hpp"
-#include <string_view>
+import "System/Private/private.hpp";
+import "System/Diagnostics/TraceEventType.hpp";
+import <string_view>;
 
 
 namespace System::Diagnostics

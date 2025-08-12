@@ -1,1 +1,1 @@
-#include "System/ConsoleColor.hpp"
+import "System/ConsoleColor.hpp";

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "System/Text/Json/JsonCommentHandling.hpp"
+import "System/Text/Json/JsonCommentHandling.hpp";
 
 namespace System::Text::Json
 {

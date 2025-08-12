@@ -1,8 +1,8 @@
 #pragma once
 
-#include <chrono>
-#include <format>
-#include <compare>
+import <chrono>;
+import <format>;
+import <compare>;
 
 
 namespace System

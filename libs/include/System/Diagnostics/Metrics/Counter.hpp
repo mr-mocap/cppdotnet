@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/Diagnostics/Metrics/Instrument.hpp"
-#include <type_traits>
+import "System/Diagnostics/Metrics/Instrument.hpp";
+import <type_traits>;
 
 
 namespace System::Diagnostics::Metrics

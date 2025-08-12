@@ -1,1 +1,1 @@
-#include "System/Private/Delegate.hpp"
+import "System/Private/Delegate.hpp";

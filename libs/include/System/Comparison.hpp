@@ -1,6 +1,6 @@
 #pragma once
 
-#include "System/Private/Delegate.hpp"
+import "System/Private/Delegate.hpp";
 
 
 namespace System

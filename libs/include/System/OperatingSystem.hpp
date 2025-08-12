@@ -1,7 +1,7 @@
 #pragma once
 
-#include "System/PlatformID.hpp"
-#include "System/Version.hpp"
+import "System/PlatformID.hpp";
+import "System/Version.hpp";
 
 
 namespace System

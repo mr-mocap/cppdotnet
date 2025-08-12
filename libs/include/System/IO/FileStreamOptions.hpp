@@ -1,9 +1,9 @@
 #pragma once
 
-#include "System/IO/FileAccess.hpp"
-#include "System/IO/FileMode.hpp"
-#include "System/Nullable.hpp"
-#include "System/IO/UnixFileMode.hpp"
+import "System/IO/FileAccess.hpp";
+import "System/IO/FileMode.hpp";
+import "System/Nullable.hpp";
+import "System/IO/UnixFileMode.hpp";
 
 
 namespace System::IO
