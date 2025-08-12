@@ -15,7 +15,7 @@ CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I. $(INC_PARAMS) $(DEBUG_FLAGS)
 #CXXFLAGS_PCM=-std=c++20 -fmodules-ts -x c++-header -MMD -MP -I . $(INC_PARAMS)
 CXXFLAGS_MODULE_HEADER_UNIT = -std=c++20 -fmodules-ts -fmodule-header -x c++-user-header -I. $(INC_PARAMS)
 CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts -I. $(INC_PARAMS)
-CXXFLAGS_MODULE = -std=c++20 -fmodules-ts -I. -x c++ $(INC_PARAMS)
+CXXFLAGS_MODULE = -std=c++20 -fmodules-ts -I. -c -x c++ $(INC_PARAMS)
 
 LIB_SRC  = $(wildcard *.cpp \
                       ${SRC_DIRS}/System/*.cpp \
@@ -37,8 +37,18 @@ LIB_DEP  = $(BUILD_DIR)/*.d \
 		   $(BUILD_DIR)/src/System/Text/*.d
 
 HEADER_UNIT_CACHE = gcm.cache/,
-SYSTEM_MODULE_ENUMS = include/System/Private/enum.hpp \
-					  include/System/Base.hpp \
+
+SYSTEM_MODULE_NO_DEPENDENCIES = include/System/EventArgs.hpp
+
+SYSTEM_MODULE_SYSTEM_HEADER_DEPENDENCIES = include/System/IDisposable.hpp \
+										   include/System/Exception.hpp \
+										   include/System/Version.hpp \
+										   include/System/ValueTuple.hpp \
+										   include/System/Private/Delegate.hpp \
+										   include/System/Private/enum.hpp \
+										   include/System/TimeSpan.hpp
+
+SYSTEM_MODULE_ENUMS = include/System/Base.hpp \
 					  include/System/Base64FormattingOptions.hpp \
 					  include/System/ConsoleColor.hpp \
 					  include/System/ConsoleKey.hpp \
@@ -49,49 +59,69 @@ SYSTEM_MODULE_ENUMS = include/System/Private/enum.hpp \
 					  include/System/PlatformID.hpp \
 					  include/System/TypeCode.hpp
 
-SYSTEM_MODULE_DELEGATES = include/System/Private/Delegate.hpp \
-						  include/System/Action.hpp \
+SYSTEM_MODULE_DELEGATES = include/System/Action.hpp \
 						  include/System/Comparison.hpp \
 						  include/System/Converter.hpp \
 						  include/System/EventHandler.hpp \
 						  include/System/Func.hpp \
 						  include/System/Predicate.hpp
 
-SYSTEM_MODULE_HEADER_ONLY_FILES = $(SYSTEM_MODULE_ENUMS) $(SYSTEM_MODULE_DELEGATES)
-SYSTEM_MODULE_OTHER_HEADER_FILES = include/System/BitConverter.hpp \
-								include/System/Boolean.hpp \
-								include/System/Byte.hpp \
-								include/System/Concepts.hpp \
-								include/System/Console.hpp \
-								include/System/ConsoleKeyInfo.hpp \
-								include/System/Convert.hpp \
-								include/System/DateOnly.hpp \
-								include/System/DateTime.hpp \
-								include/System/DateTimeOffset.hpp \
-								include/System/Enum.hpp \
-								include/System/Environment.hpp \
-								include/System/EventArgs.hpp \
-								include/System/Exception.hpp \
-								include/System/Guid.hpp \
-								include/System/Int16.hpp \
-								include/System/Int32.hpp \
-								include/System/Int64.hpp \
-								include/System/IObservable.hpp \
-								include/System/IObserver.hpp \
-								include/System/Math.hpp \
-								include/System/Nullable.hpp \
-								include/System/OperatingSystem.hpp \
-								include/System/ReadOnlySpan.hpp \
-								include/System/Span.hpp \
-								include/System/TimeOnly.hpp \
-								include/System/TimeSpan.hpp \
-								include/System/ValueTuple.hpp \
-								include/System/Version.hpp
+SYSTEM_MODULE_HEADER_ONLY_FILES = $(SYSTEM_MODULE_NO_DEPENDENCIES) $(SYSTEM_MODULE_ENUMS) $(SYSTEM_MODULE_DELEGATES) \
+								  include/System/IDisposable.hpp \
+								  include/System/Nullable.hpp \
+								  include/System/Private/Delegate.hpp \
+								  include/System/Private/enum.hpp \
+								  include/System/ReadOnlySpan.hpp \
+								  include/System/Span.hpp \
+								  include/System/TimeSpan.hpp \
+								  include/System/ValueTuple.hpp
+
+# SYSTEM_MODULE_OTHER_HEADER_FILES = include/System/Exception.hpp \
+# 								   include/System/Version.hpp \
+# 								   include/System/BitConverter.hpp \
+# 								   include/System/Boolean.hpp \
+# 								   include/System/Byte.hpp \
+# 								   include/System/Concepts.hpp \
+# 								   include/System/Console.hpp \
+# 								   include/System/ConsoleKeyInfo.hpp \
+# 								   include/System/Convert.hpp \
+# 								   include/System/DateOnly.hpp \
+# 								   include/System/DateTime.hpp \
+# 								   include/System/DateTimeOffset.hpp \
+# 								   include/System/Enum.hpp \
+# 								   include/System/Environment.hpp \
+# 								   include/System/EventArgs.hpp \
+# 								   include/System/Guid.hpp \
+# 								   include/System/Int16.hpp \
+# 								   include/System/Int32.hpp \
+# 								   include/System/Int64.hpp \
+# 								   include/System/IObservable.hpp \
+# 								   include/System/IObserver.hpp \
+# 								   include/System/Math.hpp \
+# 								   include/System/OperatingSystem.hpp \
+# 								   include/System/TimeOnly.hpp
+SYSTEM_MODULE_OTHER_HEADER_FILES = include/System/Exception.hpp \
+								   include/System/Version.hpp \
+								   include/System/BitConverter.hpp \
+								   include/System/ConsoleKeyInfo.hpp \
+								   include/System/Guid.hpp \
+								   include/System/Enum.hpp \
+								   include/System/OperatingSystem.hpp \
+								   include/System/IObservable.hpp \
+								   include/System/IObserver.hpp \
+								   include/System/TimeOnly.hpp
+
 SYSTEM_MODULE_HEADER_ONLY_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(SYSTEM_MODULE_HEADER_ONLY_FILES))
 SYSTEM_MODULE_OTHER_HEADER_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(SYSTEM_MODULE_OTHER_HEADER_FILES))
 SYSTEM_MODULE_HEADERS = $(SYSTEM_MODULE_ENUMS) $(SYSTEM_MODULE_DELEGATES) $(SYSTEM_MODULE_OTHER_HEADER_FILES)
 
-SYSTEM_MODULE_SRCS := $(shell find $(SRC_DIRS) -name "*.cpp")
+#SYSTEM_MODULE_SRCS := $(shell find $(SRC_DIRS) -name "*.cpp")
+SYSTEM_MODULE_SRCS := src/System/Exception.cpp \
+					  src/System/BitConverter.cpp \
+					  src/System/ConsoleKeyInfo.cpp \
+					  src/System/Version.cpp \
+					  src/System/TimeSpan.cpp
+
 SYSTEM_MODULE_DEPS = $(patsubst %.cpp,$(MODULE_BUILD_DIR)/%.d,${SYSTEM_MODULE_SRCS})
 SYSTEM_MODULE_DEPENDENCIES_MADE = $(MODULE_BUILD_DIR)/generated.dot_d
 #SYSTEM_MODULE_OBJS := $(patsubst %.cpp,$(MODULE_BUILD_DIR)/%.o,${SYSTEM_MODULE_SRCS})
@@ -195,11 +225,13 @@ $(MODULE_BUILD_DIR)/%.o : %.cpp
 %.hpp.gcm : %.hpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_UNIT) $<
 
-$(OTHER_HEADER_UNITS_GENERATED): $(SYSTEM_MODULE_OTHER_HEADER_GCMS) $(IO_OTHER_HEADER_GCMS) $(DIAGNOSTICS_OTHER_HEADER_FILES)
+#$(OTHER_HEADER_UNITS_GENERATED): $(SYSTEM_MODULE_OTHER_HEADER_GCMS) $(IO_OTHER_HEADER_GCMS) $(DIAGNOSTICS_OTHER_HEADER_FILES)
+$(OTHER_HEADER_UNITS_GENERATED): $(SYSTEM_MODULE_OTHER_HEADER_GCMS)
 	@touch $(OTHER_HEADER_UNITS_GENERATED)
 	@echo Other Header Units DONE!
 
-$(HEADER_ONLY_UNITS_GENERATED): $(SYSTEM_MODULE_HEADER_ONLY_GCMS) $(IO_HEADER_ONLY_GCMS) $(DIAGNOSTICS_HEADER_ONLY_GCMS)
+#$(HEADER_ONLY_UNITS_GENERATED): $(SYSTEM_MODULE_HEADER_ONLY_GCMS) $(IO_HEADER_ONLY_GCMS) $(DIAGNOSTICS_HEADER_ONLY_GCMS)
+$(HEADER_ONLY_UNITS_GENERATED): $(SYSTEM_MODULE_HEADER_ONLY_GCMS)
 	@touch $(HEADER_ONLY_UNITS_GENERATED)
 	@echo Header-Only Header Units DONE!
 
@@ -213,8 +245,13 @@ $(SYSTEM_MODULE_DEPENDENCIES_MADE): $(SYSTEM_MODULE_DEPS)
 	@echo Compilation Dependencies Generated
 
 #src/System/System.ixx: GenerateHeaderUnits $(SYSTEM_MODULE_OBJS)
-src/System/System.ixx: $(SYSTEM_MODULE_DEPENDENCIES_MADE) $(HEADER_UNITS_GENERATED) $(SYSTEM_MODULE_OBJS)
-	$(CXX) $(CXXFLAGS_MODULE) -c $@ -o System.o
+src/System/System.ixx: $(SYSTEM_MODULE_DEPENDENCIES_MADE) $(HEADER_UNITS_GENERATED)
+	$(CXX) $(CXXFLAGS_MODULE) $@ -o $(MODULE_BUILD_DIR)/System.o
+
+# src/System/System.ixx: $(SYSTEM_MODULE_DEPENDENCIES_MADE) $(HEADER_UNITS_GENERATED) $(SYSTEM_MODULE_OBJS)
+# 	$(CXX) $(CXXFLAGS_MODULE) -c $@ -o System.o
+
+$(SYSTEM_MODULE_OBJS): src/System/System.ixx
 
 build/%.o : %.cpp
 	@mkdir -p ${dir $@}
@@ -237,9 +274,8 @@ all: $(LIB_OBJS)
 
 lib: all
 
-#modules: GenerateHeaderUnits src/System/System.ixx
-#modules: generate-module-deps src/System/System.ixx
-modules: src/System/System.ixx
+modules: $(SYSTEM_MODULE_OBJS)
+	@echo System module created!
 
 .PHONY: clean
 clean:
