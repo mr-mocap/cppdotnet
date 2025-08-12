@@ -1,5 +1,7 @@
-#include "System/Exception.hpp"
+module;
 #include <cstring>
+module System;
+import "System/Exception.hpp";
 
 namespace System
 {
