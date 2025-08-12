@@ -15,7 +15,7 @@ class Stream
 public:
     Stream(const Stream &) = delete;
     Stream(Stream &&);
-    virtual ~Stream() = default;
+    virtual ~Stream();
 
     Stream &operator =(const Stream &) = delete;
     Stream &operator =(Stream &&);
