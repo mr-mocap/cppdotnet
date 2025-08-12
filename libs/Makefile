@@ -1,4 +1,6 @@
-INCLUDE_DIRS = ./include
+INCLUDE_DIRS := ./include
+SRC_DIRS := src
+MODULE_BUILD_DIR := module_build
 
 LIB_BASENAME = cppdotnet
 LIB_NAME = lib$(LIB_BASENAME).a
@@ -9,21 +11,21 @@ DEBUG_FLAGS = -g3
 
 EXTRA_LIBS = -luuid
 
-CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I . $(INC_PARAMS) $(DEBUG_FLAGS)
+CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I. $(INC_PARAMS) $(DEBUG_FLAGS)
 #CXXFLAGS_PCM=-std=c++20 -fmodules-ts -x c++-header -MMD -MP -I . $(INC_PARAMS)
-CXXFLAGS_MODULE_HEADER_ONLY = -std=c++20 -fmodules-ts -x c++-header -MMD -MP -I . $(INC_PARAMS)
-CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts -MMD -MP -I . $(INC_PARAMS)
-CXXFLAGS_MODULE = -std=c++20 -fmodules-ts
+CXXFLAGS_MODULE_HEADER_UNIT = -std=c++20 -fmodules-ts -fmodule-header -x c++-user-header -I. $(INC_PARAMS)
+CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts -I. $(INC_PARAMS)
+CXXFLAGS_MODULE = -std=c++20 -fmodules-ts -I. -x c++ $(INC_PARAMS)
 
 LIB_SRC  = $(wildcard *.cpp \
-                      src/System/*.cpp \
-                      src/System/Collections/Generic/*.cpp \
-                      src/System/Collections/Specialized/*.cpp \
-					  src/System/Diagnostics/*.cpp \
-					  src/System/Diagnostics/Metrics/*.cpp \
-					  src/System/Diagnostics/Private/*.cpp \
-					  src/System/IO/*.cpp \
-					  src/System/Text/*.cpp)
+                      ${SRC_DIRS}/System/*.cpp \
+                      ${SRC_DIRS}/System/Collections/Generic/*.cpp \
+                      ${SRC_DIRS}/System/Collections/Specialized/*.cpp \
+					  ${SRC_DIRS}/System/Diagnostics/*.cpp \
+					  ${SRC_DIRS}/System/Diagnostics/Metrics/*.cpp \
+					  ${SRC_DIRS}/System/Diagnostics/Private/*.cpp \
+					  ${SRC_DIRS}/System/IO/*.cpp \
+					  ${SRC_DIRS}/System/Text/*.cpp)
 LIB_OBJS = $(patsubst %.cpp,build/%.o,${LIB_SRC})
 LIB_DEP  = $(BUILD_DIR)/*.d \
            $(BUILD_DIR)/src/System/*.d \
@@ -34,7 +36,6 @@ LIB_DEP  = $(BUILD_DIR)/*.d \
 		   $(BUILD_DIR)/src/System/IO/*.d \
 		   $(BUILD_DIR)/src/System/Text/*.d
 
-MODULE_BUILD_DIR = module_build
 HEADER_UNIT_CACHE = gcm.cache/,
 SYSTEM_MODULE_ENUMS = include/System/Private/enum.hpp \
 					  include/System/Base.hpp \
@@ -90,44 +91,40 @@ SYSTEM_MODULE_HEADER_ONLY_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(SYSTEM_MODULE_HEAD
 SYSTEM_MODULE_OTHER_HEADER_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(SYSTEM_MODULE_OTHER_HEADER_FILES))
 SYSTEM_MODULE_HEADERS = $(SYSTEM_MODULE_ENUMS) $(SYSTEM_MODULE_DELEGATES) $(SYSTEM_MODULE_OTHER_HEADER_FILES)
 
-SYSTEM_MODULE_SRC = $(wildcard *.cpp \
-								src/System/*.cpp \
-								src/System/Collections/Generic/*.cpp \
-								src/System/Collections/Specialized/*.cpp \
-								src/System/Diagnostics/*.cpp \
-								src/System/Diagnostics/Metrics/*.cpp \
-								src/System/Diagnostics/Private/*.cpp \
-								src/System/Diagnostics/Tracing/*.cpp \
-								src/System/IO/*.cpp \
-								src/System/Text/*.cpp)
-SYSTEM_MODULE_OBJS = $(patsubst %.cpp,module_build/%.o,${SYSTEM_MODULE_SRC})
+SYSTEM_MODULE_SRCS := $(shell find $(SRC_DIRS) -name "*.cpp")
+SYSTEM_MODULE_DEPS = $(patsubst %.cpp,$(MODULE_BUILD_DIR)/%.d,${SYSTEM_MODULE_SRCS})
+SYSTEM_MODULE_DEPENDENCIES_MADE = $(MODULE_BUILD_DIR)/generated.dot_d
+#SYSTEM_MODULE_OBJS := $(patsubst %.cpp,$(MODULE_BUILD_DIR)/%.o,${SYSTEM_MODULE_SRCS})
+SYSTEM_MODULE_OBJS := $(patsubst %.cpp,$(MODULE_BUILD_DIR)/%.o,src/System/Exception.cpp)
+
+HEADER_UNITS_GENERATED = $(MODULE_BUILD_DIR)/generated.header_units
+HEADER_ONLY_UNITS_GENERATED = $(MODULE_BUILD_DIR)/generated.header_only_units
+OTHER_HEADER_UNITS_GENERATED = $(MODULE_BUILD_DIR)/generated.other_header_units
 
 # For some reason, I have to process all of the enum headers BEFORE they are used in other classes
 #SYSTEM_MODULE_PCMS = $(patsubst %.hpp,${HEADER_UNIT_CACHE}/%.hpp.gcm,${SYSTEM_MODULE_HEADERS})
 
-SYSTEM_MODULE_DEP = $(patsubst %.cpp,module_build/%.d,${SYSTEM_MODULE_SRC})
-
 IO_HEADER_ONLY_FILES = include/System/IO/FileAccess.hpp \
                        include/System/IO/FileMode.hpp \
-					   include/System/IO/MatchCasing.hpp \
-					   include/System/IO/MatchType.hpp \
-					   include/System/IO/SeekOrigin.hpp \
-					   include/System/IO/UnixFileMode.hpp
+		       include/System/IO/MatchCasing.hpp \
+		       include/System/IO/MatchType.hpp \
+		       include/System/IO/SeekOrigin.hpp \
+		       include/System/IO/UnixFileMode.hpp
 IO_OTHER_HEADER_FILES = include/System/IO/BinaryWriter.hpp \
-						include/System/IO/ConsoleStream.hpp \
-						include/System/IO/FileStream.hpp \
-						include/System/IO/FileStreamOptions.hpp \
-						include/System/IO/IOException.hpp \
-						include/System/IO/MemoryStream.hpp \
-						include/System/IO/NullStream.hpp \
-						include/System/IO/Path.hpp \
-						include/System/IO/Stream.hpp \
-						include/System/IO/StreamReader.hpp \
-						include/System/IO/StreamWriter.hpp \
-						include/System/IO/StringReader.hpp \
-						include/System/IO/StringWriter.hpp \
-						include/System/IO/TextReader.hpp \
-						include/System/IO/StringWriter.hpp
+			include/System/IO/ConsoleStream.hpp \
+			include/System/IO/FileStream.hpp \
+			include/System/IO/FileStreamOptions.hpp \
+			include/System/IO/IOException.hpp \
+			include/System/IO/MemoryStream.hpp \
+			include/System/IO/NullStream.hpp \
+			include/System/IO/Path.hpp \
+			include/System/IO/Stream.hpp \
+			include/System/IO/StreamReader.hpp \
+			include/System/IO/StreamWriter.hpp \
+			include/System/IO/StringReader.hpp \
+			include/System/IO/StringWriter.hpp \
+			include/System/IO/TextReader.hpp \
+			include/System/IO/StringWriter.hpp
 IO_HEADER_ONLY_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(IO_HEADER_ONLY_FILES))
 IO_OTHER_HEADER_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(IO_OTHER_HEADER_FILES))
 IO_SRC = $(wildcard src/System/*.cpp)
@@ -180,12 +177,7 @@ DIAGNOSTICS_OTHER_HEADER_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(DIAGNOSTICS_OTHER_H
 # 	@mkdir -p ${dir $@}
 # 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_PCM) $< -o $(basename $@.pcm)
 
-# Module implementation files
-module_build/%.o : %.cpp
-	@mkdir -p ${dir $@}
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_IMP) -fmodule-file=$(basename $@.pcm) $< -c -o $@
-
-module_build/%.d : %.cpp
+$(MODULE_BUILD_DIR)/%.d : %.cpp
 	@mkdir -p ${dir $@}
 	@touch $@
 # 	Generate the .d file
@@ -194,32 +186,49 @@ module_build/%.d : %.cpp
 # 	NOTE: Don't forget that a literal $ has to be expressed as $$
 	@sed -e ':a' -e '/\\$$/N' -e 's/\\\n//g' -e 'ta' --in-place $@
 
+# Module implementation files
+$(MODULE_BUILD_DIR)/%.o : %.cpp
+	@mkdir -p ${dir $@}
+	$(CXX) $(CXXFLAGS_MODULE_IMP) $< -c -o $@
 
 # Rule to create Header Units
 %.hpp.gcm : %.hpp
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_ONLY) $<
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_UNIT) $<
 
-.PHONY: GenerateHeaderOnlyUnits
-GenerateHeaderOnlyUnits: $(SYSTEM_MODULE_HEADER_ONLY_GCMS) $(IO_HEADER_ONLY_GCMS) $(DIAGNOSTICS_HEADER_ONLY_GCMS)
-	@echo Header-Only Header Units DONE!
-
-.PHONY: GenerateOtherHeaderUnits
-GenerateOtherHeaderUnits: $(SYSTEM_MODULE_OTHER_HEADER_GCMS) $(IO_OTHER_HEADER_GCMS) $(DIAGNOSTICS_OTHER_HEADER_FILES)
+$(OTHER_HEADER_UNITS_GENERATED): $(SYSTEM_MODULE_OTHER_HEADER_GCMS) $(IO_OTHER_HEADER_GCMS) $(DIAGNOSTICS_OTHER_HEADER_FILES)
+	@touch $(OTHER_HEADER_UNITS_GENERATED)
 	@echo Other Header Units DONE!
 
-.PHONY: GenerateHeaderUnits
-GenerateHeaderUnits: GenerateHeaderOnlyUnits GenerateOtherHeaderUnits
+$(HEADER_ONLY_UNITS_GENERATED): $(SYSTEM_MODULE_HEADER_ONLY_GCMS) $(IO_HEADER_ONLY_GCMS) $(DIAGNOSTICS_HEADER_ONLY_GCMS)
+	@touch $(HEADER_ONLY_UNITS_GENERATED)
+	@echo Header-Only Header Units DONE!
+
+$(HEADER_UNITS_GENERATED): $(HEADER_ONLY_UNITS_GENERATED) $(OTHER_HEADER_UNITS_GENERATED)
+	@touch $(HEADER_UNITS_GENERATED)
 	@echo Header Units Generated
 
-src/System/System.ixx: GenerateHeaderUnits $(SYSTEM_MODULE_OBJS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE) -c $@ -o System.o
+# Generate .d dependency files for the Makefile to include in later compilations
+$(SYSTEM_MODULE_DEPENDENCIES_MADE): $(SYSTEM_MODULE_DEPS)
+	@touch $(SYSTEM_MODULE_DEPENDENCIES_MADE)
+	@echo Compilation Dependencies Generated
+
+#src/System/System.ixx: GenerateHeaderUnits $(SYSTEM_MODULE_OBJS)
+src/System/System.ixx: $(SYSTEM_MODULE_DEPENDENCIES_MADE) $(HEADER_UNITS_GENERATED) $(SYSTEM_MODULE_OBJS)
+	$(CXX) $(CXXFLAGS_MODULE) -c $@ -o System.o
 
 build/%.o : %.cpp
 	@mkdir -p ${dir $@}
 	$(CXX) -o $@ $< -c $(CPPFLAGS) $(CXXFLAGS)
 	
-dependencies: $(SYSTEM_MODULE_DEP)
-	@echo Compilation Dependencies Generated
+# Clean only the .d dependency files
+.PHONY: clean-module-deps
+clean-module-deps:
+	@find $(MODULE_BUILD_DIR) -name "*.d" -delete
+	@rm $(SYSTEM_MODULE_DEPENDENCIES_MADE)
+
+.PHONY: clean-module-objs
+clean-module-objs:
+	find $(MODULE_BUILD_DIR) -name "*.o" -delete
 
 all: $(LIB_OBJS)
 	@echo Creating static library
@@ -229,19 +238,12 @@ all: $(LIB_OBJS)
 lib: all
 
 #modules: GenerateHeaderUnits src/System/System.ixx
-modules: dependencies src/System/System.ixx
+#modules: generate-module-deps src/System/System.ixx
+modules: src/System/System.ixx
 
 .PHONY: clean
 clean:
-	@rm -rf build
-	@rm -rf module_build
+	@rm -rf $(MODULE_BUILD_DIR)
 	@rm -rf gcm.cache
 
--include $(module_build/src/System/*.d)
--include $(module_build/src/System/IO/*.d)
--include $(module_build/src/System/Text/*.d)
--include $(module_build/src/System/Diagnostics/*.d)
--include $(module_build/src/System/Diagnostics/Metrics/*.d)
--include $(module_build/src/System/Diagnostics/Private/*.d)
--include $(module_build/src/System/Collections/Generic/*.d)
--include $(module_build/src/System/Collections/Specialized/*.d)
+-include $(SYSTEM_MODULE_DEPS)
