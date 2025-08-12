@@ -6,53 +6,70 @@ export module System;
 // Module Preamble: Imports
 
 // Import Header Units...
+//
+// NOTE: These are ORDERED
 
-//export import "Action.hpp";
-//export import "Base.hpp";
-//export import "Base64FormattingOptions.hpp";
-//export import "BitConverter.hpp";
+// Things that depend on NOTHING...
+export import "System/EventArgs.hpp";
+
+// Things that only depend on system-headers...
+export import "System/IDisposable.hpp";
+export import "System/Exception.hpp";
+export import "System/Version.hpp";
+export import "System/ValueTuple.hpp";
+export import "System/Private/Delegate.hpp";
+export import "System/Private/enum.hpp";
+export import "System/TimeSpan.hpp";
+
+// Depends on System/Private/Delegate.hpp...
+export import "System/Action.hpp";
+export import "System/Comparison.hpp";
+export import "System/Converter.hpp";
+export import "System/Func.hpp";
+export import "System/Predicate.hpp";
+
+// Depends on System/Private/enum.hpp...
+export import "System/Base.hpp";
+export import "System/Base64FormattingOptions.hpp";
+export import "System/ConsoleColor.hpp";
+export import "System/ConsoleKey.hpp";
+export import "System/ConsoleModifiers.hpp";
+export import "System/DateTimeKind.hpp";
+export import "System/DayOfWeek.hpp";
+export import "System/EnvironmentVariableTarget.hpp";
+export import "System/EventHandler.hpp";
+export import "System/PlatformID.hpp";
+export import "System/TypeCode.hpp";
+
+// Depends on Other System/. files...
+export import "System/BitConverter.hpp";
+export import "System/Convert.hpp";
+export import "System/ConsoleKeyInfo.hpp";
+export import "System/Span.hpp";
+export import "System/ReadOnlySpan.hpp";
+export import "System/Nullable.hpp";
+export import "System/Guid.hpp";
+export import "System/Enum.hpp";
+export import "System/OperatingSystem.hpp";
+export import "System/IObserver.hpp";
+export import "System/IObservable.hpp";
+export import "System/TimeOnly.hpp";
+
+// Not Included Yet!
 //export import "Boolean.hpp";
 //export import "Byte.hpp";
-//export import "Comparison.hpp";
 //export import "Concepts.hpp";
 //export import "Console.hpp";
-//export import "ConsoleColor.hpp";
-//export import "ConsoleKey.hpp";
-//export import "ConsoleKeyInfo.hpp";
-//export import "ConsoleModifiers.hpp";
 //export import "Convert.hpp";
-//export import "Converter.hpp";
 //export import "DateOnly.hpp";
 //export import "DateTime.hpp";
-//export import "DateTimeKind.hpp";
 //export import "DateTimeOffset.hpp";
-//export import "DayOfWeek.hpp";
-//export import "Enum.hpp";
 //export import "Environment.hpp";
-//export import "EnvironmentVariableTarget.hpp";
-//export import "EventArgs.hpp";
-//export import "EventHandler.hpp";
-export import "System/Exception.hpp";
-//export import "Func.hpp";
-//export import "Guid.hpp";
-//export import "IDisposable.hpp";
 //export import "Int16.hpp";
 //export import "Int32.hpp";
 //export import "Int64.hpp";
-//export import "IObservable.hpp";
-//export import "IObserver.hpp";
 //export import "Math.hpp";
-//export import "Nullable.hpp";
-//export import "OperatingSystem.hpp";
-//export import "PlatformID.hpp";
-//export import "Predicate.hpp";
-//export import "ReadOnlySpan.hpp";
-//export import "Span.hpp";
-//export import "TimeOnly.hpp";
-//export import "TimeSpan.hpp";
 //export import "TimeCode.hpp";
-//export import "ValueTuple.hpp";
-//export import "Version.hpp";
 
 //export import "IO/BinaryWriter.hpp";
 //export import "IO/ConsoleStream.hpp";
