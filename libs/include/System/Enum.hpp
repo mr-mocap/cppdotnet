@@ -1,8 +1,7 @@
 #pragma once
 
 #include "System/Exception.hpp"
-#include "System/IConvertible.hpp"
-#include "System/IComparable.hpp"
+#include "System/TypeCode.hpp"
 #include <span>
 #include <optional>
 #include <algorithm>
