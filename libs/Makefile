@@ -43,7 +43,7 @@ SYSTEM_HEADER_UNITS = algorithm \
 					  variant \
 					  vector \
 					  version
-SYSTEM_HEADER_FILE_DIR := /usr/include/c++/13
+SYSTEM_HEADER_FILE_DIR := $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 1>/dev/null | awk '/#include <...> search starts here:/ {flag=1; next} /End of search list./ {flag=0} flag' | cut -f 2 -d" " | head -n1)
 SYSTEM_HEADER_UNIT_GCMS := $(SYSTEM_HEADER_UNITS:%=$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
 SYSTEM_MODULE_HEADER_UNITS_GENERATED   = $(MODULE_BUILD_DIR)/generated.system_module_header_units
 SYSTEM_MODULE_SOURCE_DEPENDENCIES_GENERATED = $(MODULE_BUILD_DIR)/generated.system_module_src_dependencies
@@ -62,7 +62,7 @@ all: system_header_units system_module_dependencies system_module_header_units
 
 .PHONY: print
 print:
-	echo $(SYSTEM_HEADER_UNIT_GCMS)
+	echo $(SYSTEM_HEADER_FILE_DIR)
 
 .PHONY: system_module_dependencies
 system_module_dependencies: system_module_header_dependencies system_module_source_dependencies
