@@ -1,4 +1,4 @@
-INCLUDE_DIRS := ./include
+INCLUDE_DIRS := include
 SRC_DIRS := src
 MODULE_BUILD_DIR := module_build
 
@@ -8,221 +8,53 @@ DEBUG_FLAGS = -g3
 EXTRA_LIBS = -luuid
 
 CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I. $(INC_PARAMS) $(DEBUG_FLAGS)
+CXXFLAGS_MODULE_HEADER_DEPENDENCY  = -std=c++20 -fmodules-ts -I. $(INC_PARAMS)
 CXXFLAGS_MODULE_HEADER_UNIT        = -std=c++20 -fmodules-ts -x c++-user-header -I. $(INC_PARAMS)
 CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT = -std=c++20 -fmodules-ts -fmodule-header=system -x c++-system-header -I. $(INC_PARAMS)
 CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts -I. $(INC_PARAMS)
 CXXFLAGS_MODULE = -std=c++20 -fmodules-ts -I. -c -x c++ $(INC_PARAMS)
 
-LIB_SRC  = $(wildcard *.cpp \
-                      ${SRC_DIRS}/System/*.cpp \
-                      ${SRC_DIRS}/System/Collections/Generic/*.cpp \
-                      ${SRC_DIRS}/System/Collections/Specialized/*.cpp \
-					  ${SRC_DIRS}/System/Diagnostics/*.cpp \
-					  ${SRC_DIRS}/System/Diagnostics/Metrics/*.cpp \
-					  ${SRC_DIRS}/System/Diagnostics/Private/*.cpp \
-					  ${SRC_DIRS}/System/IO/*.cpp \
-					  ${SRC_DIRS}/System/Text/*.cpp)
-LIB_OBJS = $(patsubst %.cpp,build/%.o,${LIB_SRC})
-LIB_DEP  = $(BUILD_DIR)/*.d \
-           $(BUILD_DIR)/src/System/*.d \
-		   $(BUILD_DIR)/src/System/Collections/Generic/*.d \
-		   $(BUILD_DIR)/src/System/Diagnostics/*.d \
-		   $(BUILD_DIR)/src/System/Diagnostics/Metrics/*.d \
-		   $(BUILD_DIR)/src/System/Diagnostics/Private/*.d \
-		   $(BUILD_DIR)/src/System/IO/*.d \
-		   $(BUILD_DIR)/src/System/Text/*.d
+HEADER_UNIT_CACHE = gcm.cache
 
-HEADER_UNIT_CACHE = gcm.cache/,
+SYSTEM_HEADER_UNITS_GENERATED          = $(MODULE_BUILD_DIR)/generated.system_header_units
+SYSTEM_MODULE_HEADER_UNITS_GENERATED   = $(MODULE_BUILD_DIR)/generated.system_module_header_units
+SYSTEM_MODULE_SOURCE_DEPENDENCIES_GENERATED = $(MODULE_BUILD_DIR)/generated.system_module_src_dependencies
+SYSTEM_MODULE_HEADER_DEPENDENCIES_GENERATED = $(MODULE_BUILD_DIR)/generated.system_module_header_dependencies
 
-SYSTEM_MODULE_NO_DEPENDENCIES = include/System/EventArgs.hpp
+LIB_HDRS := $(shell find $(INCLUDE_DIRS) -name "*.hpp")
+LIB_SRCS := $(shell find $(SRC_DIRS) -name "*.cpp")
 
-SYSTEM_MODULE_SYSTEM_HEADER_DEPENDENCIES = include/System/IDisposable.hpp \
-										   include/System/Exception.hpp \
-										   include/System/Version.hpp \
-										   include/System/ValueTuple.hpp \
-										   include/System/Private/Delegate.hpp \
-										   include/System/Private/enum.hpp \
-										   include/System/TimeSpan.hpp
+SYSTEM_MODULE_HEADER_DEPS := $(LIB_HDRS:%.hpp=$(MODULE_BUILD_DIR)/%.d)
+SYSTEM_MODULE_SOURCE_DEPS := $(LIB_SRCS:%.cpp=$(MODULE_BUILD_DIR)/%.d)
 
-SYSTEM_MODULE_ENUMS = include/System/Private/enum.hpp \
-					  include/System/Base.hpp \
-					  include/System/Base64FormattingOptions.hpp \
-					  include/System/ConsoleColor.hpp \
-					  include/System/ConsoleKey.hpp \
-					  include/System/ConsoleModifiers.hpp \
-					  include/System/DateTimeKind.hpp \
-					  include/System/DayOfWeek.hpp \
-					  include/System/EnvironmentVariableTarget.hpp \
-					  include/System/PlatformID.hpp \
-					  include/System/TypeCode.hpp
+SYSTEM_MODULE_HEADER_UNITS := $(LIB_HDRS:%.hpp=$(HEADER_UNIT_CACHE)/,/%.hpp.gcm)
 
-SYSTEM_MODULE_DELEGATES = include/System/Private/Delegate.hpp \
-						  include/System/Action.hpp \
-						  include/System/Comparison.hpp \
-						  include/System/Converter.hpp \
-						  include/System/EventHandler.hpp \
-						  include/System/Func.hpp \
-						  include/System/Predicate.hpp
+all: system_header_units system_module_dependencies system_module_header_units
+	@echo DONE
 
-SYSTEM_MODULE_HEADER_ONLY_FILES = $(SYSTEM_MODULE_NO_DEPENDENCIES) $(SYSTEM_MODULE_ENUMS) $(SYSTEM_MODULE_DELEGATES) \
-								  include/System/IDisposable.hpp \
-								  include/System/Nullable.hpp \
-								  include/System/ReadOnlySpan.hpp \
-								  include/System/Span.hpp \
-								  include/System/TimeSpan.hpp \
-								  include/System/ValueTuple.hpp
+.PHONY: print
+print:
+	echo $(CPPFLAGS)
 
-SYSTEM_MODULE_OTHER_HEADER_FILES = include/System/Exception.hpp \
-								   include/System/Version.hpp \
-								   include/System/BitConverter.hpp \
-								   include/System/Boolean.hpp \
-								   include/System/Byte.hpp \
-								   include/System/Concepts.hpp \
-								   include/System/Console.hpp \
-								   include/System/ConsoleKeyInfo.hpp \
-								   include/System/Convert.hpp \
-								   include/System/DateOnly.hpp \
-								   include/System/DateTime.hpp \
-								   include/System/DateTimeOffset.hpp \
-								   include/System/Enum.hpp \
-								   include/System/Environment.hpp \
-								   include/System/EventArgs.hpp \
-								   include/System/Guid.hpp \
-								   include/System/Int16.hpp \
-								   include/System/Int32.hpp \
-								   include/System/Int64.hpp \
-								   include/System/IObservable.hpp \
-								   include/System/IObserver.hpp \
-								   include/System/Math.hpp \
-								   include/System/OperatingSystem.hpp \
-								   include/System/TimeOnly.hpp
-# SYSTEM_MODULE_OTHER_HEADER_FILES = include/System/Exception.hpp \
-# 								   include/System/Version.hpp \
-# 								   include/System/BitConverter.hpp \
-# 								   include/System/ConsoleKeyInfo.hpp \
-# 								   include/System/Convert.hpp \
-# 								   include/System/Guid.hpp \
-# 								   include/System/Enum.hpp \
-# 								   include/System/OperatingSystem.hpp \
-# 								   include/System/IObservable.hpp \
-# 								   include/System/IObserver.hpp \
-# 								   include/System/TimeOnly.hpp
+.PHONY: system_module_dependencies
+system_module_dependencies: system_module_header_dependencies system_module_source_dependencies
+	@echo System Module Dependencies Created
 
-SYSTEM_MODULE_HEADER_ONLY_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(SYSTEM_MODULE_HEADER_ONLY_FILES))
-SYSTEM_MODULE_OTHER_HEADER_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(SYSTEM_MODULE_OTHER_HEADER_FILES))
-SYSTEM_MODULE_HEADERS = $(SYSTEM_MODULE_ENUMS) $(SYSTEM_MODULE_DELEGATES) $(SYSTEM_MODULE_OTHER_HEADER_FILES)
+.PHONY: system_module_header_dependencies
+system_module_header_dependencies: $(SYSTEM_MODULE_HEADER_DEPENDENCIES_GENERATED)
+	@echo System Module Header Dependencies Generated
 
-SYSTEM_MODULE_SRCS := $(shell find $(SRC_DIRS) -name "*.cpp")
-# SYSTEM_MODULE_SRCS := src/System/Exception.cpp \
-# 					  src/System/BitConverter.cpp \
-# 					  src/System/ConsoleKeyInfo.cpp \
-# 					  src/System/Convert.cpp \
-# 					  src/System/Version.cpp \
-# 					  src/System/TimeSpan.cpp
+.PHONY: system_module_source_dependencies
+system_module_source_dependencies: $(SYSTEM_MODULE_SOURCE_DEPENDENCIES_GENERATED)
+	@echo System Module Source Dependencies Generated
 
-SYSTEM_MODULE_DEPS = $(patsubst %.cpp,$(MODULE_BUILD_DIR)/%.d,${SYSTEM_MODULE_SRCS})
-SYSTEM_MODULE_DEPENDENCIES_MADE = $(MODULE_BUILD_DIR)/generated.dot_d
-SYSTEM_MODULE_OBJS := $(patsubst %.cpp,$(MODULE_BUILD_DIR)/%.o,${SYSTEM_MODULE_SRCS})
-SYSTEM_MODULE = System.o
+.PHONY: system_module_header_units
+system_module_header_units: $(SYSTEM_MODULE_HEADER_UNITS_GENERATED)
+	@echo System Module Header Units Created
 
-HEADER_UNITS_GENERATED = $(MODULE_BUILD_DIR)/generated.header_units
-HEADER_ONLY_UNITS_GENERATED = $(MODULE_BUILD_DIR)/generated.header_only_units
-OTHER_HEADER_UNITS_GENERATED = $(MODULE_BUILD_DIR)/generated.other_header_units
-SYSTEM_HEADER_UNITS_GENERATED = $(MODULE_BUILD_DIR)/generated.system_header_units
-
-# For some reason, I have to process all of the enum headers BEFORE they are used in other classes
-#SYSTEM_MODULE_PCMS = $(patsubst %.hpp,${HEADER_UNIT_CACHE}/%.hpp.gcm,${SYSTEM_MODULE_HEADERS})
-
-IO_HEADER_ONLY_FILES = include/System/IO/FileAccess.hpp \
-                       include/System/IO/FileMode.hpp \
-		       include/System/IO/MatchCasing.hpp \
-		       include/System/IO/MatchType.hpp \
-		       include/System/IO/SeekOrigin.hpp \
-		       include/System/IO/UnixFileMode.hpp
-IO_OTHER_HEADER_FILES = include/System/IO/BinaryWriter.hpp \
-			include/System/IO/ConsoleStream.hpp \
-			include/System/IO/FileStream.hpp \
-			include/System/IO/FileStreamOptions.hpp \
-			include/System/IO/IOException.hpp \
-			include/System/IO/MemoryStream.hpp \
-			include/System/IO/NullStream.hpp \
-			include/System/IO/Path.hpp \
-			include/System/IO/Stream.hpp \
-			include/System/IO/StreamReader.hpp \
-			include/System/IO/StreamWriter.hpp \
-			include/System/IO/StringReader.hpp \
-			include/System/IO/StringWriter.hpp \
-			include/System/IO/TextReader.hpp \
-			include/System/IO/StringWriter.hpp
-IO_HEADER_ONLY_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(IO_HEADER_ONLY_FILES))
-IO_OTHER_HEADER_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(IO_OTHER_HEADER_FILES))
-IO_SRC = $(wildcard src/System/*.cpp)
-IO_OBJS = $(patsubst %.cpp,${MODULE_BUILD_DIR}/%.o,${IO_SRC})
-
-DIAGNOSTICS_HEADER_ONLY_FILES = include/System/Diagnostics/ActivitySamplingResult.hpp \
-                                include/System/Diagnostics/SampleActivity.hpp \
-                                include/System/Diagnostics/SourceLevels.hpp \
-                                include/System/Diagnostics/TraceEventType.hpp \
-                                include/System/Diagnostics/TraceLevel.hpp \
-                                include/System/Diagnostics/TraceOptions.hpp \
-								include/System/Diagnostics/Private/Formatting.hpp
-DIAGNOSTICS_OTHER_HEADER_FILES = include/System/Diagnostics/Activity.hpp \
-                                 include/System/Diagnostics/ActivityListener.hpp \
-								 include/System/Diagnostics/ActivitySource.hpp \
-								 include/System/Diagnostics/ActivitySpanId.hpp \
-								 include/System/Diagnostics/ActivityTraceId.hpp \
-								 include/System/Diagnostics/Switch.hpp \
-								 include/System/Diagnostics/BooleanSwitch.hpp \
-								 include/System/Diagnostics/TextWriterTraceListener.hpp \
-								 include/System/Diagnostics/ConsoleTraceListener.hpp \
-								 include/System/Diagnostics/Debug.hpp \
-								 include/System/Diagnostics/Debugger.hpp \
-								 include/System/Diagnostics/TraceFilter.hpp \
-								 include/System/Diagnostics/TraceEventCache.hpp \
-								 include/System/Diagnostics/TraceListener.hpp \
-								 include/System/Diagnostics/DefaultTraceListener.hpp \
-								 include/System/Diagnostics/DiagnosticSource.hpp \
-								 include/System/Diagnostics/DiagnosticListener.hpp \
-								 include/System/Diagnostics/TraceEventCache.hpp \
-								 include/System/Diagnostics/EventTypeFilter.hpp \
-								 include/System/Diagnostics/SourceFilter.hpp \
-								 include/System/Diagnostics/SourceSwitch.hpp \
-								 include/System/Diagnostics/Stopwatch.hpp \
-								 include/System/Diagnostics/TraceListenerCollection.hpp \
-								 include/System/Diagnostics/Trace.hpp \
-								 include/System/Diagnostics/TraceSource.hpp \
-								 include/System/Diagnostics/TraceSwitch.hpp \
-								 include/System/Diagnostics/Private/DebugAndTraceCommon.hpp
-
-DIAGNOSTICS_HEADER_ONLY_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(DIAGNOSTICS_HEADER_ONLY_FILES))
-DIAGNOSTICS_OTHER_HEADER_GCMS = $(patsubst %.hpp,%.hpp.gcm,$(DIAGNOSTICS_OTHER_HEADER_FILES))
-
-#src/System/%.cpp : src/System/%.o
-#	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_IMP) -fmodule-file=$< -c $< -o $(basename $@.o)
-#	echo "-fmodule-file=$< -c $< -o $(basename $@.o)"
-
-# Rule to create Header Units
-# ${MODULE_BUILD_DIR}/%.pcm : %.hpp
-# 	@mkdir -p ${dir $@}
-# 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_PCM) $< -o $(basename $@.pcm)
-
-$(MODULE_BUILD_DIR)/%.d : %.cpp
-	@mkdir -p ${dir $@}
-	@touch $@
-# 	Generate the .d file
-	$(CXX) -I. $(INC_PARAMS) -MM -MF $@ -MT $(patsubst %.d,%.o,$@) $<
-#   Concatenate all continuation lines in the .d file
-# 	NOTE: Don't forget that a literal $ has to be expressed as $$
-	@sed -e ':a' -e '/\\$$/N' -e 's/\\\n//g' -e 'ta' --in-place $@
-
-# Module implementation files
-$(MODULE_BUILD_DIR)/%.o : %.cpp
-	@mkdir -p ${dir $@}
-	$(CXX) $(CXXFLAGS_MODULE_IMP) $< -c -o $@
-
-# Rule to create Header Units
-%.hpp.gcm : %.hpp
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_UNIT) $<
+.PHONY: system_header_units
+system_header_units: $(SYSTEM_HEADER_UNITS_GENERATED)
+	@echo System Header Units Generated!
 
 $(SYSTEM_HEADER_UNITS_GENERATED):
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) compare
@@ -250,66 +82,65 @@ $(SYSTEM_HEADER_UNITS_GENERATED):
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) vector
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) type_traits
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) functional
-	@touch $(SYSTEM_HEADER_UNITS_GENERATED)
-	@echo System Header Units Generated!
-
-#$(OTHER_HEADER_UNITS_GENERATED): $(SYSTEM_MODULE_OTHER_HEADER_GCMS) $(IO_OTHER_HEADER_GCMS) $(DIAGNOSTICS_OTHER_HEADER_FILES)
-$(OTHER_HEADER_UNITS_GENERATED): $(SYSTEM_MODULE_OTHER_HEADER_GCMS)
-	@touch $(OTHER_HEADER_UNITS_GENERATED)
-	@echo Other Header Units DONE!
-
-#$(HEADER_ONLY_UNITS_GENERATED): $(SYSTEM_MODULE_HEADER_ONLY_GCMS) $(IO_HEADER_ONLY_GCMS) $(DIAGNOSTICS_HEADER_ONLY_GCMS)
-$(HEADER_ONLY_UNITS_GENERATED): $(SYSTEM_MODULE_HEADER_ONLY_GCMS)
-	@touch $(HEADER_ONLY_UNITS_GENERATED)
-	@echo Header-Only Header Units DONE!
-
-$(HEADER_UNITS_GENERATED): $(HEADER_ONLY_UNITS_GENERATED) $(OTHER_HEADER_UNITS_GENERATED)
-	@touch $(HEADER_UNITS_GENERATED)
-	@echo Header Units Generated
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) numbers
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) cmath
+	@mkdir -p $(MODULE_BUILD_DIR)
+	@touch $@
 
 # Generate .d dependency files for the Makefile to include in later compilations
-$(SYSTEM_MODULE_DEPENDENCIES_MADE): $(SYSTEM_MODULE_DEPS)
-	@touch $(SYSTEM_MODULE_DEPENDENCIES_MADE)
-	@echo Compilation Dependencies Generated
+$(SYSTEM_MODULE_HEADER_DEPENDENCIES_GENERATED): $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_HEADER_DEPS)
+	@touch $@
 
-#src/System/System.ixx: GenerateHeaderUnits $(SYSTEM_MODULE_OBJS)
-src/System/System.ixx: $(SYSTEM_HEADER_UNITS_GENERATED) $(SYSTEM_MODULE_DEPENDENCIES_MADE) $(HEADER_UNITS_GENERATED)
-	$(CXX) $(CXXFLAGS_MODULE) $@ -o $(MODULE_BUILD_DIR)/$(SYSTEM_MODULE)
+$(SYSTEM_MODULE_SOURCE_DEPENDENCIES_GENERATED): $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_SOURCE_DEPS)
+	@touch $@
 
-# src/System/System.ixx: $(SYSTEM_MODULE_DEPENDENCIES_MADE) $(HEADER_UNITS_GENERATED) $(SYSTEM_MODULE_OBJS)
-# 	$(CXX) $(CXXFLAGS_MODULE) -c $@ -o System.o
+$(SYSTEM_MODULE_HEADER_UNITS_GENERATED): $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_HEADER_UNITS)
+	@touch $@
 
-$(SYSTEM_MODULE): src/System/System.ixx
+$(MODULE_BUILD_DIR):
+	@mkdir -p $@
 
-$(SYSTEM_MODULE_OBJS): $(SYSTEM_MODULE)
 
-build/%.o : %.cpp
-	@mkdir -p ${dir $@}
-	$(CXX) -o $@ $< -c $(CPPFLAGS) $(CXXFLAGS)
-	
-# Clean only the .d dependency files
-.PHONY: clean-module-deps
-clean-module-deps:
-	@find $(MODULE_BUILD_DIR) -name "*.d" -delete
-	@rm $(SYSTEM_MODULE_DEPENDENCIES_MADE)
-
-.PHONY: clean-module-objs
-clean-module-objs:
-	find $(MODULE_BUILD_DIR) -name "*.o" -delete
-
-all: $(LIB_OBJS)
-	@echo Creating static library
-	@ar -crs $(LIB_PATH) $(LIB_OBJS)
-	@ranlib $(LIB_PATH)
-
-lib: all
-
-modules: $(SYSTEM_MODULE_OBJS)
-	@echo System module created!
+# $(SYSTEM_MODULE_HEADER_DEPS): $(LIB_HDRS)
+# 	echo Yo! $@
 
 .PHONY: clean
-clean:
-	@rm -rf $(MODULE_BUILD_DIR)
-	@rm -rf gcm.cache
+clean: remove_module_build_dir remove_header_unit_cache
 
--include $(SYSTEM_MODULE_DEPS)
+.PHONY: remove_module_build_dir
+remove_module_build_dir:
+	@rm -rf $(MODULE_BUILD_DIR)
+
+.PHONY: remove_header_unit_cache
+remove_header_unit_cache:
+	@rm -rf $(HEADER_UNIT_CACHE)
+
+#
+# RULES
+#
+
+# System Module Header Dependencies Rule
+$(MODULE_BUILD_DIR)/%.d : %.hpp
+	@mkdir -p ${dir $@}
+	@touch $@
+# 	Generate the .d file
+	$(CXX) $(CXXFLAGS_MODULE_HEADER_DEPENDENCY) -MM -MF $@ -MT $< $<
+#   Concatenate all continuation lines in the .d file
+# 	NOTE: Don't forget that a literal $ has to be expressed as $$
+	@sed -e ':a' -e '/\\$$/N' -e 's/\\\n//g' -e 'ta' --in-place $@
+
+# System Module Source Dependencies Rule
+$(MODULE_BUILD_DIR)/%.d : %.cpp
+	@mkdir -p ${dir $@}
+	@touch $@
+# 	Generate the .d file
+	$(CXX) -I. $(INC_PARAMS) -MM -MF $@ -MT $@ $<
+#   Concatenate all continuation lines in the .d file
+# 	NOTE: Don't forget that a literal $ has to be expressed as $$
+	@sed -e ':a' -e '/\\$$/N' -e 's/\\\n//g' -e 'ta' --in-place $@
+
+# System Module Header Unit Generation Rule
+$(HEADER_UNIT_CACHE)/,/%.hpp.gcm: %.hpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_UNIT) $<
+
+# -include $(SYSTEM_MODULE_HEADER_DEPS)
