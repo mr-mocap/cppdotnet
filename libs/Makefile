@@ -16,7 +16,35 @@ CXXFLAGS_MODULE = -std=c++20 -fmodules-ts -I. -c -x c++ $(INC_PARAMS)
 
 HEADER_UNIT_CACHE = gcm.cache
 
-SYSTEM_HEADER_UNITS_GENERATED          = $(MODULE_BUILD_DIR)/generated.system_header_units
+SYSTEM_HEADER_UNITS = algorithm \
+					  array \
+					  charconv \
+					  cmath \
+					  compare \
+					  concepts \
+					  cstddef \
+					  cstdint \
+					  exception \
+					  format \
+					  functional \
+					  initializer_list \
+					  limits \
+					  locale \
+					  memory \
+					  numbers \
+					  optional \
+					  ranges \
+					  source_location \
+					  span \
+					  string_view \
+					  string \
+					  type_traits \
+					  utility \
+					  variant \
+					  vector \
+					  version
+SYSTEM_HEADER_FILE_DIR := /usr/include/c++/13
+SYSTEM_HEADER_UNIT_GCMS := $(SYSTEM_HEADER_UNITS:%=$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
 SYSTEM_MODULE_HEADER_UNITS_GENERATED   = $(MODULE_BUILD_DIR)/generated.system_module_header_units
 SYSTEM_MODULE_SOURCE_DEPENDENCIES_GENERATED = $(MODULE_BUILD_DIR)/generated.system_module_src_dependencies
 SYSTEM_MODULE_HEADER_DEPENDENCIES_GENERATED = $(MODULE_BUILD_DIR)/generated.system_module_header_dependencies
@@ -34,7 +62,7 @@ all: system_header_units system_module_dependencies system_module_header_units
 
 .PHONY: print
 print:
-	echo $(CPPFLAGS)
+	echo $(SYSTEM_HEADER_UNIT_GCMS)
 
 .PHONY: system_module_dependencies
 system_module_dependencies: system_module_header_dependencies system_module_source_dependencies
@@ -53,39 +81,8 @@ system_module_header_units: $(SYSTEM_MODULE_HEADER_UNITS_GENERATED)
 	@echo System Module Header Units Created
 
 .PHONY: system_header_units
-system_header_units: $(SYSTEM_HEADER_UNITS_GENERATED)
+system_header_units: $(SYSTEM_HEADER_UNIT_GCMS)
 	@echo System Header Units Generated!
-
-$(SYSTEM_HEADER_UNITS_GENERATED):
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) compare
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) cstddef
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) cstdint
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) exception
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) initializer_list
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) limits
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) source_location
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) version
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) concepts
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) memory
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) utility
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) string
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) string_view
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) span
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) ranges
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) algorithm
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) variant
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) optional
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) array
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) charconv
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) locale
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) format
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) vector
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) type_traits
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) functional
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) numbers
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) cmath
-	@mkdir -p $(MODULE_BUILD_DIR)
-	@touch $@
 
 # Generate .d dependency files for the Makefile to include in later compilations
 $(SYSTEM_MODULE_HEADER_DEPENDENCIES_GENERATED): $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_HEADER_DEPS)
@@ -142,5 +139,9 @@ $(MODULE_BUILD_DIR)/%.d : %.cpp
 # System Module Header Unit Generation Rule
 $(HEADER_UNIT_CACHE)/,/%.hpp.gcm: %.hpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_UNIT) $<
+
+# Compiler Header Unit Generation Rule
+$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)%.gcm: $(SYSTEM_HEADER_FILE_DIR)/%
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) $(patsubst $(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm,%,$@)
 
 # -include $(SYSTEM_MODULE_HEADER_DEPS)
