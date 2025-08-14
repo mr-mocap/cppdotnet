@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Input
+# $1 - User header filename
+# $2 - Prefix, if any, to add
+
+if [ -z "$2" ]; then
+    # No second parameter
+    echo -n "$1:"
+    for f in $(./list_user_includes_in_order "$1"); do
+        echo -n " $f"
+    done
+else
+    echo -n "$1:"
+    for f in $(./list_user_includes_in_order "$1" "$2"); do
+        echo -n " $f"
+    done
+fi

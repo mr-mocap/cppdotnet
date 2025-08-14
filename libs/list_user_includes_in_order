@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Parameters
+# $1 - Header filename
+# $2 - Prefix, if any, to add
+
+if [ -z "$2" ]; then
+    # No second parameter
+    grep -Po '(?<=^import \").+(?=\";$)' "$1" | cut -d: -f2
+else
+    for n in $(grep -Po '(?<=^import \").+(?=\";$)' "$1" | cut -d: -f2); do
+        echo "$2""$n"
+    done
+fi
+
