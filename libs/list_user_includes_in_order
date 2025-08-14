@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Lists lines in the input, of the form:
+# import "...";
+#
+#
 # Parameters
 # $1 - Header filename
 # $2 - Prefix, if any, to add

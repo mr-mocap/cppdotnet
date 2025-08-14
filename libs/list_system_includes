@@ -1,2 +1,10 @@
 #!/bin/bash
+
+# Lists lines in the input, of the form:
+# import <...>;
+#
+#
+# Parameters
+# $1 - Header filename
+
 grep -Po '(?<=^import <)[a-z]+(?=>;$)' $1 | cut -d: -f2 | sort --unique
