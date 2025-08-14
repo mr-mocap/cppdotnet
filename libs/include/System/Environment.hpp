@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Collections/Specialized/StringDictionary.hpp";
 import <string>;
 import <string_view>;

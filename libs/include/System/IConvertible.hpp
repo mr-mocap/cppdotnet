@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/TypeCode.hpp";
 import <cstddef>;
 import <cstdint>;

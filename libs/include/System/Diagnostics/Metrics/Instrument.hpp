@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Private/private.hpp";
 import <string>;
 import <string_view>;

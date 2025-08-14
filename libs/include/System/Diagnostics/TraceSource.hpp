@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/SourceLevels.hpp";
 import <string>;
 import <string_view>;

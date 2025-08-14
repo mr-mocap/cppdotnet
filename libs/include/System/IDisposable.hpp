@@ -1,5 +1,3 @@
-#pragma once
-
 import <memory>;
 
 namespace System

@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/Tracing/EventSource.hpp";
 import <string>;
 

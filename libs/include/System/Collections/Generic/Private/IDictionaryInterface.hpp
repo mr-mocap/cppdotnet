@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Collections/Generic/KeyValuePair.hpp";
 import "System/Collections/Generic/ICollection.hpp";
 

@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/TraceListenerCollection.hpp";
 import "System/Diagnostics/DefaultTraceListener.hpp";
 import "System/Diagnostics/Private/DebugAndTraceCommon.hpp";

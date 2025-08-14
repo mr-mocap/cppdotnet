@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/Tracing/DiagnosticCounter.hpp";
 import "System/Func.hpp";
 

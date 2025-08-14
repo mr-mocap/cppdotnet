@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/IO/TextWriter.hpp";
 import "System/Text/StringBuilder.hpp";
 

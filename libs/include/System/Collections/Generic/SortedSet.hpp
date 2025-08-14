@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Private/private.hpp";
 import <set>;
 import <functional>;

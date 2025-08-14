@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/Activity.hpp";
 import "System/Diagnostics/SampleActivity.hpp";
 import "System/Action.hpp";

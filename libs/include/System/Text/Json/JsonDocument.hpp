@@ -1,5 +1,3 @@
-#pragma once
-
 import <string_vew>;
 
 

@@ -1,5 +1,3 @@
-#pragma once
-
 import <chrono>;
 import <format>;
 import <compare>;

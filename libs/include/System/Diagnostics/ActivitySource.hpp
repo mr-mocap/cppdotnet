@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/Activity.hpp";
 import <string>;
 import <string_view>;

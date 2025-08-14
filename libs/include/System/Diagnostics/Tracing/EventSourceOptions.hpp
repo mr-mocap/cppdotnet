@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/Tracing/EventActivityOptions.hpp";
 import "System/Diagnostics/Tracing/EventKeywords.hpp";
 import "System/Diagnostics/Tracing/EventLevel.hpp";

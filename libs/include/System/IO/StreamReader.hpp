@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/IO/TextReader.hpp";
 import "System/IO/Stream.hpp";
 import <memory>;

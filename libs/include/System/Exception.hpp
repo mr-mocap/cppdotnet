@@ -1,5 +1,3 @@
-#pragma once
-
 import <exception>;
 import <string>;
 import <string_view>;

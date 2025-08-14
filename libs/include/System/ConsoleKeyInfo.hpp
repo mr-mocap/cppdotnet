@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/ConsoleKey.hpp";
 import "System/ConsoleModifiers.hpp";
 

@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Collections/Generic/Private/LegacyBidirectionalIterator.hpp";
 import "System/Collections/Generic/Private/IListInterface.hpp";
 

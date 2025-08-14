@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Environment.hpp";
 import <string>;
 import <string_view>;

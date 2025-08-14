@@ -1,5 +1,3 @@
-#pragma once
-
 // #include "System/Diagnostics/SourceLevels.hpp"
 // #include "System/Diagnostics/TraceLevel.hpp"
 // #include "System/Diagnostics/TraceOptions.hpp"

@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/DayOfWeek.hpp";
 import "System/DateTimeKind.hpp";
 import "System/TimeSpan.hpp";

@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Numerics/INumber.hpp";
 import "System/TypeCode.hpp";
 import <cstdint>;

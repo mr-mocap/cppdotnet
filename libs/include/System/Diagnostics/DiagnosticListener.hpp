@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/DiagnosticSource.hpp";
 import <string>;
 

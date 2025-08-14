@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/TraceListenerCollection.hpp";
 import "System/Diagnostics/Private/Formatting.hpp";
 import <string>;

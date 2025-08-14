@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/TimeSpan.hpp";
 import "System/Private/private.hpp";
 import <chrono>;

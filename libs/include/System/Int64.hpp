@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/IConvertible.hpp";
 import "System/Numerics/INumber.hpp";
 import <cstdint>;

@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Collections/Generic/Dictionary.hpp";
 
 

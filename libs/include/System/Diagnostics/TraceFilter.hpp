@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Private/private.hpp";
 import "System/Diagnostics/TraceEventType.hpp";
 import <string_view>;

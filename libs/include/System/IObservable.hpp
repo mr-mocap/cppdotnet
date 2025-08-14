@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/IObserver.hpp";
 
 namespace System

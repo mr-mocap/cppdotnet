@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/TraceFilter.hpp";
 import "System/Diagnostics/SourceLevels.hpp";
 import "System/Diagnostics/TraceEventCache.hpp";

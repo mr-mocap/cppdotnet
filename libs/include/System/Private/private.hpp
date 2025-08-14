@@ -1,5 +1,3 @@
-#pragma once
-
 import <cassert>;
 
 // For marking unused expressions (and keeping compilers quieter)

@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/IO/FileAccess.hpp";
 import "System/IO/FileMode.hpp";
 import "System/Nullable.hpp";

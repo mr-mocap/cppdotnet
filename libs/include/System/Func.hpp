@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Private/Delegate.hpp";
 import <concepts>;
 

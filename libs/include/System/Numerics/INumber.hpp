@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/IComparable.hpp";
 import "System/Numerics/INumberBase.hpp";
 import <cstdint>;

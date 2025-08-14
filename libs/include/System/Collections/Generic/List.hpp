@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Exception.hpp";
 import "System/Predicate.hpp";
 import <vector>;

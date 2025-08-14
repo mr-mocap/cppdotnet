@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Exception.hpp";
 import <list>;
 import <string_view>;

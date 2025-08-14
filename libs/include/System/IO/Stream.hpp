@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/IO/SeekOrigin.hpp";
 import "System/ReadOnlySpan.hpp";
 import <iosfwd>;

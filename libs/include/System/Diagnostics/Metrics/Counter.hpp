@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/Metrics/Instrument.hpp";
 import <type_traits>;
 

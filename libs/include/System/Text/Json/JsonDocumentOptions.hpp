@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Text/Json/JsonCommentHandling.hpp";
 
 namespace System::Text::Json

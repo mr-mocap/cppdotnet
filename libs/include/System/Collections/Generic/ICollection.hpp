@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Collections/Generic/Private/LegacyForwardIterator.hpp";
 import "System/Collections/Generic/Private/ICollectionInterface.hpp";
 

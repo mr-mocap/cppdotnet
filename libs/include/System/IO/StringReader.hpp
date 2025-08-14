@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/IO/TextReader.hpp";
 import <string>;
 import <string_view>;

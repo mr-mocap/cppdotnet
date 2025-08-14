@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/DateTime.hpp";
 import <optional>;
 import <string>;

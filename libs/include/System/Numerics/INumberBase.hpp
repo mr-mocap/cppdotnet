@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/IEquatable.hpp";
 import "System/Exception.hpp";
 import "System/Private/private.hpp";

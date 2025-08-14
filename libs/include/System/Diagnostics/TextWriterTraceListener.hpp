@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Diagnostics/TraceListener.hpp";
 import "System/IO/TextWriter.hpp";
 import "System/IO/Stream.hpp";

@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/IO/Stream.hpp";
 import "System/IO/FileMode.hpp";
 

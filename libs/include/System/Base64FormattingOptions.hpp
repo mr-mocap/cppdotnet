@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Private/enum.hpp";
 
 

@@ -1,5 +1,3 @@
-#pragma once
-
 
 namespace System::Diagnostics::Tracing
 {

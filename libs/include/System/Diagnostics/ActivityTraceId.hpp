@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Guid.hpp";
 import "System/Exception.hpp";
 import <compare>;

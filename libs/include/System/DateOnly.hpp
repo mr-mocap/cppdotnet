@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/DayOfWeek.hpp";
 import "System/Private/private.hpp";
 import <chrono>;

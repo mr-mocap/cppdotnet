@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Action.hpp";
 import "System/Diagnostics/Metrics/Instrument.hpp";
 import "System/Diagnostics/Metrics/MeasurementCallback.hpp";

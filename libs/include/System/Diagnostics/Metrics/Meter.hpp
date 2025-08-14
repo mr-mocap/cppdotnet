@@ -1,5 +1,3 @@
-#pragma once
-
 
 import "System/Diagnostics/Metrics/MeterOptions.hpp";
 import "System/Diagnostics/Metrics/Counter.hpp";

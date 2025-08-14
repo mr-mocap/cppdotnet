@@ -1,5 +1,3 @@
-#pragma once
-
 import <format>;
 import <string>;
 import <string_view>;

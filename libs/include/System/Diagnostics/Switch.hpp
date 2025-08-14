@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Collections/Specialized/StringDictionary.hpp";
 import "System/EventHandler.hpp";
 import <set>;

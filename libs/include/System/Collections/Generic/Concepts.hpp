@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Concepts.hpp";
 import "System/Collections/Generic/KeyValuePair.hpp";
 import <concepts>;

@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Collections/Generic/KeyNotFoundException.hpp";
 import "System/Collections/Generic/List.hpp";
 import "System/Collections/Generic/KeyValuePair.hpp";

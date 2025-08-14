@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/ReadOnlySpan.hpp";
 import "System/EventArgs.hpp";
 import "System/EventHandler.hpp";

@@ -1,5 +1,3 @@
-#pragma once
-
 import "System/Exception.hpp";
 import <optional>;
 import <utility>;
