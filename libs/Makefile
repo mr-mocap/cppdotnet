@@ -17,34 +17,8 @@ CXXFLAGS_MODULE = -std=c++20 -fmodules-ts -I. -c -x c++ $(INC_PARAMS)
 HEADER_UNIT_CACHE = gcm.cache
 
 # Find all imports of compiler system std headers...
-SYSTEM_HEADER_UNITS := $(shell grep -RPo "(?<=^import <)[a-z]+(?=>;\$$)" include/System | cut -d: -f2 | sort --unique)
-# SYSTEM_HEADER_UNITS = algorithm \
-# 					  array \
-# 					  charconv \
-# 					  cmath \
-# 					  compare \
-# 					  concepts \
-# 					  cstddef \
-# 					  cstdint \
-# 					  exception \
-# 					  format \
-# 					  functional \
-# 					  initializer_list \
-# 					  limits \
-# 					  locale \
-# 					  memory \
-# 					  numbers \
-# 					  optional \
-# 					  ranges \
-# 					  source_location \
-# 					  span \
-# 					  string_view \
-# 					  string \
-# 					  type_traits \
-# 					  utility \
-# 					  variant \
-# 					  vector \
-# 					  version
+# NOTE: For now, let's just limit it to the root System module headers.
+SYSTEM_HEADER_UNITS := $(shell grep -Po "(?<=^import <)[a-z]+(?=>;\$$)" include/System/*.hpp | cut -d: -f2 | sort --unique)
 SYSTEM_HEADER_FILE_DIR := $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 1>/dev/null | awk '/#include <...> search starts here:/ {flag=1; next} /End of search list./ {flag=0} flag' | cut -f 2 -d" " | head -n1)
 SYSTEM_HEADER_UNIT_GCMS := $(SYSTEM_HEADER_UNITS:%=$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
 SYSTEM_MODULE_HEADER_UNITS_GENERATED   = $(MODULE_BUILD_DIR)/generated.system_module_header_units
