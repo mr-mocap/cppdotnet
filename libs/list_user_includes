@@ -1,2 +1,2 @@
 #!/bin/bash
-grep -Po '(?<=^import \").*(?=\";$)' $1 | cut -dD -f2 | sort --unique
+grep -Po '(?<=^import \").+(?=\";$)' $1 | cut -d: -f2 | sort --unique
