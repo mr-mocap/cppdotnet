@@ -25,7 +25,7 @@ SYSTEM_HEADER_UNIT_GCMS := $(SYSTEM_HEADER_UNITS:%=$(HEADER_UNIT_CACHE)$(SYSTEM_
 SYSTEM_MODULE_HEADER_UNITS_GENERATED   = $(MODULE_BUILD_DIR)/generated.system_module_header_units
 SYSTEM_MODULE_SOURCE_DEPENDENCIES_GENERATED = $(MODULE_BUILD_DIR)/generated.system_module_src_dependencies
 
-SYSTEM_MODULE_HEADERS := $(wildcard $(INCLUDE_DIRS)/System/*.hpp)
+SYSTEM_MODULE_HEADERS := $(wildcard $(INCLUDE_DIRS)/System/*.hpp $(INCLUDE_DIRS)/System/Private/*.hpp $(INCLUDE_DIRS)/System/Numerics/*.hpp)
 SYSTEM_MODULE_SOURCES := $(wildcard $(INCLUDE_DIRS)/System/*.cpp)
 
 LIB_HDRS := $(shell find $(INCLUDE_DIRS) -name "*.hpp")
@@ -50,6 +50,7 @@ system_header_units: $(SYSTEM_HEADER_UNIT_GCMS)
 	@echo System Header Units Generated!
 
 .PHONY: system_module_dependencies
+#system_module_dependencies: system_module_header_dependencies
 system_module_dependencies: system_module_header_dependencies system_module_source_dependencies
 	@echo System Module Dependencies Created
 
@@ -69,6 +70,7 @@ $(SYSTEM_MODULE_SOURCE_DEPENDENCIES_GENERATED): $(MODULE_BUILD_DIR) $(SYSTEM_MOD
 	@touch $@
 
 $(MODULE_BUILD_DIR):
+	@echo Making Build Directory
 	@mkdir -p $@
 
 
@@ -90,13 +92,9 @@ remove_header_unit_cache:
 # System Module Header Dependencies Rule
 $(MODULE_BUILD_DIR)/%.d : %.hpp
 	@mkdir -p ${dir $@}
-	@touch $@
 # 	Generate the .d file
-# 	$(CXX) $(CXXFLAGS_MODULE_HEADER_DEPENDENCY) -MMD -MF $@ -MT $< $<
-	$(CXX) -std=c++20 -fmodules-ts -I. $(INC_PARAMS) -MMD -MF $@ -MT $@ $<
-#   Concatenate all continuation lines in the .d file
-# 	NOTE: Don't forget that a literal $ has to be expressed as $$
-	@sed -e ':a' -e '/\\$$/N' -e 's/\\\n//g' -e 'ta' --in-place $@
+	$(shell ./generate_user_header_dependency_file $< "include/" >$@; sed --in-place 's/.hpp/.hpp.gcm/g' $@; echo "\n" >>$@)
+	$(shell ./generate_user_header_dependency_file $< "include/" >>$@; echo "" >>$@)
 
 # System Module Source Dependencies Rule
 $(MODULE_BUILD_DIR)/%.d : %.cpp
@@ -116,4 +114,4 @@ $(HEADER_UNIT_CACHE)/%.hpp.gcm: %.hpp
 $(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)%.gcm: $(SYSTEM_HEADER_FILE_DIR)/%
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) $(patsubst $(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm,%,$@)
 
- #-include $(SYSTEM_MODULE_HEADER_DEPS)
+-include $(SYSTEM_MODULE_HEADER_DEPS)
