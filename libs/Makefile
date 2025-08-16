@@ -5,7 +5,10 @@ MODULE_BUILD_DIR := module_build
 INC_PARAMS = $(INCLUDE_DIRS:%=-I%)
 DEBUG_FLAGS = -g3
 
-EXTRA_LIBS = -luuid
+UUID_LIB = uuid
+UUID_LIB_HEADERS = uuid/uuid.h
+UUID_LIB_HEADER_FILE_DIR = /usr/include
+UUID_LIB_LINK = -l$(UUID_LIB)
 
 CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I. $(INC_PARAMS) $(DEBUG_FLAGS)
 CXXFLAGS_MODULE_HEADER_DEPENDENCY  = -std=c++20 -fmodules-ts -x c++-user-header -I. $(INC_PARAMS)
@@ -16,7 +19,8 @@ CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts -I. $(INC_PARAMS)
 
 HEADER_UNIT_CACHE = gcm.cache
 
-SYSTEM_MODULE_HEADERS = $(wildcard $(INCLUDE_DIRS)/System/*.hpp $(INCLUDE_DIRS)/System/Private/*.hpp $(INCLUDE_DIRS)/System/Numerics/*.hpp)
+#SYSTEM_MODULE_HEADERS = $(wildcard $(INCLUDE_DIRS)/System/*.hpp $(INCLUDE_DIRS)/System/Private/*.hpp $(INCLUDE_DIRS)/System/Numerics/*.hpp)
+SYSTEM_MODULE_HEADERS = $(wildcard $(INCLUDE_DIRS)/System/*.hpp $(INCLUDE_DIRS)/System/Private/*.hpp $(INCLUDE_DIRS)/System/Numerics/*.hpp $(INCLUDE_DIRS)/System/IO/*.hpp)
 SYSTEM_MODULE_SOURCES = $(wildcard $(INCLUDE_DIRS)/System/*.cpp)
 
 # Find all imports of compiler system std headers...
@@ -24,6 +28,9 @@ SYSTEM_MODULE_SOURCES = $(wildcard $(INCLUDE_DIRS)/System/*.cpp)
 SYSTEM_HEADER_UNITS = $(shell ./list_system_includes "include/System/*.hpp include/System/Private/*.hpp include/System/Numerics/*.hpp")
 SYSTEM_HEADER_FILE_DIR = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 1>/dev/null | awk '/#include <...> search starts here:/ {flag=1; next} /End of search list./ {flag=0} flag' | cut -f 2 -d" " | head -n1)
 SYSTEM_HEADER_UNIT_GCMS = $(SYSTEM_HEADER_UNITS:%=$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
+
+UUID_LIB_HEADER_UNITS = $(UUID_LIB_HEADERS)
+UUID_LIB_HEADER_UNIT_GCMS = $(UUID_LIB_HEADER_UNITS:%=$(HEADER_UNIT_CACHE)$(UUID_LIB_HEADER_FILE_DIR)/%.gcm)
 
 LIB_HDRS = $(shell find $(INCLUDE_DIRS) -name "*.hpp")
 LIB_SRCS = $(shell find $(SRC_DIRS) -name "*.cpp")
@@ -46,7 +53,7 @@ generate_build_order: generate_build_order.cpp
 	$(CXX) -std=c++20 -o $@ $<
 
 .PHONY: system_header_units
-system_header_units: $(SYSTEM_HEADER_UNIT_GCMS)
+system_header_units: $(SYSTEM_HEADER_UNIT_GCMS) $(UUID_LIB_HEADER_UNIT_GCMS)
 	@echo System Header Units Generated!
 
 .PHONY: system_module_dependencies
@@ -119,6 +126,10 @@ $(HEADER_UNIT_CACHE)/%.hpp.gcm: %.hpp
 # Compiler Header Unit Generation Rule
 $(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)%.gcm: $(SYSTEM_HEADER_FILE_DIR)/%
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) $(patsubst $(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm,%,$@)
+
+# Other Header Unit Generation Rule
+$(HEADER_UNIT_CACHE)$(UUID_LIB_HEADER_FILE_DIR)/%.gcm: $(UUID_LIB_HEADER_FILE_DIR)/%
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) $(patsubst $(HEADER_UNIT_CACHE)$(UUID_LIB_HEADER_FILE_DIR)/%.gcm,%,$@)
 
 # Module implementation files
 $(MODULE_BUILD_DIR)/%.o : %.cpp
