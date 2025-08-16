@@ -171,7 +171,7 @@ int main(void)
     for (size_t i = 0; i < final_order.size(); ++i)
     {
         if ( i != 0 )
-            std::cout << '\t';
+            std::cout << std::endl;
         std::cout << final_order[i];
     }
     return EXIT_SUCCESS;
