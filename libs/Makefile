@@ -19,21 +19,29 @@ CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts -I. $(INC_PARAMS)
 
 HEADER_UNIT_CACHE = gcm.cache
 
+LIB_HDRS = $(shell find $(INCLUDE_DIRS) -name "*.hpp")
+LIB_SRCS = $(shell find $(SRC_DIRS) -name "*.cpp")
+
+COMPILER_DEFAULT_SEARCH_DIRS = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 1>/dev/null | awk '/#include <...> search starts here:/ {flag=1; next} /End of search list./ {flag=0} flag')
+
 #SYSTEM_MODULE_HEADERS = $(wildcard $(INCLUDE_DIRS)/System/*.hpp $(INCLUDE_DIRS)/System/Private/*.hpp $(INCLUDE_DIRS)/System/Numerics/*.hpp)
-SYSTEM_MODULE_HEADERS = $(wildcard $(INCLUDE_DIRS)/System/*.hpp $(INCLUDE_DIRS)/System/Private/*.hpp $(INCLUDE_DIRS)/System/Numerics/*.hpp $(INCLUDE_DIRS)/System/IO/*.hpp)
+SYSTEM_MODULE_HEADERS = $(wildcard $(INCLUDE_DIRS)/System/*.hpp $(INCLUDE_DIRS)/System/Private/*.hpp $(INCLUDE_DIRS)/System/Numerics/*.hpp $(INCLUDE_DIRS)/System/IO/*.hpp $(INCLUDE_DIRS)/System/Text/*.hpp $(INCLUDE_DIRS)/System/Collections/Generic/*.hpp $(INCLUDE_DIRS)/System/Collections/Generic/Private/*.hpp $(INCLUDE_DIRS)/System/Collections/Specialized/*.hpp)
 SYSTEM_MODULE_SOURCES = $(wildcard $(INCLUDE_DIRS)/System/*.cpp)
 
 # Find all imports of compiler system std headers...
 # NOTE: For now, let's just limit it to the root System module headers.
 SYSTEM_HEADER_UNITS = $(shell ./list_system_includes "include/System/*.hpp include/System/Private/*.hpp include/System/Numerics/*.hpp")
-SYSTEM_HEADER_FILE_DIR = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 1>/dev/null | awk '/#include <...> search starts here:/ {flag=1; next} /End of search list./ {flag=0} flag' | cut -f 2 -d" " | head -n1)
-SYSTEM_HEADER_UNIT_GCMS = $(SYSTEM_HEADER_UNITS:%=$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
+
+# NOTE: The following variable is to get around g++ crashes when generating header units.
+#       This process of compiling them is order-dependent, so I created this variable so
+#       that the exact order could be tweaked.
+#       It is derived from the output of "./list_system_includes "$(LIB_HDRS)".
+SYSTEM_HEADER_UNITS_BUILD_ORDER = algorithm any array bit cassert cctype charconv chrono cmath compare concepts cstddef cstdint cstring ios filesystem exception system_error format functional initializer_list iosfwd iterator limits list map memory mutex numbers optional ranges set source_location span stack stdexcept string string_view tuple type_traits unordered_map unordered_set utility variant vector 
+SYSTEM_HEADER_FILE_DIR = $(shell echo "$(COMPILER_DEFAULT_SEARCH_DIRS)" | cut -f 2 -d" " | head -n1)
+SYSTEM_HEADER_UNIT_GCMS = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
 
 UUID_LIB_HEADER_UNITS = $(UUID_LIB_HEADERS)
 UUID_LIB_HEADER_UNIT_GCMS = $(UUID_LIB_HEADER_UNITS:%=$(HEADER_UNIT_CACHE)$(UUID_LIB_HEADER_FILE_DIR)/%.gcm)
-
-LIB_HDRS = $(shell find $(INCLUDE_DIRS) -name "*.hpp")
-LIB_SRCS = $(shell find $(SRC_DIRS) -name "*.cpp")
 
 SYSTEM_MODULE_HEADER_DEPS = $(SYSTEM_MODULE_HEADERS:%.hpp=$(MODULE_BUILD_DIR)/%.d)
 SYSTEM_MODULE_SOURCE_DEPS = $(SYSTEM_MODULE_SOURCES:%.cpp=$(MODULE_BUILD_DIR)/%.d)
@@ -73,6 +81,7 @@ system_module_header_unit_build_order: $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_
 	@echo System Module Header Unit build order generated
 
 $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE): generate_build_order
+	@echo Generating System Module Header Units Build Order
 	@echo $(SYSTEM_MODULE_HEADERS) | ./generate_build_order >$(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
 # 	Build all the System module's header units
 	@while read line; do \
@@ -109,8 +118,10 @@ remove_header_unit_cache:
 $(MODULE_BUILD_DIR)/%.d : %.hpp
 	@mkdir -p ${dir $@}
 # 	Generate the .d file
-	$(shell ./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >$@; sed --in-place 's/.hpp/.hpp.gcm/g' $@; echo "\n" >>$@)
-	$(shell ./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >>$@; echo "" >>$@)
+	@./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >$@; sed --in-place 's/.hpp/.hpp.gcm/g' $@; echo "\n" >>$@
+	@./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >>$@; echo "" >>$@
+# 	$(shell ./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >$@; sed --in-place 's/.hpp/.hpp.gcm/g' $@; echo "\n" >>$@)
+# 	$(shell ./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >>$@; echo "" >>$@)
 
 # System Module Source Dependencies Rule
 $(MODULE_BUILD_DIR)/%.d : %.cpp
@@ -136,4 +147,4 @@ $(MODULE_BUILD_DIR)/%.o : %.cpp
 	@mkdir -p ${dir $@}
 	$(CXX) $(CXXFLAGS_MODULE_IMP) $< -c -o $@
 
-#-include $(SYSTEM_MODULE_HEADER_DEPS)
+-include $(SYSTEM_MODULE_HEADER_DEPS)
