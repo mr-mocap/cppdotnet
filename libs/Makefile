@@ -16,14 +16,14 @@ CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts -I. $(INC_PARAMS)
 
 HEADER_UNIT_CACHE = gcm.cache
 
-# Find all imports of compiler system std headers...
-# NOTE: For now, let's just limit it to the root System module headers.
-SYSTEM_HEADER_UNITS = $(shell grep -Po "(?<=^import <)[a-z]+(?=>;\$$)" include/System/*.hpp include/System/Private/*.hpp include/System/Numerics/*.hpp | cut -d: -f2 | sort --unique)
-SYSTEM_HEADER_FILE_DIR = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 1>/dev/null | awk '/#include <...> search starts here:/ {flag=1; next} /End of search list./ {flag=0} flag' | cut -f 2 -d" " | head -n1)
-SYSTEM_HEADER_UNIT_GCMS = $(SYSTEM_HEADER_UNITS:%=$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
-
 SYSTEM_MODULE_HEADERS = $(wildcard $(INCLUDE_DIRS)/System/*.hpp $(INCLUDE_DIRS)/System/Private/*.hpp $(INCLUDE_DIRS)/System/Numerics/*.hpp)
 SYSTEM_MODULE_SOURCES = $(wildcard $(INCLUDE_DIRS)/System/*.cpp)
+
+# Find all imports of compiler system std headers...
+# NOTE: For now, let's just limit it to the root System module headers.
+SYSTEM_HEADER_UNITS = $(shell ./list_system_includes "include/System/*.hpp include/System/Private/*.hpp include/System/Numerics/*.hpp")
+SYSTEM_HEADER_FILE_DIR = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 1>/dev/null | awk '/#include <...> search starts here:/ {flag=1; next} /End of search list./ {flag=0} flag' | cut -f 2 -d" " | head -n1)
+SYSTEM_HEADER_UNIT_GCMS = $(SYSTEM_HEADER_UNITS:%=$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
 
 LIB_HDRS = $(shell find $(INCLUDE_DIRS) -name "*.hpp")
 LIB_SRCS = $(shell find $(SRC_DIRS) -name "*.cpp")
@@ -34,12 +34,12 @@ SYSTEM_MODULE_SOURCE_DEPS = $(SYSTEM_MODULE_SOURCES:%.cpp=$(MODULE_BUILD_DIR)/%.
 SYSTEM_MODULE_HEADER_UNIT_GCMS = $(SYSTEM_MODULE_HEADERS:%.hpp=$(HEADER_UNIT_CACHE)/%.hpp.gcm)
 SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE = sys_module_header_unit_build_order.generated
 
-all: generate_build_order system_module_header_unit_build_order system_header_units system_module_dependencies system_module_header_units
+all: system_header_units system_module_dependencies system_module_header_unit_build_order system_module_header_units
 	@echo DONE
 
 .PHONY: print
 print:
-	@echo $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER)
+	@echo $(SYSTEM_HEADER_UNITS)
 
 generate_build_order: generate_build_order.cpp
 	@echo Making generate_build_order
@@ -61,11 +61,17 @@ system_module_header_dependencies: $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_HEADER_DE
 system_module_source_dependencies: $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_SOURCE_DEPS)
 	@echo System Module Source Dependencies Generated
 
-system_module_header_unit_build_order: generate_build_order $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
+.PHONY: system_module_header_unit_build_order
+system_module_header_unit_build_order: $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
+	@echo System Module Header Unit build order generated
 
-.PHONY: $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
-$(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE):
-	$(shell echo $(SYSTEM_MODULE_HEADERS) | ./generate_build_order >$(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE))
+$(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE): generate_build_order
+	@echo $(SYSTEM_MODULE_HEADERS) | ./generate_build_order >$(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
+# 	Build all the System module's header units
+	@while read line; do \
+		$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_UNIT) "$$line"; \
+	done < $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
+		
 
 .PHONY: system_module_header_units
 system_module_header_units: $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_HEADER_UNIT_GCMS)
@@ -119,4 +125,4 @@ $(MODULE_BUILD_DIR)/%.o : %.cpp
 	@mkdir -p ${dir $@}
 	$(CXX) $(CXXFLAGS_MODULE_IMP) $< -c -o $@
 
--include $(SYSTEM_MODULE_HEADER_DEPS)
+#-include $(SYSTEM_MODULE_HEADER_DEPS)
