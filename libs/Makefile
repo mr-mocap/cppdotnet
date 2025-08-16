@@ -32,17 +32,18 @@ SYSTEM_MODULE_HEADER_DEPS = $(SYSTEM_MODULE_HEADERS:%.hpp=$(MODULE_BUILD_DIR)/%.
 SYSTEM_MODULE_SOURCE_DEPS = $(SYSTEM_MODULE_SOURCES:%.cpp=$(MODULE_BUILD_DIR)/%.d)
 
 SYSTEM_MODULE_HEADER_UNIT_GCMS = $(SYSTEM_MODULE_HEADERS:%.hpp=$(HEADER_UNIT_CACHE)/%.hpp.gcm)
+SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE = sys_module_header_unit_build_order.generated
 
-
-all: system_header_units system_module_dependencies system_module_header_units
+all: generate_build_order system_module_header_unit_build_order system_header_units system_module_dependencies system_module_header_units
 	@echo DONE
 
 .PHONY: print
 print:
-	@$(shell ./generate_build_order <input_file >output_file)
+	@echo $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER)
 
 generate_build_order: generate_build_order.cpp
-	$(CXX) -std=c++20 -o generate_build_order generate_build_order.cpp
+	@echo Making generate_build_order
+	$(CXX) -std=c++20 -o $@ $<
 
 .PHONY: system_header_units
 system_header_units: $(SYSTEM_HEADER_UNIT_GCMS)
@@ -60,6 +61,12 @@ system_module_header_dependencies: $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_HEADER_DE
 system_module_source_dependencies: $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_SOURCE_DEPS)
 	@echo System Module Source Dependencies Generated
 
+system_module_header_unit_build_order: generate_build_order $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
+
+.PHONY: $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
+$(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE):
+	$(shell echo $(SYSTEM_MODULE_HEADERS) | ./generate_build_order >$(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE))
+
 .PHONY: system_module_header_units
 system_module_header_units: $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_HEADER_UNIT_GCMS)
 	@echo System Module Header Units Created
@@ -71,6 +78,7 @@ $(MODULE_BUILD_DIR):
 
 .PHONY: clean
 clean: remove_module_build_dir remove_header_unit_cache
+	rm -f $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
 
 .PHONY: remove_module_build_dir
 remove_module_build_dir:
