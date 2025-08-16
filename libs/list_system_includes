@@ -7,4 +7,4 @@
 # Parameters
 # $1 - Header filename
 
-grep -Po '(?<=^import <)[a-z]+(?=>;$)' $1 | cut -d: -f2 | sort --unique
+grep -Po '(?<=^import <)[a-z_]+(?=>;$)' $1 | cut -d: -f2 | sort --unique
