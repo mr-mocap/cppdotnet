@@ -81,13 +81,13 @@ public:
         value_out = *iter;
         return true;
     }
-
+#if 0
     void ExceptWith(range_of_values)
     {
         for (const_reference iValue : range)
             m_data.erase( iValue );
     }
-
+#endif
     // ICollection interface
     size_type Count() const { return m_data.size(); }
 
