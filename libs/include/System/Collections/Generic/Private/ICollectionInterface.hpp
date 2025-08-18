@@ -1,3 +1,4 @@
+import <memory>;
 
 namespace System::Collections::Generic::Private
 {
