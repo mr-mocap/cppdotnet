@@ -81,6 +81,7 @@ public:
         return result;
     }
 
+    template <class T>
     size_type RemoveWhere(Predicate<T> &predicate)
     {
         if ( !predicate )

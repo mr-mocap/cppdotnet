@@ -648,7 +648,7 @@ struct LegacyRandomAccessIteratorBase
     };
 
     template <class ListType>
-    struct IteratorModel : Interface
+    struct IteratorModel : IteratorInterface
     {
         IteratorModel(typename ListType::iterator i)
           :
@@ -991,7 +991,7 @@ struct LegacyRandomAccessIteratorBase
             return std::make_unique<ReverseIteratorModel<ListType>>(m_iterator);
         }
 
-        std::unique_ptr<ConstReverseIteratorModel> CloneAsConst() const override
+        std::unique_ptr<ConstReverseIteratorModel<ListType>> CloneAsConst() const override
         {
             return std::make_unique<ConstReverseIteratorModel<ListType>>(m_iterator);
         }
@@ -1006,7 +1006,7 @@ struct LegacyRandomAccessIteratorBase
             return m_iterator <=> p->m_iterator;
         }
     protected:
-        ListType::reverse_iterator iterator m_iterator;
+        ListType::reverse_iterator m_iterator;
     };
 
     using iterator       = Iterator;
