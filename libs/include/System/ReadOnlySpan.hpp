@@ -1,4 +1,6 @@
 import "System/Span.hpp";
+import <cstddef>;
+import <type_traits>;
 
 namespace System
 {
