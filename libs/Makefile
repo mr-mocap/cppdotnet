@@ -60,6 +60,10 @@ generate_build_order: generate_build_order.cpp
 	@echo Making generate_build_order
 	$(CXX) -std=c++20 -o $@ $<
 
+list_dependencies: list_dependencies.cpp
+	@echo Makine 'list_dependencies'
+	$(CXX) -std=c++20 -o $@ $<
+
 .PHONY: system_header_units
 system_header_units: $(SYSTEM_HEADER_UNIT_GCMS) $(UUID_LIB_HEADER_UNIT_GCMS)
 	@echo System Header Units Generated!
