@@ -29,13 +29,8 @@ public:
       using difference_type        = std::ptrdiff_t;
       using const_pointer          = const Type *;
       using const_reference        = const element_type &;
-#if __cplusplus > 202002L
       using const_iterator         = std::span<Type, Extent>::const_iterator;
       using const_reverse_iterator = std::span<Type, Extent>::const_reverse_iterator;
-#else
-      using const_iterator         = std::span<element_type, Extent>::iterator;
-      using const_reverse_iterator = std::span<element_type, Extent>::reverse_iterator;
-#endif
 
     constexpr ReadOnlySpan() noexcept
         requires(Extent == std::dynamic_extent  ||  Extent == 0) = default;

@@ -118,14 +118,41 @@ remove_header_unit_cache:
 # System MODULES
 $(MODULE_BUILD_DIR)/System.o: src/System/System.ixx \
                               $(MODULE_BUILD_DIR)/System/EventArgs.o \
+                              $(MODULE_BUILD_DIR)/System/IComparable.o \
 							  $(MODULE_BUILD_DIR)/System/Private_Delegate.o \
+							  $(MODULE_BUILD_DIR)/System/Action.o \
 							  $(MODULE_BUILD_DIR)/System/Predicate.o \
 							  $(MODULE_BUILD_DIR)/System/Exception.o \
 							  $(MODULE_BUILD_DIR)/System/Private_enum.o \
 							  $(MODULE_BUILD_DIR)/System/ValueTuple.o \
-							  $(MODULE_BUILD_DIR)/System/TimeSpan.o
+							  $(MODULE_BUILD_DIR)/System/Nullable.o \
+							  $(MODULE_BUILD_DIR)/System/IObserver.o \
+							  $(MODULE_BUILD_DIR)/System/IObservable.o \
+							  $(MODULE_BUILD_DIR)/System/Comparison.o \
+							  $(MODULE_BUILD_DIR)/System/Base.o \
+							  $(MODULE_BUILD_DIR)/System/Base64FormattingOptions.o \
+							  $(MODULE_BUILD_DIR)/System/ConsoleColor.o \
+							  $(MODULE_BUILD_DIR)/System/ConsoleKey.o \
+							  $(MODULE_BUILD_DIR)/System/ConsoleModifiers.o \
+							  $(MODULE_BUILD_DIR)/System/ConsoleKeyInfo.o \
+							  $(MODULE_BUILD_DIR)/System/DateTimeKind.o \
+							  $(MODULE_BUILD_DIR)/System/DayOfWeek.o \
+							  $(MODULE_BUILD_DIR)/System/DateTime.o \
+							  $(MODULE_BUILD_DIR)/System/DateOnly.o \
+							  $(MODULE_BUILD_DIR)/System/TimeOnly.o \
+							  $(MODULE_BUILD_DIR)/System/PlatformID.o \
+							  $(MODULE_BUILD_DIR)/System/Func.o \
+							  $(MODULE_BUILD_DIR)/System/EventHandler.o \
+							  $(MODULE_BUILD_DIR)/System/BitConverter.o \
+							  $(MODULE_BUILD_DIR)/System/TypeCode.o \
+							  $(MODULE_BUILD_DIR)/System/IDisposable.o \
+							  $(MODULE_BUILD_DIR)/System/IConvertible.o \
+							  $(MODULE_BUILD_DIR)/System/Enum.o \
 							  $(MODULE_BUILD_DIR)/System/Span.o \
 							  $(MODULE_BUILD_DIR)/System/ReadOnlySpan.o \
+							  $(MODULE_BUILD_DIR)/System/Guid.o
+
+# 							  $(MODULE_BUILD_DIR)/System/TimeSpan.o
 
 
 #
@@ -167,4 +194,4 @@ $(HEADER_UNIT_CACHE)$(UUID_LIB_HEADER_FILE_DIR)/%.gcm: $(UUID_LIB_HEADER_FILE_DI
 # 	$(CXX) $(CXXFLAGS_MODULE_IMP) $< -c -o $@
 
 # -include $(SYSTEM_MODULE_HEADER_DEPS)
--include modules.d
+#-include modules.d

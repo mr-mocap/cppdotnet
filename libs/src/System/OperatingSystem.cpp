@@ -1,11 +1,39 @@
 module;
 
-module System;
+export module System:OperatingSystem;
 
-#include "System/OperatingSystem.hpp"
+import System:PlatformID;
+import System:Version;
 
 
 namespace System
+{
+
+export
+class OperatingSystem final
+{
+public:
+
+    PlatformID      Platform() const;
+    System::Version Version() const;
+
+    bool IsLinux() const;
+    bool IsAndroid() const;
+    bool IsIOS() const;
+    bool IsMacCatalyst() const;
+    bool IsMacOS() const;
+    bool IsTvOS() const;
+    bool IsWatchOS() const;
+    bool IsWindows() const;
+};
+
+}
+
+
+namespace System
+{
+
+export
 {
 
 PlatformID OperatingSystem::Platform() const
@@ -56,6 +84,8 @@ bool OperatingSystem::IsWatchOS() const
 bool OperatingSystem::IsWindows() const
 {
     return false;
+}
+
 }
 
 }

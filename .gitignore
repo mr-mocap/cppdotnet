@@ -41,6 +41,7 @@
 
 # Project Level
 libs/gcm.cache
+libs/module_build
 
 # Ignore the generated test binaries
 testing/Test*

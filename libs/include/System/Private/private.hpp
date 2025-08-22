@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cassert>
+import <cassert>;
 
 // For marking unused expressions (and keeping compilers quieter)
 #define UNUSED(expr) do { (void)expr; } while (0)

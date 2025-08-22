@@ -1,7 +1,5 @@
 module;
 
-#include "System/Private/private.hpp"
-
 export module System:TimeSpan;
 
 import <cmath>;
@@ -10,14 +8,10 @@ import <format>;
 import <compare>;
 import System:Exception;
 
-using namespace std::chrono;
-
-export
-{
-
 namespace System
 {
 
+export
 class TimeSpan
 {
 public:
@@ -217,8 +211,6 @@ protected:
 
 }
 
-}
-
 export
 template <>
 struct std::formatter<System::TimeSpan>
@@ -243,20 +235,20 @@ namespace System
 
 TimeSpan::TimeSpan(int d, int h, int m, int s)
     :
-    _time_span( days(d) + hours(h) + minutes(m) + seconds(s) )
+    _time_span( std::chrono::days(d) + std::chrono::hours(h) + std::chrono::minutes(m) + std::chrono::seconds(s) )
 {
 }
 
 TimeSpan::TimeSpan(int d, int h, int m, int s, int ms)
     :
-    _time_span( days(d) + hours(h) + minutes(m) + seconds(s) + milliseconds(ms) )
+    _time_span( std::chrono::days(d) + std::chrono::hours(h) + std::chrono::minutes(m) + std::chrono::seconds(s) + std::chrono::milliseconds(ms) )
 {
 }
 
 int TimeSpan::Days() const
 {
     bool negative = (_time_span.count() < 0);
-    long d = (negative) ? ceil<days>( _time_span ).count() : floor<days>( _time_span ).count();
+    long d = (negative) ? ceil<std::chrono::days>( _time_span ).count() : floor<std::chrono::days>( _time_span ).count();
 
     return static_cast<int>(d);
 }
@@ -264,11 +256,11 @@ int TimeSpan::Days() const
 int TimeSpan::Hours() const
 {
     bool negative = (_time_span.count() < 0);
-    long h = (negative) ? ceil<hours>( _time_span ).count() : floor<hours>( _time_span ).count();
+    long h = (negative) ? ceil<std::chrono::hours>( _time_span ).count() : floor<std::chrono::hours>( _time_span ).count();
     std::ldiv_t  d = std::div( h, static_cast<long>(HoursPerDay()) );
 
-    POSTCONDITION( d.rem >= -23 );
-    POSTCONDITION( d.rem <=  23 );
+    // POSTCONDITION( d.rem >= -23 );
+    // POSTCONDITION( d.rem <=  23 );
 
     return d.rem;
 }
@@ -276,11 +268,11 @@ int TimeSpan::Hours() const
 int TimeSpan::Minutes() const
 {
     bool negative = (_time_span.count() < 0);
-    long m = (negative) ? ceil<minutes>( _time_span ).count() : floor<minutes>( _time_span ).count();
+    long m = (negative) ? ceil<std::chrono::minutes>( _time_span ).count() : floor<std::chrono::minutes>( _time_span ).count();
     std::ldiv_t d = std::div( m, MinutesPerHour() );
 
-    POSTCONDITION( d.rem >= -59 );
-    POSTCONDITION( d.rem <=  59 );
+    // POSTCONDITION( d.rem >= -59 );
+    // POSTCONDITION( d.rem <=  59 );
 
     return d.rem;
 }
@@ -288,11 +280,11 @@ int TimeSpan::Minutes() const
 int TimeSpan::Seconds() const
 {
     bool negative = (_time_span.count() < 0);
-    long s = (negative) ? ceil<seconds>( _time_span ).count() : floor<seconds>( _time_span ).count();
+    long s = (negative) ? ceil<std::chrono::seconds>( _time_span ).count() : floor<std::chrono::seconds>( _time_span ).count();
     std::ldiv_t d = std::div( s, SecondsPerMinute() );
 
-    POSTCONDITION( d.rem >= -59 );
-    POSTCONDITION( d.rem <=  59 );
+    // POSTCONDITION( d.rem >= -59 );
+    // POSTCONDITION( d.rem <=  59 );
 
     return d.rem;
 }
@@ -300,11 +292,11 @@ int TimeSpan::Seconds() const
 int TimeSpan::Milliseconds() const
 {
     bool negative = (_time_span.count() < 0);
-    long ms = (negative) ? ceil<milliseconds>( _time_span ).count() : floor<milliseconds>( _time_span ).count();
+    long ms = (negative) ? ceil<std::chrono::milliseconds>( _time_span ).count() : floor<std::chrono::milliseconds>( _time_span ).count();
     std::ldiv_t d = std::div( ms, MillisecondsPerSecond() );
 
-    POSTCONDITION( d.rem >= -999 );
-    POSTCONDITION( d.rem <=  999 );
+    // POSTCONDITION( d.rem >= -999 );
+    // POSTCONDITION( d.rem <=  999 );
 
     return d.rem;
 }
@@ -312,11 +304,11 @@ int TimeSpan::Milliseconds() const
 int TimeSpan::Microseconds() const
 {
     bool negative = (_time_span.count() < 0);
-    long ms = (negative) ? ceil<microseconds>( _time_span ).count() : floor<microseconds>( _time_span ).count();
+    long ms = (negative) ? ceil<std::chrono::microseconds>( _time_span ).count() : floor<std::chrono::microseconds>( _time_span ).count();
     std::ldiv_t d = std::div( ms, MicrosecondsPerSecond() );
 
-    POSTCONDITION( d.rem >= -999'999 );
-    POSTCONDITION( d.rem <=  999'999 );
+    // POSTCONDITION( d.rem >= -999'999 );
+    // POSTCONDITION( d.rem <=  999'999 );
 
     return d.rem;
 }
@@ -327,8 +319,8 @@ int TimeSpan::Nanoseconds() const
     long ns = _time_span.count();
     std::ldiv_t d = std::div( ns, NanosecondsPerSecond() );
 
-    POSTCONDITION( d.rem >= -99'999'999 );
-    POSTCONDITION( d.rem <=  99'999'999 );
+    // POSTCONDITION( d.rem >= -99'999'999 );
+    // POSTCONDITION( d.rem <=  99'999'999 );
 
     return d.rem;
 }
@@ -394,18 +386,16 @@ double TimeSpan::TotalNanoseconds() const
 
 TimeSpan TimeSpan::Add(const TimeSpan &time_span) const
 {
-    using namespace std::literals;
-
     // Detect a potential wrap-around...
     if ( Ticks() >= 0 )
     {
         if ( MaxValue().Ticks() - Ticks() < time_span.Ticks() )
-            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting TimeSpan is greater than TimeSpan::MaxValue"sv) );
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span", "The resulting TimeSpan is greater than TimeSpan::MaxValue") );
     }
     else
     {
         if ( time_span.Ticks() < MinValue().Ticks() - Ticks() )
-            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is less than DateTime::MinValue"sv) );
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span", "The resulting DateTime is less than DateTime::MinValue") );
         
     }
     return *this + time_span;
@@ -413,18 +403,16 @@ TimeSpan TimeSpan::Add(const TimeSpan &time_span) const
 
 TimeSpan TimeSpan::Subtract(const TimeSpan &time_span) const
 {
-    using namespace std::literals;
-
     // Detect a potential wrap-around...
     if ( Ticks() >= 0 )
     {
         if ( MinValue().Ticks() + Ticks() < time_span.Ticks() )
-            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting DateTime is less than DateTime::MinValue"sv) );
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span", "The resulting DateTime is less than DateTime::MinValue") );
     }
     else
     {
         if ( time_span.Ticks() < MaxValue().Ticks() - Ticks() )
-            ThrowWithTarget( ArgumentOutOfRangeException("time_span"sv, "The resulting TimeSpan is greater than TimeSpan::MaxValue"sv) );
+            ThrowWithTarget( ArgumentOutOfRangeException("time_span", "The resulting TimeSpan is greater than TimeSpan::MaxValue") );
         
     }
     return *this - time_span;

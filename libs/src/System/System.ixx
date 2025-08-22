@@ -11,9 +11,10 @@ export module System;
 
 // Things that depend on NOTHING...
 export import :EventArgs;
+export import :IComparable;
 
 // Things that only depend on system-headers...
-// export import "System/IDisposable.hpp";
+export import :IDisposable;
 export import :Exception;
 // export import "System/Version.hpp";
 export import :Delegate;
@@ -22,46 +23,47 @@ export import :ValueTuple;
 export import :TimeSpan;
 
 // Depends on System/Private/Delegate.hpp...
-// export import "System/Action.hpp";
-// export import "System/Comparison.hpp";
+export import :Action;
+export import :Comparison;
 // export import "System/Converter.hpp";
-// export import "System/Func.hpp";
+export import :Func;
 export import :Predicate;
 
 // Depends on System/Private/enum.hpp...
-// export import "System/Base.hpp";
-// export import "System/Base64FormattingOptions.hpp";
-// export import "System/ConsoleColor.hpp";
-// export import "System/ConsoleKey.hpp";
-// export import "System/ConsoleModifiers.hpp";
-// export import "System/DateTimeKind.hpp";
-// export import "System/DayOfWeek.hpp";
+export import :Base;
+export import :Base64FormattingOptions;
+export import :ConsoleColor;
+export import :ConsoleModifiers;
+export import :ConsoleKey;
+export import :DateTimeKind;
+export import :DayOfWeek;
+export import :PlatformID;
 // export import "System/EnvironmentVariableTarget.hpp";
-// export import "System/EventHandler.hpp";
-// export import "System/PlatformID.hpp";
-// export import "System/TypeCode.hpp";
+export import :EventHandler;
+export import :TypeCode;
 
 // Depends on Other System/. files...
-// export import "System/BitConverter.hpp";
+export import :BitConverter;
 // export import "System/Convert.hpp";
-// export import "System/ConsoleKeyInfo.hpp";
-export import System:Span;
-export import System:ReadOnlySpan;
-// export import "System/Nullable.hpp";
-// export import "System/Guid.hpp";
-// export import "System/Enum.hpp";
+export import :ConsoleKeyInfo;
+export import :Span;
+export import :ReadOnlySpan;
+export import :Nullable;
+export import :Guid;
+export import :IConvertible;
+export import :Enum;
 // export import "System/OperatingSystem.hpp";
-// export import "System/IObserver.hpp";
-// export import "System/IObservable.hpp";
-// export import "System/TimeOnly.hpp";
+export import :IObserver;
+export import :IObservable;
 
 // Not Included Yet!
 //export import "Boolean.hpp";
 //export import "Byte.hpp";
 //export import "Concepts.hpp";
 //export import "Console.hpp";
-//export import "DateOnly.hpp";
-//export import "DateTime.hpp";
+export import :DateTime;
+export import :TimeOnly;
+export import :DateOnly;
 //export import "DateTimeOffset.hpp";
 //export import "Environment.hpp";
 //export import "Int16.hpp";
