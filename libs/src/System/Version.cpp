@@ -2,16 +2,16 @@ module;
 
 module System;
 
-import "System/Version.hpp";
-import "System/Exception.hpp";
-import "System/Convert.hpp";
+#include "System/Version.hpp"
+#include "System/Exception.hpp"
+#include "System/Convert.hpp"
 
 //#include "System/Text/StringBuilder.hpp"
-import <string>;
-import <vector>;
-import <cstring>;
-import <cstdlib>;
-import <format>;
+#include <string>
+#include <vector>
+#include <cstring>
+#include <cstdlib>
+#include <format>
 
 
 namespace System

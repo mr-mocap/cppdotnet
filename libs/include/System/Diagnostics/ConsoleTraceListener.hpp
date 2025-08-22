@@ -1,4 +1,4 @@
-import "System/Diagnostics/TextWriterTraceListener.hpp";
+#include "System/Diagnostics/TextWriterTraceListener.hpp"
 
 
 namespace System::Diagnostics

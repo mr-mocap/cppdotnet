@@ -1,13 +1,13 @@
-import "System/Collections/Generic/KeyNotFoundException.hpp";
-import "System/Collections/Generic/List.hpp";
-import "System/Collections/Generic/KeyValuePair.hpp";
-import "System/Exception.hpp";
-import "System/Private/private.hpp";
-import <map>;
-import <format>;
-import <ranges>;
-import <compare>;
-import <algorithm>;
+#include "System/Collections/Generic/KeyNotFoundException.hpp"
+#include "System/Collections/Generic/List.hpp"
+#include "System/Collections/Generic/KeyValuePair.hpp"
+#include "System/Exception.hpp"
+#include "System/Private/private.hpp"
+#include <map>
+#include <format>
+#include <ranges>
+#include <compare>
+#include <algorithm>
 
 namespace System::Collections::Generic
 {

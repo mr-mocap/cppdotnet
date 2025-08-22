@@ -1,4 +1,4 @@
-import "System/IO/IOException.hpp";
+#include "System/IO/IOException.hpp"
 
 
 namespace System::IO

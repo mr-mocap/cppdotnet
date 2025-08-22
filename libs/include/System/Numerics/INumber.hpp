@@ -1,7 +1,7 @@
-import "System/IComparable.hpp";
-import "System/Numerics/INumberBase.hpp";
-import <cstdint>;
-import <algorithm>;
+#include "System/IComparable.hpp"
+#include "System/Numerics/INumberBase.hpp"
+#include <cstdint>
+#include <algorithm>
 
 namespace System::Numerics
 {

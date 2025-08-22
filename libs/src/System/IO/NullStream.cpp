@@ -1,4 +1,4 @@
-import "System/IO/NullStream.hpp";
+#include "System/IO/NullStream.hpp"
 
 
 namespace System::IO

@@ -1,7 +1,7 @@
-import "System/Diagnostics/TextWriterTraceListener.hpp";
-import "System/Diagnostics/Debugger.hpp";
-import "System/Convert.hpp";
-import "System/IO/StreamWriter.hpp";
+#include "System/Diagnostics/TextWriterTraceListener.hpp"
+#include "System/Diagnostics/Debugger.hpp"
+#include "System/Convert.hpp"
+#include "System/IO/StreamWriter.hpp"
 
 
 // TODO: Merge with DefaultTraceListener.cpp version

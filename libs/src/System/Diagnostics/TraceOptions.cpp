@@ -1,1 +1,1 @@
-import "System/Diagnostics/TraceOptions.hpp";
+#include "System/Diagnostics/TraceOptions.hpp"

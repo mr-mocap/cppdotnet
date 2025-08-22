@@ -1,5 +1,5 @@
-import "System/Diagnostics/Tracing/DiagnosticCounter.hpp";
-import "System/Func.hpp";
+#include "System/Diagnostics/Tracing/DiagnosticCounter.hpp"
+#include "System/Func.hpp"
 
 namespace System::Diagnostics::Tracing
 {

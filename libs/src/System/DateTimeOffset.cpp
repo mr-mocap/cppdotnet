@@ -2,7 +2,7 @@ module
 
 module System;
 
-import "System/DateTimeOffset.hpp";
+#include "System/DateTimeOffset.hpp"
 
 
 namespace System

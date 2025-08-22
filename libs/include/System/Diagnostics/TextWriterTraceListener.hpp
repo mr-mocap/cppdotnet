@@ -1,7 +1,7 @@
-import "System/Diagnostics/TraceListener.hpp";
-import "System/IO/TextWriter.hpp";
-import "System/IO/Stream.hpp";
-import <memory>;
+#include "System/Diagnostics/TraceListener.hpp"
+#include "System/IO/TextWriter.hpp"
+#include "System/IO/Stream.hpp"
+#include <memory>
 
 
 namespace System::Diagnostics

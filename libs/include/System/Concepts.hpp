@@ -1,6 +1,6 @@
-import "System/Exception.hpp";
-import <string>;
-import <concepts>;
+#include "System/Exception.hpp"
+#include <string>
+#include <concepts>
 
 
 namespace System::Concepts

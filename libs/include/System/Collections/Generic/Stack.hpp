@@ -1,7 +1,7 @@
-import "System/Private/private.hpp";
-import "System/Exception.hpp";
-import <stack>;
-import <algorithm>;
+#include "System/Private/private.hpp"
+#include "System/Exception.hpp"
+#include <stack>
+#include <algorithm>
 
 
 namespace System::Collections::Generic

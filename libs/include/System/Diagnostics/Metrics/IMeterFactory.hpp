@@ -1,5 +1,5 @@
-import "System/Diagnostics/Metrics/Meter.hpp";
-import <vector>;
+#include "System/Diagnostics/Metrics/Meter.hpp"
+#include <vector>
 
 
 namespace System::Diagnostics::Metrics

@@ -1,1 +1,1 @@
-import "System/Func.hpp";
+#include "System/Func.hpp"

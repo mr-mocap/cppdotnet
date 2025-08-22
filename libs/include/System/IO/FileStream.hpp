@@ -1,5 +1,5 @@
-import "System/IO/Stream.hpp";
-import "System/IO/FileMode.hpp";
+#include "System/IO/Stream.hpp"
+#include "System/IO/FileMode.hpp"
 
 namespace System::IO
 {

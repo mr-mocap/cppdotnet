@@ -1,4 +1,4 @@
-import "System/Exception.hpp";
+#include "System/Exception.hpp"
 
 
 namespace System::IO

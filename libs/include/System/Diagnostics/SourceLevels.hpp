@@ -1,5 +1,5 @@
-import "System/Private/enum.hpp";
-import <algorithm>;
+#include "System/Private/enum.hpp"
+#include <algorithm>
 
 namespace System::Diagnostics
 {

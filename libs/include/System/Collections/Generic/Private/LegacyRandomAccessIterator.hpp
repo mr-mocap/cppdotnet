@@ -1,6 +1,6 @@
-import <memory>;
-import <iterator>;
-import <compare>;
+#include <memory>
+#include <iterator>
+#include <compare>
 
 namespace System::Collections::Generic::Private
 {

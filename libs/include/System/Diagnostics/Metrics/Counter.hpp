@@ -1,5 +1,5 @@
-import "System/Diagnostics/Metrics/Instrument.hpp";
-import <type_traits>;
+#include "System/Diagnostics/Metrics/Instrument.hpp"
+#include <type_traits>
 
 
 namespace System::Diagnostics::Metrics

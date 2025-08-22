@@ -1,5 +1,5 @@
-import "System/IO/StringReader.hpp";
-import "System/Environment.hpp";
+#include "System/IO/StringReader.hpp"
+#include "System/Environment.hpp"
 
 
 namespace System::IO

@@ -1,7 +1,7 @@
-import "System/IO/TextWriter.hpp";
-import "System/IO/Stream.hpp";
-import <memory>;
-import <concepts>;
+#include "System/IO/TextWriter.hpp"
+#include "System/IO/Stream.hpp"
+#include <memory>
+#include <concepts>
 
 namespace System::IO
 {

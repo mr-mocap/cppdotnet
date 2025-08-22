@@ -1,9 +1,9 @@
-import "System/IO/SeekOrigin.hpp";
-import "System/ReadOnlySpan.hpp";
-import <iosfwd>;
-import <memory>;
-import <string>;
-import <cstdint>;
+#include "System/IO/SeekOrigin.hpp"
+#include "System/ReadOnlySpan.hpp"
+#include <iosfwd>
+#include <memory>
+#include <string>
+#include <cstdint>
 
 namespace System::IO
 {

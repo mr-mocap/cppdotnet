@@ -10,23 +10,23 @@ export module System;
 // NOTE: These are ORDERED
 
 // Things that depend on NOTHING...
-// export import "System/EventArgs.hpp";
+export import :EventArgs;
 
 // Things that only depend on system-headers...
 // export import "System/IDisposable.hpp";
-export import "System/Exception.hpp";
+export import :Exception;
 // export import "System/Version.hpp";
-// export import "System/ValueTuple.hpp";
-// export import "System/Private/Delegate.hpp";
-// export import "System/Private/enum.hpp";
-// export import "System/TimeSpan.hpp";
+export import :Delegate;
+export import :Private_enum;
+export import :ValueTuple;
+export import :TimeSpan;
 
 // Depends on System/Private/Delegate.hpp...
 // export import "System/Action.hpp";
 // export import "System/Comparison.hpp";
 // export import "System/Converter.hpp";
 // export import "System/Func.hpp";
-// export import "System/Predicate.hpp";
+export import :Predicate;
 
 // Depends on System/Private/enum.hpp...
 // export import "System/Base.hpp";
@@ -45,8 +45,8 @@ export import "System/Exception.hpp";
 // export import "System/BitConverter.hpp";
 // export import "System/Convert.hpp";
 // export import "System/ConsoleKeyInfo.hpp";
-// export import "System/Span.hpp";
-// export import "System/ReadOnlySpan.hpp";
+export import System:Span;
+export import System:ReadOnlySpan;
 // export import "System/Nullable.hpp";
 // export import "System/Guid.hpp";
 // export import "System/Enum.hpp";

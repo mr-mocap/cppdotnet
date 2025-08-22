@@ -1,14 +1,14 @@
-import "System/Exception.hpp";
-import "System/TypeCode.hpp";
-import <span>;
-import <optional>;
-import <algorithm>;
-import <array>;
-import <format>;
-import <utility>;
-import <ranges>;
-import <cassert>;
-import <charconv>;
+#include "System/Exception.hpp"
+#include "System/TypeCode.hpp"
+#include <span>
+#include <optional>
+#include <algorithm>
+#include <array>
+#include <format>
+#include <utility>
+#include <ranges>
+#include <cassert>
+#include <charconv>
 
 namespace System
 {

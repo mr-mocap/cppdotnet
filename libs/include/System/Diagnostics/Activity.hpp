@@ -1,17 +1,17 @@
-import "System/ReadOnlySpan.hpp";
-import "System/EventArgs.hpp";
-import "System/EventHandler.hpp";
-import "System/DateTime.hpp";
-import "System/Diagnostics/ActivityTraceId.hpp";
-import "System/Diagnostics/ActivitySpanId.hpp";
-import "System/Private/enum.hpp";
-import "System/Collections/Specialized/StringDictionary.hpp";
-import <array>;
-import <string>;
-import <cstddef>;
-import <concepts>;
-import <map>;
-import <memory>;
+#include "System/ReadOnlySpan.hpp"
+#include "System/EventArgs.hpp"
+#include "System/EventHandler.hpp"
+#include "System/DateTime.hpp"
+#include "System/Diagnostics/ActivityTraceId.hpp"
+#include "System/Diagnostics/ActivitySpanId.hpp"
+#include "System/Private/enum.hpp"
+#include "System/Collections/Specialized/StringDictionary.hpp"
+#include <array>
+#include <string>
+#include <cstddef>
+#include <concepts>
+#include <map>
+#include <memory>
 
 
 namespace System::Diagnostics

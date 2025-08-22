@@ -1,9 +1,9 @@
-import "System/Exception.hpp";
-import "System/Predicate.hpp";
-import <vector>;
-import <initializer_list>;
-import <string_view>;
-import <algorithm>;
+#include "System/Exception.hpp"
+#include "System/Predicate.hpp"
+#include <vector>
+#include <initializer_list>
+#include <string_view>
+#include <algorithm>
 
 
 namespace System::Collections::Generic

@@ -1,19 +1,19 @@
 // #include "System/Diagnostics/SourceLevels.hpp"
 // #include "System/Diagnostics/TraceLevel.hpp"
 // #include "System/Diagnostics/TraceOptions.hpp"
-import "System/Exception.hpp";
-import "System/Base.hpp";
-import "System/Private/private.hpp";
-import <string>;
-import <string_view>;
-import <span>;
-import <vector>;
-import <array>;
-import <cstdint>;
-import <cstddef>;
-import <cctype>;
-import <cassert>;
-import <charconv>;
+#include "System/Exception.hpp"
+#include "System/Base.hpp"
+#include "System/Private/private.hpp"
+#include <string>
+#include <string_view>
+#include <span>
+#include <vector>
+#include <array>
+#include <cstdint>
+#include <cstddef>
+#include <cctype>
+#include <cassert>
+#include <charconv>
 
 namespace System
 {

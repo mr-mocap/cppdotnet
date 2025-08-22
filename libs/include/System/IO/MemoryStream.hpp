@@ -1,4 +1,4 @@
-import "System/IO/Stream.hpp";
+#include "System/IO/Stream.hpp"
 
 
 namespace System::IO

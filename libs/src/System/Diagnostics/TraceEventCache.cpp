@@ -1,5 +1,5 @@
-import "System/Diagnostics/TraceEventCache.hpp";
-import "System/Environment.hpp";
+#include "System/Diagnostics/TraceEventCache.hpp"
+#include "System/Environment.hpp"
 
 
 namespace System::Diagnostics

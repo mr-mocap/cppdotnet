@@ -1,8 +1,8 @@
-import "System/Diagnostics/TraceListenerCollection.hpp";
-import "System/Diagnostics/TraceListener.hpp";
-import "System/Diagnostics/Private/DebugAndTraceCommon.hpp";
+#include "System/Diagnostics/TraceListenerCollection.hpp"
+#include "System/Diagnostics/TraceListener.hpp"
+#include "System/Diagnostics/Private/DebugAndTraceCommon.hpp"
 
-import <iterator>;
+#include <iterator>
 
 
 namespace System::Diagnostics

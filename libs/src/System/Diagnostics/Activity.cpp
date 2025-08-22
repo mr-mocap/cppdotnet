@@ -1,9 +1,9 @@
-import "System/Diagnostics/Activity.hpp";
-import "System/Diagnostics/ActivitySource.hpp";
-import "System/Span.hpp";
-import "System/Convert.hpp";
-import <random>;
-import <algorithm>;
+#include "System/Diagnostics/Activity.hpp"
+#include "System/Diagnostics/ActivitySource.hpp"
+#include "System/Span.hpp"
+#include "System/Convert.hpp"
+#include <random>
+#include <algorithm>
 
 
 

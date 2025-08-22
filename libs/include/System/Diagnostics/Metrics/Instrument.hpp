@@ -1,8 +1,8 @@
-import "System/Private/private.hpp";
-import <string>;
-import <string_view>;
-import <memory>;
-import <any>;
+#include "System/Private/private.hpp"
+#include <string>
+#include <string_view>
+#include <memory>
+#include <any>
 
 namespace System::Diagnostics::Metrics
 {

@@ -1,4 +1,4 @@
-import "System/EventArgs.hpp";
+#include "System/EventArgs.hpp"
 
 
 namespace System::Diagnostics::Tracing

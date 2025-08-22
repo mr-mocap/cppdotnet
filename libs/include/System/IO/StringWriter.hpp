@@ -1,5 +1,5 @@
-import "System/IO/TextWriter.hpp";
-import "System/Text/StringBuilder.hpp";
+#include "System/IO/TextWriter.hpp"
+#include "System/Text/StringBuilder.hpp"
 
 namespace System::IO
 {

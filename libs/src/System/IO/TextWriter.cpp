@@ -1,6 +1,6 @@
-import "System/IO/TextWriter.hpp";
-import "System/Convert.hpp";
-import <string_view>;
+#include "System/IO/TextWriter.hpp"
+#include "System/Convert.hpp"
+#include <string_view>
 
 
 namespace System::IO

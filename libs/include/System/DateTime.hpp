@@ -1,14 +1,14 @@
-import "System/DayOfWeek.hpp";
-import "System/DateTimeKind.hpp";
-import "System/TimeSpan.hpp";
-import "System/DateOnly.hpp";
-import "System/TimeOnly.hpp";
-import "System/Exception.hpp";
-import <cstddef>;
-import <chrono>;
-import <string>;
-import <compare>;
-import <format>;
+#include "System/DayOfWeek.hpp"
+#include "System/DateTimeKind.hpp"
+#include "System/TimeSpan.hpp"
+#include "System/DateOnly.hpp"
+#include "System/TimeOnly.hpp"
+#include "System/Exception.hpp"
+#include <cstddef>
+#include <chrono>
+#include <string>
+#include <compare>
+#include <format>
 
 
 namespace System

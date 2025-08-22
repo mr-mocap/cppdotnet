@@ -1,6 +1,6 @@
-import "System/Diagnostics/Debug.hpp";
-import "System/Diagnostics/Private/DebugAndTraceCommon.hpp";
-import <algorithm>;
+#include "System/Diagnostics/Debug.hpp"
+#include "System/Diagnostics/Private/DebugAndTraceCommon.hpp"
+#include <algorithm>
 
 namespace System::Diagnostics
 {

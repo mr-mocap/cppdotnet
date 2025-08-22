@@ -1,9 +1,14 @@
-import <functional>;
+module;
 
+
+export module System:Delegate;
+
+import <functional>;
 
 namespace System
 {
 
+export
 template <typename RetType, typename ...ArgTypes>
 class Delegate
 {
@@ -58,6 +63,7 @@ protected:
 };
 
 
+export
 template <typename RetType, typename ...ArgTypes>
 class MulticastDelegate
 {

@@ -1,7 +1,7 @@
-import "System/TimeSpan.hpp";
-import "System/Private/private.hpp";
-import <chrono>;
-import <compare>;
+#include "System/TimeSpan.hpp"
+#include "System/Private/private.hpp"
+#include <chrono>
+#include <compare>
 
 
 namespace System

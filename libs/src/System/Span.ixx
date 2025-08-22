@@ -1,7 +1,14 @@
-import "System/Exception.hpp";
+module;
+
+export module System:Span;
+
 import <span>;
 import <type_traits>;
 import <algorithm>;
+import System:Exception;
+
+export
+{
 
 namespace System
 {
@@ -172,5 +179,7 @@ Span(std::array<Type, ArrayExtent> &) -> Span<Type, ArrayExtent>;
 
 template <typename Type, size_t ArrayExtent>
 Span(const std::array<Type, ArrayExtent> &) -> Span<const Type, ArrayExtent>;
+
+}
 
 }

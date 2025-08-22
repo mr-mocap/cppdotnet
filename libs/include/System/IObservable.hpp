@@ -1,4 +1,4 @@
-import "System/IObserver.hpp";
+#include "System/IObserver.hpp"
 
 namespace System
 {

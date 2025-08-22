@@ -1,4 +1,4 @@
-import "System/IO/Path.hpp";
+#include "System/IO/Path.hpp"
 
 namespace System::IO
 {

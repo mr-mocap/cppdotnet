@@ -1,12 +1,12 @@
-import "System/Exception.hpp";
-import <string>;
-import <string_view>;
+#include "System/Exception.hpp"
+#include <string>
+#include <string_view>
 #if __cplusplus >= 202002L
-import <format>;
-import <concepts>;
+#include <format>
+#include <concepts>
 #endif
-import <cstdint>;
-import <cstddef>;
+#include <cstdint>
+#include <cstddef>
 
 namespace System::Text
 {

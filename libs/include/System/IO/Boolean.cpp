@@ -2,7 +2,7 @@ module;
 
 module System;
 
-import "System/Boolean.hpp";
+#include "System/Boolean.hpp"
 
 
 namespace System

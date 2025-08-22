@@ -1,5 +1,5 @@
-import <set>;
-import <string>;
+#include <set>
+#include <string>
 
 
 namespace System::Diagnostics

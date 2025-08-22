@@ -1,6 +1,6 @@
-import "System/Diagnostics/Tracing/EventSource.hpp";
-import <string>;
-import <string_view>;
+#include "System/Diagnostics/Tracing/EventSource.hpp"
+#include <string>
+#include <string_view>
 
 
 namespace System::Diagnostics::Tracing

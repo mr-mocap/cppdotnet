@@ -1,5 +1,5 @@
-import "System/Diagnostics/ActivitySource.hpp";
-import "System/Private/private.hpp";
+#include "System/Diagnostics/ActivitySource.hpp"
+#include "System/Private/private.hpp"
 
 
 namespace System::Diagnostics

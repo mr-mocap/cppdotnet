@@ -1,4 +1,4 @@
-import "System/Diagnostics/Switch.hpp";
+#include "System/Diagnostics/Switch.hpp"
 
 
 namespace System::Diagnostics

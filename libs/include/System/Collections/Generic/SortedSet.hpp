@@ -1,6 +1,6 @@
-import "System/Private/private.hpp";
-import <set>;
-import <functional>;
+#include "System/Private/private.hpp"
+#include <set>
+#include <functional>
 
 namespace System::Collections::Generic
 {

@@ -1,15 +1,15 @@
-import "System/IEquatable.hpp";
-import "System/Exception.hpp";
-import "System/Private/private.hpp";
-import <cmath>;
-import <limits>;
-import <string>;
-import <stdexcept>;
-import <charconv>;
-import <cstdint>;
-import <optional>;
-import <type_traits>;
-import <format>;
+#include "System/IEquatable.hpp"
+#include "System/Exception.hpp"
+#include "System/Private/private.hpp"
+#include <cmath>
+#include <limits>
+#include <string>
+#include <stdexcept>
+#include <charconv>
+#include <cstdint>
+#include <optional>
+#include <type_traits>
+#include <format>
 
 namespace System::Numerics
 {

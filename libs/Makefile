@@ -2,7 +2,7 @@ INCLUDE_DIRS := include
 SRC_DIRS := src
 MODULE_BUILD_DIR := module_build
 
-INC_PARAMS = $(INCLUDE_DIRS:%=-I%)
+INC_PARAMS = -I. $(INCLUDE_DIRS:%=-I%)
 DEBUG_FLAGS = -g3
 
 UUID_LIB = uuid
@@ -10,12 +10,12 @@ UUID_LIB_HEADERS = uuid/uuid.h
 UUID_LIB_HEADER_FILE_DIR = /usr/include
 UUID_LIB_LINK = -l$(UUID_LIB)
 
-CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I. $(INC_PARAMS) $(DEBUG_FLAGS)
-CXXFLAGS_MODULE_HEADER_DEPENDENCY  = -std=c++20 -fmodules-ts -x c++-user-header -I. $(INC_PARAMS)
-CXXFLAGS_MODULE_HEADER_UNIT        = -std=c++20 -fmodule-header -I. $(INC_PARAMS)
-CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT = -std=c++20 -fmodules-ts -x c++-system-header -I. $(INC_PARAMS)
-CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts -I. $(INC_PARAMS)
-#CXXFLAGS_MODULE = -std=c++20 -fmodules-ts -I. -c -x c++ $(INC_PARAMS)
+CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP $(INC_PARAMS) $(DEBUG_FLAGS)
+CXXFLAGS_MODULE_HEADER_DEPENDENCY  = -std=c++20 -fmodules-ts -x c++-user-header $(INC_PARAMS)
+CXXFLAGS_MODULE_HEADER_UNIT        = -std=c++20 -fmodule-header $(INC_PARAMS)
+CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT = -std=c++20 -fmodules-ts -x c++-system-header $(INC_PARAMS)
+CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts $(INC_PARAMS)
+CXXFLAGS_MODULE = -std=c++20 -fmodules-ts -c -x c++ $(INC_PARAMS)
 
 HEADER_UNIT_CACHE = gcm.cache
 
@@ -49,7 +49,8 @@ SYSTEM_MODULE_SOURCE_DEPS = $(SYSTEM_MODULE_SOURCES:%.cpp=$(MODULE_BUILD_DIR)/%.
 SYSTEM_MODULE_HEADER_UNIT_GCMS = $(SYSTEM_MODULE_HEADERS:%.hpp=$(HEADER_UNIT_CACHE)/%.hpp.gcm)
 SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE = sys_module_header_unit_build_order.generated
 
-all: system_header_units system_module_dependencies system_module_header_unit_build_order system_module_header_units
+#all: system_header_units system_module_dependencies system_module_header_unit_build_order system_module_header_units
+all: system_header_units $(MODULE_BUILD_DIR)/System.o
 	@echo DONE
 
 .PHONY: print
@@ -61,7 +62,7 @@ generate_build_order: generate_build_order.cpp
 	$(CXX) -std=c++20 -o $@ $<
 
 list_dependencies: list_dependencies.cpp
-	@echo Makine 'list_dependencies'
+	@echo Making 'list_dependencies'
 	$(CXX) -std=c++20 -o $@ $<
 
 .PHONY: system_header_units
@@ -114,28 +115,46 @@ remove_module_build_dir:
 remove_header_unit_cache:
 	@rm -rf $(HEADER_UNIT_CACHE)
 
+# System MODULES
+$(MODULE_BUILD_DIR)/System.o: src/System/System.ixx \
+                              $(MODULE_BUILD_DIR)/System/EventArgs.o \
+							  $(MODULE_BUILD_DIR)/System/Private_Delegate.o \
+							  $(MODULE_BUILD_DIR)/System/Predicate.o \
+							  $(MODULE_BUILD_DIR)/System/Exception.o \
+							  $(MODULE_BUILD_DIR)/System/Private_enum.o \
+							  $(MODULE_BUILD_DIR)/System/ValueTuple.o \
+							  $(MODULE_BUILD_DIR)/System/TimeSpan.o
+							  $(MODULE_BUILD_DIR)/System/Span.o \
+							  $(MODULE_BUILD_DIR)/System/ReadOnlySpan.o \
+
+
 #
 # RULES
 #
 
-# System Module Header Dependencies Rule
-$(MODULE_BUILD_DIR)/%.d : %.hpp
+# Modules
+$(MODULE_BUILD_DIR)/%.o: src/%.ixx
 	@mkdir -p ${dir $@}
-# 	Generate the .d file
-	@./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >$@; sed --in-place 's/.hpp/.hpp.gcm/g' $@; echo "\n" >>$@
-	@./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >>$@; echo "" >>$@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE) -o $@ $<
+
+# System Module Header Dependencies Rule
+# $(MODULE_BUILD_DIR)/%.d : %.hpp
+# 	@mkdir -p ${dir $@}
+# # 	Generate the .d file
+# 	@./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >$@; sed --in-place 's/.hpp/.hpp.gcm/g' $@; echo "\n" >>$@
+# 	@./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >>$@; echo "" >>$@
 
 # System Module Source Dependencies Rule
-$(MODULE_BUILD_DIR)/%.d : %.cpp
-	@mkdir -p ${dir $@}
+# $(MODULE_BUILD_DIR)/%.d : %.cpp
+# 	@mkdir -p ${dir $@}
 # 	Generate the .d file
 
 # System Module Header Unit Generation Rule
-$(HEADER_UNIT_CACHE)/%.hpp.gcm: %.hpp
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_UNIT) $<
+# $(HEADER_UNIT_CACHE)/%.hpp.gcm: %.hpp
+# 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_UNIT) $<
 
 # Compiler Header Unit Generation Rule
-$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)%.gcm: $(SYSTEM_HEADER_FILE_DIR)/%
+$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm: $(SYSTEM_HEADER_FILE_DIR)/%
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) $(patsubst $(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm,%,$@)
 
 # Other Header Unit Generation Rule
@@ -143,8 +162,9 @@ $(HEADER_UNIT_CACHE)$(UUID_LIB_HEADER_FILE_DIR)/%.gcm: $(UUID_LIB_HEADER_FILE_DI
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) $(patsubst $(HEADER_UNIT_CACHE)$(UUID_LIB_HEADER_FILE_DIR)/%.gcm,%,$@)
 
 # Module implementation files
-$(MODULE_BUILD_DIR)/%.o : %.cpp
-	@mkdir -p ${dir $@}
-	$(CXX) $(CXXFLAGS_MODULE_IMP) $< -c -o $@
+# $(MODULE_BUILD_DIR)/%.o : %.cpp
+# 	@mkdir -p ${dir $@}
+# 	$(CXX) $(CXXFLAGS_MODULE_IMP) $< -c -o $@
 
--include $(SYSTEM_MODULE_HEADER_DEPS)
+# -include $(SYSTEM_MODULE_HEADER_DEPS)
+-include modules.d

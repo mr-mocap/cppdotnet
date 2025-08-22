@@ -1,8 +1,8 @@
-import <memory>;
-import <format>;
-import <string>;
-import <string_view>;
-import <cstdint>;
+#include <memory>
+#include <format>
+#include <string>
+#include <string_view>
+#include <cstdint>
 
 namespace System
 {

@@ -1,10 +1,14 @@
-import "System/Private/Delegate.hpp";
-import <concepts>;
+module;
 
+export module System:Predicate;
+
+import <concepts>;
+import System:Delegate;
 
 namespace System
 {
 
+export
 template <typename T>
     requires ( !std::same_as<T, void> )
 struct Predicate : Delegate<bool, T>

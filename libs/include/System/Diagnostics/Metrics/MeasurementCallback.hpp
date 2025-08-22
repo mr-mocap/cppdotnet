@@ -1,5 +1,5 @@
-import "System/Private/Delegate.hpp";
-import "System/Diagnostics/Metrics/Instrument.hpp";
+#include "System/Private/Delegate.hpp"
+#include "System/Diagnostics/Metrics/Instrument.hpp"
 
 
 namespace System::Diagnostics::Metrics

@@ -1,6 +1,6 @@
-import "System/IO/BinaryWriter.hpp";
-import "System/IO/Stream.hpp";
-import <iostream>;
+#include "System/IO/BinaryWriter.hpp"
+#include "System/IO/Stream.hpp"
+#include <iostream>
 
 namespace System::IO
 {

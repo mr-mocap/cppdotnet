@@ -1,6 +1,6 @@
-import "System/Diagnostics/SourceLevels.hpp";
-import <string>;
-import <string_view>;
+#include "System/Diagnostics/SourceLevels.hpp"
+#include <string>
+#include <string_view>
 
 
 namespace System::Diagnostics

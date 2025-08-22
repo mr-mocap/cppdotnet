@@ -1,5 +1,5 @@
-import "System/Diagnostics/Trace.hpp";
-import "System/Diagnostics/Private/DebugAndTraceCommon.hpp";
+#include "System/Diagnostics/Trace.hpp"
+#include "System/Diagnostics/Private/DebugAndTraceCommon.hpp"
 
 
 namespace System::Diagnostics

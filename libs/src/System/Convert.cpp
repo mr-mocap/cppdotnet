@@ -1,17 +1,17 @@
 module;
 
 module System;
-import "System/Convert.hpp";
-import "System/Boolean.hpp";
-import "System/BitConverter.hpp";
-import <map>;
-import <span>;
-import <charconv>;
-import <cassert>;
-import <cstring>;
-import <cctype>;
-import <algorithm>;
-import <ranges>;
+#include "System/Convert.hpp"
+#include "System/Boolean.hpp"
+#include "System/BitConverter.hpp"
+#include <map>
+#include <span>
+#include <charconv>
+#include <cassert>
+#include <cstring>
+#include <cctype>
+#include <algorithm>
+#include <ranges>
 
 namespace System
 {

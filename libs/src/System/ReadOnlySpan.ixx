@@ -1,6 +1,14 @@
-#include "System/Span.hpp"
-#include <cstddef>
-#include <type_traits>
+module;
+
+export module System:ReadOnlySpan;
+
+import <cstddef>;
+import <type_traits>;
+import <span>;
+import System:Span;
+
+export
+{
 
 namespace System
 {
@@ -162,5 +170,7 @@ ReadOnlySpan(std::array<Type, ArrayExtent> &) -> ReadOnlySpan<Type, ArrayExtent>
 
 template <typename Type, size_t ArrayExtent>
 ReadOnlySpan(const std::array<Type, ArrayExtent> &) -> ReadOnlySpan<Type, ArrayExtent>;
+
+}
 
 }

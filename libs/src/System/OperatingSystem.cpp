@@ -2,7 +2,7 @@ module;
 
 module System;
 
-import "System/OperatingSystem.hpp";
+#include "System/OperatingSystem.hpp"
 
 
 namespace System

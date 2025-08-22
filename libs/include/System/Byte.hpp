@@ -1,11 +1,11 @@
-import "System/TypeCode.hpp";
-import <cstddef>;
-import <cstdint>;
-import <limits>;
-import <algorithm>;
-import <compare>;
-import <bit>;
-import <format>;
+#include "System/TypeCode.hpp"
+#include <cstddef>
+#include <cstdint>
+#include <limits>
+#include <algorithm>
+#include <compare>
+#include <bit>
+#include <format>
 
 namespace System
 {

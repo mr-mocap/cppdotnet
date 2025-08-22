@@ -1,7 +1,7 @@
-import "System/Action.hpp";
-import "System/Diagnostics/Metrics/Instrument.hpp";
-import "System/Diagnostics/Metrics/MeasurementCallback.hpp";
-import <string>;
+#include "System/Action.hpp"
+#include "System/Diagnostics/Metrics/Instrument.hpp"
+#include "System/Diagnostics/Metrics/MeasurementCallback.hpp"
+#include <string>
 
 
 namespace System::Diagnostics::Metrics

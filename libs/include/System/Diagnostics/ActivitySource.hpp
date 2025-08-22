@@ -1,6 +1,6 @@
-import "System/Diagnostics/Activity.hpp";
-import <string>;
-import <string_view>;
+#include "System/Diagnostics/Activity.hpp"
+#include <string>
+#include <string_view>
 
 
 namespace System::Diagnostics

@@ -1,5 +1,5 @@
-import "System/Private/Delegate.hpp";
-import <concepts>;
+#include "System/Private/Delegate.hpp"
+#include <concepts>
 
 namespace System
 {

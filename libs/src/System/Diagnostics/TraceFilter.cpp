@@ -1,5 +1,5 @@
-import "System/Diagnostics/TraceFilter.hpp";
-import <format>;
+#include "System/Diagnostics/TraceFilter.hpp"
+#include <format>
 
 
 namespace System::Diagnostics

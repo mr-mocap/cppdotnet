@@ -1,8 +1,8 @@
-import "System/Diagnostics/Tracing/EventActivityOptions.hpp";
-import "System/Diagnostics/Tracing/EventKeywords.hpp";
-import "System/Diagnostics/Tracing/EventLevel.hpp";
-import "System/Diagnostics/Tracing/EventOpcode.hpp";
-import "System/Diagnostics/Tracing/EventTags.hpp";
+#include "System/Diagnostics/Tracing/EventActivityOptions.hpp"
+#include "System/Diagnostics/Tracing/EventKeywords.hpp"
+#include "System/Diagnostics/Tracing/EventLevel.hpp"
+#include "System/Diagnostics/Tracing/EventOpcode.hpp"
+#include "System/Diagnostics/Tracing/EventTags.hpp"
 
 namespace System::Diagnostics::Tracing
 {

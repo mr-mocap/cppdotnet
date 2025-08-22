@@ -1,6 +1,6 @@
-import "System/IO/TextReader.hpp";
-import <string>;
-import <string_view>;
+#include "System/IO/TextReader.hpp"
+#include <string>
+#include <string_view>
 
 namespace System::IO
 {

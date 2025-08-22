@@ -1,7 +1,11 @@
+module;
+
+export module System:EventArgs;
 
 namespace System
 {
 
+export
 struct EventArgs
 {
     EventArgs() = default;

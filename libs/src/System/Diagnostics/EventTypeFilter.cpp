@@ -1,5 +1,5 @@
-import "System/Diagnostics/EventTypeFilter.hpp";
-import "System/Private/private.hpp";
+#include "System/Diagnostics/EventTypeFilter.hpp"
+#include "System/Private/private.hpp"
 
 
 namespace System::Diagnostics

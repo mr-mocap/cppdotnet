@@ -1,9 +1,9 @@
-import "System/Collections/Specialized/StringDictionary.hpp";
-import "System/EventHandler.hpp";
-import <set>;
-import <string>;
-import <string_view>;
-import <mutex>;
+#include "System/Collections/Specialized/StringDictionary.hpp"
+#include "System/EventHandler.hpp"
+#include <set>
+#include <string>
+#include <string_view>
+#include <mutex>
 
 
 namespace System::Diagnostics

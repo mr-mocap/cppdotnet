@@ -1,6 +1,6 @@
-import "System/Diagnostics/TraceFilter.hpp";
-import "System/Diagnostics/SourceLevels.hpp";
-import "System/Diagnostics/TraceEventCache.hpp";
+#include "System/Diagnostics/TraceFilter.hpp"
+#include "System/Diagnostics/SourceLevels.hpp"
+#include "System/Diagnostics/TraceEventCache.hpp"
 
 
 namespace System::Diagnostics

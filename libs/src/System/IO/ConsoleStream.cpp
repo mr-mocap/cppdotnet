@@ -1,5 +1,5 @@
-import "System/IO/ConsoleStream.hpp";
-import <iostream>;
+#include "System/IO/ConsoleStream.hpp"
+#include <iostream>
 
 
 namespace System::IO

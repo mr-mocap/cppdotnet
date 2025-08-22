@@ -1,3 +1,7 @@
+module;
+
+export module System:Private_enum;
+
 import <utility>;
 import <string>;
 import <string_view>;
@@ -8,6 +12,9 @@ import <algorithm>;
 import <array>;
 import <type_traits>;
 import <variant>;
+
+export
+{
 
 namespace System
 {
@@ -172,6 +179,9 @@ protected:
 
 }
 
+}
+
+export
 template <typename T>
 requires
 requires {

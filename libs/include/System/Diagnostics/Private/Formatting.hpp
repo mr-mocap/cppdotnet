@@ -1,6 +1,6 @@
-import <format>;
-import <string>;
-import <string_view>;
+#include <format>
+#include <string>
+#include <string_view>
 
 namespace System::Diagnostics
 {

@@ -1,5 +1,11 @@
+module;
+
+export module System:ValueTuple;
+
 import <tuple>;
 
+export
+{
 
 namespace System
 {
@@ -20,5 +26,7 @@ struct ValueTuple : std::tuple<ArgTypes ...>
         return ValueTuple{ std::make_tuple(args...) };
     }
 };
+
+}
 
 }

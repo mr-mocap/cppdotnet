@@ -1,4 +1,4 @@
-import <string_view>;
+#include <string_view>
 
 namespace System::Diagnostics
 {

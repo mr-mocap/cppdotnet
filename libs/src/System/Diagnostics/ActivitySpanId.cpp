@@ -1,7 +1,7 @@
-import "System/Diagnostics/ActivitySpanId.hpp";
-import "System/Convert.hpp";
-import "System/Exception.hpp";
-import <random>;
+#include "System/Diagnostics/ActivitySpanId.hpp"
+#include "System/Convert.hpp"
+#include "System/Exception.hpp"
+#include <random>
 
 
 namespace System::Diagnostics

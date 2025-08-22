@@ -1,7 +1,7 @@
-import "System/Text/StringBuilder.hpp";
-import "System/Convert.hpp";
-import "System/Environment.hpp";
-import <exception>;
+#include "System/Text/StringBuilder.hpp"
+#include "System/Convert.hpp"
+#include "System/Environment.hpp"
+#include <exception>
 
 
 namespace System::Text

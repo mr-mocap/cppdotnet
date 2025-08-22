@@ -1,4 +1,4 @@
-import <string>;
+#include <string>
 
 namespace System::IO
 {

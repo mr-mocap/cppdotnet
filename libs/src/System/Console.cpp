@@ -2,11 +2,11 @@ module;
 
 module System;
 
-import "System/Console.hpp";
-import "System/IO/ConsoleStream.hpp";
-import "System/IO/StreamWriter.hpp";
-import "System/IO/StreamReader.hpp";
-import "System/Exception.hpp";
+#include "System/Console.hpp"
+#include "System/IO/ConsoleStream.hpp"
+#include "System/IO/StreamWriter.hpp"
+#include "System/IO/StreamReader.hpp"
+#include "System/Exception.hpp"
 
 
 

@@ -1,6 +1,6 @@
-import "System/DateTime.hpp";
-import <optional>;
-import <string>;
+#include "System/DateTime.hpp"
+#include <optional>
+#include <string>
 
 
 namespace System::Diagnostics

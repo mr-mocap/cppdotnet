@@ -61,11 +61,12 @@ StringList SearchFileForPattern(std::string &filename)
 
     while ( std::getline(input, line) )
     {
-        if ( line.starts_with("import \"") && line.ends_with("\";") )
+        //if ( line.starts_with("import \"") && line.ends_with("\";") )
+        if ( line.starts_with("#include \"") && line.ends_with("\"") )
         {
             size_t first_quote = line.find('\"') + 1;
 
-            valid_lines.emplace_back( line.substr( first_quote, line.size() - first_quote - 2) );
+            valid_lines.emplace_back( line.substr( first_quote, line.size() - first_quote - 1) );
         }
     }
     return valid_lines;

@@ -1,8 +1,8 @@
-import "System/Private/private.hpp";
-import "System/Predicate.hpp";
-import "System/Exception.hpp";
-import <unordered_set>;
-import <algorithm>;
+#include "System/Private/private.hpp"
+#include "System/Predicate.hpp"
+#include "System/Exception.hpp"
+#include <unordered_set>
+#include <algorithm>
 
 
 namespace System::Collections::Generic

@@ -1,7 +1,7 @@
 
-import "System/IO/TextReader.hpp";
-import "System/Convert.hpp";
-import <string>;
+#include "System/IO/TextReader.hpp"
+#include "System/Convert.hpp"
+#include <string>
 
 
 namespace System::IO

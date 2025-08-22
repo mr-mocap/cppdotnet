@@ -1,5 +1,5 @@
-import <memory>;
-import <iterator>;
+#include <memory>
+#include <iterator>
 
 namespace System::Collections::Generic::Private
 {

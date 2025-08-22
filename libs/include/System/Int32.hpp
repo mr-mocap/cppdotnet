@@ -1,13 +1,13 @@
-import "System/Numerics/INumber.hpp";
-import "System/TypeCode.hpp";
-import <cstdint>;
-import <cstddef>;
-import <limits>;
-import <cmath>;
-import <algorithm>;
-import <string>;
-import <optional>;
-import <compare>;
+#include "System/Numerics/INumber.hpp"
+#include "System/TypeCode.hpp"
+#include <cstdint>
+#include <cstddef>
+#include <limits>
+#include <cmath>
+#include <algorithm>
+#include <string>
+#include <optional>
+#include <compare>
 
 namespace System
 {

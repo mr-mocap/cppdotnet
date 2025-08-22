@@ -1,11 +1,11 @@
-import "System/Exception.hpp";
-import <vector>;
-import <array>;
-import <span>;
-import <type_traits>;
-import <cstdint>;
-import <cstring>;
-import <bit>;
+#include "System/Exception.hpp"
+#include <vector>
+#include <array>
+#include <span>
+#include <type_traits>
+#include <cstdint>
+#include <cstring>
+#include <bit>
 
 namespace System
 {

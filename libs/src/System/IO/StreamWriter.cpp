@@ -1,5 +1,5 @@
-import "System/IO/StreamWriter.hpp";
-import "System/IO/FileStream.hpp";
+#include "System/IO/StreamWriter.hpp"
+#include "System/IO/FileStream.hpp"
 
 
 namespace System::IO

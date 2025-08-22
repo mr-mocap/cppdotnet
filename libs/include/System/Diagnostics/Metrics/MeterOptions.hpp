@@ -1,5 +1,5 @@
-import <string>;
-import <string_view>;
+#include <string>
+#include <string_view>
 
 
 namespace System::Diagnostics::Metrics

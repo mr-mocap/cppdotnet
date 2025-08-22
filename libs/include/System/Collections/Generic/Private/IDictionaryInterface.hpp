@@ -1,5 +1,5 @@
-import "System/Collections/Generic/KeyValuePair.hpp";
-import "System/Collections/Generic/ICollection.hpp";
+#include "System/Collections/Generic/KeyValuePair.hpp"
+#include "System/Collections/Generic/ICollection.hpp"
 
 
 namespace System::Collections::Generic::Private

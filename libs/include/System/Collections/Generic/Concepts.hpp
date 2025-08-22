@@ -1,6 +1,6 @@
-import "System/Concepts.hpp";
-import "System/Collections/Generic/KeyValuePair.hpp";
-import <concepts>;
+#include "System/Concepts.hpp"
+#include "System/Collections/Generic/KeyValuePair.hpp"
+#include <concepts>
 
 
 namespace System::Collections::Generic::Concepts

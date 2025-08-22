@@ -1,6 +1,6 @@
-import "System/TimeSpan.hpp";
-import "System/DateTime.hpp";
-import "System/DayOfWeek.hpp";
+#include "System/TimeSpan.hpp"
+#include "System/DateTime.hpp"
+#include "System/DayOfWeek.hpp"
 
 
 namespace System

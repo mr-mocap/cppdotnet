@@ -2,8 +2,8 @@ module;
 
 module System;
 
-import "System/Int32.hpp";
-import "System/Convert.hpp";
+#include "System/Int32.hpp"
+#include "System/Convert.hpp"
 
 
 namespace System

@@ -1,4 +1,4 @@
-import "System/Private/Delegate.hpp";
+#include "System/Private/Delegate.hpp"
 
 
 namespace System

@@ -1,6 +1,6 @@
-import <utility>;
-import <string>;
-import <span>;
+#include <utility>
+#include <string>
+#include <span>
 
 class ExampleEnumPolicyWithInternalEnum
 {

@@ -1,5 +1,5 @@
-import <string>;
-import <format>;
+#include <string>
+#include <format>
 
 
 namespace System::Collections::Generic

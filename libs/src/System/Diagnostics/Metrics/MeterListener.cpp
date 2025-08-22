@@ -1,4 +1,4 @@
-import "System/Diagnostics/Metrics/MeterListener.hpp";
+#include "System/Diagnostics/Metrics/MeterListener.hpp"
 
 
 namespace System::Diagnostics::Metrics

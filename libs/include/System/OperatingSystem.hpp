@@ -1,5 +1,5 @@
-import "System/PlatformID.hpp";
-import "System/Version.hpp";
+#include "System/PlatformID.hpp"
+#include "System/Version.hpp"
 
 
 namespace System

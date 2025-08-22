@@ -1,4 +1,4 @@
-import "System/Collections/Generic/Dictionary.hpp";
+#include "System/Collections/Generic/Dictionary.hpp"
 
 
 namespace System::Collections::Specialized

@@ -1,11 +1,11 @@
-import "System/Diagnostics/DefaultTraceListener.hpp";
-import "System/Diagnostics/Trace.hpp";
-import "System/Diagnostics/Debugger.hpp";
-import "System/IO/StreamWriter.hpp";
-import "System/Console.hpp";
-import "System/Convert.hpp";
-import "System/Private/private.hpp";
-import <format>;
+#include "System/Diagnostics/DefaultTraceListener.hpp"
+#include "System/Diagnostics/Trace.hpp"
+#include "System/Diagnostics/Debugger.hpp"
+#include "System/IO/StreamWriter.hpp"
+#include "System/Console.hpp"
+#include "System/Convert.hpp"
+#include "System/Private/private.hpp"
+#include <format>
 
 
 static std::string GenerateMessage(std::string_view message, std::string_view category)

@@ -1,5 +1,5 @@
-import "System/Diagnostics/Tracing/EventSource.hpp";
-import <string>;
+#include "System/Diagnostics/Tracing/EventSource.hpp"
+#include <string>
 
 namespace System::Diagnostics::Tracing
 {

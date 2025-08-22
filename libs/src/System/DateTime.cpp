@@ -2,12 +2,12 @@ module
 
 module System;
 
-import "System/DateTime.hpp";
-import "System/DateOnly.hpp";
-import "System/TimeOnly.hpp";
-import "System/Private/private.hpp";
-import <format>;
-import <cmath>;
+#include "System/DateTime.hpp"
+#include "System/DateOnly.hpp"
+#include "System/TimeOnly.hpp"
+#include "System/Private/private.hpp"
+#include <format>
+#include <cmath>
 
 using namespace std::chrono;
 

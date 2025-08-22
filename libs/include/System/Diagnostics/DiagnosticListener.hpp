@@ -1,5 +1,5 @@
-import "System/Diagnostics/DiagnosticSource.hpp";
-import <string>;
+#include "System/Diagnostics/DiagnosticSource.hpp"
+#include <string>
 
 
 namespace System::Diagnostics

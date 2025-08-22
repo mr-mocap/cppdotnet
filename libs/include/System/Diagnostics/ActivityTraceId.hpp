@@ -1,6 +1,6 @@
-import "System/Guid.hpp";
-import "System/Exception.hpp";
-import <compare>;
+#include "System/Guid.hpp"
+#include "System/Exception.hpp"
+#include <compare>
 
 
 namespace System::Diagnostics

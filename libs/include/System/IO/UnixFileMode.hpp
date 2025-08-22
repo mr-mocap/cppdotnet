@@ -1,4 +1,4 @@
-import "System/Private/enum.hpp";
+#include "System/Private/enum.hpp"
 
 
 namespace System::IO

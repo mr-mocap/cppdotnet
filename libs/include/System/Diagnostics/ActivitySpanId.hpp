@@ -1,7 +1,7 @@
-import "System/ReadOnlySpan.hpp";
-import <cstddef>;
-import <array>;
-import <string>;
+#include "System/ReadOnlySpan.hpp"
+#include <cstddef>
+#include <array>
+#include <string>
 
 
 namespace System::Diagnostics

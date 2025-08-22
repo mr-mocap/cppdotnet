@@ -1,5 +1,5 @@
-import "System/Collections/Generic/Private/LegacyForwardIterator.hpp";
-import "System/Collections/Generic/Private/ICollectionInterface.hpp";
+#include "System/Collections/Generic/Private/LegacyForwardIterator.hpp"
+#include "System/Collections/Generic/Private/ICollectionInterface.hpp"
 
 
 namespace System::Collections::Generic

@@ -1,9 +1,9 @@
-import "System/Diagnostics/Switch.hpp";
-import "System/Diagnostics/Trace.hpp";
+#include "System/Diagnostics/Switch.hpp"
+#include "System/Diagnostics/Trace.hpp"
 
-import <stdexcept>;
-import <set>;
-import <mutex>;
+#include <stdexcept>
+#include <set>
+#include <mutex>
 
 
 

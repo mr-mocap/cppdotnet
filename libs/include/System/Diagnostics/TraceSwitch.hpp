@@ -1,5 +1,5 @@
-import "System/Diagnostics/Switch.hpp";
-import "System/Diagnostics/TraceLevel.hpp";
+#include "System/Diagnostics/Switch.hpp"
+#include "System/Diagnostics/TraceLevel.hpp"
 
 
 namespace System::Diagnostics

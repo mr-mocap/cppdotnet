@@ -1,7 +1,7 @@
-import "System/TypeCode.hpp";
-import <cstddef>;
-import <cstdint>;
-import <string>;
+#include "System/TypeCode.hpp"
+#include <cstddef>
+#include <cstdint>
+#include <string>
 
 namespace System
 {

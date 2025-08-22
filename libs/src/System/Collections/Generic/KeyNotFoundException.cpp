@@ -1,4 +1,4 @@
-import "System/Collections/Generic/KeyNotFoundException.hpp";
+#include "System/Collections/Generic/KeyNotFoundException.hpp"
 
 
 namespace System::Collections::Generic
