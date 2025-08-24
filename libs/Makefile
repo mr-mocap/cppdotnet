@@ -10,12 +10,13 @@ UUID_LIB_HEADERS = uuid/uuid.h
 UUID_LIB_HEADER_FILE_DIR = /usr/include
 UUID_LIB_LINK = -l$(UUID_LIB)
 
-CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP $(INC_PARAMS) $(DEBUG_FLAGS)
-CXXFLAGS_MODULE_HEADER_DEPENDENCY  = -std=c++20 -fmodules-ts -x c++-user-header $(INC_PARAMS)
-CXXFLAGS_MODULE_HEADER_UNIT        = -std=c++20 -fmodule-header $(INC_PARAMS)
-CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT = -std=c++20 -fmodules-ts -x c++-system-header $(INC_PARAMS)
-CXXFLAGS_MODULE_IMP = -std=c++20 -fmodules-ts $(INC_PARAMS)
-CXXFLAGS_MODULE = -std=c++20 -fmodules-ts -c -x c++ $(INC_PARAMS)
+CXX_STANDARD=c++20
+CXXFLAGS=-std=$(CXX_STANDARD) -W -Wall -pedantic -MMD -MP $(INC_PARAMS) $(DEBUG_FLAGS)
+CXXFLAGS_MODULE_HEADER_DEPENDENCY  = -std=$(CXX_STANDARD) -fmodules-ts -x c++-user-header $(INC_PARAMS)
+CXXFLAGS_MODULE_HEADER_UNIT        = -std=$(CXX_STANDARD) -fmodule-header $(INC_PARAMS)
+CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT = -std=$(CXX_STANDARD) -fmodules-ts -x c++-system-header $(INC_PARAMS)
+CXXFLAGS_MODULE_IMP = -std=$(CXX_STANDARD) -fmodules-ts $(INC_PARAMS)
+CXXFLAGS_MODULE = -std=$(CXX_STANDARD) -fmodules-ts -c -x c++ $(INC_PARAMS)
 
 HEADER_UNIT_CACHE = gcm.cache
 
@@ -137,11 +138,12 @@ $(MODULE_BUILD_DIR)/System.o: src/System/System.ixx \
 							  $(MODULE_BUILD_DIR)/System/ConsoleKeyInfo.o \
 							  $(MODULE_BUILD_DIR)/System/DateTimeKind.o \
 							  $(MODULE_BUILD_DIR)/System/DayOfWeek.o \
-							  $(MODULE_BUILD_DIR)/System/DateTime.o \
 							  $(MODULE_BUILD_DIR)/System/DateOnly.o \
 							  $(MODULE_BUILD_DIR)/System/TimeOnly.o \
+							  $(MODULE_BUILD_DIR)/System/DateTime.o \
 							  $(MODULE_BUILD_DIR)/System/PlatformID.o \
 							  $(MODULE_BUILD_DIR)/System/Func.o \
+							  $(MODULE_BUILD_DIR)/System/Converter.o \
 							  $(MODULE_BUILD_DIR)/System/EventHandler.o \
 							  $(MODULE_BUILD_DIR)/System/BitConverter.o \
 							  $(MODULE_BUILD_DIR)/System/TypeCode.o \
@@ -150,7 +152,8 @@ $(MODULE_BUILD_DIR)/System.o: src/System/System.ixx \
 							  $(MODULE_BUILD_DIR)/System/Enum.o \
 							  $(MODULE_BUILD_DIR)/System/Span.o \
 							  $(MODULE_BUILD_DIR)/System/ReadOnlySpan.o \
-							  $(MODULE_BUILD_DIR)/System/Guid.o
+							  $(MODULE_BUILD_DIR)/System/Guid.o \
+							  $(MODULE_BUILD_DIR)/System/Version.o
 
 # 							  $(MODULE_BUILD_DIR)/System/TimeSpan.o
 

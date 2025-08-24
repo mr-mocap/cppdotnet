@@ -1,5 +1,3 @@
-module;
-
 export module System:TimeOnly;
 
 import System:DateTime;

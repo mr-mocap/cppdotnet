@@ -1,5 +1,3 @@
-module;
-
 export module Sytem:Func;
 
 import System:Delegate;

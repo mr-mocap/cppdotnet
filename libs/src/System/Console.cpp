@@ -1,5 +1,3 @@
-module;
-
 module System;
 
 #include "System/Console.hpp"

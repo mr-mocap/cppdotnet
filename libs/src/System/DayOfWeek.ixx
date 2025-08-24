@@ -1,5 +1,3 @@
-module;
-
 export module System:DayOfWeek;
 
 import System:Private_enum;

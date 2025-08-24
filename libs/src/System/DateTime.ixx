@@ -1,14 +1,12 @@
-module
-
 export module System:DateTime;
 
 // import System:Private/private.hpp"
-import System:DayOfWeek;
+import System:Exception;
 import System:DateTimeKind;
-import System:TimeSpan;
+import System:DayOfWeek;
 import System:DateOnly;
 import System:TimeOnly;
-import System:Exception;
+import System:TimeSpan;
 import <cstddef>;
 import <chrono>;
 import <string>;
@@ -165,6 +163,7 @@ struct std::formatter<System::DateTime>
         return std::format_to( ctx.out(), "{}", object.ToString());
     }
 };
+
 namespace System
 {
 

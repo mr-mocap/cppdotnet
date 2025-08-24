@@ -1,5 +1,3 @@
-module;
-
 export module System:IDisposable;
 
 import <memory>;

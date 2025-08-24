@@ -1,5 +1,3 @@
-module;
-
 export module System:PlatformID;
 
 import System:Private_enum;

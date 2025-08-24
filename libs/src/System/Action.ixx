@@ -1,5 +1,3 @@
-module;
-
 export module System:Action;
 
 import System:Delegate;

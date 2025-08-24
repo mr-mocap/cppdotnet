@@ -1,5 +1,3 @@
-module;
-
 export module System:Private_enum;
 
 import <utility>;
@@ -13,12 +11,10 @@ import <array>;
 import <type_traits>;
 import <variant>;
 
-export
-{
-
 namespace System
 {
 
+export
 template <class T>
     requires std::is_enum_v<T>
 struct EnumTraitTypes
@@ -28,6 +24,7 @@ struct EnumTraitTypes
     using name_value_pair_type = std::pair<std::string_view, T>;
 };
 
+export
 template <class T>
     requires std::is_enum_v<T>
 struct EnumPolicy : EnumTraitTypes<T>
@@ -41,6 +38,7 @@ public:
         };
 };
 
+export
 template <class T, class EnumPolicyT = EnumPolicy<T>>
     requires std::is_enum_v<T>
 struct EnumTraits : EnumPolicyT
@@ -119,6 +117,7 @@ struct EnumTraits : EnumPolicyT
     static constexpr value_type Max() { return NameValuePairs().back(); }
 };
 
+export
 template <class T>
     requires std::is_enum_v<T>
 struct EnumFormatter
@@ -176,8 +175,6 @@ struct EnumFormatter
 protected:
     underlying_formatter_type underlying_formatter{ string_view_fmt{} };
 };
-
-}
 
 }
 

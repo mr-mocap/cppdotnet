@@ -1,5 +1,3 @@
-module;
-
 export module System:TypeCode;
 
 import System:Private_enum;

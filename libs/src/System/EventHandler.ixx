@@ -1,5 +1,3 @@
-module;
-
 export module System:EventHandler;
 
 import System:Delegate;
@@ -10,6 +8,7 @@ import <concepts>;
 namespace System
 {
 
+export
 template <class TEventArgs = EventArgs>
     requires std::derived_from<TEventArgs, EventArgs>
 struct EventHandler : public Delegate<void, TEventArgs &>

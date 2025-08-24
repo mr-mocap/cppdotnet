@@ -1,5 +1,3 @@
-module;
-
 module System;
 
 #include "System/Int16.hpp"

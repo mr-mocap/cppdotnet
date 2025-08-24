@@ -1,5 +1,3 @@
-module;
-
 export module System:Environment;
 
 import System:Exception;
