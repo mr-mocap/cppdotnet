@@ -1,10 +1,13 @@
-#include "System/Private/Delegate.hpp"
-#include <concepts>
+export module System:Converter;
+
+import System:Delegate;
+import <concepts>;
 
 
 namespace System
 {
 
+export
 template <typename TInput, typename TOutput>
 struct Converter : public Delegate<TInput, TOutput>
 {
