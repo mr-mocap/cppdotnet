@@ -30,6 +30,8 @@ I also plan on writing better unit tests for this so I can practice doing that a
 * Allow Exception classes to only be moved and not copied
 * Use the std library pointers and try to make it difficult/impossible to extract a raw pointer from inside an object and copy it.
 * Singleton pattern
+* Creating my own std::formatter!
+* Type Erasure (ICollection, IDictionary, ...)
 
 ## Lessons Learned So Far
 
