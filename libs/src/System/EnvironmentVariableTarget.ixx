@@ -1,9 +1,12 @@
-#include "System/Private/enum.hpp"
+export module System:EnvironmentVariableTarget;
+
+import System:Private_enum;
 
 
 namespace System
 {
 
+export
 enum class EnvironmentVariableTarget
 {
     Process, ///@< The environment variable is stored or retrieved from the environment block associated with the current process
@@ -16,6 +19,7 @@ enum class EnvironmentVariableTarget
 namespace System
 {
 
+export
 template <>
 struct EnumPolicy<System::EnvironmentVariableTarget> : EnumTraitTypes<System::EnvironmentVariableTarget>
 {

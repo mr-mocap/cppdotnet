@@ -1,6 +1,8 @@
-#include "System/TimeSpan.hpp"
-#include "System/DateTime.hpp"
-#include "System/DayOfWeek.hpp"
+module System:DateTimeOffset;
+
+import System:TimeSpan;
+import System:DateTime;
+import System:DayOfWeek;
 
 
 namespace System
@@ -43,5 +45,21 @@ protected:
     System::DateTime _date_time;
     System::TimeSpan _offset_from_utc;
 };
+
+}
+
+
+namespace System
+{
+
+DateTimeOffset DateTimeOffset::Now()
+{
+    return DateTimeOffset( DateTime::Now() );
+}
+
+DateTimeOffset DateTimeOffset::UtcNow()
+{
+    return DateTimeOffset( DateTime::UtcNow() );
+}
 
 }

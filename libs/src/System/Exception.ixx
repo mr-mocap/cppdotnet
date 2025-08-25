@@ -8,9 +8,6 @@ import <source_location>;
 import <concepts>;
 import <cstring>;
 
-export
-{
-
 namespace System
 {
 
@@ -19,6 +16,7 @@ namespace System
  *  @note You shouldn't use this OR SystemException.  Use one of the classes
  *        derived from those.
  */
+export
 class Exception : public std::exception
 {
 public:
@@ -89,6 +87,7 @@ protected:
     std::unique_ptr<Exception> _innerException;
 };
 
+export
 class SystemException : public Exception
 {
 public:
@@ -126,6 +125,7 @@ public:
     std::string_view ClassName() const override;
 };
 
+export
 class ArgumentException : public SystemException
 {
 public:
@@ -184,6 +184,7 @@ protected:
     std::string _paramName;
 };
 
+export
 class ArgumentNullException : public ArgumentException
 {
 public:
@@ -223,6 +224,7 @@ public:
     std::string_view ClassName() const override;
 };
 
+export
 class ArgumentOutOfRangeException : public ArgumentException
 {
 public:
@@ -262,6 +264,7 @@ public:
     std::string_view ClassName() const override;
 };
 
+export
 class NotSupportedException : public SystemException
 {
 public:
@@ -295,6 +298,7 @@ public:
     std::string_view ClassName() const override;
 };
 
+export
 class InvalidOperationException : public SystemException
 {
 public:
@@ -328,6 +332,7 @@ public:
     std::string_view ClassName() const override;
 };
 
+export
 class ObjectDisposedException : public InvalidOperationException
 {
 public:
@@ -373,6 +378,7 @@ protected:
     std::string _objectName;
 };
 
+export
 class FormatException : public SystemException
 {
 public:
@@ -408,6 +414,7 @@ public:
     std::string_view ClassName() const override;
 };
 
+export
 class ArithmeticException : public SystemException
 {
 public:
@@ -443,6 +450,7 @@ public:
     std::string_view ClassName() const override;
 };
 
+export
 class OverflowException : public SystemException
 {
 public:
@@ -485,6 +493,7 @@ public:
  *  @note The second parameter is boilerplate for C++ to acquire
  *        the information about the call-site of the function call.
  */ 
+export
 template <class ExceptionType>
 [[noreturn]] void ThrowWithTarget(ExceptionType        &&exception_to_throw,
                                   std::source_location   sloc = std::source_location::current())
@@ -497,10 +506,6 @@ template <class ExceptionType>
 
 }
 
-}
-
-export
-{
 
 namespace System
 {
@@ -597,23 +602,17 @@ bool Exception::operator ==(const Exception &other) const
 
 std::string_view Exception::ClassName() const
 {
-    using namespace std::literals;
-
-    return "Exception"sv;
+    return "Exception";
 }
 
 std::string_view SystemException::ClassName() const
 {
-    using namespace std::literals;
-
-    return "SytemException"sv;
+    return "SytemException";
 }
 
 std::string_view ArgumentException::ClassName() const
 {
-    using namespace std::literals;
-
-    return "ArgumentException"sv;
+    return "ArgumentException";
 }
 
 ArgumentNullException::ArgumentNullException(std::string_view param_name)
@@ -625,9 +624,7 @@ ArgumentNullException::ArgumentNullException(std::string_view param_name)
 
 std::string_view ArgumentNullException::ClassName() const
 {
-    using namespace std::literals;
-
-    return "ArgumentNullException"sv;
+    return "ArgumentNullException";
 }
 
 ArgumentOutOfRangeException::ArgumentOutOfRangeException(std::string_view param_name)
@@ -639,30 +636,22 @@ ArgumentOutOfRangeException::ArgumentOutOfRangeException(std::string_view param_
 
 std::string_view ArgumentOutOfRangeException::ClassName() const
 {
-    using namespace std::literals;
-
-    return "ArgumentOutOfRangeException"sv;
+    return "ArgumentOutOfRangeException";
 }
 
 std::string_view NotSupportedException::ClassName() const
 {
-    using namespace std::literals;
-
-    return "NotSupportedException"sv;
+    return "NotSupportedException";
 }
 
 std::string_view InvalidOperationException::ClassName() const
 {
-    using namespace std::literals;
-
-    return "InvalidOperationException"sv;
+    return "InvalidOperationException";
 }
 
 std::string_view FormatException::ClassName() const
 {
-    using namespace std::literals;
-
-    return "FormatException"sv;
+    return "FormatException";
 }
 
 ObjectDisposedException::ObjectDisposedException(std::string_view disposed_object_name)
@@ -682,25 +671,17 @@ ObjectDisposedException::ObjectDisposedException(std::string_view disposed_objec
 
 std::string_view ObjectDisposedException::ClassName() const
 {
-    using namespace std::literals;
-
-    return "ObjectDisposedException"sv;
+    return "ObjectDisposedException";
 }
 
 std::string_view ArithmeticException::ClassName() const
 {
-    using namespace std::literals;
-
-    return "ArithmeticException"sv;
+    return "ArithmeticException";
 }
 
 std::string_view OverflowException::ClassName() const
 {
-    using namespace std::literals;
-
-    return "OverflowException"sv;
-}
-
+    return "OverflowException";
 }
 
 }

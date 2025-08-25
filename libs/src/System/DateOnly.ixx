@@ -1,19 +1,19 @@
 export module System:DateOnly;
 
-import System:DayOfWeek;
-import System:DateTime;
-import System:Exception;
-
-// #include "System/Private/private.hpp"
 import <chrono>;
 import <compare>;
 import <string>;
 import <format>;
+import System:Exception;
+import System:DayOfWeek;
 
 
 
 namespace System
 {
+
+export
+class DateTime;
 
 export
 class DateOnly
@@ -32,7 +32,7 @@ public:
         // POSTCONDITION( day <= 31 );
     }
 
-    constexpr DateOnly(const std::chrono::year_month_day &ymd)
+    constexpr inline DateOnly(const std::chrono::year_month_day &ymd)
                   :
                   _year_month_day( ymd )
               {
@@ -147,6 +147,8 @@ namespace System
 
 int DateOnly::DayOfYear() const
 {
+    using namespace std::chrono;
+
     sys_days temp_days{ _year_month_day };
     years    current_year = floor<years>( temp_days.time_since_epoch() );
     days     d            = duration_cast<days>( temp_days.time_since_epoch() - current_year );
@@ -157,44 +159,40 @@ int DateOnly::DayOfYear() const
 
 DateOnly DateOnly::AddDays(int num_days) const
 {
-    using namespace std::literals;
+    using namespace std::chrono;
 
     sys_days as_time_point{ sys_days( _year_month_day ) };
     sys_days new_time_point = as_time_point + days( num_days );
     DateOnly new_date_only{ new_time_point };
 
     if ( new_date_only <= MinValue() )
-        ThrowWithTarget( ArgumentOutOfRangeException( "num_days"sv, "Parameter is less than minimum allowed value"sv ) );
+        ThrowWithTarget( ArgumentOutOfRangeException( "num_days", "Parameter is less than minimum allowed value" ) );
     else if ( new_date_only >= MaxValue() )
-        ThrowWithTarget( ArgumentOutOfRangeException( "num_days"sv, "Parameter is greater than minimum allowed value"sv ) );
+        ThrowWithTarget( ArgumentOutOfRangeException( "num_days", "Parameter is greater than minimum allowed value" ) );
     
     return new_date_only;
 }
 
 DateOnly DateOnly::AddMonths(int num_months) const
 {
-    using namespace std::literals;
-
     DateOnly new_date_only( _year_month_day + std::chrono::months( num_months ) );
 
     if ( new_date_only <= MinValue() )
-        ThrowWithTarget( ArgumentOutOfRangeException( "num_months"sv, "Parameter is less than minimum allowed value"sv ) );
+        ThrowWithTarget( ArgumentOutOfRangeException( "num_months", "Parameter is less than minimum allowed value" ) );
     else if ( new_date_only >= MaxValue() )
-        ThrowWithTarget( ArgumentOutOfRangeException( "num_months"sv, "Parameter is greater than minimum allowed value"sv ) );
+        ThrowWithTarget( ArgumentOutOfRangeException( "num_months", "Parameter is greater than minimum allowed value" ) );
     
     return new_date_only;
 }
 
 DateOnly DateOnly::AddYears(int num_years) const
 {
-    using namespace std::literals;
-
-    DateOnly new_date_only( _year_month_day + years( num_years ) );
+    DateOnly new_date_only( _year_month_day + std::chrono::years( num_years ) );
 
     if ( new_date_only <= MinValue() )
-        ThrowWithTarget( ArgumentOutOfRangeException( "num_years"sv, "Parameter is less than minimum allowed value"sv ) );
+        ThrowWithTarget( ArgumentOutOfRangeException( "num_years", "Parameter is less than minimum allowed value" ) );
     else if ( new_date_only >= MaxValue() )
-        ThrowWithTarget( ArgumentOutOfRangeException( "num_years"sv, "Parameter is greater than minimum allowed value"sv ) );
+        ThrowWithTarget( ArgumentOutOfRangeException( "num_years", "Parameter is greater than minimum allowed value" ) );
     
     return new_date_only;
 }
@@ -209,11 +207,6 @@ int DateOnly::CompareTo(const DateOnly &other) const
         return 0;
     else
         return 1;
-}
-
-DateOnly DateOnly::FromDateTime(const DateTime &dt)
-{
-    return DateOnly{ dt.Year(), dt.Month(), dt.Day() };
 }
 
 DateOnly DateOnly::FromDayNumber(int day_number)
