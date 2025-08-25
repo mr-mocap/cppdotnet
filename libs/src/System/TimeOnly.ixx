@@ -8,7 +8,6 @@ import <compare>;
 import <cmath>;
 import <format>;
 
-using namespace std::chrono;
 
 namespace System
 {

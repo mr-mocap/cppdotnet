@@ -10,13 +10,10 @@ import <compare>;
 import <string>;
 import <format>;
 
-using namespace std::chrono;
 
 
 namespace System
 {
-
-class DateTime;
 
 export
 class DateOnly
