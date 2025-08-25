@@ -1,10 +1,10 @@
 export module System:TimeSpan;
 
+import System:Exception;
 import <cmath>;
 import <chrono>;
 import <format>;
 import <compare>;
-import System:Exception;
 
 namespace System
 {
@@ -17,24 +17,24 @@ public:
     explicit TimeSpan(int hours, int minutes, int seconds) : TimeSpan(0, hours, minutes, seconds) { }
     explicit TimeSpan(int days, int hours, int minutes, int seconds);
     explicit TimeSpan(int days, int hours, int minutes, int seconds, int milliseconds);
-    constexpr explicit TimeSpan(long ticks) : TimeSpan( ticks * std::chrono::nanoseconds( NanosecondsPerTick() ) ) { }
-    constexpr TimeSpan(std::chrono::system_clock::duration value) : _time_span( value ) { }
+    explicit TimeSpan(long ticks) : TimeSpan( ticks * std::chrono::nanoseconds( NanosecondsPerTick() ) ) { }
+    TimeSpan(std::chrono::system_clock::duration value) : _time_span( value ) { }
 
-    constexpr TimeSpan(const TimeSpan &) = default;
-    constexpr TimeSpan(TimeSpan &&) = default;
-    constexpr TimeSpan &operator =(const TimeSpan &) = default;
-    constexpr TimeSpan &operator =(TimeSpan &&) = default;
+    TimeSpan(const TimeSpan &) = default;
+    TimeSpan(TimeSpan &&) = default;
+    TimeSpan &operator =(const TimeSpan &) = default;
+    TimeSpan &operator =(TimeSpan &&) = default;
 
-    static constexpr TimeSpan FromTicks(long value) { return TimeSpan( value ); }
-    static constexpr TimeSpan FromMicroseconds(long value) { return TimeSpan( std::chrono::microseconds( value ) ); }
-    static constexpr TimeSpan FromMilliseconds(long milli, long micro)
+    static TimeSpan FromTicks(long value) { return TimeSpan( value ); }
+    static TimeSpan FromMicroseconds(long value) { return TimeSpan( std::chrono::microseconds( value ) ); }
+    static TimeSpan FromMilliseconds(long milli, long micro)
     {
         return TimeSpan( std::chrono::milliseconds( milli ) + std::chrono::microseconds( micro ) );
     }
-    static constexpr TimeSpan FromSeconds(long value) { return TimeSpan( std::chrono::seconds( value ) ); }
-    static constexpr TimeSpan FromMinutes(long value) { return TimeSpan( std::chrono::minutes( value ) ); }
-    static constexpr TimeSpan FromHours(int value)    { return TimeSpan( std::chrono::hours( value ) ); }
-    static constexpr TimeSpan FromDays(int value)     { return TimeSpan( std::chrono::days( value ) ); }
+    static TimeSpan FromSeconds(long value) { return TimeSpan( std::chrono::seconds( value ) ); }
+    static TimeSpan FromMinutes(long value) { return TimeSpan( std::chrono::minutes( value ) ); }
+    static TimeSpan FromHours(int value)    { return TimeSpan( std::chrono::hours( value ) ); }
+    static TimeSpan FromDays(int value)     { return TimeSpan( std::chrono::days( value ) ); }
 
 
     static constexpr int  HoursPerDay() { return 24; }
@@ -67,11 +67,11 @@ public:
     static constexpr long TicksPerMillisecond() { return 10'000; }
     static constexpr long TicksPerMicrosecond() { return 10; }
 
-    static constexpr TimeSpan Zero()        { return TimeSpan( std::chrono::system_clock::duration::zero() ); }
-    static constexpr TimeSpan MinValue()    { return TimeSpan( std::chrono::system_clock::duration::min() ); }
-    static constexpr TimeSpan MaxValue()    { return TimeSpan( std::chrono::system_clock::duration::max() ); }
+    static TimeSpan Zero()        { return TimeSpan( std::chrono::system_clock::duration::zero() ); }
+    static TimeSpan MinValue()    { return TimeSpan( std::chrono::system_clock::duration::min() ); }
+    static TimeSpan MaxValue()    { return TimeSpan( std::chrono::system_clock::duration::max() ); }
 
-    constexpr long Ticks() const { return _time_span.count() / NanosecondsPerTick(); }
+    long Ticks() const { return _time_span.count() / NanosecondsPerTick(); }
 
     constexpr operator std::chrono::system_clock::duration() const { return _time_span; }
 
@@ -91,27 +91,27 @@ public:
     double TotalMicroseconds() const;
     double TotalNanoseconds() const;
 
-    constexpr TimeSpan &operator +=(std::chrono::system_clock::duration duration_to_add)
+    TimeSpan &operator +=(std::chrono::system_clock::duration duration_to_add)
     {
         _time_span += duration_to_add;
         return *this;
     }
 
-    constexpr TimeSpan &operator -=(std::chrono::system_clock::duration duration_to_subtract)
+    TimeSpan &operator -=(std::chrono::system_clock::duration duration_to_subtract)
     {
         _time_span -= duration_to_subtract;
         return *this;
     }
 
     template <class Representation>
-    constexpr TimeSpan operator *=(const Representation &right)
+    TimeSpan operator *=(const Representation &right)
     {
         _time_span *= static_cast<std::chrono::system_clock::rep>( right );
         return *this;
     }
 
     template <class Representation>
-    constexpr TimeSpan operator /=(const Representation &right)
+    TimeSpan operator /=(const Representation &right)
     {
         _time_span /= static_cast<std::chrono::system_clock::rep>( right );
         return *this;
@@ -138,8 +138,8 @@ public:
 
     static constexpr bool Equals(TimeSpan &left, TimeSpan &right) { return left == right; }
 
-    constexpr TimeSpan Duration() const { return TimeSpan( std::chrono::abs( _time_span ) ); }
-    constexpr TimeSpan Negate() const { return -*this; }
+    TimeSpan Duration() const { return TimeSpan( std::chrono::abs( _time_span ) ); }
+    TimeSpan Negate() const { return -*this; }
 
     std::string ToString() const;
 protected:
@@ -157,51 +157,51 @@ protected:
     }
 
     template <typename Rep, typename Period>
-    friend constexpr TimeSpan operator +(const TimeSpan &left, const std::chrono::duration<Rep, Period> &right_as_duration)
+    friend TimeSpan operator +(const TimeSpan &left, const std::chrono::duration<Rep, Period> &right_as_duration)
     {
         return TimeSpan( left._time_span + right_as_duration );
     }
 
-    friend constexpr TimeSpan operator +(const TimeSpan &left, const TimeSpan &right)
+    friend TimeSpan operator +(const TimeSpan &left, const TimeSpan &right)
     {
         return TimeSpan( left._time_span + right._time_span );
     }
 
     template <typename Rep, typename Period>
-    friend constexpr TimeSpan operator -(const TimeSpan &left, const std::chrono::duration<Rep, Period> &right_as_duration)
+    friend TimeSpan operator -(const TimeSpan &left, const std::chrono::duration<Rep, Period> &right_as_duration)
     {
         return TimeSpan( left._time_span - right_as_duration );
     }
 
-    friend constexpr TimeSpan operator -(const TimeSpan &left, const TimeSpan &right)
+    friend TimeSpan operator -(const TimeSpan &left, const TimeSpan &right)
     {
         return TimeSpan( left._time_span - right._time_span );
     }
 
     template <class Representation>
-    friend constexpr TimeSpan operator *(const TimeSpan &left, const Representation &right)
+    friend TimeSpan operator *(const TimeSpan &left, const Representation &right)
     {
         return TimeSpan( left._time_span * static_cast<std::chrono::system_clock::rep>( right ) );
     }
 
     template <class Representation>
-    friend constexpr TimeSpan operator *(const Representation &left, const TimeSpan &right)
+    friend TimeSpan operator *(const Representation &left, const TimeSpan &right)
     {
         return TimeSpan( static_cast<std::chrono::system_clock::rep>( left ) * right._time_span );
     }
 
     template <class Representation>
-    friend constexpr TimeSpan operator /(const TimeSpan &left, const Representation &right)
+    friend TimeSpan operator /(const TimeSpan &left, const Representation &right)
     {
         return TimeSpan( left._time_span / static_cast<std::chrono::system_clock::rep>( right ) );
     }
 
-    friend constexpr TimeSpan operator -(const TimeSpan &ts)
+    friend TimeSpan operator -(const TimeSpan &ts)
     {
         return TimeSpan( -ts._time_span );
     }
 
-    friend constexpr TimeSpan operator +(const TimeSpan &ts)
+    friend TimeSpan operator +(const TimeSpan &ts)
     {
         return TimeSpan( +ts );
     }
@@ -224,9 +224,6 @@ struct std::formatter<System::TimeSpan>
         return std::format_to( ctx.out(), "{}", std::chrono::system_clock::duration(object) );
     }
 };
-
-export
-{
 
 namespace System
 {
@@ -447,8 +444,6 @@ TimeSpan TimeSpan::Divide(double scalar) const
 std::string TimeSpan::ToString() const
 {
     return std::format("{}", _time_span);
-}
-
 }
 
 }

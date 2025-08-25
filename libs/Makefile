@@ -13,8 +13,10 @@ UUID_LIB_LINK = -l$(UUID_LIB)
 CXX_STANDARD=c++20
 CXXFLAGS=-std=$(CXX_STANDARD) -W -Wall -pedantic -MMD -MP $(INC_PARAMS) $(DEBUG_FLAGS)
 CXXFLAGS_MODULE_HEADER_DEPENDENCY  = -std=$(CXX_STANDARD) -fmodules-ts -x c++-user-header $(INC_PARAMS)
+#CXXFLAGS_MODULE_HEADER_UNIT        = -std=$(CXX_STANDARD) -fmodule-header $(INC_PARAMS)
 CXXFLAGS_MODULE_HEADER_UNIT        = -std=$(CXX_STANDARD) -fmodule-header $(INC_PARAMS)
-CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT = -std=$(CXX_STANDARD) -fmodules-ts -x c++-system-header $(INC_PARAMS)
+#CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT = -std=$(CXX_STANDARD) -fmodules-ts -x c++-system-header $(INC_PARAMS)
+CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT = -std=$(CXX_STANDARD) -fmodules-ts -fmodule-header=system -x c++-system-header $(INC_PARAMS)
 CXXFLAGS_MODULE_IMP = -std=$(CXX_STANDARD) -fmodules-ts $(INC_PARAMS)
 CXXFLAGS_MODULE = -std=$(CXX_STANDARD) -fmodules-ts -c -x c++ $(INC_PARAMS)
 
@@ -60,11 +62,11 @@ print:
 
 generate_build_order: generate_build_order.cpp
 	@echo Making generate_build_order
-	$(CXX) -std=c++20 -o $@ $<
+	$(CXX) -std=$(CXX_STANDARD) -o $@ $<
 
 list_dependencies: list_dependencies.cpp
 	@echo Making 'list_dependencies'
-	$(CXX) -std=c++20 -o $@ $<
+	$(CXX) -std=$(CXX_STANDARD) -o $@ $<
 
 .PHONY: system_header_units
 system_header_units: $(SYSTEM_HEADER_UNIT_GCMS) $(UUID_LIB_HEADER_UNIT_GCMS)
@@ -138,9 +140,11 @@ $(MODULE_BUILD_DIR)/System.o: src/System/System.ixx \
 							  $(MODULE_BUILD_DIR)/System/ConsoleKeyInfo.o \
 							  $(MODULE_BUILD_DIR)/System/DateTimeKind.o \
 							  $(MODULE_BUILD_DIR)/System/DayOfWeek.o \
+							  $(MODULE_BUILD_DIR)/System/TimeSpan.o \
 							  $(MODULE_BUILD_DIR)/System/DateOnly.o \
 							  $(MODULE_BUILD_DIR)/System/TimeOnly.o \
 							  $(MODULE_BUILD_DIR)/System/DateTime.o \
+							  $(MODULE_BUILD_DIR)/System/DateTimeOffset.o \
 							  $(MODULE_BUILD_DIR)/System/PlatformID.o \
 							  $(MODULE_BUILD_DIR)/System/Func.o \
 							  $(MODULE_BUILD_DIR)/System/Converter.o \
@@ -149,14 +153,16 @@ $(MODULE_BUILD_DIR)/System.o: src/System/System.ixx \
 							  $(MODULE_BUILD_DIR)/System/TypeCode.o \
 							  $(MODULE_BUILD_DIR)/System/IDisposable.o \
 							  $(MODULE_BUILD_DIR)/System/IConvertible.o \
+							  $(MODULE_BUILD_DIR)/System/DateOnly_imp.o \
+							  $(MODULE_BUILD_DIR)/System/TimeOnly_imp.o \
 							  $(MODULE_BUILD_DIR)/System/Enum.o \
 							  $(MODULE_BUILD_DIR)/System/Span.o \
 							  $(MODULE_BUILD_DIR)/System/ReadOnlySpan.o \
 							  $(MODULE_BUILD_DIR)/System/Guid.o \
-							  $(MODULE_BUILD_DIR)/System/Version.o
+							  $(MODULE_BUILD_DIR)/System/Version.o \
+							  $(MODULE_BUILD_DIR)/System/OperatingSystem.o
 
-# 							  $(MODULE_BUILD_DIR)/System/TimeSpan.o
-
+# 							  $(MODULE_BUILD_DIR)/System/Environment.o
 
 #
 # RULES

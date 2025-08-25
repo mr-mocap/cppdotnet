@@ -1,6 +1,3 @@
-module;
-// Global Module Fragment: #include, preprocessor directives
-
 export module System;
 
 // Module Preamble: Imports
@@ -16,7 +13,7 @@ export import :IComparable;
 // Things that only depend on system-headers...
 export import :IDisposable;
 export import :Exception;
-// export import "System/Version.hpp";
+export import :Version;
 export import :Delegate;
 export import :Private_enum;
 export import :ValueTuple;
@@ -25,7 +22,7 @@ export import :TimeSpan;
 // Depends on System/Private/Delegate.hpp...
 export import :Action;
 export import :Comparison;
-// export import "System/Converter.hpp";
+export import :Converter;
 export import :Func;
 export import :Predicate;
 
@@ -38,7 +35,7 @@ export import :ConsoleKey;
 export import :DateTimeKind;
 export import :DayOfWeek;
 export import :PlatformID;
-// export import "System/EnvironmentVariableTarget.hpp";
+export import :EnvironmentVariableTarget;
 export import :EventHandler;
 export import :TypeCode;
 
@@ -52,25 +49,23 @@ export import :Nullable;
 export import :Guid;
 export import :IConvertible;
 export import :Enum;
-// export import "System/OperatingSystem.hpp";
+export import :OperatingSystem;
 export import :IObserver;
 export import :IObservable;
 
 // Not Included Yet!
 //export import "Boolean.hpp";
 //export import "Byte.hpp";
-//export import "Concepts.hpp";
+export import :Concepts;
 //export import "Console.hpp";
 export import :DateTime;
 export import :TimeOnly;
 export import :DateOnly;
-//export import "DateTimeOffset.hpp";
-//export import "Environment.hpp";
+export import :DateTimeOffset;
+// export import :Environment;
 //export import "Int16.hpp";
 //export import "Int32.hpp";
 //export import "Int64.hpp";
-//export import "Math.hpp";
-//export import "TimeCode.hpp";
 
 //export import "IO/BinaryWriter.hpp";
 //export import "IO/ConsoleStream.hpp";

@@ -1,6 +1,5 @@
 export module System:TimeOnly;
 
-import System:DateTime;
 import System:TimeSpan;
 // import System/Private/private.hpp"
 import <chrono>;
@@ -215,11 +214,6 @@ void TimeOnly::Deconstruct(int &hour, int &minute) const
 {
     hour = Hour();
     minute = Minute();
-}
-
-TimeOnly TimeOnly::FromDateTime(const System::DateTime &datetime)
-{
-    return TimeOnly( datetime.TimeOfDay() );
 }
 
 std::string TimeOnly::ToString() const
