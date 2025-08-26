@@ -1,16 +1,11 @@
 export module System:DateTime;
 
-// import System:Private/private.hpp"
 import System:Exception;
-import System:DateTimeKind;
 import System:DayOfWeek;
+import System:DateTimeKind;
 import System:DateOnly;
 import System:TimeOnly;
 import System:TimeSpan;
-import <cstddef>;
-import <chrono>;
-import <string>;
-import <compare>;
 
 
 namespace System
@@ -20,35 +15,26 @@ export
 class DateTime
 {
 public:
-    constexpr DateTime() = default;
-    constexpr DateTime(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int milliseconds = 0)
-                  :
-                  _date_only( year, month, day ),
-                  _time_only( hour, minute, second, milliseconds )
-              {
-              }
-    constexpr DateTime(const DateOnly &date_only, const TimeOnly &time_only)
-                  :
-                  _date_only( date_only ),
-                  _time_only( time_only)
-              {
-              }
+    DateTime();
+    DateTime(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int milliseconds = 0);
+    DateTime(const System::DateOnly &date_only, const System::TimeOnly &time_only);
     //constexpr DateTime(std::chrono::system_clock::time_point tp) : _point_in_time( tp ) { }
+   ~DateTime();
 
-    constexpr DateTime(const DateTime &) = default;
-    constexpr DateTime(DateTime &&) = default;
+    DateTime(const DateTime &);
+    DateTime(DateTime &&);
 
-    constexpr DateTime &operator =(const DateTime &) = default;
-    constexpr DateTime &operator =(DateTime &&) = default;
+    DateTime &operator =(const DateTime &);
+    DateTime &operator =(DateTime &&);
 
-    constexpr DateTime Date() const { return DateTime( _date_only, TimeOnly() ); }
-    constexpr TimeSpan TimeOfDay() const { return _time_only.ToTimeSpan(); }
+    DateTime Date() const { return DateTime( _date_only, System::TimeOnly() ); }
+    TimeSpan TimeOfDay() const { return _time_only.ToTimeSpan(); }
 
-    constexpr DateTimeKind Kind() const { return _kind; }
+    DateTimeKind Kind() const { return _kind; }
 
-    constexpr int Year() const  { return _date_only.Year(); }
-    constexpr int Month() const { return _date_only.Month(); }
-    constexpr int Day() const   { return _date_only.Day(); }
+    int Year() const  { return _date_only.Year(); }
+    int Month() const { return _date_only.Month(); }
+    int Day() const   { return _date_only.Day(); }
 
     int Hour() const { return _time_only.Hour(); }
     int Minute() const { return _time_only.Minute(); }
@@ -59,16 +45,16 @@ public:
 
     long Ticks() const;
 
-    constexpr enum System::DayOfWeek DayOfWeek() const { return _date_only.DayOfWeek(); }
-               int DayOfYear() const { return _date_only.DayOfYear(); }
+    enum System::DayOfWeek DayOfWeek() const { return _date_only.DayOfWeek(); }
+                       int DayOfYear() const { return _date_only.DayOfYear(); }
 
     static DateTime Now();
     static DateTime UtcNow();
     static DateTime Today();
     static DateTime UnixEpoch();
 
-    static constexpr DateTime MinValue()  { return DateTime( DateOnly::MinValue(), TimeOnly::MinValue() ); }
-    static constexpr DateTime MaxValue()  { return DateTime( DateOnly::MaxValue(), TimeOnly::MaxValue() ); }
+    static DateTime MinValue()  { return DateTime( DateOnly::MinValue(), TimeOnly::MinValue() ); }
+    static DateTime MaxValue()  { return DateTime( DateOnly::MaxValue(), TimeOnly::MaxValue() ); }
 
     std::string ToString() const;
 
@@ -97,7 +83,7 @@ public:
 protected:
     DateOnly     _date_only{ DateOnly::MinValue() };
     TimeOnly     _time_only{ TimeOnly::MinValue() };
-    DateTimeKind _kind = DateTimeKind::Unspecified;
+    DateTimeKind _kind{ DateTimeKind::Unspecified };
     
     DateTime &_accumulate(std::chrono::system_clock::duration time_duration);
 

@@ -15,70 +15,51 @@ export
 class DateOnly
 {
 public:
-    DateOnly() = default;
-    explicit constexpr DateOnly(int year, int month, int day)
-        :
-        _year_month_day( std::chrono::year(year), std::chrono::month(month), std::chrono::day(day) )
-    {
-        // POSTCONDITION( year <= 9999 );
-        // POSTCONDITION( year >= 1 );
-        // POSTCONDITION( month >= 1 );
-        // POSTCONDITION( month <= 12 );
-        // POSTCONDITION( day >= 1 );
-        // POSTCONDITION( day <= 31 );
-    }
+    DateOnly();
+    explicit DateOnly(int year, int month, int day);
+    DateOnly(const std::chrono::year_month_day &ymd);
+    DateOnly(const std::chrono::sys_days &d);
+   ~DateOnly();
 
-    constexpr DateOnly(const std::chrono::year_month_day &ymd)
-                  :
-                  _year_month_day( ymd )
-              {
-              }
+    DateOnly(const DateOnly &);
+    DateOnly &operator =(const DateOnly &);
+    DateOnly(DateOnly &&);
+    DateOnly &operator =(DateOnly &&);
 
-    constexpr DateOnly(const std::chrono::sys_days &d)
-                  :
-                  _year_month_day( std::chrono::year_month_day( d ) )
-                  {
-                  }
-
-    constexpr DateOnly(const DateOnly &) = default;
-    constexpr DateOnly &operator =(const DateOnly &) = default;
-    constexpr DateOnly(DateOnly &&) = default;
-    constexpr DateOnly &operator =(DateOnly &&) = default;
-
-    constexpr int Day() const
+    int Day() const
     {
         unsigned int temp{ _year_month_day.day() };
 
         return static_cast<int>( temp );
     }
 
-    constexpr int Month() const
+    int Month() const
     {
         unsigned int temp{ _year_month_day.month() };
 
         return static_cast<int>( temp );
     }
 
-    constexpr int Year() const
+    int Year() const
     {
         return static_cast<int>( _year_month_day.year() );
     }
 
-    constexpr int DayNumber() const
+    int DayNumber() const
     {
         std::chrono::sys_days num_days{ _year_month_day };
 
         return static_cast<int>( num_days.time_since_epoch().count() );
     }
 
-    constexpr enum System::DayOfWeek DayOfWeek() const;
+    enum System::DayOfWeek DayOfWeek() const;
 
     int DayOfYear() const;
 
-    static constexpr DateOnly MinValue() { return DateOnly( 1, 1, 1 ); }
-    static constexpr DateOnly MaxValue() { return DateOnly( 9999, 12, 31 ); }
+    static DateOnly MinValue() { return DateOnly( 1, 1, 1 ); }
+    static DateOnly MaxValue() { return DateOnly( 9999, 12, 31 ); }
 
-    static DateOnly FromDateTime(const System::DateTime &dt);
+    static DateOnly FromDateTime(const System::DateTime &);
     static DateOnly FromDayNumber(int day_number);
 
     DateOnly AddDays(int num_days) const;

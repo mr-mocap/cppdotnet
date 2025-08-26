@@ -9,6 +9,62 @@ import <format>;
 namespace System
 {
 
+DateOnly::DateOnly()
+{
+}
+
+DateOnly::~DateOnly()
+{
+}
+
+DateOnly(int year, int month, int day)
+    :
+    _year_month_day( std::chrono::year(year), std::chrono::month(month), std::chrono::day(day) )
+{
+    // POSTCONDITION( year <= 9999 );
+    // POSTCONDITION( year >= 1 );
+    // POSTCONDITION( month >= 1 );
+    // POSTCONDITION( month <= 12 );
+    // POSTCONDITION( day >= 1 );
+    // POSTCONDITION( day <= 31 );
+}
+
+DateOnly(const std::chrono::year_month_day &ymd)
+    :
+    _year_month_day( ymd )
+{
+}
+
+DateOnly(const std::chrono::sys_days &d)
+    :
+    _year_month_day( std::chrono::year_month_day( d ) )
+{
+}
+
+DateOnly::DateOnly(const DateOnly &other)
+    :
+    _year_month_day( other._year_month_day )
+{
+}
+
+DateOnly &DateOnly::operator =(const DateOnly &other)
+{
+    _year_month_day = other._year_month_day;
+    return *this;
+}
+
+DateOnly::DateOnly(DateOnly &&other)
+    :
+    _year_month_day( std::move(other._year_month_day) )
+{
+}
+
+DateOnly &DateOnly::operator =(DateOnly &&other)
+{
+    _year_month_day = std::move(other._year_month_day);
+    return *this;
+}
+
 int DateOnly::DayOfYear() const
 {
     using namespace std::chrono;
@@ -95,7 +151,7 @@ std::string DateOnly::ToString() const
     return std::format("{}", _year_month_day);
 }
 
-constexpr enum System::DayOfWeek DayOfWeek() const
+enum System::DayOfWeek DayOfWeek() const
 {
     std::chrono::weekday wd{ std::chrono::sys_days( _year_month_day ) };
 

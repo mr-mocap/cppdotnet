@@ -8,6 +8,44 @@ import <cmath>;
 namespace System
 {
 
+TimeOnly::TimeOnly()
+{
+}
+
+TimeOnly(int h, int m, int s, int ms, int micros)
+    :
+    _time_span( std::chrono::hours(h) +
+                std::chrono::minutes(m) +
+                std::chrono::seconds(s) +
+                std::chrono::milliseconds(ms) +
+                std::chrono::microseconds(micros) )
+{
+    // POSTCONDITION( h >= 0 );
+    // POSTCONDITION( h <= 23 );
+
+    // POSTCONDITION( m >= 0 );
+    // POSTCONDITION( m <= 59 );
+
+    // POSTCONDITION( s >= 0 );
+    // POSTCONDITION( s <= 59 );
+
+    // POSTCONDITION( ms >= 0 );
+    // POSTCONDITION( ms <= 999 );
+
+    // POSTCONDITION( micros >= 0 );
+    // POSTCONDITION( micros <= 999'999 );
+}
+
+TimeOnly::TimeOnly(long ticks)
+    :
+    _time_span( ticks )
+{
+}
+
+TimeOnly::~TimeOnly()
+{
+}
+
 TimeOnly TimeOnly::Add(const TimeSpan &value, int &out_excess_days) const
 {
     TimeSpan ts = _time_span + value;

@@ -14,8 +14,64 @@ import <cmath>;
 namespace System
 {
 
+DateTime::DateTime()
+{
+}
+
+DateTime::DateTime(int year, int month, int day, int hour = 0, int minute, int second, int milliseconds)
+    :
+    _date_only( year, month, day ),
+    _time_only( hour, minute, second, milliseconds )
+{
+}
+
+DateTime::DateTime(const DateOnly &date_only, const TimeOnly &time_only)
+    :
+    _date_only( date_only ),
+    _time_only( time_only)
+{
+}
+
+DateTime::~DateTime()
+{
+}
+
+DateTime::DateTime(const DateTime &other)
+    :
+    _date_only( other._date_only ),
+    _time_only( other._time_only ),
+    _kind( other._kind )
+{
+}
+
+DateTime::DateTime(DateTime &&other)
+    :
+    _date_only( std::move(other._date_only) ),
+    _time_only( std::move(other._time_only) ),
+    _kind( other._kind )
+{
+}
+
+DateTime &DateTime::operator =(const DateTime &other)
+{
+    _date_only = other._date_only;
+    _time_only = other._time_only;
+    _kind = other._kind;
+    return *this;
+}
+
+DateTime &DateTime::operator =(DateTime &&other)
+{
+    _date_only = std::move(other._date_only);
+    _time_only = std::move(other._time_only);
+    _kind = other._kind;
+    return *this;
+}
+
 long DateTime::Ticks() const
 {
+    using namespace std::chrono;
+
     sys_days time_point_in_days( _date_only );
     sys_days origin( DateOnly::MinValue() );
     sys_days difference = time_point_in_days - origin.time_since_epoch();

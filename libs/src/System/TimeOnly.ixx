@@ -1,7 +1,6 @@
 export module System:TimeOnly;
 
 import System:TimeSpan;
-// import System/Private/private.hpp"
 import <chrono>;
 import <compare>;
 
@@ -15,35 +14,14 @@ export
 class TimeOnly
 {
 public:
-    constexpr TimeOnly() = default;
-    explicit TimeOnly(int h, int m, int s = 0, int ms = 0, int micros = 0)
-        :
-        _time_span( std::chrono::hours(h) +
-                    std::chrono::minutes(m) +
-                    std::chrono::seconds(s) +
-                    std::chrono::milliseconds(ms) +
-                    std::chrono::microseconds(micros) )
-        {
-            // POSTCONDITION( h >= 0 );
-            // POSTCONDITION( h <= 23 );
-
-            // POSTCONDITION( m >= 0 );
-            // POSTCONDITION( m <= 59 );
-
-            // POSTCONDITION( s >= 0 );
-            // POSTCONDITION( s <= 59 );
-
-            // POSTCONDITION( ms >= 0 );
-            // POSTCONDITION( ms <= 999 );
-
-            // POSTCONDITION( micros >= 0 );
-            // POSTCONDITION( micros <= 999'999 );
-        }
-    explicit TimeOnly(long ticks) : _time_span( ticks ) { }
+    TimeOnly();
+    explicit TimeOnly(int h, int m, int s = 0, int ms = 0, int micros = 0);
+    explicit TimeOnly(long ticks);
     TimeOnly(std::chrono::system_clock::duration value) : _time_span( value ) { }
+   ~TimeOnly();
 
-    constexpr TimeOnly(const TimeOnly &) = default;
-    constexpr TimeOnly &operator =(const TimeOnly &) = default;
+    TimeOnly(const TimeOnly &) = default;
+    TimeOnly &operator =(const TimeOnly &) = default;
 
     int Hour() const { return _time_span.Hours(); }
     int Minute() const { return _time_span.Minutes(); }
@@ -53,7 +31,7 @@ public:
     int Nanosecond() const { return _time_span.Nanoseconds(); }
 
     static TimeOnly MaxValue() { return TimeOnly(23, 59, 59, 999, 999); }
-    static constexpr TimeOnly MinValue() { return TimeOnly(); }
+    static TimeOnly MinValue() { return TimeOnly(); }
 
     TimeOnly Add(const TimeSpan &value) const { return TimeOnly( *this ) + value; }
     TimeOnly Add(const TimeSpan &value, int &out_excess_days) const;
@@ -70,10 +48,10 @@ public:
     void Deconstruct(int &hour, int &minute, int &second) const;
     void Deconstruct(int &hour, int &minute) const;
 
-    static constexpr TimeOnly FromTimeSpan(const TimeSpan &timespan) { return TimeOnly( timespan ); }
-    static           TimeOnly FromDateTime(const DateTime &datetime);
+    static TimeOnly FromTimeSpan(const TimeSpan &timespan) { return TimeOnly( timespan ); }
+    static TimeOnly FromDateTime(const DateTime &datetime);
 
-    constexpr const TimeSpan &ToTimeSpan() const { return _time_span; }
+    const TimeSpan &ToTimeSpan() const { return _time_span; }
 
     long Ticks() const { return _time_span.Ticks(); }
 
