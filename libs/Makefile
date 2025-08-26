@@ -137,6 +137,7 @@ $(MODULE_BUILD_DIR)/System.o: src/System/System.ixx \
 							  $(MODULE_BUILD_DIR)/System/ConsoleColor.o \
 							  $(MODULE_BUILD_DIR)/System/ConsoleKey.o \
 							  $(MODULE_BUILD_DIR)/System/ConsoleModifiers.o \
+							  $(MODULE_BUILD_DIR)/System/TypeCode.o \
 							  $(MODULE_BUILD_DIR)/System/ConsoleKeyInfo.o \
 							  $(MODULE_BUILD_DIR)/System/DateTimeKind.o \
 							  $(MODULE_BUILD_DIR)/System/DayOfWeek.o \
@@ -150,11 +151,12 @@ $(MODULE_BUILD_DIR)/System.o: src/System/System.ixx \
 							  $(MODULE_BUILD_DIR)/System/Converter.o \
 							  $(MODULE_BUILD_DIR)/System/EventHandler.o \
 							  $(MODULE_BUILD_DIR)/System/BitConverter.o \
-							  $(MODULE_BUILD_DIR)/System/TypeCode.o \
 							  $(MODULE_BUILD_DIR)/System/IDisposable.o \
 							  $(MODULE_BUILD_DIR)/System/IConvertible.o \
 							  $(MODULE_BUILD_DIR)/System/DateOnly_imp.o \
 							  $(MODULE_BUILD_DIR)/System/TimeOnly_imp.o \
+							  $(MODULE_BUILD_DIR)/System/TimeSpan_impl.o \
+							  $(MODULE_BUILD_DIR)/System/DateTime_impl.o \
 							  $(MODULE_BUILD_DIR)/System/Enum.o \
 							  $(MODULE_BUILD_DIR)/System/Span.o \
 							  $(MODULE_BUILD_DIR)/System/ReadOnlySpan.o \
