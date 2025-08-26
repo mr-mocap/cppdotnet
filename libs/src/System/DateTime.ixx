@@ -1,6 +1,5 @@
 export module System:DateTime;
 
-import System:Exception;
 import System:DayOfWeek;
 import System:DateTimeKind;
 import System:DateOnly;

@@ -1,10 +1,10 @@
 module System:DateTime;
 
+import System:Exception;
 import System:DateOnly;
 import System:TimeOnly;
 import System:TimeSpan;
 import System:DateTimeKind;
-import System:Exception;
 import <chrono>;
 import <string>;
 import <compare>;
@@ -25,7 +25,7 @@ DateTime::DateTime(int year, int month, int day, int hour = 0, int minute, int s
 {
 }
 
-DateTime::DateTime(const DateOnly &date_only, const TimeOnly &time_only)
+DateTime::DateTime(const System::DateOnly &date_only, const System::TimeOnly &time_only)
     :
     _date_only( date_only ),
     _time_only( time_only)
