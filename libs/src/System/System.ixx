@@ -17,7 +17,7 @@ export import :Version;
 export import :Delegate;
 export import :Private_enum;
 export import :ValueTuple;
-export import :TimeSpan;
+// export import :TimeSpan;
 
 // Depends on System/Private/Delegate.hpp...
 export import :Action;
@@ -58,10 +58,12 @@ export import :IObservable;
 //export import "Byte.hpp";
 export import :Concepts;
 //export import "Console.hpp";
-export import :DateTime;
-export import :TimeOnly;
-export import :DateOnly;
-export import :DateTimeOffset;
+
+// export import :TimeOnly;
+// export import :DateOnly;
+// export import :DateTime;
+// export import :DateTimeOffset;
+
 // export import :Environment;
 //export import "Int16.hpp";
 //export import "Int32.hpp";

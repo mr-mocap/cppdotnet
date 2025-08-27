@@ -143,26 +143,26 @@ $(MODULE_BUILD_DIR)/System.o: src/System/System.ixx \
 							  $(MODULE_BUILD_DIR)/System/DayOfWeek.o \
 							  $(MODULE_BUILD_DIR)/System/PlatformID.o \
 							  $(MODULE_BUILD_DIR)/System/Func.o \
-							  $(MODULE_BUILD_DIR)/System/TimeSpan.o \
-							  $(MODULE_BUILD_DIR)/System/DateOnly.o \
 							  $(MODULE_BUILD_DIR)/System/Converter.o \
 							  $(MODULE_BUILD_DIR)/System/EventHandler.o \
-							  $(MODULE_BUILD_DIR)/System/TimeOnly.o \
 							  $(MODULE_BUILD_DIR)/System/BitConverter.o \
-							  $(MODULE_BUILD_DIR)/System/DateTime.o \
-							  $(MODULE_BUILD_DIR)/System/DateTimeOffset.o \
-							  $(MODULE_BUILD_DIR)/System/DateTime_impl.o \
-							  $(MODULE_BUILD_DIR)/System/DateOnly_imp.o \
-							  $(MODULE_BUILD_DIR)/System/TimeOnly_imp.o \
-							  $(MODULE_BUILD_DIR)/System/IDisposable.o \
-							  $(MODULE_BUILD_DIR)/System/IConvertible.o \
-							  $(MODULE_BUILD_DIR)/System/Enum.o \
 							  $(MODULE_BUILD_DIR)/System/Span.o \
+							  $(MODULE_BUILD_DIR)/System/IDisposable.o \
 							  $(MODULE_BUILD_DIR)/System/ReadOnlySpan.o \
 							  $(MODULE_BUILD_DIR)/System/Guid.o \
 							  $(MODULE_BUILD_DIR)/System/Version.o \
 							  $(MODULE_BUILD_DIR)/System/OperatingSystem.o
 
+# 							  $(MODULE_BUILD_DIR)/System/TimeSpan.o \
+# 							  $(MODULE_BUILD_DIR)/System/DateOnly.o \
+# 							  $(MODULE_BUILD_DIR)/System/IConvertible.o \
+# 							  $(MODULE_BUILD_DIR)/System/TimeOnly.o \
+# 							  $(MODULE_BUILD_DIR)/System/DateTime.o \
+# 							  $(MODULE_BUILD_DIR)/System/DateTimeOffset.o \
+# 							  $(MODULE_BUILD_DIR)/System/DateTime_impl.o \
+# 							  $(MODULE_BUILD_DIR)/System/DateOnly_imp.o \
+# 							  $(MODULE_BUILD_DIR)/System/TimeOnly_imp.o \
+# 							  $(MODULE_BUILD_DIR)/System/Enum.o \
 # 							  $(MODULE_BUILD_DIR)/System/Environment.o
 
 #
