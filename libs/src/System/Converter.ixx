@@ -1,7 +1,8 @@
+module;
+
 export module System:Converter;
 
-import System:Delegate;
-import <concepts>;
+export import System:Delegate;
 
 
 namespace System

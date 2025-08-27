@@ -1,3 +1,5 @@
+module;
+
 export module System:BitConverter;
 
 import System:Exception;

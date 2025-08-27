@@ -39,7 +39,7 @@ SYSTEM_HEADER_UNITS = $(shell ./list_system_includes "include/System/*.hpp inclu
 #       This process of compiling them is order-dependent, so I created this variable so
 #       that the exact order could be tweaked.
 #       It is derived from the output of "./list_system_includes "$(LIB_HDRS)".
-SYSTEM_HEADER_UNITS_BUILD_ORDER = algorithm any array bit cassert cctype charconv chrono cmath compare concepts cstddef cstdint cstring ios filesystem exception system_error format functional initializer_list iosfwd iterator limits list map memory mutex numbers optional ranges set source_location span stack stdexcept string string_view utility tuple type_traits unordered_map unordered_set variant vector 
+SYSTEM_HEADER_UNITS_BUILD_ORDER = algorithm any array bit cassert cctype charconv chrono cmath compare concepts cstddef cstdint cstdlib cstring ios filesystem exception system_error format functional initializer_list iosfwd iterator limits list map memory mutex numbers optional ranges set source_location span stack stdexcept string string_view utility tuple type_traits unordered_map unordered_set variant vector 
 SYSTEM_HEADER_FILE_DIR = $(shell echo "$(COMPILER_DEFAULT_SEARCH_DIRS)" | cut -f 2 -d" " | head -n1)
 SYSTEM_HEADER_UNIT_GCMS = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
 
@@ -145,18 +145,17 @@ $(MODULE_BUILD_DIR)/System.o: src/System/System.ixx \
 							  $(MODULE_BUILD_DIR)/System/Func.o \
 							  $(MODULE_BUILD_DIR)/System/TimeSpan.o \
 							  $(MODULE_BUILD_DIR)/System/DateOnly.o \
-							  $(MODULE_BUILD_DIR)/System/TimeOnly.o \
 							  $(MODULE_BUILD_DIR)/System/Converter.o \
 							  $(MODULE_BUILD_DIR)/System/EventHandler.o \
+							  $(MODULE_BUILD_DIR)/System/TimeOnly.o \
 							  $(MODULE_BUILD_DIR)/System/BitConverter.o \
 							  $(MODULE_BUILD_DIR)/System/DateTime.o \
-							  $(MODULE_BUILD_DIR)/System/IDisposable.o \
-							  $(MODULE_BUILD_DIR)/System/IConvertible.o \
 							  $(MODULE_BUILD_DIR)/System/DateTimeOffset.o \
+							  $(MODULE_BUILD_DIR)/System/DateTime_impl.o \
 							  $(MODULE_BUILD_DIR)/System/DateOnly_imp.o \
 							  $(MODULE_BUILD_DIR)/System/TimeOnly_imp.o \
-							  $(MODULE_BUILD_DIR)/System/TimeSpan_impl.o \
-							  $(MODULE_BUILD_DIR)/System/DateTime_impl.o \
+							  $(MODULE_BUILD_DIR)/System/IDisposable.o \
+							  $(MODULE_BUILD_DIR)/System/IConvertible.o \
 							  $(MODULE_BUILD_DIR)/System/Enum.o \
 							  $(MODULE_BUILD_DIR)/System/Span.o \
 							  $(MODULE_BUILD_DIR)/System/ReadOnlySpan.o \

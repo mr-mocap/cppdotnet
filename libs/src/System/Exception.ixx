@@ -1,8 +1,10 @@
+module;
+
 export module System:Exception;
 
 import <exception>;
-import <string>;
-import <string_view>;
+export import <string>;
+export import <string_view>;
 import <memory>;
 import <source_location>;
 import <concepts>;
@@ -66,8 +68,8 @@ public:
     std::string_view Message() const;
 
     std::string_view TargetSite() const;
-          void             TargetSite(const char *object_name);
-          void             TargetSite(std::string_view object_name);
+          void       TargetSite(const char *object_name);
+          void       TargetSite(std::string_view object_name);
 
     const Exception *InnerException() const { return _innerException.get(); }
     const Exception &GetBaseException() const;

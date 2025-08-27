@@ -1,10 +1,12 @@
+module;
+
 export module System:DateTime;
 
-import System:DayOfWeek;
-import System:DateTimeKind;
-import System:DateOnly;
-import System:TimeOnly;
-import System:TimeSpan;
+export import System:DayOfWeek;
+export import System:DateTimeKind;
+export import System:DateOnly;
+export import System:TimeOnly;
+export import System:TimeSpan;
 
 
 namespace System
@@ -14,7 +16,7 @@ export
 class DateTime
 {
 public:
-    DateTime();
+    DateTime() { }
     DateTime(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int milliseconds = 0);
     DateTime(const System::DateOnly &date_only, const System::TimeOnly &time_only);
     //constexpr DateTime(std::chrono::system_clock::time_point tp) : _point_in_time( tp ) { }

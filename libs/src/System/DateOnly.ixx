@@ -1,14 +1,15 @@
+module;
+
 export module System:DateOnly;
 
-import <chrono>;
-import <compare>;
-import <string>;
-
+export import <chrono>;
+export import <compare>;
+export import <string>;
 
 namespace System
 {
 
-class DateTime;
+export class DateTime;
 enum class DayOfWeek;
 
 export

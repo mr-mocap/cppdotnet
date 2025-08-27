@@ -1,7 +1,9 @@
 
+module;
+
 export module System:Delegate;
 
-import <functional>;
+export import <functional>;
 
 namespace System
 {

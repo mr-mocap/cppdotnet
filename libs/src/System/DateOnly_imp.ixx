@@ -1,3 +1,5 @@
+module;
+
 module System:DateOnly;
 
 import System:Exception;

@@ -1,8 +1,10 @@
+module;
+
 export module System:Concepts;
 
 import System:Exception.hpp;
-import <string>;
 import <concepts>;
+export import <string>;
 
 
 namespace System::Concepts

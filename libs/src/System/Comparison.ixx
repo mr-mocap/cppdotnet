@@ -1,6 +1,8 @@
+module;
+
 export module System:Comparison;
 
-import System:Delegate;
+export import System:Delegate;
 
 
 namespace System

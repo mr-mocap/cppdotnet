@@ -1,3 +1,5 @@
+module;
+
 module System:DateTime;
 
 import System:Exception;
@@ -13,10 +15,6 @@ import <cmath>;
 
 namespace System
 {
-
-DateTime::DateTime()
-{
-}
 
 DateTime::DateTime(int year, int month, int day, int hour = 0, int minute, int second, int milliseconds)
     :
