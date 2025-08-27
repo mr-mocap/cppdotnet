@@ -2,7 +2,7 @@ module;
 
 export module System:Concepts;
 
-import System:Exception.hpp;
+export import System:Exception;
 import <concepts>;
 export import <string>;
 

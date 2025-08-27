@@ -2,7 +2,7 @@ module;
 
 export module System:Private_enum;
 
-import <utility>;
+export import <utility>;
 import <string>;
 import <string_view>;
 import <span>;

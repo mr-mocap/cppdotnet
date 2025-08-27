@@ -1,11 +1,13 @@
 export module System:Enum;
 
 import System:Exception;
-import System:TypeCode;
-import <optional>;
+export import System:TypeCode;
+export import <optional>;
 import <algorithm>;
 import <array>;
-import <format>;
+export import <format>;
+export import <string_view>;
+export import <compare>;
 import <utility>;
 import <ranges>;
 import <cassert>;

@@ -1,7 +1,9 @@
+module;
+
 export module System:Predicate;
 
 import <concepts>;
-import System:Delegate;
+export import System:Delegate;
 
 namespace System
 {

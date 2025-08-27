@@ -1,6 +1,7 @@
 export module System:Span;
 
-import <span>;
+export import <span>;
+export import <array>;
 import <type_traits>;
 import <algorithm>;
 import System:Exception;

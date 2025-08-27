@@ -1,3 +1,5 @@
+module;
+
 export module System:EventArgs;
 
 namespace System

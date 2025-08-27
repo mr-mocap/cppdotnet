@@ -1,7 +1,9 @@
+module;
+
 export module System:EventHandler;
 
-import System:Delegate;
-import System:EventArgs;
+export import System:Delegate;
+export import System:EventArgs;
 import <concepts>;
 
 

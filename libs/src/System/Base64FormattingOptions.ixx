@@ -2,7 +2,7 @@ module;
 
 export module System:Base64FormattingOptions;
 
-import System:Private_enum;
+export import System:Private_enum;
 
 
 namespace System

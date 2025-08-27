@@ -1,9 +1,11 @@
+module;
+
 export module System:IConvertible;
 
-import System:TypeCode;
-import <cstddef>;
-import <cstdint>;
-import <string>;
+export import System:TypeCode;
+export import <cstddef>;
+export import <cstdint>;
+export import <string>;
 
 namespace System
 {

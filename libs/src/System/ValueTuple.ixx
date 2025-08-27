@@ -1,6 +1,8 @@
+module;
+
 export module System:ValueTuple;
 
-import <tuple>;
+export import <tuple>;
 
 export
 {

@@ -2,7 +2,7 @@ module;
 
 export module System:ConsoleColor;
 
-import System:Private_enum;
+export import System:Private_enum;
 
 
 namespace System

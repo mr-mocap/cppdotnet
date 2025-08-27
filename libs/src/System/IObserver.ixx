@@ -1,6 +1,8 @@
+module;
+
 export module System:IObserver;
 
-import System:Exception;
+export import System:Exception;
 
 namespace System
 {

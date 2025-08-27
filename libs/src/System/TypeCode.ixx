@@ -1,6 +1,8 @@
+module;
+
 export module System:TypeCode;
 
-import System:Private_enum;
+export import System:Private_enum;
 
 namespace System
 {

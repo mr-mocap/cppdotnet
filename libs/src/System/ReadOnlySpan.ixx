@@ -1,9 +1,10 @@
+module;
+
 export module System:ReadOnlySpan;
 
 import <cstddef>;
 import <type_traits>;
-import <span>;
-import System:Span;
+export import System:Span;
 
 export
 {

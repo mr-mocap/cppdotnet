@@ -1,6 +1,8 @@
+module;
+
 export module System:IObservable;
 
-import System:IObserver;
+export import System:IObserver;
 
 namespace System
 {

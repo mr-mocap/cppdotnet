@@ -3,13 +3,14 @@ module;
 export module System:BitConverter;
 
 import System:Exception;
-import <vector>;
-import <array>;
-import <span>;
+export import <vector>;
+export import <array>;
+export import <span>;
 import <type_traits>;
 import <cstdint>;
+export import <cstddef>;
 import <cstring>;
-import <bit>;
+export import <bit>;
 
 namespace System
 {
@@ -37,6 +38,7 @@ struct BitConverter final
 
         return ToBoolean( { &bytes[index], sizeof(bool) } );
     }
+
     static constexpr bool ToBoolean(std::span<const std::byte> bytes)
     {
         return To<bool>( bytes );
@@ -53,6 +55,7 @@ struct BitConverter final
 
         return ToChar( { &bytes[index], sizeof(char) } );
     }
+
     static constexpr char ToChar(std::span<const std::byte> bytes)
     {
         return To<char>( bytes );

@@ -1,9 +1,11 @@
+module;
+
 export module System:Version;
 
 import System:Exception;
 import System:Convert;
-import <string>;
-import <string_view>;
+export import <string>;
+export import <string_view>;
 import <vector>;
 import <cstring>;
 import <cstdlib>;

@@ -1,6 +1,8 @@
+module;
+
 export module Sytem:Func;
 
-import System:Delegate;
+export import System:Delegate;
 import <concepts>;
 
 namespace System

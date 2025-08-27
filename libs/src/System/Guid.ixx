@@ -1,17 +1,19 @@
+module;
+
 export module System:Guid;
 
 import System:BitConverter;
-import System:Span;
-import System:ReadOnlySpan;
+export import System:Span;
+export import System:ReadOnlySpan;
 import <algorithm>;
 import <format>;
 import <cctype>;
 import <cstdint>;
-import <cstddef>;
-import <string>;
-import <string_view>;
+export import <cstddef>;
+export import <string>;
+export import <string_view>;
 import <compare>;
-import <optional>;
+export import <optional>;
 import <uuid/uuid.h>;
 
 

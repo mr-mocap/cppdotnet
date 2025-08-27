@@ -2,7 +2,7 @@ module;
 
 export module System:ConsoleModifiers;
 
-import System:Private_enum;
+export import System:Private_enum;
 
 
 namespace System

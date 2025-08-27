@@ -1,3 +1,5 @@
+module;
+
 export module System:Environment;
 
 import System:Exception;
@@ -9,8 +11,8 @@ import <stdlib.h>;
 #endif
 
 #include "System/Collections/Specialized/StringDictionary.hpp"
-import <string>;
-import <string_view>;
+export import <string>;
+export import <string_view>;
 import <map>;
 
 namespace System
