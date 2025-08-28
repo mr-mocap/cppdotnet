@@ -9,7 +9,6 @@ export import <string_view>;
 import <vector>;
 import <cstring>;
 import <cstdlib>;
-import <format>;
 
 
 namespace System
