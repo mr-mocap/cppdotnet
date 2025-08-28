@@ -3,11 +3,11 @@ module;
 export module System:Private_enum;
 
 export import <utility>;
-import <string>;
-import <string_view>;
-import <span>;
+export import <string>;
+export import <string_view>;
+export import <span>;
 import <ranges>;
-import <format>;
+export import <format>;
 import <algorithm>;
 import <array>;
 import <type_traits>;
