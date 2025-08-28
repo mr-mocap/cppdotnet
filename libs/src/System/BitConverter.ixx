@@ -10,7 +10,7 @@ import <type_traits>;
 import <cstdint>;
 export import <cstddef>;
 import <cstring>;
-export import <bit>;
+import <bit>;
 
 namespace System
 {
