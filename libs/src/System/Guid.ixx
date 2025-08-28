@@ -409,9 +409,6 @@ static bool IsXFormat(std::string_view input)
 namespace System
 {
 
-export
-{
-
 Guid::Guid(std::int32_t a, std::int16_t b, std::int16_t c,
            std::byte d, std::byte e, std::byte f, std::byte g, std::byte h, std::byte i, std::byte j, std::byte k)
 {
@@ -672,8 +669,6 @@ std::strong_ordering Guid::operator <=>(const Guid &other) const
     if ( result > 0 )
         return std::strong_ordering::greater;
     return std::strong_ordering::equal;
-}
-
 }
 
 }
