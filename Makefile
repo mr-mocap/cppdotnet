@@ -3,13 +3,13 @@ default: all
 all: run_test
 
 lib:
-	cd libs && $(MAKE) lib
+	cd libs && $(MAKE) all
 
 .PHONY: test
 test:
 	cd testing && $(MAKE) test
 
-.PHONY: clean
+.PHONY: cleanlib
 cleanlib:
 	cd libs && $(MAKE) clean
 
@@ -23,4 +23,4 @@ run_test: test
 
 .PHONY: modules
 modules: 
-	@cd libs && $(MAKE) modules
+	@cd libs && $(MAKE) all
