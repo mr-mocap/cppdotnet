@@ -3,23 +3,23 @@ module;
 export module System:Convert;
 
 import System:Exception;
-import System:Base;
-import System:Boolean;
+export import System:Base;
+//import System:Boolean;
 import System:BitConverter;
 import <map>;
-import <span>;
+export import <span>;
 import <charconv>;
 import <cassert>;
 import <cstring>;
 import <cctype>;
 import <algorithm>;
 import <ranges>;
-import <string>;
-import <string_view>;
-import <vector>;
-import <array>;
+export import <string>;
+export import <string_view>;
+export import <vector>;
+export import <array>;
 import <cstdint>;
-import <cstddef>;
+export import <cstddef>;
 
 // #include "System/Diagnostics/SourceLevels.hpp"
 // #include "System/Diagnostics/TraceLevel.hpp"
@@ -114,8 +114,8 @@ public:
             number_of_digits(d),
             base(b)
         {
-            PRECONDITION( base >= 2 );
-            PRECONDITION( base <= 256 );
+            // PRECONDITION( base >= 2 );
+            // PRECONDITION( base <= 256 );
 
             for (unsigned int i = 0; i < a.size(); ++i)
                 output_digits[i] = a[i];
@@ -158,14 +158,14 @@ inline bool IsValidBase64(const char input)
 
 inline char EncodeBase64(const uint8_t input)
 {
-    PRECONDITION( input < Base64Table.size() );
+    // PRECONDITION( input < Base64Table.size() );
 
     return Base64Table[ input ];
 }
 
 inline std::byte DecodeBase64(char input)
 {
-    PRECONDITION( IsValidBase64(input) );
+    // PRECONDITION( IsValidBase64(input) );
 
     return static_cast<std::byte>(Base64Table.find( input ));
 }
@@ -177,24 +177,24 @@ inline bool IsValidBase85(const char input)
 
 inline char EncodeBase85(const uint8_t input)
 {
-    PRECONDITION( input < Base85Table.size() );
+    // PRECONDITION( input < Base85Table.size() );
 
     return Base85Table[ input ];
 }
 
 inline std::byte DecodeBase85(char input)
 {
-    PRECONDITION( IsValidBase85(input) );
+    // PRECONDITION( IsValidBase85(input) );
 
     return static_cast<std::byte>(Base85Table.find( input ));
 }
 
 static std::string From4Base64Chars(std::span<const char, 4> input)
 {
-    PRECONDITION( IsValidBase64(input[0]) );
-    PRECONDITION( IsValidBase64(input[1]) );
-    PRECONDITION( IsValidBase64(input[2]) || (input[2] == Base64PadChar) );
-    PRECONDITION( IsValidBase64(input[3]) || (input[3] == Base64PadChar) );
+    // PRECONDITION( IsValidBase64(input[0]) );
+    // PRECONDITION( IsValidBase64(input[1]) );
+    // PRECONDITION( IsValidBase64(input[2]) || (input[2] == Base64PadChar) );
+    // PRECONDITION( IsValidBase64(input[3]) || (input[3] == Base64PadChar) );
 
     char first  = std::bit_cast<char>( DecodeBase64( input[0] ) );
     char second = std::bit_cast<char>( DecodeBase64( input[1] ) );
@@ -223,9 +223,9 @@ static std::string From4Base64Chars(std::span<const char, 4> input)
 
 std::byte Convert::From2HexCharsToByte(std::string_view input_string)
 {
-    PRECONDITION(input_string.size() == 2);
-    PRECONDITION( std::isxdigit( input_string.front() ) );
-    PRECONDITION( std::isxdigit( input_string.back() ) );
+    // PRECONDITION(input_string.size() == 2);
+    // PRECONDITION( std::isxdigit( input_string.front() ) );
+    // PRECONDITION( std::isxdigit( input_string.back() ) );
 
     uint8_t result;
     auto [ptr, ec] = std::from_chars(input_string.data(), input_string.data() + input_string.size(), result, 16);
@@ -260,7 +260,11 @@ std::array<char, 2> Convert::FromByteTo2HexChars(std::byte input_byte, bool uppe
 
 std::string_view Convert::ToString(bool value)
 {
+#if 0
     return Boolean{value}.ToString();
+#else
+    return (value) ? "True" : "False";
+#endif
 }
 
 std::string Convert::ToString(std::byte value)
@@ -751,22 +755,22 @@ std::string Convert::ToBase85String(std::span<const std::byte> input_bytes)
 
 std::vector<std::byte> Convert::FromBase85String(std::string_view input_ascii_string)
 {
-    UNUSED(input_ascii_string);
+    // UNUSED(input_ascii_string);
 
     return {};
 }
 
 std::vector<std::byte> Convert::FromBase85String(std::span<const char> input_ascii_string)
 {
-    UNUSED(input_ascii_string);
+    // UNUSED(input_ascii_string);
 
     return {};
 }
 
 Convert::BaseConversion32Bit_t Convert::ToBase(std::uint32_t input_number, unsigned int base)
 {
-    PRECONDITION( base >= 2 );
-    PRECONDITION( base <= 256 );
+    // PRECONDITION( base >= 2 );
+    // PRECONDITION( base <= 256 );
 
     std::array<std::byte, 32> output_array;
     unsigned int num_digits = 0;
