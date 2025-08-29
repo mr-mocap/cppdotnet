@@ -3,6 +3,7 @@ $(BUILD_DIR)/%.d: $(SRC_DIR)/%.ixx
 	@mkdir -p ${dir $@}
 	@echo Generating dependency file $@
 	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -x c++ -c $< -o $(patsubst $(SRC_DIR)/%.ixx,$(BUILD_DIR)/%.o,$<)
+	@rm $(patsubst $(SRC_DIR)/%.ixx,$(BUILD_DIR)/%.o,$<)
 	
 $(BUILD_DIR)/%.normalized.d: $(BUILD_DIR)/%.d
 	@echo Generating normalized dependency file $@
