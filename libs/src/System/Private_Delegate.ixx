@@ -4,6 +4,7 @@ module;
 export module System:Delegate;
 
 export import <functional>;
+import <cstddef>;
 
 namespace System
 {
@@ -70,12 +71,11 @@ class MulticastDelegate
 public:
 
     bool HasSingleTarget() const { return false; }
-#if 0
-    RetType operator()(typename ArgTypes ...args) const
-    {
-        return _callable(args...);
-    }
-#endif
+
+    // RetType operator()(typename ArgTypes ...args) const
+    // {
+    //     return _callable(args...);
+    // }
 protected:
 };
 
