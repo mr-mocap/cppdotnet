@@ -1,0 +1,14 @@
+# Dependencies
+$(BUILD_DIR)/%.d: $(SRC_DIR)/%.ixx
+	@mkdir -p ${dir $@}
+	@echo Generating dependency file $@
+	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -x c++ -c $< -o $(patsubst $(SRC_DIR)/%.ixx,$(BUILD_DIR)/%.o,$<)
+	
+$(BUILD_DIR)/%.normalized.d: $(BUILD_DIR)/%.d
+	@echo Generating normalized dependency file $@
+	@$(call NORMALIZE_DEP_FILE,$<,$@)
+
+# Compiler Header Unit Generation Rule
+$(HEADER_UNIT_CACHE_DIR)/,$(SYSTEM_HEADER_FILE_DIR)/%.gcm: $(SYSTEM_HEADER_FILE_DIR)/%
+	@echo Compiling Global header unit $(patsubst $(SYSTEM_HEADER_FILE_DIR)/%,%,$<)
+	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $(patsubst $(SYSTEM_HEADER_FILE_DIR)/%,%,$<)

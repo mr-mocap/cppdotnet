@@ -1,0 +1,52 @@
+SYSTEM_MODULE_PARTITIONS = System/EventArgs \
+                           System/IComparable \
+						   System/Private_Delegate \
+						   System/Private_enum \
+						   System/Exception \
+						   System/ValueTuple \
+						   System/Base \
+						   System/Base64FormattingOptions \
+						   System/ConsoleColor \
+						   System/ConsoleKey \
+						   System/ConsoleModifiers \
+						   System/DateTimeKind \
+						   System/DayOfWeek \
+						   System/EnvironmentVariableTarget \
+						   System/PlatformID \
+						   System/TypeCode \
+						   System/EventHandler \
+						   System/Action \
+						   System/Comparison \
+						   System/Converter \
+						   System/Func \
+						   System/Predicate \
+						   System/EventHandler \
+						   System/Concepts
+
+SRCS := $(SYSTEM_MODULE_PARTITIONS:%=%.ixx)
+OBJS := $(SRCS:%.ixx=%.o)
+DEPS := $(OBJS:%.o=%.d)
+NORMALIZED_DEPS := $(DEPS:%.d=%.normalized.d)
+
+BUILT_DEPS := $(DEPS:%.d=$(BUILD_DIR)/%.d)
+BUILT_NORMALIZED_DEPS := $(NORMALIZED_DEPS:%.normalized.d=$(BUILD_DIR)/%.normalized.d)
+
+BUILT_OBJS := $(OBJS:%.o=$(BUILD_DIR)/%.o)
+
+COMPILER_DEFAULT_SEARCH_DIRS = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 1>/dev/null | awk '/#include <...> search starts here:/ {flag=1; next} /End of search list./ {flag=0} flag')
+
+# NOTE: The following variable is to get around g++ crashes when generating header units.
+#       This process of compiling them is order-dependent, so I created this variable so
+#       that the exact order could be tweaked.
+#       It is derived from the output of "./list_system_includes "$(LIB_HDRS)".
+SYSTEM_HEADER_UNITS_BUILD_ORDER = algorithm any array bit cassert cctype charconv chrono cmath compare concepts cstddef cstdint cstdlib cstring ios filesystem exception system_error format functional initializer_list iosfwd iterator limits list map memory mutex numbers optional ranges set source_location span stack stdexcept string string_view utility tuple type_traits unordered_map unordered_set variant vector 
+SYSTEM_HEADER_FILE_DIR = $(shell echo "$(COMPILER_DEFAULT_SEARCH_DIRS)" | cut -f 2 -d" " | head -n1)
+SYSTEM_HEADER_UNIT_GCMS = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=$(HEADER_UNIT_CACHE_DIR)/,$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
+
+# Macro to normalize a .d file in-place or to a temp file.
+# Changes lines containing 'System:Span.c++m' to 'System\:Span.c++m'.
+# This allows the make program to parse the string as a filename and
+# thus not become confused if this type of string is a target followed
+# by the separating ':' (thus thinking the colon in the filename was the colon).
+NORMALIZE_DEP_FILE = \
+  sed -E 's/([^[:space:]]*):([^[:space:]]*)\.c\+\+m/\1\\:\2.ixx/g' $(1) > $(2)

@@ -1,0 +1,269 @@
+INCLUDE_DIRS := include
+SRC_DIRS := src
+MODULE_BUILD_DIR := module_build
+
+INC_PARAMS = -I. $(INCLUDE_DIRS:%=-I%)
+DEBUG_FLAGS = -g3
+
+UUID_LIB = uuid
+UUID_LIB_HEADERS = uuid/uuid.h
+UUID_LIB_HEADER_FILE_DIR = /usr/include
+UUID_LIB_LINK = -l$(UUID_LIB)
+
+CXX_STANDARD=c++20
+CXXFLAGS=-std=$(CXX_STANDARD) -W -Wall -pedantic -MMD -MP $(INC_PARAMS) $(DEBUG_FLAGS)
+CXXFLAGS_MODULE_HEADER_DEPENDENCY  = -std=$(CXX_STANDARD) -fmodules-ts -x c++-user-header $(INC_PARAMS)
+CXXFLAGS_MODULE_HEADER_UNIT        = -std=$(CXX_STANDARD) -fmodule-header $(INC_PARAMS)
+#CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT = -std=$(CXX_STANDARD) -fmodules-ts -x c++-system-header $(INC_PARAMS)
+CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT = -std=$(CXX_STANDARD) -fmodules-ts -fmodule-header=system -x c++-system-header $(INC_PARAMS)
+CXXFLAGS_MODULE_IMP = -std=$(CXX_STANDARD) -fmodules-ts $(INC_PARAMS)
+CXXFLAGS_MODULE = -std=$(CXX_STANDARD) -fmodules-ts -c -x c++ $(INC_PARAMS)
+CXXFLAGS_MODULE_WITH_DEPENDENCY = -std=$(CXX_STANDARD) -fmodules-ts -MMD -c -x c++ $(INC_PARAMS)
+CXXFLAGS_MODULE_DEPENDENCY_ONLY = -std=$(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -c
+
+HEADER_UNIT_CACHE = gcm.cache
+
+LIB_HDRS = $(shell find $(INCLUDE_DIRS) -name "*.hpp")
+LIB_SRCS = $(shell find $(SRC_DIRS) -name "*.cpp")
+
+COMPILER_DEFAULT_SEARCH_DIRS = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 1>/dev/null | awk '/#include <...> search starts here:/ {flag=1; next} /End of search list./ {flag=0} flag')
+
+# Macro to normalize a .d file in-place or to a temp file
+NORMALIZE_DEP_FILE = \
+  sed -E 's/([^[:space:]]*):([^[:space:]]*)\.c\+\+m/\1\\:\2.ixx/g' $(1) > $(2)
+
+#SYSTEM_MODULE_HEADERS = $(wildcard $(INCLUDE_DIRS)/System/*.hpp $(INCLUDE_DIRS)/System/Private/*.hpp $(INCLUDE_DIRS)/System/Numerics/*.hpp)
+SYSTEM_MODULE_HEADERS = $(wildcard $(INCLUDE_DIRS)/System/*.hpp $(INCLUDE_DIRS)/System/Private/*.hpp $(INCLUDE_DIRS)/System/Numerics/*.hpp $(INCLUDE_DIRS)/System/IO/*.hpp $(INCLUDE_DIRS)/System/Text/*.hpp $(INCLUDE_DIRS)/System/Collections/Generic/*.hpp $(INCLUDE_DIRS)/System/Collections/Generic/Private/*.hpp $(INCLUDE_DIRS)/System/Collections/Specialized/*.hpp)
+SYSTEM_MODULE_SOURCES = $(wildcard $(INCLUDE_DIRS)/System/*.cpp)
+
+SYSTEM_MODULE_INTERFACE_OBJ = $(MODULE_BUILD_DIR)/System.o
+
+SYSTEM_MODULE_PARTITIONS = System/EventArgs \
+                           System/IComparable \
+						   System/Private_Delegate \
+						   System/Private_enum \
+						   System/Exception \
+						   System/ValueTuple \
+						   System/Base \
+						   System/Base64FormattingOptions \
+						   System/ConsoleColor \
+						   System/ConsoleKey \
+						   System/ConsoleModifiers \
+						   System/DateTimeKind \
+						   System/DayOfWeek \
+						   System/EnvironmentVariableTarget \
+						   System/PlatformID \
+						   System/TypeCode \
+						   System/EventHandler \
+						   System/Action \
+						   System/Comparison \
+						   System/Converter \
+						   System/Func \
+						   System/Predicate \
+						   System/EventHandler \
+						   System/Concepts
+
+SYSTEM_MODULE_PARTITION_SRCS := $(SYSTEM_MODULE_PARTITIONS:%=%.ixx)
+# SYSTEM_MODULE_PARTITION_OBJS = $(SYSTEM_MODULE_PARTITIONS:%=$(MODULE_BUILD_DIR)/%.o)
+SYSTEM_MODULE_PARTITION_OBJS := $(SYSTEM_MODULE_SRCS:%.ixx=%.o)
+SYSTEM_MODULE_PARTITION_DEPS := $(SYSTEM_MODULE_PARTITION_OBJS:%.o=%.d)
+BUILT_SYSTEM_MODULE_PARTITION_DEPS := $(SYSTEM_MODULE_PARTITION_DEPS:%.d=$(MODULE_BUILD_DIR)/%.d)
+
+NORMALIZED_DEPS := $(SYSTEM_MODULE_PARTITION_SRCS:.ixx=.normalized.d)
+BUILT_NORMALIZED_DEPS := $(NORMALIZED_DEPS:%.normalized.d=$(MODULE_BUILD_DIR)/%.normalized.d)
+
+# NOTE: The following variable is to get around g++ crashes when generating header units.
+#       This process of compiling them is order-dependent, so I created this variable so
+#       that the exact order could be tweaked.
+#       It is derived from the output of "./list_system_includes "$(LIB_HDRS)".
+SYSTEM_HEADER_UNITS_BUILD_ORDER = algorithm any array bit cassert cctype charconv chrono cmath compare concepts cstddef cstdint cstdlib cstring ios filesystem exception system_error format functional initializer_list iosfwd iterator limits list map memory mutex numbers optional ranges set source_location span stack stdexcept string string_view utility tuple type_traits unordered_map unordered_set variant vector 
+SYSTEM_HEADER_FILE_DIR = $(shell echo "$(COMPILER_DEFAULT_SEARCH_DIRS)" | cut -f 2 -d" " | head -n1)
+SYSTEM_HEADER_UNIT_GCMS = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
+
+UUID_LIB_HEADER_UNITS = $(UUID_LIB_HEADERS)
+UUID_LIB_HEADER_UNIT_GCMS = $(UUID_LIB_HEADER_UNITS:%=$(HEADER_UNIT_CACHE)$(UUID_LIB_HEADER_FILE_DIR)/%.gcm)
+
+SYSTEM_MODULE_HEADER_DEPS = $(SYSTEM_MODULE_HEADERS:%.hpp=$(MODULE_BUILD_DIR)/%.d)
+SYSTEM_MODULE_SOURCE_DEPS = $(SYSTEM_MODULE_SOURCES:%.cpp=$(MODULE_BUILD_DIR)/%.d)
+
+SYSTEM_MODULE_HEADER_UNIT_GCMS = $(SYSTEM_MODULE_HEADERS:%.hpp=$(HEADER_UNIT_CACHE)/%.hpp.gcm)
+SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE = sys_module_header_unit_build_order.generated
+
+
+#all: system_header_units system_module_dependencies system_module_header_unit_build_order system_module_header_units
+#all: system_header_units $(SYSTEM_MODULE_INTERFACE_OBJ)
+all: normalized_dependencies.generated
+	@echo DONE
+
+.PHONY: depend
+depend: system_header_units $(SYSTEM_MODULE_PARTITION_DEPS)
+	@echo Dependencies updated
+
+.PHONY: print
+print:
+	@echo $(SYSTEM_HEADER_UNITS)
+
+generate_build_order: generate_build_order.cpp
+	@echo Making generate_build_order
+	$(CXX) -std=$(CXX_STANDARD) -o $@ $<
+
+list_dependencies: list_dependencies.cpp
+	@echo Making 'list_dependencies'
+	$(CXX) -std=$(CXX_STANDARD) -o $@ $<
+
+normalized_dependencies.generated: dependencies.generated $(BUILT_NORMALIZED_DEPS)
+	@touch $@
+	@echo System Module Normalized Dependencies Generated!
+
+dependencies.generated: $(BUILT_SYSTEM_MODULE_PARTITION_DEPS)
+	@touch $@
+	@echo System Module Dependencies Generated!
+
+.PHONY: system_header_units
+system_header_units: $(SYSTEM_HEADER_UNIT_GCMS) $(UUID_LIB_HEADER_UNIT_GCMS)
+	@echo System Header Units Generated!
+
+.PHONY: system_module_dependencies
+system_module_dependencies: system_module_header_dependencies system_module_source_dependencies
+	@echo System Module Dependencies Created
+
+.PHONY: system_module_header_dependencies
+system_module_header_dependencies: $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_HEADER_DEPS)
+	@echo System Module Header Dependencies Generated
+
+.PHONY: system_module_source_dependencies
+system_module_source_dependencies: $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_SOURCE_DEPS)
+	@echo System Module Source Dependencies Generated
+
+.PHONY: system_module_header_unit_build_order
+system_module_header_unit_build_order: $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
+	@echo System Module Header Unit build order generated
+
+$(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE): generate_build_order
+	@echo Generating System Module Header Units Build Order
+	@echo $(SYSTEM_MODULE_HEADERS) | ./generate_build_order >$(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
+# 	Build all the System module's header units
+	@while read line; do \
+		$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_HEADER_UNIT) "$$line" || break; \
+	done < $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
+		
+
+.PHONY: system_module_header_units
+system_module_header_units: $(MODULE_BUILD_DIR) $(SYSTEM_MODULE_HEADER_UNIT_GCMS)
+	@echo System Module Header Units Created
+
+.PHONY: clean
+clean: remove_module_build_dir remove_header_unit_cache
+	rm -f $(SYSTEM_MODULE_HEADER_UNITS_BUILD_ORDER_FILE)
+	rm -f dependencies.generated normalized_dependencies.generated
+
+.PHONY: remove_module_build_dir
+remove_module_build_dir:
+	@rm -rf $(MODULE_BUILD_DIR)
+
+.PHONY: remove_header_unit_cache
+remove_header_unit_cache:
+	@rm -rf $(HEADER_UNIT_CACHE)
+
+# System MODULES
+$(SYSTEM_MODULE_INTERFACE_OBJ): src/System/System.ixx
+	@sleep 1
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE) -MMD -o $@ $<
+
+$(SYSTEM_MODULE_INTERFACE_OBJ): $(SYSTEM_MODULE_PARTITION_OBJS)
+
+# 							  no_system_module_dependencies
+# 							  enumeration_types
+
+# 							  $(MODULE_BUILD_DIR)/System/Nullable.o \
+# 							  $(MODULE_BUILD_DIR)/System/IObserver.o \
+# 							  $(MODULE_BUILD_DIR)/System/IObservable.o \
+# 							  $(MODULE_BUILD_DIR)/System/ConsoleKeyInfo.o \
+# 							  $(MODULE_BUILD_DIR)/System/BitConverter.o \
+# 							  $(MODULE_BUILD_DIR)/System/Convert.o \
+# 							  $(MODULE_BUILD_DIR)/System/Span.o \
+# 							  $(MODULE_BUILD_DIR)/System/IDisposable.o \
+# 							  $(MODULE_BUILD_DIR)/System/Version.o \
+# 							  $(MODULE_BUILD_DIR)/System/OperatingSystem.o
+#							  $(MODULE_BUILD_DIR)/System/Boolean.o \
+# 							  $(MODULE_BUILD_DIR)/System/ReadOnlySpan.o \
+# 							  $(MODULE_BUILD_DIR)/System/Guid.o \
+# 							  $(MODULE_BUILD_DIR)/System/TimeSpan.o \
+# 							  $(MODULE_BUILD_DIR)/System/IConvertible.o \
+# 							  $(MODULE_BUILD_DIR)/System/TimeOnly.o \
+# 							  $(MODULE_BUILD_DIR)/System/DateOnly.o \
+# 							  $(MODULE_BUILD_DIR)/System/DateTime.o \
+# 							  $(MODULE_BUILD_DIR)/System/DateTimeOffset.o \
+# 							  $(MODULE_BUILD_DIR)/System/DateTime_impl.o \
+# 							  $(MODULE_BUILD_DIR)/System/DateOnly_imp.o \
+# 							  $(MODULE_BUILD_DIR)/System/TimeOnly_imp.o \
+# 							  $(MODULE_BUILD_DIR)/System/Enum.o \
+# 							  $(MODULE_BUILD_DIR)/System/Environment.o
+
+.PHONY: no_system_module_dependencies
+no_system_module_dependencies: $(MODULE_BUILD_DIR)/EventArgs.o \
+                               $(MODULE_BUILD_DIR)/IComparable.o \
+							   $(MODULE_BUILD_DIR)/Private_Delegate.o \
+							   $(MODULE_BUILD_DIR)/Private_enum.o \
+							   $(MODULE_BUILD_DIR)/Exception.o \
+							   $(MODULE_BUILD_DIR)/ValueTuple.o
+
+$(MODULE_BUILD_DIR)/Private_Delegate.o: $(SRC_DIRS)/System/Private_Delegate.ixx
+
+$(MODULE_BUILD_DIR)/Private_enum.o: $(SRC_DIRS)/System/Private_enum.ixx
+
+$(MODULE_BUILD_DIR)/Private_enum.o: $(MODULE_BUILD_DIR)/System/Base.o \
+									$(MODULE_BUILD_DIR)/System/Base64FormattingOptions.o \
+									$(MODULE_BUILD_DIR)/System/ConsoleColor.o \
+									$(MODULE_BUILD_DIR)/System/ConsoleKey.o \
+									$(MODULE_BUILD_DIR)/System/ConsoleModifiers.o \
+									$(MODULE_BUILD_DIR)/System/DateTimeKind.o \
+									$(MODULE_BUILD_DIR)/System/DayOfWeek.o \
+									$(MODULE_BUILD_DIR)/System/EnvironmentVariableTarget.o \
+									$(MODULE_BUILD_DIR)/System/PlatformID.o \
+									$(MODULE_BUILD_DIR)/System/TypeCode.o
+
+$(MODULE_BUILD_DIR)/Private_Delegate.o: $(MODULE_BUILD_DIR)/System/Action.o \
+										$(MODULE_BUILD_DIR)/System/Comparison.o \
+										$(MODULE_BUILD_DIR)/System/Converter.o \
+										$(MODULE_BUILD_DIR)/System/EventHandler.o \
+										$(MODULE_BUILD_DIR)/System/Func.o \
+										$(MODULE_BUILD_DIR)/System/Predicate.o
+
+#
+# RULES
+#
+
+# System Module Source Dependencies Rule
+$(MODULE_BUILD_DIR)/%.d : src/%.ixx
+	@mkdir -p ${dir $@}
+	echo Generating dependency file $@
+	$(CXX) $(CPPFLAGS) -std=$(CXX_STANDARD) $(INC_PARAMS) -MMD -MF $@ -c $< -o /dev/null
+
+# Dependencies
+$(MODULE_BUILD_DIR)/%.normalized.d: $(MODULE_BUILD_DIR)/%.d
+	$(call NORMALIZE_DEP_FILE,$<,$@)
+
+# Modules
+$(MODULE_BUILD_DIR)/%.o: src/%.ixx
+	@mkdir -p ${dir $@}
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_WITH_DEPENDENCY) -o $@ $<
+
+# 	@sed -E 's/(\b\S*):(\S*\.c\+\+m\b)/\1\\:\2/g' --in-place $(patsubst %.o,%.d,$@)
+
+# System Module Header Dependencies Rule
+# $(MODULE_BUILD_DIR)/%.d : %.hpp
+# 	@mkdir -p ${dir $@}
+# # 	Generate the .d file
+# 	@./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >$@; sed --in-place 's/.hpp/.hpp.gcm/g' $@; echo "\n" >>$@
+# 	@./generate_user_header_dependency_file $< "$(INCLUDE_DIRS)/" >>$@; echo "" >>$@
+
+# Compiler Header Unit Generation Rule
+$(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm: $(SYSTEM_HEADER_FILE_DIR)/%
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) $(patsubst $(HEADER_UNIT_CACHE)$(SYSTEM_HEADER_FILE_DIR)/%.gcm,%,$@)
+
+# Other Header Unit Generation Rule
+$(HEADER_UNIT_CACHE)$(UUID_LIB_HEADER_FILE_DIR)/%.gcm: $(UUID_LIB_HEADER_FILE_DIR)/%
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS_MODULE_SYSTEM_HEADER_UNIT) $(patsubst $(HEADER_UNIT_CACHE)$(UUID_LIB_HEADER_FILE_DIR)/%.gcm,%,$@)
+
+#-include $(BUILT_NORMALIZED_DEPS)
