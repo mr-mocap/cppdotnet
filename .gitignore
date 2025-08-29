@@ -36,8 +36,13 @@
 # Makefile Dependencies
 *.d
 
+*.generated
+
 # VSCode
 .vscode/*
+
+# Vim
+*.swp
 
 # Project Level
 libs/gcm.cache
