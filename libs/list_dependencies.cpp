@@ -11,16 +11,37 @@ void scan_file(const std::string& filename) {
         return;
     }
 
-    std::regex pattern(R"((import|#include)\s*([<"])([^">]+)[">])");
+    std::regex pattern(R"(^(import|#include|export import)[[:space:]]+(["<][^">]+[">]|[a-zA-Z:_]+))");
     std::string line;
 
     while (std::getline(file, line)) {
         std::smatch match;
+
         if (std::regex_search(line, match, pattern)) {
             std::string kind = match[1];
             std::string bracket = match[2];
-            std::string path = match[3];
-            std::string type = (bracket == "<") ? "system" : "user";
+
+            if (bracket.empty())
+                continue;
+
+            std::string type = "unknown";;
+
+            if (bracket.front() == '<' && bracket.back() == '>')
+                type = "system";
+            else if (bracket.front() == '\"' && bracket.back() == '\"')
+                type = "user";
+            else
+                type = "user";
+
+            std::string path;
+
+            if ( (bracket.front() == '<' && bracket.back() == '>') || (bracket.front() == '\"' && bracket.back() == '\"') ) {
+                // Remove angle brackets/double quotes
+                path = bracket.substr(1, bracket.size() - 2);
+            } else {
+                path = bracket;
+            }
+
             std::cout << filename << '\t' << kind << '\t' << type << '\t' << path << "\n";
         }
     }
