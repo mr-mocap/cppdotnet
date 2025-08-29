@@ -31,6 +31,9 @@ system_header_units.generated: $(SYSTEM_HEADER_UNIT_GCMS)
 	@touch $@
 	@echo System Header Units Generated!
 
+list_dependencies: list_dependencies.cpp
+	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ $<
+
 .PHONY: clean
 clean:
 	@rm -rf $(BUILD_DIR)
