@@ -11,9 +11,9 @@ export import :EventArgs;
 export import :IComparable;
 
 // Things that only depend on system-headers...
-export import :IDisposable;
+// export import :IDisposable;
 export import :Exception;
-export import :Version;
+// export import :Version;
 export import :Delegate;
 export import :Private_enum;
 export import :ValueTuple;
@@ -25,6 +25,7 @@ export import :Comparison;
 export import :Converter;
 export import :Func;
 export import :Predicate;
+export import :EventHandler;
 
 // Depends on System/Private/enum.hpp...
 export import :Base;
@@ -34,24 +35,23 @@ export import :ConsoleModifiers;
 export import :ConsoleKey;
 export import :DateTimeKind;
 export import :DayOfWeek;
-export import :PlatformID;
 export import :EnvironmentVariableTarget;
-export import :EventHandler;
+export import :PlatformID;
 export import :TypeCode;
 
 // Depends on Other System/. files...
-export import :BitConverter;
+// export import :BitConverter;
 // export import "System/Convert.hpp";
-export import :ConsoleKeyInfo;
-export import :Span;
+// export import :ConsoleKeyInfo;
+// export import :Span;
 // export import :ReadOnlySpan;
-export import :Nullable;
+// export import :Nullable;
 // export import :Guid;
-export import :IConvertible;
-export import :Enum;
-export import :OperatingSystem;
-export import :IObserver;
-export import :IObservable;
+// export import :IConvertible;
+// export import :Enum;
+// export import :OperatingSystem;
+// export import :IObserver;
+// export import :IObservable;
 
 // Not Included Yet!
 //export import "Boolean.hpp";
