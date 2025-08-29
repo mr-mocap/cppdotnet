@@ -34,6 +34,9 @@ system_header_units.generated: $(SYSTEM_HEADER_UNIT_GCMS)
 list_dependencies: list_dependencies.cpp
 	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ $<
 
+list_modules: list_modules.cpp
+	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ $<
+
 .PHONY: clean
 clean:
 	@rm -rf $(BUILD_DIR)
