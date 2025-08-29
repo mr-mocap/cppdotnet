@@ -1,6 +1,6 @@
 module;
 
-export module Sytem:Func;
+export module System:Func;
 
 export import System:Delegate;
 import <concepts>;
