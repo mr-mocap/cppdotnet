@@ -3,40 +3,65 @@
 #include <fstream>
 #include <regex>
 #include <string>
+#include <string_view>
+#include <format>
 
-void scan_file(const std::string& filename) {
+
+struct ModulesReferenced {
+    std::string module_name; // module name
+    std::string kind; // implementation, interface
+    std::string filename; // source file where the module is defined
+};
+
+std::ifstream OpenFile(const char *filename) {
     std::ifstream file(filename);
-    if (!file) {
-        std::cerr << "Error opening " << filename << "\n";
-        return;
-    }
 
+    if (!file) {
+        throw std::runtime_error( std::format("Error opening file: {}", filename) );
+    }
+    return file;
+}
+
+ModulesReferenced Scan(std::istream &input, std::string_view filename) {
     std::regex pattern(R"(^(module|export module) ([a-zA-Z:_]+);)");
     std::string line;
+    ModulesReferenced references;
 
-    while (std::getline(file, line)) {
+    references.filename = filename;
+    while (std::getline(input, line)) {
         std::smatch match;
 
         if (std::regex_search(line, match, pattern)) {
             std::string kind;
 
             if (match[1] == "module") {
-                kind = "implementation";
+                references.kind = "implementation";
             }
             else if (match[1] == "export module") {
-                kind = "interface";
+                references.kind = "interface";
             }
 
-            std::string module_name = match[2];
-
-            std::cout << module_name << '\t' << kind << '\t' << filename << '\n';
+            references.module_name = match[2];
         }
     }
+    return references;
 }
 
 int main(int argc, char* argv[]) {
     for (int i = 1; i < argc; ++i) {
-        scan_file(argv[i]);
+        const char *filename = argv[i];
+
+        try
+        {
+            std::ifstream     file       = OpenFile(filename);
+            ModulesReferenced references = Scan(file, filename);
+
+            std::cout << references.module_name << '\t' << references.kind << '\t' << references.filename << '\n';
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+        }
     }
     return EXIT_SUCCESS;
 }
