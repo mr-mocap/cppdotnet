@@ -3,53 +3,76 @@
 #include <fstream>
 #include <regex>
 #include <string>
+#include <string_view>
+#include <vector>
+#include <format>
 
-void scan_file(const std::string& filename) {
+struct Dependency {
+    std::string kind; // import, #include, export import
+    std::string type; // system, user
+    std::string path; // path to the dependency
+};
+
+std::ifstream OpenFile(const char *filename) {
     std::ifstream file(filename);
-    if (!file) {
-        std::cerr << "Error opening " << filename << "\n";
-        return;
-    }
 
+    if (!file) {
+        throw std::runtime_error( std::format("Error opening file: {}", filename) );
+    }
+    return file;
+}
+
+std::vector<Dependency> Scan(std::istream &input) {
+    std::vector<Dependency> dependencies;
     std::regex pattern(R"(^(import|#include|export import)[[:space:]]+(["<][^">]+[">]|[a-zA-Z:_]+))");
     std::string line;
 
-    while (std::getline(file, line)) {
+    while (std::getline(input, line)) {
         std::smatch match;
 
         if (std::regex_search(line, match, pattern)) {
-            std::string kind = match[1];
+            Dependency dep{ .kind = match[1], .type = "unknown", .path = "" };
             std::string bracket = match[2];
 
             if (bracket.empty())
                 continue;
 
-            std::string type = "unknown";;
-
             if (bracket.front() == '<' && bracket.back() == '>')
-                type = "system";
+                dep.type = "system";
             else if (bracket.front() == '\"' && bracket.back() == '\"')
-                type = "user";
+                dep.type = "user";
             else
-                type = "user";
-
-            std::string path;
+                dep.type = "module";
 
             if ( (bracket.front() == '<' && bracket.back() == '>') || (bracket.front() == '\"' && bracket.back() == '\"') ) {
                 // Remove angle brackets/double quotes
-                path = bracket.substr(1, bracket.size() - 2);
+                dep.path = bracket.substr(1, bracket.size() - 2);
             } else {
-                path = bracket;
+                dep.path = bracket;
             }
 
-            std::cout << filename << '\t' << kind << '\t' << type << '\t' << path << "\n";
+            dependencies.push_back(dep);
         }
     }
+    return dependencies;
 }
 
 int main(int argc, char* argv[]) {
     for (int i = 1; i < argc; ++i) {
-        scan_file(argv[i]);
+        const char *filename = argv[i];
+
+        try
+        {
+            std::ifstream input = OpenFile(filename);
+
+            for (const auto &dep : Scan(input)) {
+                std::cout << filename << '\t' << dep.kind << '\t' << dep.type << '\t' << dep.path << "\n";
+            }
+        }
+        catch(const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+        }
     }
     return EXIT_SUCCESS;
 }
