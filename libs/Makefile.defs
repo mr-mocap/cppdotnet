@@ -1,27 +1,26 @@
 SYSTEM_MODULE_PARTITIONS = System/EventArgs \
-                           System/IComparable \
-						   System/Private_Delegate \
-						   System/Private_enum \
-						   System/Exception \
-						   System/ValueTuple \
-						   System/Base \
-						   System/Base64FormattingOptions \
-						   System/ConsoleColor \
-						   System/ConsoleKey \
-						   System/ConsoleModifiers \
-						   System/DateTimeKind \
-						   System/DayOfWeek \
-						   System/EnvironmentVariableTarget \
-						   System/PlatformID \
-						   System/TypeCode \
-						   System/EventHandler \
-						   System/Action \
-						   System/Comparison \
-						   System/Converter \
-						   System/Func \
-						   System/Predicate \
-						   System/EventHandler \
-						   System/Concepts
+						System/IComparable \
+						System/Private_Delegate \
+						System/Private_enum \
+						System/Exception \
+						System/ValueTuple \
+						System/Base \
+						System/Base64FormattingOptions \
+						System/ConsoleColor \
+						System/ConsoleKey \
+						System/ConsoleModifiers \
+						System/DateTimeKind \
+						System/DayOfWeek \
+						System/EnvironmentVariableTarget \
+						System/PlatformID \
+						System/TypeCode \
+						System/EventHandler \
+						System/Action \
+						System/Comparison \
+						System/Converter \
+						System/Func \
+						System/Predicate \
+						System/Concepts
 
 SRCS := $(SYSTEM_MODULE_PARTITIONS:%=%.ixx)
 OBJS := $(SRCS:%.ixx=%.o)
@@ -39,9 +38,11 @@ COMPILER_DEFAULT_SEARCH_DIRS = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 
 #       This process of compiling them is order-dependent, so I created this variable so
 #       that the exact order could be tweaked.
 #       It is derived from the output of "./list_system_includes "$(LIB_HDRS)".
-SYSTEM_HEADER_UNITS_BUILD_ORDER = algorithm any array bit cassert cctype charconv chrono cmath compare concepts cstddef cstdint cstdlib cstring ios filesystem exception system_error format functional initializer_list iosfwd iterator limits list map memory mutex numbers optional ranges set source_location span stack stdexcept string string_view utility tuple type_traits unordered_map unordered_set variant vector 
+SYSTEM_HEADER_UNITS_BUILD_ORDER = algorithm any array bit cassert cctype charconv chrono cmath compare concepts cstddef cstdint cstdlib cstring ios filesystem format exception system_error functional initializer_list iosfwd iterator limits list map memory mutex numbers optional ranges set source_location span stack stdexcept string string_view utility tuple type_traits unordered_map unordered_set variant vector 
 SYSTEM_HEADER_FILE_DIR = $(shell echo "$(COMPILER_DEFAULT_SEARCH_DIRS)" | cut -f 2 -d" " | head -n1)
-SYSTEM_HEADER_UNIT_GCMS = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=$(HEADER_UNIT_CACHE_DIR)/,$(SYSTEM_HEADER_FILE_DIR)/%.gcm)
+SYSTEM_HEADER_UNIT_GCMS = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=%.gcms)
+
+SYSTEM_HEADER_CACHE_DIR = $(HEADER_UNIT_CACHE_DIR)/,$(SYSTEM_HEADER_FILE_DIR)
 
 # Macro to normalize a .d file in-place or to a temp file.
 # Changes lines containing 'System:Span.c++m' to 'System\:Span.c++m'.
@@ -50,3 +51,22 @@ SYSTEM_HEADER_UNIT_GCMS = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=$(HEADER_UNIT_CACH
 # by the separating ':' (thus thinking the colon in the filename was the colon).
 NORMALIZE_DEP_FILE = \
   sed -E 's/([^[:space:]]*):([^[:space:]]*)\.c\+\+m/\1\\:\2.ixx/g' $(1) > $(2)
+
+# MODULE items
+
+# Request local socket mapper
+CXX_MODULE_MAPPER := =
+
+CXX_MODULE_PREFIX = gcm.cache
+
+# PATHs
+vpath %.hpp include
+vpath %.cpp src
+vpath %.ixx src
+
+vpath %.gcm  $(SYSTEM_HEADER_CACHE_DIR):$(HEADER_UNIT_CACHE_DIR)
+vpath %.gcms $(SYSTEM_HEADER_CACHE_DIR)
+
+vpath %.o $(BUILD_DIR)
+
+vpath %.d $(BUILD_DIR)

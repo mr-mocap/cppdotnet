@@ -13,23 +13,23 @@ CXX_STANDARD := -std=c++20
 -include Makefile.rules
 
 
-all: system_header_units.generated normalized_dependencies.generated
+# all: system_header_units.generated normalized_dependencies.generated $(BUILD_DIR)/System.o
+# all: $(SRC_DIR)/System/System.ixx | dependencies.generated
+
+all: system_header_units.generated dependencies.generated System.o
 	@echo DONE
 
 print:
-	@echo $(SUFFIXES)
+	@echo SYSTEM_HEADER_UNIT_GCMS: $(SYSTEM_HEADER_UNIT_GCMS)
 
 normalized_dependencies.generated: dependencies.generated $(BUILT_NORMALIZED_DEPS)
 	@touch $@
 	@echo System Module Normalized Dependencies Generated!
 
-dependencies.generated: $(BUILT_DEPS)
-	@touch $@
-	@echo System Module Dependencies Generated!
-
-system_header_units.generated: $(SYSTEM_HEADER_UNIT_GCMS)
-	@touch $@
-	@echo System Header Units Generated!
+#$(BUILD_DIR)/System.o: $(SRC_DIR)/System/System.ixx
+System.o: System/System.ixx
+	@echo Module 'System' Built
+#	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++ $< -o $@
 
 list_dependencies: list_dependencies.cpp
 	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ $<
@@ -42,3 +42,4 @@ clean:
 	@rm -rf $(BUILD_DIR)
 	@rm -rf $(HEADER_UNIT_CACHE_DIR)
 	@rm -f system_header_units.generated dependencies.generated normalized_dependencies.generated
+
