@@ -15,10 +15,6 @@
 #"%".c++m : $(CXX_MODULE_PREFIX)/%.gcmu
 #	@echo Compile USER header unit
 
-%.gcm : %.gcms
-	@echo Compiling System Header Unit $(patsubst %.gcms,<%>,$<)
-	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $(patsubst %.gcms,%,$<)
-
 #<%>.c++m : %.gcms
 #	@echo Compiling System Header Unit $(patsubst <%>.c++m,<%>,$@)
 #	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $(patsubst %.gcm,%,$@)
@@ -32,31 +28,36 @@
 #	$(COMPILE.cc) $(call CXX_MODULE_HEADER, <$*>) $<
 
 # Compiler Header Unit Generation Rule
-system_header_units.generated: $(SYSTEM_HEADER_UNIT_GCMS)
-	@touch $@
+system_header_units.generated: $(SYSTEM_HEADER_UNIT_GCMS_FILES)
+	@touch $(BUILD_DIR)/$@
 	@echo System Header Units Generated!
 
-.PHONY: %.gcms
-
-%.gcms :
-	@echo Compiling System Header Unit $(patsubst %.gcms,%,$@)
+%.gcms : | $(BUILD_DIR)
+	@echo Compiling System Header Unit $(patsubst %.gcms,\<%\>,$@)
 	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $(patsubst %.gcms,%,$@)
+	@touch $(BUILD_DIR)/$@
 
-#$(SYSTEM_HEADER_UNIT_GCMS):
-#	@echo Compiling System Header Unit $(patsubst %.gcms,%,$@)
-#	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $(patsubst %.gcms,%,$@)
+$(BUILD_DIR) :
+	@mkdir -p $(BUILD_DIR)
 
 # Dependencies
-#dependencies.generated: $(BUILT_DEPS)
-dependencies.generated: $(DEPS)
-	@touch $@
+dependencies.generated : $(DEPS)
+	@touch $(BUILD_DIR)/$@
 	@echo System Module Dependencies Generated!
 
-#$(BUILT_DEPS): system_header_units.generated | make_build_dir
-$(DEPS): system_header_units.generated | make_build_dir
+$(DEPS) : system_header_units.generated
 	@echo Generating dependency file $@
-	$(COMPILE.cc) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -x c++ $(patsubst $(BUILD_DIR)/%.d,$(SRC_DIR)/%.ixx,$@) -o $(patsubst $(BUILD_DIR)/%.d,$(BUILD_DIR)/%.o,$@)
-	@rm $(patsubst $(BUILD_DIR)/%.d,$(BUILD_DIR)/%.o,$@)
+	@mkdir -p ${dir $(BUILD_DIR)/$@}
+	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -MF $(BUILD_DIR)/$@ -c -x c++ -o $(patsubst %.d,$(BUILD_DIR)/%.o,$@) $(patsubst %.d,$(SRC_DIR)/%.ixx,$@)
+	@rm $(patsubst %.d,$(BUILD_DIR)/%.o,$@)
+
+normalized_dependencies.generated : $(NORMALIZED_DEPS)
+	@touch $(BUILD_DIR)/$@
+	@echo System Module Normalized Dependencies Generated!
+
+$(NORMALIZED_DEPS) : dependencies.generated
+	@echo Generating normalized dependency file $@
+	@$(call NORMALIZE_DEP_FILE,$(patsubst %.normalized.d,%.d,$(BUILD_DIR)/$@),$(BUILD_DIR)/$@)
 
 #$(BUILD_DIR)/%.d: $(SRC_DIR)/%.ixx
 #	@mkdir -p ${dir $@}
@@ -68,9 +69,5 @@ $(DEPS): system_header_units.generated | make_build_dir
 #	@echo Generating normalized dependency file $@
 #	@$(call NORMALIZE_DEP_FILE,$<,$@)
 
-make_build_dir:
-	@mkdir -p ${dir $@}
-
 # Cause any target referencing this to be executed
-FORCE:
-
+FORCE: ;

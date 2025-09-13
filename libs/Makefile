@@ -12,19 +12,13 @@ CXX_STANDARD := -std=c++20
 
 -include Makefile.rules
 
+default: all
 
-# all: system_header_units.generated normalized_dependencies.generated $(BUILD_DIR)/System.o
-# all: $(SRC_DIR)/System/System.ixx | dependencies.generated
-
-all: system_header_units.generated dependencies.generated System.o
+all: normalized_dependencies.generated
 	@echo DONE
 
 print:
 	@echo SYSTEM_HEADER_UNIT_GCMS: $(SYSTEM_HEADER_UNIT_GCMS)
-
-normalized_dependencies.generated: dependencies.generated $(BUILT_NORMALIZED_DEPS)
-	@touch $@
-	@echo System Module Normalized Dependencies Generated!
 
 #$(BUILD_DIR)/System.o: $(SRC_DIR)/System/System.ixx
 System.o: System/System.ixx
@@ -43,3 +37,4 @@ clean:
 	@rm -rf $(HEADER_UNIT_CACHE_DIR)
 	@rm -f system_header_units.generated dependencies.generated normalized_dependencies.generated
 
+-include $(BUILD_DIR)/System/*.normalized.d
