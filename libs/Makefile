@@ -10,8 +10,6 @@ CXX_STANDARD := -std=c++20
 
 -include Makefile.defs
 
--include Makefile.rules
-
 default: all
 
 all: normalized_dependencies.generated build_system_module
@@ -42,5 +40,7 @@ clean:
 	@rm -rf $(BUILD_DIR)
 	@rm -rf $(HEADER_UNIT_CACHE_DIR)
 	@rm -f system_header_units.generated dependencies.generated normalized_dependencies.generated
+
+-include Makefile.rules
 
 -include $(BUILD_DIR)/System/*.normalized.d
