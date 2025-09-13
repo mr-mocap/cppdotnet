@@ -3,10 +3,11 @@
 #	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -c -x c++ $< -o $@
 
 %.o : %.ixx
-	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -c -x c++ $< -o $@
+	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++ $< -o $(BUILD_DIR)/$@
 
-#%.c++m : $(CXX_MODULE_PREFIX)/%.gcm
-#	@echo YO!
+.PHONY: %.c++m
+%.c++m : %.gcm
+	@echo YO!
 #	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -c -x c++ $<
 
 #$(CXX_MODULE_PREFIX)/%.gcm :| $(BUILD_DIR)/%.o
@@ -48,7 +49,7 @@ dependencies.generated : $(DEPS)
 $(DEPS) : system_header_units.generated
 	@echo Generating dependency file $@
 	@mkdir -p ${dir $(BUILD_DIR)/$@}
-	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -MF $(BUILD_DIR)/$@ -c -x c++ -o $(patsubst %.d,$(BUILD_DIR)/%.o,$@) $(patsubst %.d,$(SRC_DIR)/%.ixx,$@)
+	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -MF $(BUILD_DIR)/$@ -c -x c++ -o $(patsubst %.d,$(BUILD_DIR)/%.o,$@) $(patsubst %.d,$(SRC_DIR)/%.ixx,$@)
 	@rm $(patsubst %.d,$(BUILD_DIR)/%.o,$@)
 
 normalized_dependencies.generated : $(NORMALIZED_DEPS)
@@ -58,16 +59,6 @@ normalized_dependencies.generated : $(NORMALIZED_DEPS)
 $(NORMALIZED_DEPS) : dependencies.generated
 	@echo Generating normalized dependency file $@
 	@$(call NORMALIZE_DEP_FILE,$(patsubst %.normalized.d,%.d,$(BUILD_DIR)/$@),$(BUILD_DIR)/$@)
-
-#$(BUILD_DIR)/%.d: $(SRC_DIR)/%.ixx
-#	@mkdir -p ${dir $@}
-#	@echo Generating dependency file $@
-#	@$(COMPILE.cc) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -x c++ $< -o $(patsubst $(SRC_DIR)/%.ixx,$(BUILD_DIR)/%.o,$<)
-#	@rm $(patsubst $(SRC_DIR)/%.ixx,$(BUILD_DIR)/%.o,$<)
-	
-#$(BUILD_DIR)/%.normalized.d: $(BUILD_DIR)/%.d
-#	@echo Generating normalized dependency file $@
-#	@$(call NORMALIZE_DEP_FILE,$<,$@)
 
 # Cause any target referencing this to be executed
 FORCE: ;

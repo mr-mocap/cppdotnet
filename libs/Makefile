@@ -14,16 +14,22 @@ CXX_STANDARD := -std=c++20
 
 default: all
 
-all: normalized_dependencies.generated
+all: normalized_dependencies.generated build_system_module
 	@echo DONE
 
 print:
 	@echo SYSTEM_HEADER_UNIT_GCMS: $(SYSTEM_HEADER_UNIT_GCMS)
 
-#$(BUILD_DIR)/System.o: $(SRC_DIR)/System/System.ixx
-System.o: System/System.ixx
-	@echo Module 'System' Built
-#	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++ $< -o $@
+.PHONY: build_system_module
+build_system_module : System.o build_system_module_partitions
+	@echo Interface Module \'System\' Built
+
+.PHONY: build_system_module_partitions
+build_system_module_partitions : $(OBJS)
+
+System.o: System/System.ixx $(OBJS)
+	@echo Building Interface Module 'System'
+	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++ $(SRC_DIR)/System/System.ixx -o $(BUILD_DIR)/$@
 
 list_dependencies: list_dependencies.cpp
 	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ $<
