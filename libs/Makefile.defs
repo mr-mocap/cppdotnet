@@ -40,11 +40,19 @@ COMPILER_DEFAULT_SEARCH_DIRS = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 
 #       This process of compiling them is order-dependent, so I created this variable so
 #       that the exact order could be tweaked.
 #       It is derived from the output of "./list_system_includes "$(LIB_HDRS)".
-SYSTEM_HEADER_UNITS_BUILD_ORDER = algorithm any array bit cassert cctype charconv chrono cmath compare concepts cstddef cstdint cstdlib cstring ios filesystem format exception system_error functional initializer_list iosfwd iterator limits list map memory mutex numbers optional ranges set source_location span stack stdexcept string string_view utility tuple type_traits unordered_map unordered_set variant vector 
-SYSTEM_HEADER_FILE_DIR = $(shell echo "$(COMPILER_DEFAULT_SEARCH_DIRS)" | cut -f 2 -d" " | head -n1)
-SYSTEM_HEADER_UNIT_GCM_FILES  = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=%.gcm)
+SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER = algorithm any array bit cassert cctype charconv chrono cmath compare concepts cstddef cstdint cstdlib cstring ios filesystem format exception system_error functional initializer_list iosfwd iterator limits list map memory mutex numbers optional ranges set source_location span stack stdexcept string string_view utility tuple type_traits unordered_map unordered_set variant vector
+SYSTEM_HEADER_UNITS_BUILD_ORDER = uuid/uuid.h
+
+SYSTEM_COMPILER_HEADER_FILE_DIR = $(shell echo "$(COMPILER_DEFAULT_SEARCH_DIRS)" | cut -f 2 -d" " | head -n1)
+SYSTEM_HEADER_FILE_DIR = /usr/include
+
+SYSTEM_COMPILER_HEADER_UNIT_GCM_FILES  = $(SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER:%=%.gcm)
+SYSTEM_COMPILER_HEADER_UNIT_GCMS_FILES = $(SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER:%=%.gcms)
+
+SYSTEM_HEADER_UNIT_GCM_FILES = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=%.gcm)
 SYSTEM_HEADER_UNIT_GCMS_FILES = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=%.gcms)
 
+SYSTEM_COMPILER_HEADER_CACHE_DIR = $(HEADER_UNIT_CACHE_DIR)$(SYSTEM_COMPILER_HEADER_FILE_DIR)
 SYSTEM_HEADER_CACHE_DIR = $(HEADER_UNIT_CACHE_DIR)$(SYSTEM_HEADER_FILE_DIR)
 
 # Macro to normalize a .d file in-place or to a temp file.
@@ -67,7 +75,7 @@ vpath %.hpp include
 vpath %.cpp src
 vpath %.ixx src
 
-vpath %.gcm  $(SYSTEM_HEADER_CACHE_DIR):$(HEADER_UNIT_CACHE_DIR)
+vpath %.gcm  $(SYSTEM_COMPILER_HEADER_CACHE_DIR):$(SYSTEM_HEADER_CACHE_DIR):$(HEADER_UNIT_CACHE_DIR)
 vpath %.gcms $(BUILD_DIR)
 
 vpath %.o $(BUILD_DIR)

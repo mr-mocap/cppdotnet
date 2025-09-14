@@ -29,12 +29,13 @@
 #	$(COMPILE.cc) $(call CXX_MODULE_HEADER, <$*>) $<
 
 # Compiler Header Unit Generation Rule
-system_header_units.generated: $(SYSTEM_HEADER_UNIT_GCMS_FILES)
+system_header_units.generated: $(SYSTEM_COMPILER_HEADER_UNIT_GCMS_FILES) $(SYSTEM_HEADER_UNIT_GCMS_FILES)
 	@touch $(BUILD_DIR)/$@
 	@echo System Header Units Generated!
 
 %.gcms : | $(BUILD_DIR)
 	@echo Compiling System Header Unit $(patsubst %.gcms,\<%\>,$@)
+	@mkdir -p $(dir $(BUILD_DIR)/$@)
 	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $(patsubst %.gcms,%,$@)
 	@touch $(BUILD_DIR)/$@
 
