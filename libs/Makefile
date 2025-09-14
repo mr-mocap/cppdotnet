@@ -23,11 +23,11 @@ build_system_module : System.o build_system_module_partitions
 	@echo Interface Module \'System\' Built
 
 .PHONY: build_system_module_partitions
-build_system_module_partitions : $(OBJS)
+build_system_module_partitions : $(SYSTEM_MODULE_OBJS)
 
-System.o: System/System.ixx $(OBJS)
-	@echo Building Interface Module 'System'
-	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++ $(SRC_DIR)/System/System.ixx -o $(BUILD_DIR)/$@
+$(SYSTEM_MODULE_INTERFACE_OBJ): $(SYSTEM_MODULE_INTERFACE_SRC) $(SYSTEM_MODULE_PARTITION_OBJS)
+	@echo Building Interface Module '$(SYSTEM_MODULE)'
+	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++ $(SRC_DIR)/$(SYSTEM_MODULE_INTERFACE_SRC) -o $(BUILD_DIR)/$@
 
 list_dependencies: list_dependencies.cpp
 	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ $<

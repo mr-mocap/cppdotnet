@@ -1,33 +1,38 @@
-SYSTEM_MODULE_PARTITIONS = System/EventArgs \
-						System/IComparable \
-						System/Private_Delegate \
-						System/Private_enum \
-						System/Exception \
-						System/ValueTuple \
-						System/Base \
-						System/Base64FormattingOptions \
-						System/ConsoleColor \
-						System/ConsoleKey \
-						System/ConsoleModifiers \
-						System/DateTimeKind \
-						System/DayOfWeek \
-						System/EnvironmentVariableTarget \
-						System/PlatformID \
-						System/TypeCode \
-						System/EventHandler \
-						System/Action \
-						System/Comparison \
-						System/Converter \
-						System/Func \
-						System/Predicate \
-						System/Concepts
+SYSTEM_MODULE = System
+SYSTEM_MODULE_PARTITIONS = \
+						EventArgs \
+						IComparable \
+						Private_Delegate \
+						Private_enum \
+						Exception \
+						ValueTuple \
+						Base \
+						Base64FormattingOptions \
+						ConsoleColor \
+						ConsoleKey \
+						ConsoleModifiers \
+						DateTimeKind \
+						DayOfWeek \
+						EnvironmentVariableTarget \
+						PlatformID \
+						TypeCode \
+						EventHandler \
+						Action \
+						Comparison \
+						Converter \
+						Func \
+						Predicate \
+						Concepts
 
-SRCS := $(SYSTEM_MODULE_PARTITIONS:%=%.ixx)
-OBJS := $(SRCS:%.ixx=%.o)
-DEPS := $(OBJS:%.o=%.d)
-NORMALIZED_DEPS := $(DEPS:%.d=%.normalized.d)
+SYSTEM_MODULE_INTERFACE_SRC = $(SYSTEM_MODULE)/$(SYSTEM_MODULE).ixx
+SYSTEM_MODULE_INTERFACE_OBJ = $(SYSTEM_MODULE).o
 
-BUILT_OBJS := $(OBJS:%.o=$(BUILD_DIR)/%.o)
+SYSTEM_MODULE_PARTITION_SRCS := $(SYSTEM_MODULE_PARTITIONS:%=System/%.ixx)
+SYSTEM_MODULE_PARTITION_OBJS := $(SYSTEM_MODULE_PARTITION_SRCS:%.ixx=%.o)
+SYSTEM_MODULE_DEPS := $(SYSTEM_MODULE_PARTITION_OBJS:%.o=%.d)
+NORMALIZED_DEPS := $(SYSTEM_MODULE_DEPS:%.d=%.normalized.d)
+
+#SYSTEM_MODULE_BUILT_OBJS := $(SYSTEM_MODULE_OBJS:%.o=$(BUILD_DIR)/%.o)
 
 COMPILER_DEFAULT_SEARCH_DIRS = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 1>/dev/null | awk '/#include <...> search starts here:/ {flag=1; next} /End of search list./ {flag=0} flag')
 
@@ -53,7 +58,7 @@ NORMALIZE_DEP_FILE = \
 # MODULE items
 
 # Request local socket mapper
-CXX_MODULE_MAPPER := =
+#CXX_MODULE_MAPPER := =
 
 CXX_MODULE_PREFIX = gcm.cache
 

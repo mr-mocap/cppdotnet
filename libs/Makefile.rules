@@ -42,11 +42,11 @@ $(BUILD_DIR) :
 	@mkdir -p $(BUILD_DIR)
 
 # Dependencies
-dependencies.generated : $(DEPS)
+dependencies.generated : $(SYSTEM_MODULE_DEPS)
 	@touch $(BUILD_DIR)/$@
 	@echo System Module Dependencies Generated!
 
-$(DEPS) : system_header_units.generated
+$(SYSTEM_MODULE_DEPS) : system_header_units.generated
 	@echo Generating dependency file $@
 	@mkdir -p ${dir $(BUILD_DIR)/$@}
 	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -MF $(BUILD_DIR)/$@ -c -x c++ -o $(patsubst %.d,$(BUILD_DIR)/%.o,$@) $(patsubst %.d,$(SRC_DIR)/%.ixx,$@)
