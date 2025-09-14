@@ -5,10 +5,11 @@
 %.o : %.ixx
 	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++ $< -o $(BUILD_DIR)/$@
 
-.PHONY: %.c++m
-%.c++m : %.gcm
-	@echo YO!
+#.PHONY: %.c++m
+#%.c++m : %.gcm
+#	@echo YO!
 #	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -c -x c++ $<
+
 
 #$(CXX_MODULE_PREFIX)/%.gcm :| $(BUILD_DIR)/%.o
 #	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -c -x c++ $<
@@ -17,6 +18,7 @@
 #	@echo Compile USER header unit
 
 #<%>.c++m : %.gcms
+
 #	@echo Compiling System Header Unit $(patsubst <%>.c++m,<%>,$@)
 #	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $(patsubst %.gcm,%,$@)
 #	@echo Compile SYSTEM header unit
@@ -29,15 +31,10 @@
 #	$(COMPILE.cc) $(call CXX_MODULE_HEADER, <$*>) $<
 
 # Compiler Header Unit Generation Rule
-system_header_units.generated: $(SYSTEM_COMPILER_HEADER_UNIT_GCMS_FILES) $(SYSTEM_HEADER_UNIT_GCMS_FILES)
+system_header_units.generated: $(SYSTEM_COMPILER_HEADER_UNIT_MODULES) $(SYSTEM_HEADER_UNIT_MODULES)
+	@mkdir -p $(BUILD_DIR)
 	@touch $(BUILD_DIR)/$@
 	@echo System Header Units Generated!
-
-%.gcms : | $(BUILD_DIR)
-	@echo Compiling System Header Unit $(patsubst %.gcms,\<%\>,$@)
-	@mkdir -p $(dir $(BUILD_DIR)/$@)
-	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $(patsubst %.gcms,%,$@)
-	@touch $(BUILD_DIR)/$@
 
 $(BUILD_DIR) :
 	@mkdir -p $(BUILD_DIR)
@@ -60,6 +57,28 @@ normalized_dependencies.generated : $(NORMALIZED_DEPS)
 $(NORMALIZED_DEPS) : dependencies.generated
 	@echo Generating normalized dependency file $@
 	@$(call NORMALIZE_DEP_FILE,$(patsubst %.normalized.d,%.d,$(BUILD_DIR)/$@),$(BUILD_DIR)/$@)
+
+Makefile.compiler_header_unit_targets :
+# System Header Unit Import Rule
+# /usr/include/c++/*/*.c++m (from the compiler's default include paths)
+	@for target in $(SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER); do \
+		echo ".PHONY: $(SYSTEM_COMPILER_HEADER_FILE_DIR)/$${target}.c++m" >> Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_COMPILER_HEADER_FILE_DIR)/$${target}.c++m : $(SYSTEM_COMPILER_HEADER_CACHE_DIR)/$${target}.gcm" >> Makefile.compiler_header_unit_targets; \
+		echo "" >> Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_COMPILER_HEADER_CACHE_DIR)/$${target}.gcm : " >> Makefile.compiler_header_unit_targets; \
+		echo "	@echo Compiling System Header Unit \<$$target\>" >> Makefile.compiler_header_unit_targets; \
+		echo "	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $$target" >> Makefile.compiler_header_unit_targets; \
+		echo "" >> Makefile.compiler_header_unit_targets; \
+	done
+	@for target in $(SYSTEM_HEADER_UNITS_BUILD_ORDER); do \
+		echo ".PHONY: $(SYSTEM_HEADER_FILE_DIR)/$${target}.c++m" >> Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_HEADER_FILE_DIR)/$${target}.c++m : $(SYSTEM_HEADER_CACHE_DIR)/$${target}.gcm" >> Makefile.compiler_header_unit_targets; \
+		echo "" >> Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_HEADER_CACHE_DIR)/$${target}.gcm : " >> Makefile.compiler_header_unit_targets; \
+		echo "	@echo Compiling System Header Unit \<$$target\>" >> Makefile.compiler_header_unit_targets; \
+		echo "	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $$target" >> Makefile.compiler_header_unit_targets; \
+		echo "" >> Makefile.compiler_header_unit_targets; \
+	done
 
 # Cause any target referencing this to be executed
 FORCE: ;

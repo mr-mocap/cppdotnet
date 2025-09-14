@@ -12,14 +12,15 @@ CXX_STANDARD := -std=c++20
 
 default: all
 
-all: normalized_dependencies.generated build_system_module
+all: Makefile.compiler_header_unit_targets normalized_dependencies.generated build_system_module
+	@($MAKE)
 	@echo DONE
 
 print:
-	@echo SYSTEM_HEADER_UNIT_GCMS: $(SYSTEM_HEADER_UNIT_GCMS)
+	@echo SYSTEM_COMPILER_HEADER_UNIT_MODULES: $(SYSTEM_COMPILER_HEADER_UNIT_MODULES)
 
 .PHONY: build_system_module
-build_system_module : System.o build_system_module_partitions
+build_system_module : $(SYSTEM_MODULE_INTERFACE_OBJ) build_system_module_partitions
 	@echo Interface Module \'System\' Built
 
 .PHONY: build_system_module_partitions
@@ -39,8 +40,9 @@ list_modules: list_modules.cpp
 clean:
 	@rm -rf $(BUILD_DIR)
 	@rm -rf $(HEADER_UNIT_CACHE_DIR)
-	@rm -f system_header_units.generated dependencies.generated normalized_dependencies.generated
+	@rm -f system_header_units.generated dependencies.generated normalized_dependencies.generated Makefile.compiler_header_unit_targets
 
 -include Makefile.rules
+-include Makefile.compiler_header_unit_targets
 
 -include $(BUILD_DIR)/System/*.normalized.d

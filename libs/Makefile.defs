@@ -46,9 +46,11 @@ SYSTEM_HEADER_UNITS_BUILD_ORDER = uuid/uuid.h
 SYSTEM_COMPILER_HEADER_FILE_DIR = $(shell echo "$(COMPILER_DEFAULT_SEARCH_DIRS)" | cut -f 2 -d" " | head -n1)
 SYSTEM_HEADER_FILE_DIR = /usr/include
 
+SYSTEM_COMPILER_HEADER_UNIT_MODULES  = $(SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER:%=$(SYSTEM_COMPILER_HEADER_FILE_DIR)/%.c++m)
 SYSTEM_COMPILER_HEADER_UNIT_GCM_FILES  = $(SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER:%=%.gcm)
 SYSTEM_COMPILER_HEADER_UNIT_GCMS_FILES = $(SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER:%=%.gcms)
 
+SYSTEM_HEADER_UNIT_MODULES  = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=$(SYSTEM_HEADER_FILE_DIR)/%.c++m)
 SYSTEM_HEADER_UNIT_GCM_FILES = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=%.gcm)
 SYSTEM_HEADER_UNIT_GCMS_FILES = $(SYSTEM_HEADER_UNITS_BUILD_ORDER:%=%.gcms)
 
@@ -61,12 +63,9 @@ SYSTEM_HEADER_CACHE_DIR = $(HEADER_UNIT_CACHE_DIR)$(SYSTEM_HEADER_FILE_DIR)
 # thus not become confused if this type of string is a target followed
 # by the separating ':' (thus thinking the colon in the filename was the colon).
 NORMALIZE_DEP_FILE = \
-  sed -E 's/([^[:space:]]*):([^[:space:]]*)\.c\+\+m/\1\\:\2.ixx/g' $(1) > $(2)
+  sed -E 's/([^[:space:]]*):([^[:space:]]*)\.c\+\+m/\1\\:\2.c\+\+m/g' $(1) > $(2)
 
 # MODULE items
-
-# Request local socket mapper
-#CXX_MODULE_MAPPER := =
 
 CXX_MODULE_PREFIX = gcm.cache
 
