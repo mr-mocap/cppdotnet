@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# This script generates a list of compiler header units used in the project.
+# It scans the source files for `import` statements and extracts the header units.
+# The output is a list of header units, one per line.
+#
+# We filter out any paths that contain a '/' to get only top-level header units.
+
+./list_dependencies src/System/*.ixx | grep 'import\ssystem' | cut -f4 | sort -u | grep -v '\/'
