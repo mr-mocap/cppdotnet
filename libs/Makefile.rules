@@ -97,5 +97,11 @@ generate_prerequisites_1: Makefile.compiler_header_unit_targets
 generate_prerequisites_2: normalized_dependencies.generated
 	@echo Prerequisites Generated	
 
+.PHONY: list_dependencies
+list_dependencies: bin/list_dependencies
+
+bin/list_dependencies: list_dependencies.cpp
+	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ $<
+
 # Cause any target referencing this to be executed
 FORCE: ;
