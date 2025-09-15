@@ -41,7 +41,7 @@ COMPILER_DEFAULT_SEARCH_DIRS = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 
 #       that the exact order could be tweaked.
 #       It is derived from the output of "./list_system_includes "$(LIB_HDRS)".
 #SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER = algorithm any array bit cassert cctype charconv chrono cmath compare concepts cstddef cstdint cstdlib cstring ios filesystem format exception system_error functional initializer_list iosfwd iterator limits list map memory mutex numbers optional ranges set source_location span stack stdexcept string string_view utility tuple type_traits unordered_map unordered_set variant vector
-SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER = $(shell ./bin/generate_compiler_headers_used_list.sh)
+SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER = $(shell ./bin/generate_compiler_headers_used_list)
 SYSTEM_HEADER_UNITS_BUILD_ORDER = uuid/uuid.h
 
 SYSTEM_COMPILER_HEADER_FILE_DIR = $(shell echo "$(COMPILER_DEFAULT_SEARCH_DIRS)" | cut -f 2 -d" " | head -n1)
@@ -85,3 +85,4 @@ vpath %.d $(BUILD_DIR)
 vpath %.generated $(BUILD_DIR)
 
 vpath Makefile.compiler_header_unit_targets $(BUILD_DIR)
+vpath Makefile.module.system.deps $(BUILD_DIR)

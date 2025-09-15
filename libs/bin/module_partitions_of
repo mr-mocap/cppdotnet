@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# $1 = Module Interface File Name
+
+bin/list_dependencies "$1" | grep 'import\smodule' | cut -f4

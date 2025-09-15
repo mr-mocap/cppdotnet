@@ -6,4 +6,4 @@
 #
 # We filter out any paths that contain a '/' to get only top-level header units.
 
-./list_dependencies src/System/*.ixx | grep 'import\ssystem' | cut -f4 | sort -u | grep -v '\/'
+./bin/list_dependencies src/System/*.ixx | grep 'import\ssystem' | cut -f4 | sort -u | grep -v '\/'
