@@ -31,8 +31,7 @@
 #	$(COMPILE.cc) $(call CXX_MODULE_HEADER, <$*>) $<
 
 # Compiler Header Unit Generation Rule
-system_header_units.generated: $(SYSTEM_COMPILER_HEADER_UNIT_MODULES) $(SYSTEM_HEADER_UNIT_MODULES)
-	@mkdir -p $(BUILD_DIR)
+system_header_units.generated: $(SYSTEM_COMPILER_HEADER_UNIT_MODULES) $(SYSTEM_HEADER_UNIT_MODULES) | $(BUILD_DIR)
 	@touch $(BUILD_DIR)/$@
 	@echo System Header Units Generated!
 
@@ -58,27 +57,45 @@ $(NORMALIZED_DEPS) : dependencies.generated
 	@echo Generating normalized dependency file $@
 	@$(call NORMALIZE_DEP_FILE,$(patsubst %.normalized.d,%.d,$(BUILD_DIR)/$@),$(BUILD_DIR)/$@)
 
-Makefile.compiler_header_unit_targets :
+Makefile.compiler_header_unit_targets : generate_compiler_header_units
+	@touch $(BUILD_DIR)/$@
+	@echo Compiler Header Units Rules Generated!
+
+.PHONY: generate_compiler_header_units
+generate_compiler_header_units: | $(BUILD_DIR)
+	@echo Generating Compiler Header Unit Rules
 # System Header Unit Import Rule
 # /usr/include/c++/*/*.c++m (from the compiler's default include paths)
 	@for target in $(SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER); do \
-		echo ".PHONY: $(SYSTEM_COMPILER_HEADER_FILE_DIR)/$${target}.c++m" >> Makefile.compiler_header_unit_targets; \
-		echo "$(SYSTEM_COMPILER_HEADER_FILE_DIR)/$${target}.c++m : $(SYSTEM_COMPILER_HEADER_CACHE_DIR)/$${target}.gcm" >> Makefile.compiler_header_unit_targets; \
-		echo "" >> Makefile.compiler_header_unit_targets; \
-		echo "$(SYSTEM_COMPILER_HEADER_CACHE_DIR)/$${target}.gcm : " >> Makefile.compiler_header_unit_targets; \
-		echo "	@echo Compiling System Header Unit \<$$target\>" >> Makefile.compiler_header_unit_targets; \
-		echo "	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $$target" >> Makefile.compiler_header_unit_targets; \
-		echo "" >> Makefile.compiler_header_unit_targets; \
+		echo ".PHONY: $(SYSTEM_COMPILER_HEADER_FILE_DIR)/$${target}.c++m" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_COMPILER_HEADER_FILE_DIR)/$${target}.c++m : $(SYSTEM_COMPILER_HEADER_CACHE_DIR)/$${target}.gcm" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_COMPILER_HEADER_CACHE_DIR)/$${target}.gcm : " >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "	@echo Compiling System Header Unit \<$$target\>" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $$target" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
 	done
 	@for target in $(SYSTEM_HEADER_UNITS_BUILD_ORDER); do \
-		echo ".PHONY: $(SYSTEM_HEADER_FILE_DIR)/$${target}.c++m" >> Makefile.compiler_header_unit_targets; \
-		echo "$(SYSTEM_HEADER_FILE_DIR)/$${target}.c++m : $(SYSTEM_HEADER_CACHE_DIR)/$${target}.gcm" >> Makefile.compiler_header_unit_targets; \
-		echo "" >> Makefile.compiler_header_unit_targets; \
-		echo "$(SYSTEM_HEADER_CACHE_DIR)/$${target}.gcm : " >> Makefile.compiler_header_unit_targets; \
-		echo "	@echo Compiling System Header Unit \<$$target\>" >> Makefile.compiler_header_unit_targets; \
-		echo "	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $$target" >> Makefile.compiler_header_unit_targets; \
-		echo "" >> Makefile.compiler_header_unit_targets; \
+		echo ".PHONY: $(SYSTEM_HEADER_FILE_DIR)/$${target}.c++m" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_HEADER_FILE_DIR)/$${target}.c++m : $(SYSTEM_HEADER_CACHE_DIR)/$${target}.gcm" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_HEADER_CACHE_DIR)/$${target}.gcm : " >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "	@echo Compiling System Header Unit \<$$target\>" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $$target" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
 	done
+
+.PHONY: generate_prerequisites
+generate_prerequisites: generate_prerequisites_1
+
+.PHONY: generate_prerequisites_1
+generate_prerequisites_1: Makefile.compiler_header_unit_targets
+	@echo Prerequisites Generated	
+	@$(MAKE) --no-print-directory generate_prerequisites_2
+
+.PHONY: generate_prerequisites_2
+generate_prerequisites_2: normalized_dependencies.generated
+	@echo Prerequisites Generated	
 
 # Cause any target referencing this to be executed
 FORCE: ;

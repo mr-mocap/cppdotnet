@@ -82,3 +82,5 @@ vpath %.o $(BUILD_DIR)
 vpath %.d $(BUILD_DIR)
 
 vpath %.generated $(BUILD_DIR)
+
+vpath Makefile.compiler_header_unit_targets $(BUILD_DIR)

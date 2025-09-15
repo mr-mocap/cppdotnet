@@ -12,8 +12,7 @@ CXX_STANDARD := -std=c++20
 
 default: all
 
-all: Makefile.compiler_header_unit_targets normalized_dependencies.generated build_system_module
-	@($MAKE)
+all: generate_prerequisites build_system_module
 	@echo DONE
 
 print:
@@ -40,9 +39,7 @@ list_modules: list_modules.cpp
 clean:
 	@rm -rf $(BUILD_DIR)
 	@rm -rf $(HEADER_UNIT_CACHE_DIR)
-	@rm -f system_header_units.generated dependencies.generated normalized_dependencies.generated Makefile.compiler_header_unit_targets
 
 -include Makefile.rules
--include Makefile.compiler_header_unit_targets
-
+-include $(BUILD_DIR)/Makefile.compiler_header_unit_targets
 -include $(BUILD_DIR)/System/*.normalized.d
