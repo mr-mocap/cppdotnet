@@ -39,7 +39,6 @@ COMPILER_DEFAULT_SEARCH_DIRS = $(shell g++ -v -x c++ -E /dev/null 2>/dev/stdout 
 # NOTE: The following variable is to get around g++ crashes when generating header units.
 #       This process of compiling them is order-dependent, so I created this variable so
 #       that the exact order could be tweaked.
-#       It is derived from the output of "./list_system_includes "$(LIB_HDRS)".
 #SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER = algorithm any array bit cassert cctype charconv chrono cmath compare concepts cstddef cstdint cstdlib cstring ios filesystem format exception system_error functional initializer_list iosfwd iterator limits list map memory mutex numbers optional ranges set source_location span stack stdexcept string string_view utility tuple type_traits unordered_map unordered_set variant vector
 SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER = $(shell ./bin/generate_compiler_headers_used_list)
 SYSTEM_HEADER_UNITS_BUILD_ORDER = uuid/uuid.h
