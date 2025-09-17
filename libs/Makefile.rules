@@ -112,17 +112,5 @@ generate_prerequisites_3: Makefile.module.system.deps
 	@echo Prerequisite 'System Module Dependency Make File' -- Generated	
 #	@$(MAKE) --no-print-directory $(BUILD_DIR)/$(TARGET)
 
-.PHONY: list_dependencies
-list_dependencies: bin/list_dependencies
-
-bin/list_dependencies: list_dependencies.cpp
-	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ $<
-
-.PHONY: list_modules
-list_modules: bin/list_modules
-
-bin/list_modules: list_modules.cpp
-	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ $<
-
 # Cause any target referencing this to be executed
 FORCE: ;
