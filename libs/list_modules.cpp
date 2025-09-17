@@ -23,7 +23,7 @@ std::ifstream OpenFile(const char *filename) {
 }
 
 ModulesReferenced Scan(std::istream &input, std::string_view filename) {
-    std::regex pattern(R"(^(module|export module) ([a-zA-Z:_]+);)");
+    std::regex pattern(R"(^(module|export module) ([a-zA-Z:_0-9-]+);)");
     std::string line;
     ModulesReferenced references;
 
