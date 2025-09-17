@@ -1,5 +1,3 @@
-module;
-
 export module System:Private_enum;
 
 export import <utility>;

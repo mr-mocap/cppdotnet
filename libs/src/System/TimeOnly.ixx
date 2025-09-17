@@ -1,5 +1,3 @@
-module;
-
 export module System:TimeOnly;
 
 export import System:TimeSpan;

@@ -1,5 +1,3 @@
-module;
-
 export module System:Comparison;
 
 export import System:Delegate;

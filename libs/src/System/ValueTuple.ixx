@@ -1,5 +1,3 @@
-module;
-
 export module System:ValueTuple;
 
 export import <tuple>;

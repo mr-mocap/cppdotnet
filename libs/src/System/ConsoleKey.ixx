@@ -1,5 +1,3 @@
-module;
-
 export module System:ConsoleKey;
 
 export import System:Private_enum;

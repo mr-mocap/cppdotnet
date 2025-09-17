@@ -1,5 +1,3 @@
-module;
-
 export module System:IConvertible;
 
 export import System:TypeCode;

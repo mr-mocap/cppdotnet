@@ -1,6 +1,4 @@
 
-module;
-
 export module System:Delegate;
 
 export import <functional>;

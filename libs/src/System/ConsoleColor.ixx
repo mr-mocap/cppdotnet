@@ -1,5 +1,3 @@
-module;
-
 export module System:ConsoleColor;
 
 export import System:Private_enum;

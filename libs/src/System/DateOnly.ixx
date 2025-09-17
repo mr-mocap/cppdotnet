@@ -1,5 +1,3 @@
-module;
-
 export module System:DateOnly;
 
 export import <chrono>;

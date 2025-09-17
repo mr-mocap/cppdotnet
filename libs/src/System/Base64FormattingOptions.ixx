@@ -1,5 +1,3 @@
-module;
-
 export module System:Base64FormattingOptions;
 
 export import System:Private_enum;

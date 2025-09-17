@@ -1,5 +1,3 @@
-module;
-
 export module System:Convert;
 
 import System:Exception;

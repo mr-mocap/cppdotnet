@@ -1,5 +1,3 @@
-module;
-
 export module System:ConsoleKeyInfo;
 
 export import System:ConsoleKey;

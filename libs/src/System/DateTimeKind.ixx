@@ -1,5 +1,3 @@
-module;
-
 export module System:DateTimeKind;
 
 export import System:Private_enum;

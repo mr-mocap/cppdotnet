@@ -1,5 +1,3 @@
-module;
-
 export module System:Concepts;
 
 export import System:Exception;

@@ -1,5 +1,3 @@
-module;
-
 module System:DateTime;
 
 import System:Exception;

@@ -1,5 +1,3 @@
-module;
-
 export module System:EnvironmentVariableTarget;
 
 export import System:Private_enum;

@@ -1,5 +1,3 @@
-module;
-
 export module System:TimeSpan;
 
 export import <chrono>;

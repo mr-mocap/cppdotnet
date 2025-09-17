@@ -1,5 +1,3 @@
-module;
-
 export module System:IObserver;
 
 export import System:Exception;

@@ -1,5 +1,3 @@
-module;
-
 export module System:DateTimeOffset;
 
 export import System:DateTime;

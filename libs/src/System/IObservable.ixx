@@ -1,5 +1,3 @@
-module;
-
 export module System:IObservable;
 
 export import System:IObserver;

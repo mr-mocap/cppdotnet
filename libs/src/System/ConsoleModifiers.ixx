@@ -1,5 +1,3 @@
-module;
-
 export module System:ConsoleModifiers;
 
 export import System:Private_enum;

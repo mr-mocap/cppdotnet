@@ -1,5 +1,3 @@
-module;
-
 export module System:EventHandler;
 
 export import System:Delegate;
