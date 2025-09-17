@@ -40,7 +40,7 @@ $(BUILD_DIR) :
 	@mkdir -p $(BUILD_DIR)
 
 # Dependencies
-dependencies.generated : $(SYSTEM_MODULE_DEPS)
+dependencies.generated : $(SYSTEM_MODULE_DEPS) | bin/list_dependencies
 	@touch $(BUILD_DIR)/$@
 	@echo System Module Dependencies Generated!
 
@@ -94,7 +94,7 @@ Makefile.module.system.deps : $(SYSTEM_MODULE_INTERFACE_SRC) | $(BUILD_DIR)
 	@echo System Interface Module Dependency Rules Generated!
 
 .PHONY: generate_prerequisites
-generate_prerequisites: generate_prerequisites_1
+generate_prerequisites: list_modules generate_prerequisites_1
 
 .PHONY: generate_prerequisites_1
 generate_prerequisites_1: Makefile.compiler_header_unit_targets
@@ -111,6 +111,18 @@ generate_prerequisites_2: normalized_dependencies.generated
 generate_prerequisites_3: Makefile.module.system.deps
 	@echo Prerequisite 'System Module Dependency Make File' -- Generated	
 #	@$(MAKE) --no-print-directory $(BUILD_DIR)/$(TARGET)
+
+.PHONY: list_modules
+list_modules: bin/list_modules
+
+bin/list_modules:
+	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ list_modules.cpp
+
+.PHONY: list_dependencies
+list_dependencies: bin/list_dependencies
+
+bin/list_dependencies:
+	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ list_dependencies.cpp
 
 # Cause any target referencing this to be executed
 FORCE: ;

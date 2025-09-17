@@ -49,18 +49,6 @@ $(SYSTEM_MODULE_INTERFACE_OBJ): $(SYSTEM_MODULE_INTERFACE_SRC) $(SYSTEM_MODULE_P
 	@echo Building Interface Module '$(SYSTEM_MODULE)'
 	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++ $(SRC_DIR)/$(SYSTEM_MODULE_INTERFACE_SRC) -o $@
 
-.PHONY: list_modules
-list_modules: bin/list_modules
-
-bin/list_modules:
-	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ list_modules.cpp
-
-.PHONY: list_dependencies
-list_dependencies: bin/list_dependencies
-
-bin/list_dependencies:
-	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ list_dependencies.cpp
-
 .PHONY: clean
 clean:
 	@rm -rf $(BUILD_DIR)
