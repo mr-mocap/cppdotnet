@@ -25,15 +25,17 @@ lib: generate_prerequisites $(BUILD_DIR)/$(TARGET)
 	@echo DONE
 
 print:
-	@echo $(SYSTEM_MODULE_PARTITION_OBJS_BUILT)
+	@echo $(SYSTEM_MODULE_PARTITION_OBJS)
 
 $(BUILD_DIR)/$(TARGET): $(SYSTEM_MODULE).c++m | $(BUILD_DIR)
 	@$(AR) -crs $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(SYSTEM_MODULE_INTERFACE_OBJ) $(SYSTEM_MODULE_PARTITION_OBJS_BUILT)
 	@ranlib $(BUILD_DIR)/$(TARGET)
 	@echo Library \'$(LIB_NAME)\' Built
 
-# .PHONY: $(SYSTEM_MODULE).c++m
-# $(SYSTEM_MODULE).c++m: $(BUILD_DIR)/$(SYSTEM_MODULE_INTERFACE_OBJ)
+ .PHONY: $(SYSTEM_MODULE).c++m
+ $(SYSTEM_MODULE).c++m: $(SYSTEM_MODULE_PARTITION_OBJS_BUILT)
+	@touch $@
+
 # 	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++ $< -o $(BUILD_DIR)/$@
 
 # $(HEADER_UNIT_CACHE_DIR)/$(SYSTEM_MODULE).gcm: build_system_module_partitions build_system_module | $(SYSTEM_MODULE).o
