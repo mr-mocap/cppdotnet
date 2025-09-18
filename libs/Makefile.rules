@@ -1,35 +1,7 @@
 # MODULE Rules
-#%.o : %.cpp
-#	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -c -x c++ $< -o $@
-
-# $(BUILD_DIR)/%.o : $(BUILD_DIR)/%.ixx
-# 	@mkdir -p ${dir $@}
-# 	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++ $< -o $@
-
-#.PHONY: %.c++m
-# $(SYSTEM_MODULE)-%.c++m : $(HEADER_UNIT_CACHE_DIR)/$(SYSTEM_MODULE)-%.gcm FORCE
-# 	@echo YO!
-#	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -c -x c++ $<
-
 
 $(CXX_MODULE_PREFIX)/%.gcm :| $(BUILD_DIR)/%.o
 	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -c -x c++ $<
-
-#"%".c++m : $(CXX_MODULE_PREFIX)/%.gcmu
-#	@echo Compile USER header unit
-
-#<%>.c++m : %.gcms
-
-#	@echo Compiling System Header Unit $(patsubst <%>.c++m,<%>,$@)
-#	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $(patsubst %.gcm,%,$@)
-#	@echo Compile SYSTEM header unit
-#	@$(COMPILE.cc) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -x c++-system-header $(patsubst $(SYSTEM_HEADER_FILE_DIR)/%,%,$<)
-
-#$(CXX_MODULE_PREFIX)/%.gcmu : %
-#	$(COMPILE.cc) $(call CXX_MODULE_HEADER, "$*") $<
-
-#%.gcms : %
-#	$(COMPILE.cc) $(call CXX_MODULE_HEADER, <$*>) $<
 
 # Compiler Header Unit Generation Rule
 system_header_units.generated: $(SYSTEM_COMPILER_HEADER_UNIT_MODULES) $(SYSTEM_HEADER_UNIT_MODULES) | $(BUILD_DIR)

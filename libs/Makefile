@@ -1,6 +1,6 @@
 INCLUDE_DIRS := include
 SRC_DIR := src
-BUILD_DIR := module_build
+BUILD_DIR := build
 
 LIB_NAME := cppdotnet
 TARGET := lib$(LIB_NAME).a
@@ -33,7 +33,7 @@ $(BUILD_DIR)/$(TARGET): $(SYSTEM_MODULE).c++m | $(BUILD_DIR)
 	@echo Library \'$(LIB_NAME)\' Built
 
  .PHONY: $(SYSTEM_MODULE).c++m
- $(SYSTEM_MODULE).c++m: $(SYSTEM_MODULE_PARTITION_OBJS_BUILT)
+ $(BUILD_DIR)/$(SYSTEM_MODULE).c++m: $(SYSTEM_MODULE_PARTITION_OBJS_BUILT)
 	@touch $@
 
 # 	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++ $< -o $(BUILD_DIR)/$@
