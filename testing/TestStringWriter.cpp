@@ -1,4 +1,4 @@
-#include "System/IO/StringWriter.hpp"
+#include <cppdotnet/System/IO/StringWriter.hpp>
 #include <iostream>
 #include <cassert>
 

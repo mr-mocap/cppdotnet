@@ -1,0 +1,1 @@
+#include <cppdotnet/System/Collections/Specialized/StringCollection.hpp>

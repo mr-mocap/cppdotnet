@@ -1,5 +1,5 @@
-#include "System/Diagnostics/ConsoleTraceListener.hpp"
-#include "System/Diagnostics/Debug.hpp"
+#include <cppdotnet/System/Diagnostics/ConsoleTraceListener.hpp>
+#include <cppdotnet/System/Diagnostics/Debug.hpp>
 #include <string_view>
 
 namespace TestDebug

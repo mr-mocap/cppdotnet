@@ -4,7 +4,7 @@ BINARY_NAME = code_tests
 LIB_BUILD_DIR = ../libs/build
 LIB_BASE_NAME = cppdotnet
 LIB_NAME = $(LIB_BASE_NAME).a
-LIB_PATH = $(LIB_BUILD_DIR)/lib$(LIB_NAME)
+LIB_TARGET = $(LIB_BUILD_DIR)/$(LIB_NAME)
 INC_PARAMS = $(INCLUDE_DIRS:%=-I%)
 DEBUG_FLAGS = -g3
 
@@ -34,11 +34,11 @@ default: all
 $(LIB_BUILD_DIR):
 	@cd .. && $(MAKE) lib
 
-$(LIB_PATH): $(LIB_BUILD_DIR)
+$(LIB_TARGET): $(LIB_BUILD_DIR)
 	@cd .. && $(MAKE) lib
 
 .PHONY: lib
-lib: $(LIB_PATH)
+lib: $(LIB_TARGET)
 	@cd .. && $(MAKE) lib
 
 TestVersion: TestVersion.cpp
@@ -197,7 +197,8 @@ TestActivity: TestActivity.cpp
 
 TestActivity.pass: TestActivity
 
-all: $(PASSING_TESTS) $(LIB_PATH)
+.PHONY: all
+all: $(PASSING_TESTS) $(LIB_TARGET)
 
 .PHONY: clean
 clean:

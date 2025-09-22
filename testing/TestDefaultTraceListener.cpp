@@ -1,4 +1,4 @@
-#include "Diagnostics.hpp"
+#include <cppdotnet/Diagnostics.hpp>
 #include <iostream>
 #include <memory>
 #include <cassert>

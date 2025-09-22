@@ -1,4 +1,4 @@
-#include "System/Enum.hpp"
+#include <cppdotnet/System/Enum.hpp>
 #include <iostream>
 #include <array>
 #include <map>

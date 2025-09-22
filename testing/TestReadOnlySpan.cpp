@@ -1,4 +1,4 @@
-#include "System/ReadOnlySpan.hpp"
+#include <cppdotnet/System/ReadOnlySpan.hpp>
 #include <iostream>
 #include <cassert>
 #include <algorithm>

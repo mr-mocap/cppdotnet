@@ -1,6 +1,6 @@
-#include "System/Diagnostics/Trace.hpp"
-#include "System/Diagnostics/TraceLevel.hpp"
-#include "System/Diagnostics/ConsoleTraceListener.hpp"
+#include <cppdotnet/System/Diagnostics/Trace.hpp>
+#include <cppdotnet/System/Diagnostics/TraceLevel.hpp>
+#include <cppdotnet/System/Diagnostics/ConsoleTraceListener.hpp>
 #include <memory>
 #include <iostream>
 #include <cassert>

@@ -1,6 +1,6 @@
-#include "System/Console.hpp"
-#include "System/Diagnostics/Metrics/Meter.hpp"
-#include "System/IO/TextWriter.hpp"
+#include <cppdotnet/System/Console.hpp>
+#include <cppdotnet/System/Diagnostics/Metrics/Meter.hpp>
+#include <cppdotnet/System/IO/TextWriter.hpp>
 #include <cassert>
 
 

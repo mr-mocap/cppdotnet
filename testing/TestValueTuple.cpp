@@ -1,7 +1,7 @@
-#include "System/Console.hpp"
-#include "System/ValueTuple.hpp"
-#include "System/Private/private.hpp"
-#include "System/IO/TextWriter.hpp"
+#include <cppdotnet/System/Console.hpp>
+#include <cppdotnet/System/ValueTuple.hpp>
+#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/IO/TextWriter.hpp>
 #include <cassert>
 
 

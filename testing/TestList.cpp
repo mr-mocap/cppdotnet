@@ -1,6 +1,6 @@
-#include "System/Collections/Generic/List.hpp"
-#include "System/Collections/Generic/LinkedList.hpp"
-#include "System/Collections/Generic/ICollection.hpp"
+#include <cppdotnet/System/Collections/Generic/List.hpp>
+#include <cppdotnet/System/Collections/Generic/LinkedList.hpp>
+#include <cppdotnet/System/Collections/Generic/ICollection.hpp>
 #include <iostream>
 #include <cassert>
 #include <array>

@@ -1,6 +1,6 @@
-#include "System/Console.hpp"
-#include "System/IO/TextWriter.hpp"
-#include "System/Diagnostics/ActivitySource.hpp"
+#include <cppdotnet/System/Console.hpp>
+#include <cppdotnet/System/IO/TextWriter.hpp>
+#include <cppdotnet/System/Diagnostics/ActivitySource.hpp>
 #include <cstdlib>
 
 namespace TestActivity

@@ -1,9 +1,9 @@
-#include "System/Console.hpp"
-#include "System/IO/StringReader.hpp"
-#include "System/IO/StringWriter.hpp"
-#include "System/IO/StreamReader.hpp"
-#include "System/IO/StreamWriter.hpp"
-#include "System/IO/ConsoleStream.hpp"
+#include <cppdotnet/System/Console.hpp>
+#include <cppdotnet/System/IO/StringReader.hpp>
+#include <cppdotnet/System/IO/StringWriter.hpp>
+#include <cppdotnet/System/IO/StreamReader.hpp>
+#include <cppdotnet/System/IO/StreamWriter.hpp>
+#include <cppdotnet/System/IO/ConsoleStream.hpp>
 #include <iostream>
 #include <string_view>
 

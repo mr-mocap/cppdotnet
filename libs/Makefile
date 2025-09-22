@@ -1,43 +1,58 @@
-INCLUDE_DIRS = ./include
-
+BUILD_DIR = build
 LIB_BASENAME = cppdotnet
 LIB_NAME = lib$(LIB_BASENAME).a
-LIB_PATH = build/$(LIB_NAME)
-INC_PARAMS = $(INCLUDE_DIRS:%=-I%)
+LIB_PATH = $(BUILD_DIR)
+
+INCLUDE_DIR = ./include
+SRC_DIR = ./src/$(LIB_BASENAME)
+INC_PARAMS = $(INCLUDE_DIR:%=-I%) -I.
 DEBUG_FLAGS = -g3
 
 EXTRA_LIBS = -luuid
 
-CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP -I . $(INC_PARAMS) $(DEBUG_FLAGS) $(EXTRA_LIBS)
+CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP $(INC_PARAMS) $(DEBUG_FLAGS) $(EXTRA_LIBS)
+
+TARGET = $(BUILD_DIR)/$(LIB_NAME)
 
 LIB_SRC  = $(wildcard *.cpp \
-                      src/System/*.cpp \
-                      src/System/Collections/Generic/*.cpp \
-                      src/System/Collections/Specialized/*.cpp \
-					  src/System/Diagnostics/*.cpp \
-					  src/System/Diagnostics/Private/*.cpp \
-					  src/System/Diagnostics/Metrics/*.cpp \
-					  src/System/IO/*.cpp \
-					  src/System/Text/*.cpp)
-LIB_OBJS = $(patsubst %.cpp,build/%.o,${LIB_SRC})
-LIB_DEP  = $(LIB_PATH)/*.d \
-           $(LIB_PATH)/src/System/*.d \
-		   $(LIB_PATH)/src/System/Collections/Generic/*.d \
-		   $(LIB_PATH)/src/System/Diagnostics/*.d \
-		   $(LIB_PATH)/src/System/Diagnostics/Metrics/*.d \
-		   $(LIB_PATH)/src/System/Diagnostics/Private/*.d \
-		   $(LIB_PATH)/src/System/IO/*.d \
-		   $(LIB_PATH)/src/System/Text/*.d
+                      $(SRC_DIR)/System/*.cpp \
+                      $(SRC_DIR)/System/Collections/Generic/*.cpp \
+                      $(SRC_DIR)/System/Collections/Specialized/*.cpp \
+					  $(SRC_DIR)/System/Diagnostics/*.cpp \
+					  $(SRC_DIR)/System/Diagnostics/Private/*.cpp \
+					  $(SRC_DIR)/System/Diagnostics/Metrics/*.cpp \
+					  $(SRC_DIR)/System/IO/*.cpp \
+					  $(SRC_DIR)/System/Text/*.cpp)
+LIB_OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,${LIB_SRC})
+LIB_DEP  = $(BUILD_DIR)/*.d \
+           $(BUILD_DIR)/System/*.d \
+		   $(BUILD_DIR)/System/Collections/Generic/*.d \
+		   $(BUILD_DIR)/System/Diagnostics/*.d \
+		   $(BUILD_DIR)/System/Diagnostics/Metrics/*.d \
+		   $(BUILD_DIR)/System/Diagnostics/Private/*.d \
+		   $(BUILD_DIR)/System/IO/*.d \
+		   $(BUILD_DIR)/System/Text/*.d
 
-build/%.o : %.cpp
+.PHONY: all
+all: lib
+	@ar -crs $(TARGET) $(LIB_OBJS)
+	@ranlib $(TARGET)
+
+$(BUILD_DIR):
+	@mkdir -p $(BUILD_DIR)
+
+.PHONY: lib
+lib: $(TARGET) | $(BUILD_DIR)
+
+$(TARGET): $(LIB_OBJS)
+	@ar -crs $(TARGET) $(LIB_OBJS)
+	@ranlib $(TARGET)
+
+$(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
 	@mkdir -p ${dir $@}
 	$(CXX) -o $@ $< -c $(CPPFLAGS) $(CXXFLAGS)
 	
-all: $(LIB_OBJS)
-	@ar -crs $(LIB_PATH) $(LIB_OBJS)
-	@ranlib $(LIB_PATH)
-
-lib: all
+default: lib
 
 .PHONY: clean
 clean:

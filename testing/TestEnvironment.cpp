@@ -1,7 +1,7 @@
-#include "System/Environment.hpp"
-#include "System/Exception.hpp"
-#include "System/Console.hpp"
-#include "System/IO/TextWriter.hpp"
+#include <cppdotnet/System/Environment.hpp>
+#include <cppdotnet/System/Exception.hpp>
+#include <cppdotnet/System/Console.hpp>
+#include <cppdotnet/System/IO/TextWriter.hpp>
 #include <iostream>
 #include <cassert>
 #include <format>

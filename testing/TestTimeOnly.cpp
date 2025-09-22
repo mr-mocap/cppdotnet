@@ -1,4 +1,4 @@
-#include "System/TimeOnly.hpp"
+#include <cppdotnet/System/TimeOnly.hpp>
 #include <iostream>
 #include <cassert>
 

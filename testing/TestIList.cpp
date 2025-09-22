@@ -1,7 +1,7 @@
-#include "System/Collections/Generic/List.hpp"
-#include "System/Collections/Generic/IList.hpp"
-#include "System/Collections/Generic/OrderedDictionary.hpp"
-#include "System/Console.hpp"
+#include <cppdotnet/System/Collections/Generic/List.hpp>
+#include <cppdotnet/System/Collections/Generic/IList.hpp>
+#include <cppdotnet/System/Collections/Generic/OrderedDictionary.hpp>
+#include <cppdotnet/System/Console.hpp>
 #include <cassert>
 #include <ranges>
 #include <string>

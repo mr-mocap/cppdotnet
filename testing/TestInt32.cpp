@@ -1,5 +1,5 @@
-#include "System/Int32.hpp"
-#include "System/Private/private.hpp"
+#include <cppdotnet/System/Int32.hpp>
+#include <cppdotnet/System/Private/private.hpp>
 #include <iostream>
 #include <cassert>
 #include <format>

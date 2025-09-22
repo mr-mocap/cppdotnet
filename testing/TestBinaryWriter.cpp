@@ -1,8 +1,8 @@
-#include "System/Console.hpp"
-#include "System/IO/MemoryStream.hpp"
-#include "System/IO/BinaryWriter.hpp"
-#include "System/IO/TextWriter.hpp"
-#include "System/ReadOnlySpan.hpp"
+#include <cppdotnet/System/Console.hpp>
+#include <cppdotnet/System/IO/MemoryStream.hpp>
+#include <cppdotnet/System/IO/BinaryWriter.hpp>
+#include <cppdotnet/System/IO/TextWriter.hpp>
+#include <cppdotnet/System/ReadOnlySpan.hpp>
 #include <cassert>
 
 

@@ -1,4 +1,4 @@
-#include "System/Guid.hpp"
+#include <cppdotnet/System/Guid.hpp>
 #include <cassert>
 #include <iostream>
 #include <ranges>

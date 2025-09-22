@@ -1,6 +1,6 @@
-#include "System/Diagnostics/Stopwatch.hpp"
-#include "System/Console.hpp"
-#include "System/IO/TextWriter.hpp"
+#include <cppdotnet/System/Diagnostics/Stopwatch.hpp>
+#include <cppdotnet/System/Console.hpp>
+#include <cppdotnet/System/IO/TextWriter.hpp>
 #include <iostream>
 #include <cassert>
 

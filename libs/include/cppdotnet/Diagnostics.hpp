@@ -1,0 +1,23 @@
+#pragma once
+
+#include <cppdotnet/System/Diagnostics/Activity.hpp>
+//#include "System/Diagnostics/ActivityListener.hpp"
+#include <cppdotnet/System/Diagnostics/ActivitySource.hpp>
+#include <cppdotnet/System/Diagnostics/BooleanSwitch.hpp>
+#include <cppdotnet/System/Diagnostics/Trace.hpp>
+#include <cppdotnet/System/Diagnostics/TraceEventType.hpp>
+#include <cppdotnet/System/Diagnostics/TraceLevel.hpp>
+#include <cppdotnet/System/Diagnostics/TraceOptions.hpp>
+#include <cppdotnet/System/Diagnostics/TraceListener.hpp>
+#include <cppdotnet/System/Diagnostics/TraceFilter.hpp>
+#include <cppdotnet/System/Diagnostics/TraceOptions.hpp>
+#include <cppdotnet/System/Diagnostics/TraceSource.hpp>
+#include <cppdotnet/System/Diagnostics/TraceListenerCollection.hpp>
+#include <cppdotnet/System/Diagnostics/DefaultTraceListener.hpp>
+#include <cppdotnet/System/Diagnostics/ConsoleTraceListener.hpp>
+#include <cppdotnet/System/Diagnostics/TextWriterTraceListener.hpp>
+#include <cppdotnet/System/Diagnostics/Debug.hpp>
+#include <cppdotnet/System/Diagnostics/Debugger.hpp>
+#include <cppdotnet/System/Diagnostics/DefaultTraceListener.hpp>
+//#include "System/Diagnostics/DiagnosticListener.hpp"
+#include <cppdotnet/System/Diagnostics/DiagnosticSource.hpp>

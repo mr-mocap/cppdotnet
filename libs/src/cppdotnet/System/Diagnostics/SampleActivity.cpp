@@ -1,0 +1,1 @@
+#include <cppdotnet/System/Diagnostics/SampleActivity.hpp>

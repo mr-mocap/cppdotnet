@@ -1,5 +1,5 @@
-#include "System/Collections/Generic/Dictionary.hpp"
-#include "System/Console.hpp"
+#include <cppdotnet/System/Collections/Generic/Dictionary.hpp>
+#include <cppdotnet/System/Console.hpp>
 #include <iostream>
 #include <cassert>
 #include <ranges>

@@ -1,4 +1,4 @@
-#include "System/Collections/Generic/LinkedList.hpp"
+#include <cppdotnet/System/Collections/Generic/LinkedList.hpp>
 #include <iostream>
 #include <cassert>
 #include <array>

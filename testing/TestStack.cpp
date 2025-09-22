@@ -1,4 +1,4 @@
-#include "System/Collections/Generic/Stack.hpp"
+#include <cppdotnet/System/Collections/Generic/Stack.hpp>
 #include <iostream>
 #include <cassert>
 

@@ -1,4 +1,4 @@
-#include "System/Span.hpp"
+#include <cppdotnet/System/Span.hpp>
 #include <iostream>
 #include <cassert>
 

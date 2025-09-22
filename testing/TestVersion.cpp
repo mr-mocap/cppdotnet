@@ -1,5 +1,5 @@
-#include "System/Version.hpp"
-#include "System/Exception.hpp"
+#include <cppdotnet/System/Version.hpp>
+#include <cppdotnet/System/Exception.hpp>
 #include <iostream>
 #include <cassert>
 

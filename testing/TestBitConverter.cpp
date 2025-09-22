@@ -1,4 +1,4 @@
-#include "System/BitConverter.hpp"
+#include <cppdotnet/System/BitConverter.hpp>
 #include <iostream>
 #include <cassert>
 #include <cstdlib>

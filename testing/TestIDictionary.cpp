@@ -1,5 +1,5 @@
-#include "System/Collections/Generic/IDictionary.hpp"
-#include "System/Collections/Generic/Dictionary.hpp"
+#include <cppdotnet/System/Collections/Generic/IDictionary.hpp>
+#include <cppdotnet/System/Collections/Generic/Dictionary.hpp>
 #include <iostream>
 #include <cassert>
 

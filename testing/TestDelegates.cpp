@@ -1,5 +1,5 @@
-#include "System/Action.hpp"
-#include "System/Func.hpp"
+#include <cppdotnet/System/Action.hpp>
+#include <cppdotnet/System/Func.hpp>
 #include <iostream>
 #include <cassert>
 

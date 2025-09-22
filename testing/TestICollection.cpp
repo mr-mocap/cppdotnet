@@ -1,7 +1,7 @@
-#include "System/Collections/Generic/ICollection.hpp"
-#include "System/Collections/Generic/LinkedList.hpp"
-#include "System/Collections/Generic/List.hpp"
-#include "System/Collections/Generic/Dictionary.hpp"
+#include <cppdotnet/System/Collections/Generic/ICollection.hpp>
+#include <cppdotnet/System/Collections/Generic/LinkedList.hpp>
+#include <cppdotnet/System/Collections/Generic/List.hpp>
+#include <cppdotnet/System/Collections/Generic/Dictionary.hpp>
 #include <iostream>
 #include <cassert>
 

@@ -1,6 +1,6 @@
-#include "System/Exception.hpp"
-#include "System/Console.hpp"
-#include "System/Diagnostics/Trace.hpp"
+#include <cppdotnet/System/Exception.hpp>
+#include <cppdotnet/System/Console.hpp>
+#include <cppdotnet/System/Diagnostics/Trace.hpp>
 #include <iostream>
 #include <cassert>
 

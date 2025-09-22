@@ -1,4 +1,4 @@
-#include "System/TimeSpan.hpp"
+#include <cppdotnet/System/TimeSpan.hpp>
 #include "Utility.hpp"
 #include <iostream>
 #include <cassert>
