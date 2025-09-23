@@ -22,9 +22,7 @@ public:
 
     std::string_view Version() const { return _version; }
 
-#if 0
-    ? Tags() const { return _tags; }
-#endif
+    // ? Tags() const { return _tags; }
 
     bool HasListeners() const;
 
@@ -45,9 +43,8 @@ public:
 protected:
     std::string _name;
     std::string _version;
-#if 0
-                _tags;
-#endif
+
+                // _tags;
 };
 
 }
