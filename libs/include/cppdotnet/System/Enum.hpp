@@ -12,16 +12,17 @@
 #include <ranges>
 #include <cassert>
 #include <charconv>
+#include <type_traits>
 
 namespace System
 {
 
-template <class EnumPolicy>
-class Enum : public EnumPolicy
+template <class EPolicy>
+class Enum : public EPolicy
 {
 public:
     Enum() = default;
-    Enum(EnumPolicy::value_type v) : _currentValue{ v } { }
+    Enum(EPolicy::value_type v) : _currentValue{ v } { }
 
     static const auto GetNames()
     {
@@ -35,19 +36,19 @@ public:
 
     static const auto GetValuesAsUnderlyingType()
     {
-        auto transform_fn = [](const typename EnumPolicy::value_type item) { return static_cast<typename EnumPolicy::underlying_type>(item); };
+        auto transform_fn = [](const typename EPolicy::value_type item) { return static_cast<typename EPolicy::underlying_type>(item); };
 
         return MakeValues() | std::views::transform( transform_fn );
     }
 
-    static std::string_view GetName(typename EnumPolicy::value_type value)
+    static std::string_view GetName(typename EPolicy::value_type value)
     {
-        auto found = std::ranges::find( EnumPolicy::NameValueArray(),
+        auto found = std::ranges::find( EPolicy::NameValueArray,
                                         value,
-                                        &EnumPolicy::name_value_pair_type::second
+                                        &EPolicy::name_value_pair_type::second
                                       );
 
-        if ( found == EnumPolicy::NameValueArray().end() )
+        if ( found == std::end(EPolicy::NameValueArray) )
             return {};
 
         return found->first;
@@ -58,14 +59,14 @@ public:
         return GetName( _currentValue );
     }
 
-    static bool IsDefined(typename EnumPolicy::value_type value)
+    static bool IsDefined(typename EPolicy::value_type value)
     {
         return std::ranges::find( GetValues(), value ) != GetValues().end();
     }
 
-    static bool IsDefined(typename EnumPolicy::underlying_type value)
+    static bool IsDefined(typename EPolicy::underlying_type value)
     {
-        return std::ranges::find( GetValues(), static_cast<typename EnumPolicy::value_type>(value) ) != GetValues().end();
+        return std::ranges::find( GetValues(), static_cast<typename EPolicy::value_type>(value) ) != GetValues().end();
     }
 
     static bool IsDefined(std::string_view value_string)
@@ -73,56 +74,56 @@ public:
         return std::ranges::find( GetNames(), value_string ) != GetNames().end();
     }
 
-    bool HasFlag(typename EnumPolicy::value_type value) const
+    bool HasFlag(typename EPolicy::value_type value) const
     {
-        return (static_cast<EnumPolicy::underlying_type>(value) & static_cast<EnumPolicy::underlying_type>(_currentValue)) == static_cast<EnumPolicy::underlying_type>(value);
+        return (static_cast<EPolicy::underlying_type>(value) & static_cast<EPolicy::underlying_type>(_currentValue)) == static_cast<EPolicy::underlying_type>(value);
     }
 
-    static typename EnumPolicy::value_type Parse(std::string_view value_string)
+    static typename EPolicy::value_type Parse(std::string_view value_string)
     {
         if ( value_string.empty() )
-            ThrowWithTarget( System::ArgumentException{ "Argument is empty", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument is empty", "value_string" ) );
 
         if ( !IsDefined(value_string) )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not name a defined constant", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not name a defined constant", "value_string" ) );
 
         // First, check for a name...
-        for (const typename EnumPolicy::name_value_pair_type &i : EnumPolicy::NameValueArray())
+        for (const typename EPolicy::name_value_pair_type &i : EPolicy::NameValueArray)
             if ( i.first == value_string )
                 return i.second;
         
-        typename EnumPolicy::underlying_type converted;
+        typename EPolicy::underlying_type converted;
 
         // We don't have a name, so let's convert to an integer type...
         auto [ptr, ec] = std::from_chars( value_string.data(), value_string.data() + value_string.size(),
                                           converted);
         
         if ( ec == std::errc::invalid_argument )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not contain Enumeration information", "value_string" ) );
         else if ( ec == std::errc::result_out_of_range )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string" } );
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "value_string" ) );
         else if ( ec != std::errc() )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not contain Enumeration information", "value_string" ) );
 
         assert( ec == std::errc() );
 
-        typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
+        typename EPolicy::value_type casted{ static_cast<typename EPolicy::value_type>(converted) };
 
         if ( !IsDefined( casted ) )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string" } );
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "value_string" ) );
 
         // We have one of the valid values!
         return casted;
     }
 
-    static std::optional<typename EnumPolicy::value_type> TryParse(std::string_view value_string)
+    static std::optional<typename EPolicy::value_type> TryParse(std::string_view value_string)
     {
         // First, check for a name...
-        for (const typename EnumPolicy::name_value_pair_type &i : EnumPolicy::NameValueArray())
+        for (const typename EPolicy::name_value_pair_type &i : EPolicy::NameValueArray)
             if ( i.first == value_string )
                 return i.second;
         
-        typename EnumPolicy::underlying_type converted;
+        typename EPolicy::underlying_type converted;
 
         // We don't have a name, so let's convert to an integer type...
         auto [ptr, ec] = std::from_chars( value_string.data(), value_string.data() + value_string.size(),
@@ -137,7 +138,7 @@ public:
         
         assert( ec == std::errc() );
 
-        typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
+        typename EPolicy::value_type casted{ static_cast<typename EPolicy::value_type>(converted) };
 
         if ( !IsDefined( casted ) )
             return {};
@@ -146,9 +147,9 @@ public:
         return casted;
     }
 
-    operator typename EnumPolicy::value_type () const { return _currentValue; }
+    operator typename EPolicy::value_type () const { return _currentValue; }
 
-    Enum &operator =(typename EnumPolicy::value_type v)
+    Enum &operator =(typename EPolicy::value_type v)
     {
         _currentValue = v;
         return *this;
@@ -170,22 +171,22 @@ public:
     // IConvertible Interface
     TypeCode GetTypeCode() const
     {
-        if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, char> )
+        if constexpr ( std::is_same_v<typename EPolicy::underlying_type, char> )
             return TypeCode::Char;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int16_t> )
+        else if constexpr ( std::is_same_v<typename EPolicy::underlying_type, int16_t> )
             return TypeCode::Int16;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int32_t> )
+        else if constexpr ( std::is_same_v<typename EPolicy::underlying_type, int32_t> )
             return TypeCode::Int32;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, int64_t> )
+        else if constexpr ( std::is_same_v<typename EPolicy::underlying_type, int64_t> )
             return TypeCode::Int64;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint16_t> )
+        else if constexpr ( std::is_same_v<typename EPolicy::underlying_type, uint16_t> )
             return TypeCode::UInt16;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint32_t> )
+        else if constexpr ( std::is_same_v<typename EPolicy::underlying_type, uint32_t> )
             return TypeCode::UInt32;
-        else if constexpr ( std::is_same_v<typename EnumPolicy::underlying_type, uint64_t> )
+        else if constexpr ( std::is_same_v<typename EPolicy::underlying_type, uint64_t> )
             return TypeCode::UInt64;
         else
-            static_assert("GetTypeCode() Not Implemented for this EnumPolicy::underlying_type");
+            static_assert("GetTypeCode() Not Implemented for this EPolicy::underlying_type");
     }
 
     bool ToBoolean() const { return _currentValue; }
@@ -211,24 +212,24 @@ public:
     // NOTE: We need the <=> AND == operators ONLY, if we want all the other relational
     //       operators to be generated automatically for us.
     constexpr std::strong_ordering operator <=>(const Enum &other) const { return _currentValue <=> other._currentValue; }
-    constexpr std::strong_ordering operator <=>(const typename EnumPolicy::value_type other) const { return _currentValue <=> other; }
+    constexpr std::strong_ordering operator <=>(const typename EPolicy::value_type other) const { return _currentValue <=> other; }
 
     constexpr bool operator ==(const Enum &other) const { return _currentValue == other._currentValue; }
-    constexpr bool operator ==(const typename EnumPolicy::value_type other) const { return _currentValue == other; }
+    constexpr bool operator ==(const typename EPolicy::value_type other) const { return _currentValue == other; }
 protected:
-    EnumPolicy::value_type  _currentValue{};
+    EPolicy::value_type  _currentValue{};
 
     static const auto MakeNames()
     {
-        return std::views::keys( EnumPolicy::NameValueArray() );
+        return std::views::keys( EPolicy::NameValueArray );
     }
 
     static const auto MakeValues()
     {
-        return std::views::values( EnumPolicy::NameValueArray() );
+        return std::views::values( EPolicy::NameValueArray );
     }
 
-    static typename EnumPolicy::value_type ParseCommon(std::string_view value_string)
+    static typename EPolicy::value_type ParseCommon(std::string_view value_string)
     {
         if ( value_string.empty() )
             ThrowWithTarget( System::ArgumentException{ "Argument is empty", "value_string" } );
@@ -237,11 +238,11 @@ protected:
             ThrowWithTarget( System::ArgumentException{ "Argument does not name a defined constant", "value_string" } );
 
         // First, check for a name...
-        for (const typename EnumPolicy::name_value_pair_type &i : EnumPolicy::NameValueArray())
+        for (const typename EPolicy::name_value_pair_type &i : EPolicy::NameValueArray)
             if ( i.first == value_string )
                 return i.second;
         
-        typename EnumPolicy::underlying_type converted;
+        typename EPolicy::underlying_type converted;
 
         // We don't have a name, so let's convert to an integer type...
         auto [ptr, ec] = std::from_chars( value_string.data(), value_string.data() + value_string.size(),
@@ -256,7 +257,7 @@ protected:
 
         assert( ec == std::errc() );
 
-        typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
+        typename EPolicy::value_type casted{ static_cast<typename EPolicy::value_type>(converted) };
 
         if ( !IsDefined( casted ) )
             return {};
@@ -266,7 +267,7 @@ protected:
     }
 
     // Hidden Friends
-    friend bool operator ==(const typename EnumPolicy::value_type left, const Enum<EnumPolicy> &right)
+    friend bool operator ==(const typename EPolicy::value_type left, const Enum<EPolicy> &right)
     {
         return left == std::int32_t(right);
     }

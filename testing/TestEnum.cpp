@@ -72,27 +72,22 @@ public:
         Verbose
     };
 
-    using value_type = enum Values;
-    using underlying_type = std::underlying_type_t<value_type>;
-    using name_array_type = std::array<std::string_view, 5>;
-    using value_array_type = std::array<value_type, 5>;
-    using underlying_value_array_type = std::array<underlying_type, 5>;
+    using value_type           = enum Values;
+    using underlying_type      = std::underlying_type_t<value_type>;
     using name_value_pair_type = std::pair<const char *, value_type>;
 
-protected:
+    using name_array_type      = std::ranges::keys_view<std::span<name_value_pair_type>>;
+    using value_array_type     = std::ranges::values_view<std::span<name_value_pair_type>>;
 
-    static std::span<name_value_pair_type> NameValueArray()
-    {
-        static name_value_pair_type array[] = {
-            { "Off",     Off     },
-            { "Error",   Error   },
-            { "Warning", Warning },
-            { "Info",    Info    },
-            { "Verbose", Verbose }
-        };
+    static constexpr std::string_view EnumName = "MyTraceLevel";
 
-        return std::span( array );
-    }
+    static constexpr name_value_pair_type NameValueArray[] = {
+        { "Off",     Off     },
+        { "Error",   Error   },
+        { "Warning", Warning },
+        { "Info",    Info    },
+        { "Verbose", Verbose }
+    };
 };
 
 using MyTraceLevel = System::Enum<MyTraceLevelPolicy>;

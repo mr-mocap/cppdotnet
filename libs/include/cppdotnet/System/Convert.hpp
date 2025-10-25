@@ -7,6 +7,7 @@
 #include <cppdotnet/System/Base.hpp>
 #include <cppdotnet/System/Boolean.hpp>
 #include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Enum.hpp>
 #include <string>
 #include <string_view>
 #include <span>
@@ -17,6 +18,7 @@
 #include <cctype>
 #include <cassert>
 #include <charconv>
+#include <type_traits>
 
 namespace System
 {
@@ -71,6 +73,13 @@ public:
     static Diagnostics::TraceLevel   ToType(std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
     static Diagnostics::TraceOptions ToType(std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
     static Diagnostics::SourceLevels ToType(std::string_view value, Diagnostics::SourceLevels this_is_here_to_select_the_correct_function);
+
+    template <class EnumType>
+        requires std::is_enum_v<EnumType>
+    static EnumType ToEnum(std::string_view value)
+    {
+        return Enum<EnumPolicy<EnumType>>::Parse(value);
+    }
 
     // C++ specific
     static std::string ToChars(auto ...format_args)
