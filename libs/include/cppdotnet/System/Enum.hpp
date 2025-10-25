@@ -24,12 +24,12 @@ public:
     Enum() = default;
     Enum(EPolicy::value_type v) : _currentValue{ v } { }
 
-    static const auto GetNames()
+    static const std::ranges::view auto GetNames()
     {
         return MakeNames();
     }
 
-    static const auto GetValues()
+    static const std::ranges::view auto GetValues()
     {
         return MakeValues();
     }
@@ -232,10 +232,10 @@ protected:
     static typename EPolicy::value_type ParseCommon(std::string_view value_string)
     {
         if ( value_string.empty() )
-            ThrowWithTarget( System::ArgumentException{ "Argument is empty", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument is empty", "value_string" ) );
 
         if ( !IsDefined(value_string) )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not name a defined constant", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not name a defined constant", "value_string" ) );
 
         // First, check for a name...
         for (const typename EPolicy::name_value_pair_type &i : EPolicy::NameValueArray)
@@ -249,11 +249,11 @@ protected:
                                           converted);
         
         if ( ec == std::errc::invalid_argument )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not contain Enumeration information", "value_string" ) );
         else if ( ec == std::errc::result_out_of_range )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string" } );
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "value_string" ) );
         else if ( ec != std::errc() )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not contain Enumeration information", "value_string" ) );
 
         assert( ec == std::errc() );
 

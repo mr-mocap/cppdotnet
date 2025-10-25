@@ -275,7 +275,7 @@ protected:
     enum ActivityTraceFlags _activity_trace_flags = ActivityTraceFlags::None;
     enum ActivityIdFormat   _activity_id_format         = ActivityIdFormat::W3C;
     enum ActivityIdFormat   _default_activity_id_format = ActivityIdFormat::W3C;
-    ActivityStatusCode _status = ActivityStatusCode::Unset;
+    enum ActivityStatusCode _status               = ActivityStatusCode::Unset;
     std::string        _status_description;
     ActivityTraceId    _trace_id;
     ActivityContext    _activity_context;
