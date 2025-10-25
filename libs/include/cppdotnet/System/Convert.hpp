@@ -1,8 +1,5 @@
 #pragma once
 
-#include <cppdotnet/System/Diagnostics/SourceLevels.hpp>
-#include <cppdotnet/System/Diagnostics/TraceLevel.hpp>
-#include <cppdotnet/System/Diagnostics/TraceOptions.hpp>
 #include <cppdotnet/System/Exception.hpp>
 #include <cppdotnet/System/Base.hpp>
 #include <cppdotnet/System/Boolean.hpp>
@@ -42,8 +39,13 @@ public:
     static std::string      ToString(uint32_t value, Base toBase = Base::Decimal);
     static std::string      ToString(uint64_t value, Base toBase = Base::Decimal);
 
-    static std::string_view ToString(Diagnostics::TraceOptions value);
-    static std::string_view ToString(Diagnostics::SourceLevels value);
+    template <class EnumType>
+        requires std::is_enum_v<EnumType>
+    static std::string_view ToString(EnumType value)
+    {
+        // NOTE: Can throw exceptions
+        return Enum<EnumPolicy<EnumType>>::GetName(value);
+    }
 
     static std::vector<std::byte> FromHexString(std::string_view input_string); // Returns sequence as LITTLE-ENDIAN
     static std::string            ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase = true)
@@ -70,14 +72,11 @@ public:
     static std::vector<std::byte> FromBase85String(std::span<const char> input_string);
 
     // From IConvertable  (move there)
-    static Diagnostics::TraceLevel   ToType(std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
-    static Diagnostics::TraceOptions ToType(std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
-    static Diagnostics::SourceLevels ToType(std::string_view value, Diagnostics::SourceLevels this_is_here_to_select_the_correct_function);
-
     template <class EnumType>
         requires std::is_enum_v<EnumType>
     static EnumType ToEnum(std::string_view value)
     {
+        // NOTE: Can throw exceptions
         return Enum<EnumPolicy<EnumType>>::Parse(value);
     }
 

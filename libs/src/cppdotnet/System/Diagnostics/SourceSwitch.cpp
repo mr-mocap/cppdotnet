@@ -21,7 +21,7 @@ SourceSwitch::SourceSwitch(std::string_view display_name)
 
 SourceSwitch SourceSwitch::Make(std::string_view display_name, std::string_view default_switch_value)
 {
-    Diagnostics::SourceLevels converted{ Convert::ToType(default_switch_value, Diagnostics::SourceLevels::Off) };
+    Diagnostics::SourceLevels converted{ Convert::ToEnum<Diagnostics::SourceLevels>(default_switch_value) };
 
     UNUSED(converted);
 
@@ -35,7 +35,7 @@ SourceLevels SourceSwitch::Level()
 
 void SourceSwitch::OnValueChanged()
 {
-    Diagnostics::SourceLevels converted = Convert::ToType(_value, Diagnostics::SourceLevels::Off);
+    Diagnostics::SourceLevels converted = Convert::ToEnum<Diagnostics::SourceLevels>(_value);
 
     SwitchSetting( static_cast<int>(converted) );
 }
