@@ -1,0 +1,23 @@
+#pragma once
+
+#include <cppdotnet/System/IO/BinaryWriter.hpp>
+#include <cppdotnet/System/IO/ConsoleStream.hpp>
+#include <cppdotnet/System/IO/FileAccess.hpp>
+#include <cppdotnet/System/IO/FileMode.hpp>
+#include <cppdotnet/System/IO/FileStream.hpp>
+#include <cppdotnet/System/IO/FileStreamOptions.hpp>
+#include <cppdotnet/System/IO/IOException.hpp>
+#include <cppdotnet/System/IO/MatchCasing.hpp>
+#include <cppdotnet/System/IO/MatchType.hpp>
+#include <cppdotnet/System/IO/MemoryStream.hpp>
+#include <cppdotnet/System/IO/NullStream.hpp>
+#include <cppdotnet/System/IO/Path.hpp>
+#include <cppdotnet/System/IO/SeekOrigin.hpp>
+#include <cppdotnet/System/IO/Stream.hpp>
+#include <cppdotnet/System/IO/StreamReader.hpp>
+#include <cppdotnet/System/IO/StreamWriter.hpp>
+#include <cppdotnet/System/IO/StringReader.hpp>
+#include <cppdotnet/System/IO/StringWriter.hpp>
+#include <cppdotnet/System/IO/TextReader.hpp>
+#include <cppdotnet/System/IO/TextWriter.hpp>
+#include <cppdotnet/System/IO/UnixFileMode.hpp>
