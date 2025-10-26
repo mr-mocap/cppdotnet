@@ -1,0 +1,99 @@
+# MODULE Rules
+
+$(CXX_MODULE_PREFIX)/%.gcm :| $(BUILD_DIR)/%.o
+	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -c -x c++ $<
+
+# Compiler Header Unit Generation Rule
+system_header_units.generated: $(SYSTEM_COMPILER_HEADER_UNIT_MODULES) $(SYSTEM_HEADER_UNIT_MODULES) | $(BUILD_DIR)
+	@touch $(BUILD_DIR)/$@
+	@echo System Header Units Generated!
+
+$(BUILD_DIR) :
+	@mkdir -p $(BUILD_DIR)
+
+# Dependencies
+dependencies.generated : $(SYSTEM_MODULE_DEPS) | bin/list_dependencies
+	@touch $(BUILD_DIR)/$@
+	@echo System Module Dependencies Generated!
+
+$(SYSTEM_MODULE_DEPS) : system_header_units.generated
+	@echo Generating dependency file $@
+	@mkdir -p ${dir $(BUILD_DIR)/$@}
+	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -fdump-lang-module-graph -MMD -MP -MF $(BUILD_DIR)/$@ -c -x c++ -o $(patsubst %.d,$(BUILD_DIR)/%.o,$@) $(patsubst %.d,$(SRC_DIR)/%.ixx,$@)
+
+normalized_dependencies.generated : $(NORMALIZED_DEPS)
+	@touch $(BUILD_DIR)/$@
+	@echo System Module Normalized Dependencies Generated!
+
+$(NORMALIZED_DEPS) : dependencies.generated
+	@echo Generating normalized dependency file $@
+	@$(call NORMALIZE_DEP_FILE,$(patsubst %.normalized.d,%.d,$(BUILD_DIR)/$@),$(BUILD_DIR)/$@)
+
+Makefile.compiler_header_unit_targets : generate_compiler_header_units
+	@touch $(BUILD_DIR)/$@
+	@echo Compiler Header Units Rules Generated!
+
+.PHONY: generate_compiler_header_units
+generate_compiler_header_units: | $(BUILD_DIR)
+	@echo Generating Compiler Header Unit Rules
+# System Header Unit Import Rule
+# /usr/include/c++/*/*.c++m (from the compiler's default include paths)
+	@for target in $(SYSTEM_COMPILER_HEADER_UNITS_BUILD_ORDER); do \
+		echo ".PHONY: $(SYSTEM_COMPILER_HEADER_FILE_DIR)/$${target}.c++m" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_COMPILER_HEADER_FILE_DIR)/$${target}.c++m : $(SYSTEM_COMPILER_HEADER_CACHE_DIR)/$${target}.gcm" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_COMPILER_HEADER_CACHE_DIR)/$${target}.gcm : " >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "	@echo Compiling System Header Unit \<$$target\>" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $$target" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+	done
+	@for target in $(SYSTEM_HEADER_UNITS_BUILD_ORDER); do \
+		echo ".PHONY: $(SYSTEM_HEADER_FILE_DIR)/$${target}.c++m" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_HEADER_FILE_DIR)/$${target}.c++m : $(SYSTEM_HEADER_CACHE_DIR)/$${target}.gcm" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "$(SYSTEM_HEADER_CACHE_DIR)/$${target}.gcm : " >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "	@echo Compiling System Header Unit \<$$target\>" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -c -x c++-system-header $$target" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+		echo "" >> $(BUILD_DIR)/Makefile.compiler_header_unit_targets; \
+	done
+
+Makefile.module.system.deps : $(SYSTEM_MODULE_INTERFACE_SRC) | $(BUILD_DIR)
+	@$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -fmodules-ts -MMD -MP -MF $(BUILD_DIR)/$@ -c -x c++ -o $(BUILD_DIR)/$(SYSTEM_MODULE_INTERFACE_OBJ) $<
+	@mv $(BUILD_DIR)/$@ $(BUILD_DIR)/$@.tmp
+	@$(call NORMALIZE_DEP_FILE,$(BUILD_DIR)/$@.tmp,$(BUILD_DIR)/$@)
+	@rm $(BUILD_DIR)/$@.tmp
+	@echo System Interface Module Dependency Rules Generated!
+
+.PHONY: generate_prerequisites
+generate_prerequisites: list_modules generate_prerequisites_1
+
+.PHONY: generate_prerequisites_1
+generate_prerequisites_1: Makefile.compiler_header_unit_targets
+#   We do this in two steps to ensure that the Makefile.compiler_header_unit_targets
+#   is created before we try to include it in the next step.
+	@$(MAKE) --no-print-directory generate_prerequisites_2
+
+.PHONY: generate_prerequisites_2
+generate_prerequisites_2: normalized_dependencies.generated
+	@echo Prerequisite 'Dependency Make Files' -- Generated	
+	@$(MAKE) --no-print-directory generate_prerequisites_3
+
+.PHONY: generate_prerequisites_3
+generate_prerequisites_3: Makefile.module.system.deps
+	@echo Prerequisite 'System Module Dependency Make File' -- Generated	
+#	@$(MAKE) --no-print-directory $(BUILD_DIR)/$(TARGET)
+
+.PHONY: list_modules
+list_modules: bin/list_modules
+
+bin/list_modules:
+	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ list_modules.cpp
+
+.PHONY: list_dependencies
+list_dependencies: bin/list_dependencies
+
+bin/list_dependencies:
+	$(CXX) $(CPPFLAGS) $(CXX_STANDARD) $(INC_PARAMS) -o $@ list_dependencies.cpp
+
+# Cause any target referencing this to be executed
+FORCE: ;
