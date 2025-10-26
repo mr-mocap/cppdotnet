@@ -82,20 +82,16 @@ public:
 
     void RemoveFirst()
     {
-        using namespace std::literals;
-
         if ( _list.empty() )
-            ThrowWithTarget( System::InvalidOperationException{ "List is empty"sv } );
+            ThrowWithTarget( System::InvalidOperationException( "List is empty" ) );
 
         _list.pop_front();
     }
 
     void RemoveLast()
     {
-        using namespace std::literals;
-
         if ( _list.empty() )
-            ThrowWithTarget( System::InvalidOperationException{ "List is empty"sv } );
+            ThrowWithTarget( System::InvalidOperationException( "List is empty" ) );
 
         _list.pop_back();
     }

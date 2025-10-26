@@ -156,10 +156,8 @@ public:
     }
     /// @}
 
-    // explicit ArgumentException(const char *message) : ArgumentException( std::string_view{message} ) { }
     explicit ArgumentException(std::string_view message) : SystemException( message ) { }
 
-    // explicit ArgumentException(const char *message, const char *param_name) : ArgumentException( std::string_view{message}, std::string_view{param_name} ) { }
     explicit ArgumentException(std::string_view message, std::string_view param_name)
         :
         SystemException( message ),

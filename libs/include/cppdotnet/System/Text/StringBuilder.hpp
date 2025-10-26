@@ -25,9 +25,9 @@ public:
     constexpr void   SetCapacity(size_t new_capacity)
     {
         if ( new_capacity < Capacity() )
-            ThrowWithTarget( ArgumentOutOfRangeException{"new_capacity", "Operation forces object to be less than the current length of this instance"} );
+            ThrowWithTarget( ArgumentOutOfRangeException("new_capacity", "Operation forces object to be less than the current length of this instance") );
         if ( new_capacity > MaxCapacity() )
-            ThrowWithTarget( ArgumentOutOfRangeException{"new_capacity", "Operation forces object to exceed MaxCapacity"} );
+            ThrowWithTarget( ArgumentOutOfRangeException("new_capacity", "Operation forces object to exceed MaxCapacity") );
 
         _string.reserve(new_capacity);
     }

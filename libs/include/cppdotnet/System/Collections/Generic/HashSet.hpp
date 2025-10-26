@@ -70,7 +70,7 @@ public:
     void CopyTo(Span destination) const
     {
         if ( destination.Length() < Length() )
-            ThrowWithTarget( System::ArgumentException{"Destination Span is shorter than the source Span", "destination"} );
+            ThrowWithTarget( System::ArgumentException("Destination Span is shorter than the source Span", "destination") );
         
         std::ranges::copy( _data, destination._data.begin() );
     }

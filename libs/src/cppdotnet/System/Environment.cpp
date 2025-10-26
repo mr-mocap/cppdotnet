@@ -69,7 +69,7 @@ static EnvironmentVariableReference ContainsEnvironmentVariableReference(std::st
 std::string_view Environment::GetEnvironmentVariable(const char *var_name)
 {
     if ( !var_name )
-        ThrowWithTarget( ArgumentNullException{ "variable" } );
+        ThrowWithTarget( ArgumentNullException( "variable" ) );
 
     auto result = std::getenv( var_name );
 
@@ -87,13 +87,13 @@ std::string_view Environment::GetEnvironmentVariable(std::string_view var_name)
 void Environment::SetEnvironmentVariable(const char *variable, const char *value)
 {
     if ( !variable )
-        ThrowWithTarget( ArgumentNullException{ "variable" } );
+        ThrowWithTarget( ArgumentNullException( "variable" ) );
 
     if ( std::strlen(variable) == 0 )
-        ThrowWithTarget( ArgumentException{ "variable" } );
+        ThrowWithTarget( ArgumentException( "variable" ) );
 
     if ( std::strchr(variable, '=') )
-        ThrowWithTarget( ArgumentException{ "variable" } );
+        ThrowWithTarget( ArgumentException( "variable" ) );
 
     if ( variable && (std::strlen(variable) > 0) )
     {
@@ -115,7 +115,7 @@ void Environment::SetEnvironmentVariable(const char *variable, const char *value
 std::string Environment::ExpandEnvironmentVariables(std::string_view input)
 {
     if ( input.empty() )
-        ThrowWithTarget( ArgumentNullException{ "input" } );
+        ThrowWithTarget( ArgumentNullException( "input" ) );
 
     std::string return_value{ input };
 

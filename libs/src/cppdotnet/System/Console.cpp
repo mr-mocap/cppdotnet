@@ -75,10 +75,8 @@ IO::TextWriter &Console::Log()
 
 void Console::SetIn(std::unique_ptr<IO::TextReader> new_input_reader)
 {
-    using namespace std::literals;
-
     if ( !new_input_reader )
-        ThrowWithTarget( ArgumentNullException{ "new_input_reader"sv } );
+        ThrowWithTarget( ArgumentNullException( "new_input_reader" ) );
 
     GetIn() = std::move(new_input_reader);
     InputRedirected = true;
@@ -100,10 +98,8 @@ void Console::SetIn(std::unique_ptr<IO::TextReader> new_input_reader)
 
 void Console::SetOut(std::unique_ptr<IO::TextWriter> new_output_writer)
 {
-    using namespace std::literals;
-
     if ( !new_output_writer )
-        ThrowWithTarget( ArgumentNullException{ "new_output_writer"sv } );
+        ThrowWithTarget( ArgumentNullException( "new_output_writer" ) );
 
     GetOut() = std::move(new_output_writer);
     OutputRedirected = true;
@@ -125,10 +121,8 @@ void Console::SetOut(std::unique_ptr<IO::TextWriter> new_output_writer)
 
 void Console::SetError(std::unique_ptr<IO::TextWriter> new_output_writer)
 {
-    using namespace std::literals;
-
     if ( !new_output_writer )
-        ThrowWithTarget( ArgumentNullException{ "new_output_writer"sv } );
+        ThrowWithTarget( ArgumentNullException( "new_output_writer" ) );
 
     GetError() = std::move(new_output_writer);
     ErrorRedirected = true;
@@ -165,10 +159,8 @@ bool Console::IsErrorRedirected()
 
 void Console::SetLog(std::unique_ptr<IO::TextWriter> new_input_writer)
 {
-    using namespace std::literals;
-
     if ( !new_input_writer )
-        ThrowWithTarget( ArgumentNullException{ "new_input_writer"sv } );
+        ThrowWithTarget( ArgumentNullException( "new_input_writer" ) );
 
     GetLog() = std::move(new_input_writer);
 }

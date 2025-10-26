@@ -26,19 +26,15 @@ public:
 
     constexpr const T &Value() const &
     {
-        using namespace std::literals;
-
         if ( !HasValue() )
-            ThrowWithTarget( InvalidOperationException{ "HasValue property is false"sv } );
+            ThrowWithTarget( InvalidOperationException( "HasValue property is false" ) );
         return _data.value();
     }
 
     constexpr T &Value() &
     {
-        using namespace std::literals;
-
         if ( !HasValue() )
-            ThrowWithTarget( InvalidOperationException{ "HasValue property is false"sv } );
+            ThrowWithTarget( InvalidOperationException( "HasValue property is false" ) );
         return _data.value();
     }
 

@@ -94,9 +94,9 @@ public:
     ReadOnlySpan Slice(std::size_t start, std::size_t length = std::dynamic_extent)
     {
         if ( start >= Length() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"start"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("start") );
         if ( (length != std::dynamic_extent) && ((start + length) >= Length()) )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"length"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("length") );
 
         return ReadOnlySpan( _data.subspan( start, length ) );
     }
@@ -104,7 +104,7 @@ public:
     void CopyTo(Span<Type> destination) const
     {
         if ( destination.Length() < Length() )
-            ThrowWithTarget( System::ArgumentException{"Destination Span is shorter than the source ReadOnlySpan", "destination"} );
+            ThrowWithTarget( System::ArgumentException("Destination Span is shorter than the source ReadOnlySpan", "destination") );
         
         std::ranges::copy( _data, destination._data.begin() );
     }

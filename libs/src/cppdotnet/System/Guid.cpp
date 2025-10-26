@@ -438,8 +438,6 @@ std::string Guid::ToString() const
 
 std::string Guid::ToString(std::string_view format) const
 {
-    using namespace std::literals::string_view_literals;
-
     if ( format.empty() )
         return AsDString( _data );
 
@@ -454,17 +452,15 @@ std::string Guid::ToString(std::string_view format) const
     else if ( format == "X" )
         return AsXString( _data );
     else
-        ThrowWithTarget( FormatException{ "'format' is not an available format type"sv } );
+        ThrowWithTarget( FormatException( "'format' is not an available format type" ) );
 
     return {}; // Should never reach this!
 }
 
 Guid Guid::Parse(std::string_view input)
 {
-    using namespace std::literals::string_view_literals;
-
     if ( input.empty() )
-        ThrowWithTarget( ArgumentNullException{ "input"sv } );
+        ThrowWithTarget( ArgumentNullException( "input" ) );
     
     std::string d_format_string;
 
@@ -498,7 +494,7 @@ Guid Guid::Parse(std::string_view input)
             break;
         }
 
-        ThrowWithTarget( FormatException{ "String is not in one of the expected formats (N, D, B, P, or X)"sv } );
+        ThrowWithTarget( FormatException( "String is not in one of the expected formats (N, D, B, P, or X)" ) );
     } while (false);
     
     // We should now have a D format string to parse, so parse it!
@@ -509,7 +505,7 @@ Guid Guid::Parse(std::string_view input)
     if ( result == -1 )
     {
         // Something went wrong
-        ThrowWithTarget( FormatException{ "String is not in expected format"sv } );
+        ThrowWithTarget( FormatException( "String is not in expected format" ) );
     }
 
     return Guid( output_uuid );

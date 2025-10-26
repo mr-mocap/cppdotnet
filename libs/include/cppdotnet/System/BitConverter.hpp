@@ -26,11 +26,11 @@ struct BitConverter final
     static constexpr bool ToBoolean(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("bytes") );
         if ( index > bytes.size() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
         if ( (index + sizeof(bool)) > bytes.size() ) // Do we have enough bytes to convert to the type?
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
 
         return ToBoolean( { &bytes[index], sizeof(bool) } );
     }
@@ -42,11 +42,11 @@ struct BitConverter final
     static constexpr char ToChar(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("bytes") );
         if ( index > bytes.size() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
         if ( (index + sizeof(char)) > bytes.size() ) // Do we have enough bytes to convert to the type?
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
 
         return ToChar( { &bytes[index], sizeof(char) } );
     }
@@ -58,11 +58,11 @@ struct BitConverter final
     static constexpr std::int16_t ToInt16(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("bytes") );
         if ( index > bytes.size() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
         if ( (index + sizeof(std::int16_t)) > bytes.size() ) // Do we have enough bytes to convert to the type?
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
 
         return ToInt16( { &bytes[index], sizeof(std::int16_t) } );
     }
@@ -74,11 +74,11 @@ struct BitConverter final
     static constexpr std::int32_t ToInt32(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("bytes") );
         if ( index > bytes.size() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
         if ( (index + sizeof(std::int32_t)) > bytes.size() ) // Do we have enough bytes to convert to the type?
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
 
         return ToInt32( { &bytes[index], sizeof(std::int32_t) } );
     }
@@ -90,11 +90,11 @@ struct BitConverter final
     static constexpr std::int64_t ToInt64(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("bytes") );
         if ( index > bytes.size() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
         if ( (index + sizeof(std::int64_t)) > bytes.size() ) // Do we have enough bytes to convert to the type?
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
 
         return ToInt64( { &bytes[index], sizeof(std::int64_t) } );
     }
@@ -106,11 +106,11 @@ struct BitConverter final
     static constexpr std::uint16_t ToUInt16(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("bytes") );
         if ( index > bytes.size() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
         if ( (index + sizeof(std::uint16_t)) > bytes.size() ) // Do we have enough bytes to convert to the type?
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
 
         return ToUInt16( { &bytes[index], sizeof(std::uint16_t) } );
     }
@@ -122,11 +122,11 @@ struct BitConverter final
     static constexpr std::uint32_t ToUInt32(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("bytes") );
         if ( index > bytes.size() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
         if ( (index + sizeof(std::uint32_t)) > bytes.size() ) // Do we have enough bytes to convert to the type?
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
 
         return ToUInt32( { &bytes[index], sizeof(std::uint32_t) } );
     }
@@ -138,11 +138,11 @@ struct BitConverter final
     static constexpr std::uint64_t ToUInt64(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("bytes") );
         if ( index > bytes.size() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
         if ( (index + sizeof(std::uint64_t)) > bytes.size() ) // Do we have enough bytes to convert to the type?
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
 
         return ToUInt64( { &bytes[index], sizeof(std::uint64_t) } );
     }
@@ -154,11 +154,11 @@ struct BitConverter final
     static constexpr float ToFloat(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("bytes") );
         if ( index > bytes.size() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
         if ( (index + sizeof(float)) > bytes.size() ) // Do we have enough bytes to convert to the type?
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
 
         return ToFloat( { &bytes[index], sizeof(float) } );
     }
@@ -170,11 +170,11 @@ struct BitConverter final
     static constexpr double ToDouble(const std::vector<std::byte> &bytes, size_t index = 0)
     {
         if ( bytes.empty() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"bytes"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("bytes") );
         if ( index > bytes.size() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
         if ( (index + sizeof(double)) > bytes.size() ) // Do we have enough bytes to convert to the type?
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"index"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("index") );
 
         return ToDouble( { &bytes[index], sizeof(double) } );
     }

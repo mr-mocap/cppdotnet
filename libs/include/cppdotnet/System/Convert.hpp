@@ -83,14 +83,12 @@ public:
     // C++ specific
     static std::string ToChars(auto ...format_args)
     {
-        using namespace std::literals;
-
         std::array<char, 32> buffer;
 
         std::to_chars_result result = std::to_chars(buffer.data(), buffer.data() + buffer.size(), format_args...);
 
         if (result.ec == std::errc::value_too_large)
-            ThrowWithTarget( ArgumentOutOfRangeException( "format_args"sv ) );
+            ThrowWithTarget( ArgumentOutOfRangeException( "format_args" ) );
 
         assert( result.ec == std::errc() );
 

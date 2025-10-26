@@ -28,7 +28,7 @@ struct ActivityTraceId
     void CopyTo(Span<std::byte> destination) const
     {
         if ( destination.Length() < 16 )
-            ThrowWithTarget( ArgumentException{"Destination Span is shorter than the source ReadOnlySpan", "destination"} );
+            ThrowWithTarget( ArgumentException("Destination Span is shorter than the source ReadOnlySpan", "destination") );
         
         _id.ToByteArray().CopyTo( destination );
     }

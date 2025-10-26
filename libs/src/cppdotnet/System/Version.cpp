@@ -82,10 +82,8 @@ std::string Version::ToString() const
 
 std::string Version::ToString(int field_count) const
 {
-    using namespace std::literals;
-
     if ( (field_count < 0) || (field_count > 4) )
-        ThrowWithTarget( ArgumentOutOfRangeException{ "field_count"sv } );
+        ThrowWithTarget( ArgumentOutOfRangeException( "field_count" ) );
     
     if ( field_count == 0 )
         return {};
@@ -99,7 +97,7 @@ std::string Version::ToString(int field_count) const
     if ( field_count == 3 )
     {
         if ( Build() == -1 )
-            ThrowWithTarget( ArgumentOutOfRangeException{ "field_count"sv, "Build() is not set"sv } );
+            ThrowWithTarget( ArgumentOutOfRangeException( "field_count", "Build() is not set" ) );
 
         return Text::StringBuilder().Append( Major() ).Append('.')
                                     .Append( Minor() ).Append('.')
@@ -109,7 +107,7 @@ std::string Version::ToString(int field_count) const
     if ( field_count == 4 )
     {
         if ( Revision() == -1 )
-            ThrowWithTarget( ArgumentOutOfRangeException{ "field_count"sv, "Revision() is not set"sv } );
+            ThrowWithTarget( ArgumentOutOfRangeException( "field_count", "Revision() is not set" ) );
 
         return Text::StringBuilder().Append( Major() ).Append('.')
                                     .Append( Minor() ).Append('.')
