@@ -8,7 +8,7 @@ namespace System::Numerics
 {
 
 template <class T>
-struct INumber : public INumberBase<INumber<T>>
+struct INumber : public INumberBase<T>
 {
     static constexpr T Clamp(T value, T min, T max);
 
@@ -26,7 +26,7 @@ struct INumber : public INumberBase<INumber<T>>
 
 
 template <>
-struct INumber<bool> : public INumberBase<INumber<bool>>
+struct INumber<bool> : public INumberBase<bool>
 {
     static constexpr bool Clamp(bool value, bool min, bool max)
     {
@@ -68,7 +68,7 @@ struct INumber<bool> : public INumberBase<INumber<bool>>
 
 
 template <>
-struct INumber<std::int8_t> : public INumberBase<INumber<std::int8_t>>
+struct INumber<std::int8_t> : public INumberBase<std::int8_t>
 {
     static constexpr std::int8_t Clamp(std::int8_t value, std::int8_t min, std::int8_t max)
     {
@@ -108,7 +108,7 @@ struct INumber<std::int8_t> : public INumberBase<INumber<std::int8_t>>
 
 
 template <>
-struct INumber<std::int16_t> : public INumberBase<INumber<std::int16_t>>
+struct INumber<std::int16_t> : public INumberBase<std::int16_t>
 {
     static constexpr std::int16_t Clamp(std::int16_t value, std::int16_t min, std::int16_t max)
     {
@@ -148,7 +148,7 @@ struct INumber<std::int16_t> : public INumberBase<INumber<std::int16_t>>
 
 
 template <>
-struct INumber<std::int32_t> : public INumberBase<INumber<std::int32_t>>
+struct INumber<std::int32_t> : public INumberBase<std::int32_t>
 {
     static constexpr std::int32_t Clamp(std::int32_t value, std::int32_t min, std::int32_t max)
     {
@@ -188,7 +188,7 @@ struct INumber<std::int32_t> : public INumberBase<INumber<std::int32_t>>
 
 
 template <>
-struct INumber<std::int64_t> : public INumberBase<INumber<std::int64_t>>
+struct INumber<std::int64_t> : public INumberBase<std::int64_t>
 {
     static constexpr std::int64_t Clamp(std::int64_t value, std::int64_t min, std::int64_t max)
     {
@@ -228,7 +228,7 @@ struct INumber<std::int64_t> : public INumberBase<INumber<std::int64_t>>
 
 
 template <>
-struct INumber<std::uint8_t> : public INumberBase<INumber<std::uint8_t>>
+struct INumber<std::uint8_t> : public INumberBase<std::uint8_t>
 {
     static constexpr std::uint8_t Clamp(std::uint8_t value, std::uint8_t min, std::uint8_t max)
     {
@@ -265,7 +265,7 @@ struct INumber<std::uint8_t> : public INumberBase<INumber<std::uint8_t>>
 
 
 template <>
-struct INumber<std::uint16_t> : public INumberBase<INumber<std::uint16_t>>
+struct INumber<std::uint16_t> : public INumberBase<std::uint16_t>
 {
     static constexpr std::uint16_t Clamp(std::uint16_t value, std::uint16_t min, std::uint16_t max)
     {
@@ -302,7 +302,7 @@ struct INumber<std::uint16_t> : public INumberBase<INumber<std::uint16_t>>
 
 
 template <>
-struct INumber<std::uint32_t> : public INumberBase<INumber<std::uint32_t>>
+struct INumber<std::uint32_t> : public INumberBase<std::uint32_t>
 {
     static constexpr std::uint32_t Clamp(std::uint32_t value, std::uint32_t min, std::uint32_t max)
     {
@@ -339,7 +339,7 @@ struct INumber<std::uint32_t> : public INumberBase<INumber<std::uint32_t>>
 
 
 template <>
-struct INumber<std::uint64_t> : public INumberBase<INumber<std::uint64_t>>
+struct INumber<std::uint64_t> : public INumberBase<std::uint64_t>
 {
     static constexpr std::uint64_t Clamp(std::uint64_t value, std::uint64_t min, std::uint64_t max)
     {

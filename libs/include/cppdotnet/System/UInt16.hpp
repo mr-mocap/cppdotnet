@@ -62,11 +62,11 @@ public:
     // C++ specific stuff.
     // NOTE: We need the <=> AND == operators ONLY, if we want all the other relational
     //       operators to be generated automatically for us.
-    constexpr std::strong_ordering operator <=>(const UInt16 other) const { return _value <=> other._value; }
-    constexpr std::strong_ordering operator <=>(const std::uint16_t other) const { return _value <=> other; }
+    constexpr std::strong_ordering operator <=>(UInt16 other) const { return _value <=> other._value; }
+    constexpr std::strong_ordering operator <=>(std::uint16_t other) const { return _value <=> other; }
 
-    constexpr bool operator ==(const UInt16 other) const { return _value == other._value; }
-    constexpr bool operator ==(const std::uint16_t other) const { return _value == other; }
+    constexpr bool operator ==(UInt16 other) const { return _value == other._value; }
+    constexpr bool operator ==(std::uint16_t other) const { return _value == other; }
 
     /** @name Increment/Decrement
      *  @{
@@ -97,7 +97,7 @@ protected:
     std::uint16_t _value = 0;
 };
 
-inline bool operator ==(const std::uint16_t left, const UInt16 right)
+inline bool operator ==(std::uint16_t left, UInt16 right)
 {
     return right == left;
 }

@@ -62,17 +62,17 @@ public:
     // C++ specific stuff.
     // NOTE: We need the <=> AND == operators ONLY, if we want all the other relational
     //       operators to be generated automatically for us.
-    constexpr std::strong_ordering operator <=>(const Int64 other) const { return _value <=> other._value; }
-    constexpr std::strong_ordering operator <=>(const std::int64_t other) const { return _value <=> other; }
+    constexpr std::strong_ordering operator <=>(Int64 other) const { return _value <=> other._value; }
+    constexpr std::strong_ordering operator <=>(std::int64_t other) const { return _value <=> other; }
 
-    constexpr bool operator ==(const Int64 other) const { return _value == other._value; }
-    constexpr bool operator ==(const std::int64_t other) const { return _value == other; }
+    constexpr bool operator ==(Int64 other) const { return _value == other._value; }
+    constexpr bool operator ==(std::int64_t other) const { return _value == other; }
 
 protected:
     std::int64_t _value = 0;
 };
 
-inline bool operator ==(const std::int64_t left, const Int64 right)
+inline bool operator ==(std::int64_t left, Int64 right)
 {
     return right == left;
 }
