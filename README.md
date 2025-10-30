@@ -32,6 +32,7 @@ I also plan on writing better unit tests for this so I can practice doing that a
 * Singleton pattern
 * Heterogenous lookup on map-type structures
 * Reverse the template parameters for System::Func<...>
+* C++20 Modules!
 
 ## Lessons Learned So Far
 
@@ -91,3 +92,24 @@ I also plan on writing better unit tests for this so I can practice doing that a
 * Heterogenous Lookup for C++ map-type data structure
     * Implemented in System::Collections::Specialized::StringDictionary
         * You can take advantage of this to allow lookup of, say, a std::string key with a std::string_view or even a const char *
+* Get rid of a lot of the interface class inheritance and just implement the interfaces in the resulting class directly.  This
+  shrinks the size of the final object in memory (yay!) while still allowing the use of the "type erasure" pattern to throw
+  around objects as the correct base-class types.
+
+  __NOTE: See Int16/32/64 as an example.__
+* C++20 Modules: Because of the introduction of build order when using modules, you have to go with some sort of meta-build
+  system, like CMake, etc.  I chose the "build2" system (https://www.build2.org) because it looked like it was designed to be the equivalent of Rust's
+  "cargo" in addition to I wanted to learn something new and I already have experience with CMake (cpack/ctest).
+
+  This project was UNABLE TO BE SUCCESSFULLY turned into modules using g++-14.  I kept running into compiler core dumps!
+
+  Possible reasons for difficulties:
+    * Library isn't quite fully isolated into a layered structure (ex: System::Console pulls in System::IO classes, so the two really belong together) and
+      too many classes depend on each other
+    * I broke the library into modules that were too fine-grained (basically one module per class in most cases) and thus overwhelmed the compiler
+    * g++ still isn't quite ready for prime time with modules yet.  It is fairly close, but I think my library here pushes it past its limits.
+    * The build2 compiler (b) has a bug in it that I've run into
+  
+  Possible Solution(s)
+    * Maybe just have the library only importable as a single "System" module
+    * Try to use CMake
