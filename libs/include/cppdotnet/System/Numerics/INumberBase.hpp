@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cppdotnet/System/IEquatable.hpp>
 #include <cppdotnet/System/Exception.hpp>
 #include <cppdotnet/System/Private/private.hpp>
 #include <cmath>
@@ -17,7 +16,7 @@ namespace System::Numerics
 {
 
 template <class T>
-struct INumberBase : public IEquatable<T>
+struct INumberBase
 {
     static constexpr T   One();
     static constexpr T   Zero();
@@ -192,7 +191,7 @@ struct CommonItems
 }
 
 template <>
-struct INumberBase<bool> : public IEquatable<bool>
+struct INumberBase<bool>
 {
     static constexpr bool   One() { return true; }
     static constexpr bool   Zero() { return false; }
@@ -266,7 +265,7 @@ struct INumberBase<bool> : public IEquatable<bool>
 
 
 template <>
-struct INumberBase<std::int8_t> : public IEquatable<std::int8_t>
+struct INumberBase<std::int8_t>
 {
     static constexpr std::int8_t   One() { return 1; }
     static constexpr std::int8_t   Zero() { return 0; }
@@ -354,7 +353,7 @@ struct INumberBase<std::int8_t> : public IEquatable<std::int8_t>
 };
 
 template <>
-struct INumberBase<std::int16_t> : public IEquatable<std::int16_t>
+struct INumberBase<std::int16_t>
 {
     static constexpr std::int16_t   One() { return 1; }
     static constexpr std::int16_t   Zero() { return 0; }
@@ -443,7 +442,7 @@ struct INumberBase<std::int16_t> : public IEquatable<std::int16_t>
 
 
 template <>
-struct INumberBase<std::int32_t> : public IEquatable<std::int32_t>
+struct INumberBase<std::int32_t>
 {
     static constexpr std::int32_t   One() { return 1; }
     static constexpr std::int32_t   Zero() { return 0; }
@@ -532,7 +531,7 @@ struct INumberBase<std::int32_t> : public IEquatable<std::int32_t>
 
 
 template <>
-struct INumberBase<std::int64_t> : public IEquatable<std::int64_t>
+struct INumberBase<std::int64_t>
 {
     static constexpr std::int64_t   One() { return 1; }
     static constexpr std::int64_t   Zero() { return 0; }
@@ -621,7 +620,7 @@ struct INumberBase<std::int64_t> : public IEquatable<std::int64_t>
 
 
 template <>
-struct INumberBase<std::uint8_t> : public IEquatable<std::uint8_t>
+struct INumberBase<std::uint8_t>
 {
     static constexpr std::uint8_t   One() { return 1; }
     static constexpr std::uint8_t   Zero() { return 0; }
@@ -710,7 +709,7 @@ struct INumberBase<std::uint8_t> : public IEquatable<std::uint8_t>
 
 
 template <>
-struct INumberBase<std::uint16_t> : public IEquatable<std::uint16_t>
+struct INumberBase<std::uint16_t>
 {
     static constexpr std::uint16_t   One() { return 1; }
     static constexpr std::uint16_t   Zero() { return 0; }
@@ -799,7 +798,7 @@ struct INumberBase<std::uint16_t> : public IEquatable<std::uint16_t>
 
 
 template <>
-struct INumberBase<std::uint32_t> : public IEquatable<std::uint32_t>
+struct INumberBase<std::uint32_t>
 {
     static constexpr std::uint32_t   One() { return 1; }
     static constexpr std::uint32_t   Zero() { return 0; }
@@ -888,7 +887,7 @@ struct INumberBase<std::uint32_t> : public IEquatable<std::uint32_t>
 
 
 template <>
-struct INumberBase<std::uint64_t> : public IEquatable<std::uint64_t>
+struct INumberBase<std::uint64_t>
 {
     static constexpr std::uint64_t   One() { return 1; }
     static constexpr std::uint64_t   Zero() { return 0; }

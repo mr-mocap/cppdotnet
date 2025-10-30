@@ -367,6 +367,13 @@ void Addition()
     }
 }
 
+void SizeofIsSameAsInternalValue()
+{
+    Int32 a;
+
+    assert( sizeof(a) == sizeof(std::int32_t) );
+}
+
 void Run()
 {
     DefaultConstructsToZero();
@@ -386,6 +393,7 @@ void Run()
     Parse();
     TryParse();
     Addition();
+    SizeofIsSameAsInternalValue();
 }
 
 }
