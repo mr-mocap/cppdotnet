@@ -12,7 +12,7 @@ EXTERNAL_LIBS = -l$(LIB_BASE_NAME) -luuid
 CXXFLAGS=-std=c++20 -W -Wall -Wextra -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
 LDFLAGS=-L$(LIB_BUILD_DIR)
 
-TESTS = Activity BinaryWriter BitConverter Console ConsoleTraceListener Convert \
+TESTS = Activity ActivitySource BinaryWriter BitConverter Console ConsoleTraceListener Convert \
 		Counter DateOnly DateTime DateTimeOffset Debug DefaultTraceListener Delegates \
 		Dictionary Enum Environment Exception Guid ICollection IDictionary IList Int32 \
 		LinkedList List Nullable Path Progress ReadOnlySpan Span Stack Stopwatch StringBuilder \
@@ -88,6 +88,10 @@ TestSpan.pass: TestSpan
 TestReadOnlySpan: TestReadOnlySpan.cpp
 
 TestReadOnlySpan.pass: TestReadOnlySpan
+
+TestProgress: TestProgress.cpp
+
+TestProgress.pass: TestProgress
 
 TestPath: TestPath.cpp
 
@@ -192,6 +196,10 @@ TestBitConverter.pass: TestBitConverter
 TestBinaryWriter: TestBinaryWriter.cpp
 
 TestBinaryWriter.pass: TestBinaryWriter
+
+TestActivitySource: TestActivitySource.cpp
+
+TestActivitySource.pass: TestActivitySource
 
 TestActivity: TestActivity.cpp
 
