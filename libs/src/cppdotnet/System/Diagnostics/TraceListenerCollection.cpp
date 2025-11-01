@@ -62,8 +62,8 @@ bool TraceListenerCollection::Contains(TraceListener *listener)
 
 void TraceListenerCollection::InitializeListener(TraceListener *listener)
 {
-    listener->IndentSize( Private::DebugAndTraceCommon::IndentSize() );
-    listener->IndentLevel( Private::DebugAndTraceCommon::IndentLevel() );
+    listener->IndentSize( Private::GlobalTracer::Instance().IndentSize() );
+    listener->IndentLevel( Private::GlobalTracer::Instance().IndentLevel() );
 }
 
 size_t TraceListenerCollection::IndexOf(TraceListener *listener)

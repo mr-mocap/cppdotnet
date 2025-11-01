@@ -2,9 +2,9 @@
 
 #include <cppdotnet/System/Diagnostics/TraceListenerCollection.hpp>
 #include <cppdotnet/System/Diagnostics/DefaultTraceListener.hpp>
-#include <cppdotnet/System/Diagnostics/Private/DebugAndTraceCommon.hpp>
 #include <set>
 #include <string>
+#include <string_view>
 #include <mutex>
 #include <memory>
 #include <source_location>
@@ -13,81 +13,122 @@
 namespace System::Diagnostics::Private
 {
 
-class TraceListener;
-
-class DebugAndTraceCommon
+class ITracer
 {
 public:
-    DebugAndTraceCommon();
-   ~DebugAndTraceCommon();
+    ITracer() = default;
+    ITracer(std::string_view name)
+        :
+        _name(name)
+    {
+    }
+    
+    // No copying/moving
+    ITracer(const ITracer &) = delete;
+    ITracer operator =(const ITracer &) = delete;
 
-    DebugAndTraceCommon(const DebugAndTraceCommon &) = delete;
-    DebugAndTraceCommon operator =(const DebugAndTraceCommon &) = delete;
-    DebugAndTraceCommon(DebugAndTraceCommon &&) = delete;
-    DebugAndTraceCommon operator =(const DebugAndTraceCommon &&) = delete;
-
-    static DebugAndTraceCommon &Instance();
-
+    virtual ~ITracer() = default;
+    
     TraceListenerCollection &Listeners() { return _listeners; }
 
-    bool UseGlobalLock();
-    void UseGlobalLock(bool new_value);
+    std::string_view Name() const { return _name; }
 
-    static int  IndentLevel();
-    static void IndentLevel(int new_value);
+    virtual bool UseGlobalLock();
+    virtual void UseGlobalLock(bool new_value);
 
-    static int  IndentSize();
-    static void IndentSize(int new_value);
+    virtual int  IndentLevel() = 0;
+    virtual void IndentLevel(int new_value) = 0;
 
-    static void Indent();
-    static void Unindent();
+    virtual int  IndentSize() = 0;
+    virtual void IndentSize(int new_value) = 0;
 
-    static void Flush();
-    static void Close();
+    virtual void Indent() = 0;
+    virtual void Unindent() = 0;
 
-    static bool AutoFlush();
-    static void AutoFlush(bool new_value);
+    virtual void Flush() = 0;
+    virtual void Close() = 0;
 
-    static void Write(std::string_view message);
-    static void Write(std::string_view message, std::string_view category);
+    virtual bool AutoFlush() = 0;
+    virtual void AutoFlush(bool new_value) = 0;
 
-    static void WriteLine(std::string_view message);
-    static void WriteLine(std::string_view message, std::string_view category);
+    virtual void Write(std::string_view message) = 0;
+    virtual void Write(std::string_view message, std::string_view category) = 0;
 
-    static void WriteIf(bool condition, std::string_view message);
-    static void WriteIf(bool condition, std::string_view message, std::string_view category);
+    virtual void WriteLine(std::string_view message) = 0;
+    virtual void WriteLine(std::string_view message, std::string_view category) = 0;
 
-    static void WriteLineIf(bool condition, std::string_view message);
-    static void WriteLineIf(bool condition, std::string_view message, std::string_view category);
+    void WriteIf(bool condition, std::string_view message);
+    void WriteIf(bool condition, std::string_view message, std::string_view category);
 
-    static void Assert(bool condition, const std::source_location);
-    static void Assert(bool condition, std::string_view message, const std::source_location);
-    static void Assert(bool condition,
-                       std::string_view message,
-                       std::string_view detail_message,
-                       const std::source_location);
+    void WriteLineIf(bool condition, std::string_view message);
+    void WriteLineIf(bool condition, std::string_view message, std::string_view category);
 
-    static void Fail(std::string_view message);
-    static void Fail(std::string_view message, std::string_view category);
+    virtual void Assert(bool condition, const std::source_location) = 0;
+    virtual void Assert(bool condition, std::string_view message, const std::source_location) = 0;
+    virtual void Assert(bool condition,
+                        std::string_view message,
+                        std::string_view detail_message,
+                        const std::source_location) = 0;
 
-    // Methods for Debug class
-    static void Print(std::string_view message);
-
-    // Methods for Trace class
-    static void TraceError(std::string_view message);
-    static void TraceWarning(std::string_view message);
-    static void TraceInformation(std::string_view message);
-
+    virtual void Fail(std::string_view message) = 0;
+    virtual void Fail(std::string_view message, std::string_view category) = 0;
 protected:
     TraceListenerCollection _listeners;
+    std::string _name = "DefaultTracer";
     bool _useGlobalLock = true;
+};
 
-    static int  _indentLevel;
-    static int  _indentSize;
-    static bool _autoFlush;
-    static std::string _indentString;
+class GlobalTracer : public ITracer
+{
+public:
+    GlobalTracer();
+    GlobalTracer(std::string_view name);
+    
+    // No copying/moving
+    GlobalTracer(const GlobalTracer &) = delete;
+    GlobalTracer operator =(const GlobalTracer &) = delete;
 
-    static bool NeedIndent();
+   ~GlobalTracer() override = default;
+
+    static ITracer &Instance();
+
+    int  IndentLevel() override;
+    void IndentLevel(int new_value) override;
+
+    int  IndentSize() override;
+    void IndentSize(int new_value) override;
+
+    void Indent() override;
+    void Unindent() override;
+
+    void Flush() override;
+    void Close() override;
+
+    bool AutoFlush() override;
+    void AutoFlush(bool new_value) override;
+
+    void Write(std::string_view message) override;
+    void Write(std::string_view message, std::string_view category) override;
+
+    void WriteLine(std::string_view message) override;
+    void WriteLine(std::string_view message, std::string_view category) override;
+
+    void Assert(bool condition, const std::source_location) override;
+    void Assert(bool condition, std::string_view message, const std::source_location) override;
+    void Assert(bool condition,
+                std::string_view message,
+                std::string_view detail_message,
+                const std::source_location) override;
+
+    void Fail(std::string_view message) override;
+    void Fail(std::string_view message, std::string_view category) override;
+protected:
+    int  _indentLevel = 0;
+    int  _indentSize  = 4;
+    bool _autoFlush   = false;
+    std::string _indentString;
+
+    bool NeedIndent();
 };
 
 }
