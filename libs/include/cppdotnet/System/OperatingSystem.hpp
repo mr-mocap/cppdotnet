@@ -2,6 +2,7 @@
 
 #include <cppdotnet/System/PlatformID.hpp>
 #include <cppdotnet/System/Version.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 
 
 namespace System
@@ -22,6 +23,8 @@ public:
     bool IsTvOS() const;
     bool IsWatchOS() const;
     bool IsWindows() const;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 };
 
 }

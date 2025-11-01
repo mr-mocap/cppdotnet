@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cppdotnet/System/TypeCode.hpp>
 #include <chrono>
 #include <format>
 
@@ -21,6 +22,8 @@ public:
     constexpr TimeSpan(TimeSpan &&) = default;
     constexpr TimeSpan &operator =(const TimeSpan &) = default;
     constexpr TimeSpan &operator =(TimeSpan &&) = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     static constexpr TimeSpan FromTicks(long value) { return TimeSpan( value ); }
     static constexpr TimeSpan FromMicroseconds(long value) { return TimeSpan( std::chrono::microseconds( value ) ); }

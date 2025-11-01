@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cppdotnet/System/Environment.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <string>
 #include <string_view>
 #include <cstdint>
@@ -14,6 +15,8 @@ class TextWriter
 public:
     TextWriter() = default;
     virtual ~TextWriter();
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     std::string_view NewLine() const { return _newLine; }
     void NewLine(std::string_view new_value) { _newLine = new_value; }

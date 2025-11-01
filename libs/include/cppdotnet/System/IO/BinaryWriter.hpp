@@ -3,6 +3,7 @@
 #include <cppdotnet/System/IO/Stream.hpp>
 #include <cppdotnet/System/IO/SeekOrigin.hpp>
 #include <cppdotnet/System/ReadOnlySpan.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <type_traits>
 
 
@@ -15,6 +16,8 @@ public:
     BinaryWriter() : BinaryWriter( Stream::Null() ) { }
     BinaryWriter(std::unique_ptr<Stream> output) : _stream( std::move(output) ) { }
     BinaryWriter(std::shared_ptr<Stream> p) : _stream( p ) { }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     static BinaryWriter Null() { return BinaryWriter(); }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cppdotnet/System/ReadOnlySpan.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <cstdint>
 #include <cstddef>
 #include <string>
@@ -36,6 +37,8 @@ public:
     Guid(const Guid &other);
 
     Guid &operator =(const Guid &);
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     static Guid Empty();
 

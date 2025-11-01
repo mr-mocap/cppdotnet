@@ -3,6 +3,7 @@
 #include <cppdotnet/System/Private/private.hpp>
 #include <cppdotnet/System/Predicate.hpp>
 #include <cppdotnet/System/Exception.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <unordered_set>
 #include <algorithm>
 
@@ -36,6 +37,8 @@ public:
     using const_iterator = underlying_datatype::const_iterator;
 
     HashSet() = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     constexpr size_type Capacity() const { return Count(); }  // NOTE: This isn't really implementable, is it?
 

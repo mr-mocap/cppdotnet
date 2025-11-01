@@ -5,6 +5,7 @@
 #include <cppdotnet/System/Boolean.hpp>
 #include <cppdotnet/System/Private/private.hpp>
 #include <cppdotnet/System/Enum.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <string>
 #include <string_view>
 #include <span>
@@ -23,6 +24,8 @@ namespace System
 class Convert
 {
 public:
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
+
     static std::string_view ToString(bool value);
     static std::string      ToString(char value);
     static std::string      ToString(std::byte value);

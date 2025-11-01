@@ -2,6 +2,7 @@
 
 #include <cppdotnet/System/ConsoleKey.hpp>
 #include <cppdotnet/System/ConsoleModifiers.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 
 
 namespace System
@@ -27,6 +28,8 @@ struct ConsoleKeyInfo
                (left.KeyChar   == right.KeyChar) &&
                (left.Modifiers == right.Modifiers);
     }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 };
 
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cppdotnet/System/TypeCode.hpp>
 #include <string_view>
 
 
@@ -13,6 +14,8 @@ class DiagnosticSource
 public:
     DiagnosticSource() = default;
     virtual ~DiagnosticSource() = 0;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     virtual bool IsEnabled() const = 0;
     virtual bool IsEnabled(std::string_view name) const = 0;

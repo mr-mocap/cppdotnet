@@ -5,6 +5,7 @@
 #include <cppdotnet/System/TimeSpan.hpp>
 #include <cppdotnet/System/DateOnly.hpp>
 #include <cppdotnet/System/TimeOnly.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <cppdotnet/System/Exception.hpp>
 #include <cstddef>
 #include <chrono>
@@ -39,6 +40,8 @@ public:
 
     constexpr DateTime &operator =(const DateTime &) = default;
     constexpr DateTime &operator =(DateTime &&) = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     constexpr DateTime Date() const { return DateTime( _date_only, TimeOnly() ); }
     constexpr TimeSpan TimeOfDay() const { return _time_only.ToTimeSpan(); }

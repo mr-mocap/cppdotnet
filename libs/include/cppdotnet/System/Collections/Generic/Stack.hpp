@@ -2,6 +2,7 @@
 
 #include <cppdotnet/System/Private/private.hpp>
 #include <cppdotnet/System/Exception.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <stack>
 #include <algorithm>
 
@@ -42,6 +43,8 @@ public:
 
     // For now, do nothing  (Don't know how to implement this)
     Stack(int initial_capacity) { assert(false); }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     // For now, do nothing  (Don't know how to implement this)
     size_type Capacity() const { assert(false); return 0; }

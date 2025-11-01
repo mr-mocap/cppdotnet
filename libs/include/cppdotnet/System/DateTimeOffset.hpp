@@ -2,6 +2,7 @@
 
 #include <cppdotnet/System/DateTime.hpp>
 #include <cppdotnet/System/TimeSpan.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 
 
 namespace System
@@ -16,6 +17,8 @@ public:
 
     const System::DateTime &DateTime() const { return _date_time; }
     const TimeSpan &Offset() const { return _offset_from_utc; }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     System::DateTime Date() const { return _date_time.Date(); }
 

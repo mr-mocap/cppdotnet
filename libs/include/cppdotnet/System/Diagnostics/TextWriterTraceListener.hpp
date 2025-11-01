@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cppdotnet/System/TypeCode.hpp>
 #include <cppdotnet/System/Diagnostics/TraceListener.hpp>
 #include <cppdotnet/System/IO/TextWriter.hpp>
 #include <cppdotnet/System/IO/Stream.hpp>
@@ -28,6 +29,8 @@ public:
     TextWriterTraceListener(std::unique_ptr<System::IO::Stream> new_stream);
     TextWriterTraceListener(std::unique_ptr<System::IO::Stream> new_stream, std::string_view name);
    ~TextWriterTraceListener() = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     void Close() override;
     void Flush() override;

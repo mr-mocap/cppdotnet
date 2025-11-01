@@ -179,6 +179,8 @@ public:
     constexpr SortedDictionary &operator =(const SortedDictionary &) = default;
     constexpr SortedDictionary &operator =(SortedDictionary &&) = default;
 
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
+
     constexpr key_compare Comparer() const { return _data.key_comp(); }
 
     constexpr size_type Capacity() const { return Count(); }  // NOTE: This isn't really implementable, is it?

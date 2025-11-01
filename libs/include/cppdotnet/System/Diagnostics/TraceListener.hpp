@@ -3,6 +3,7 @@
 #include <cppdotnet/System/Diagnostics/TraceOptions.hpp>
 #include <cppdotnet/System/Diagnostics/TraceFilter.hpp>
 #include <cppdotnet/System/Diagnostics/TraceEventCache.hpp>
+#include <cppdotnet/System/Diagnostics/TraceEventType.hpp>
 #include <cppdotnet/System/Collections/Specialized/StringDictionary.hpp>
 #include <string>
 #include <string_view>
@@ -20,6 +21,8 @@ public:
     TraceListener();
     TraceListener(std::string_view name);
     virtual ~TraceListener() = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     std::string_view Name() const;
     void Name(const std::string &new_name) { _name = new_name; }

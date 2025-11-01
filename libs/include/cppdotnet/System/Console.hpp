@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cppdotnet/System/TypeCode.hpp>
 #include <memory>
 #include <format>
 #include <string>
@@ -85,6 +86,8 @@ public:
         // Let's use the more primitive WriteLine(std::string_view) underneath
         WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
     }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 };
 
 }

@@ -79,6 +79,8 @@ public:
     constexpr OrderedDictionary &operator =(const OrderedDictionary &) = default;
     constexpr OrderedDictionary &operator =(OrderedDictionary &&) = default;
 
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
+
     constexpr key_equal Comparer() const { return _dictionary.key_comp(); }
 
     constexpr size_type Capacity() const { return Count(); }  // NOTE: This isn't really implementable, is it?

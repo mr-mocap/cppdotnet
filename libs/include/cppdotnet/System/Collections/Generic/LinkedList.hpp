@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cppdotnet/System/Exception.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <list>
 #include <string_view>
 #include <algorithm>
@@ -52,6 +53,8 @@ public:
 
     LinkedList &operator =(const LinkedList &other) = default;
     LinkedList &operator =(LinkedList &&other) = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
           reference First()       { return _list.front(); }
     const_reference First() const { return _list.front(); }

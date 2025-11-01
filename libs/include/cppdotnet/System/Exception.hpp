@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cppdotnet/System/TypeCode.hpp>
 #include <exception>
 #include <string>
 #include <string_view>
@@ -19,6 +20,8 @@ class Exception : public std::exception
 {
 public:
     Exception() = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     /** Remove the ability to copy objects of this class
      *

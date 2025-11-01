@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cppdotnet/System/TypeCode.hpp>
 #include <string>
 #include <format>
 
@@ -13,6 +14,8 @@ struct KeyValuePair : std::pair<const TKey, TValue>
     using std::pair<const TKey, TValue>::pair;
 
     //KeyValuePair(const std::pair<const TKey, TValue> &p) : std::pair<const TKey, TValue>( p ) { }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     std::string ToString() const
     {

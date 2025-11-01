@@ -4,6 +4,7 @@
 #include <cppdotnet/System/IO/FileMode.hpp>
 #include <cppdotnet/System/Nullable.hpp>
 #include <cppdotnet/System/IO/UnixFileMode.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 
 
 namespace System::IO
@@ -12,6 +13,8 @@ namespace System::IO
 class FileStreamOptions
 {
 public:
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     FileAccess Access() const { return _access; }
 

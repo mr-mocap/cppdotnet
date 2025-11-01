@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cppdotnet/System/TypeCode.hpp>
 #include <tuple>
 
 
@@ -21,6 +22,8 @@ struct ValueTuple : std::tuple<ArgTypes ...>
     {
         return ValueTuple{ std::make_tuple(args...) };
     }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 };
 
 }

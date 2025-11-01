@@ -3,6 +3,7 @@
 #include <cppdotnet/System/IO/SeekOrigin.hpp>
 #include <cppdotnet/System/ReadOnlySpan.hpp>
 #include <cppdotnet/System/Span.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -15,6 +16,8 @@ class Stream
 {
 public:
     virtual ~Stream() = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     static std::unique_ptr<Stream> Null();
 

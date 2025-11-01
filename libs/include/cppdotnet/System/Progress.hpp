@@ -2,6 +2,7 @@
 
 #include <cppdotnet/System/Action.hpp>
 #include <cppdotnet/System/EventHandler.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <cppdotnet/System/Private/private.hpp>
 #include <utility>
 
@@ -37,6 +38,8 @@ public:
         _action = std::move(progress._action);
         return *this;
     }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     void Report(T value)
     {

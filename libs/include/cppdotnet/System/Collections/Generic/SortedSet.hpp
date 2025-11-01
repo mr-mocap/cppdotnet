@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <set>
 #include <functional>
 
@@ -33,6 +34,8 @@ public:
         m_data( comp, alloc )
     {
     }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     Compare Comparer() const { return m_data.key_comp(); }
 

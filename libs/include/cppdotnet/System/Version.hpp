@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cppdotnet/System/TypeCode.hpp>
 #include <string>
 #include <string_view>
 
@@ -33,6 +34,8 @@ public:
     }
     Version(std::string_view input);
     Version(const Version &other) = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     int Major() const { return _major; }
     int Minor() const { return _minor; }

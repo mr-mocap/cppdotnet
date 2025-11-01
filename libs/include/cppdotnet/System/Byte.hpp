@@ -49,7 +49,7 @@ public:
 
     bool Equals(const Byte other) const { return *this == other; }
 
-    TypeCode GetTypeCode() const { return TypeCode::Byte; }
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Byte; }
     
     static constexpr bool IsEvenInteger(const Byte value) { return (std::to_integer<std::uint8_t>(value._value) % 2) == 0; }
     static constexpr bool IsOddInteger(const Byte value)  { return !IsEvenInteger(value); }

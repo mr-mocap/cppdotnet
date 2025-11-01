@@ -2,6 +2,7 @@
 
 #include <cppdotnet/System/DayOfWeek.hpp>
 #include <cppdotnet/System/TimeSpan.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #if 0
 #include <cppdotnet/System/DateTime.hpp>
 #endif
@@ -47,6 +48,8 @@ public:
     DateOnly &operator =(const DateOnly &) = default;
     DateOnly(DateOnly &&) = default;
     DateOnly &operator =(DateOnly &&) = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     constexpr int Day() const
     {

@@ -2,6 +2,7 @@
 
 #include <cppdotnet/System/Exception.hpp>
 #include <cppdotnet/System/Predicate.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <vector>
 #include <initializer_list>
 #include <string_view>
@@ -111,6 +112,8 @@ public:
 
     List &operator =(const List &other) = default;
     List &operator =(List &&other) = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     size_type Capacity() const { return _list.capacity(); }
     

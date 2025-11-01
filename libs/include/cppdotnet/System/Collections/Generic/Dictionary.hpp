@@ -163,6 +163,8 @@ public:
     constexpr Dictionary &operator =(const Dictionary &) = default;
     constexpr Dictionary &operator =(Dictionary &&) = default;
 
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
+
     constexpr key_equal Comparer() const { return m_data.key_comp(); }
 
     constexpr size_type Capacity() const { return Count(); }  // NOTE: This isn't really implementable, is it?

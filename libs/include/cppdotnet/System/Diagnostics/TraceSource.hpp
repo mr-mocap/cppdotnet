@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cppdotnet/System/Diagnostics/SourceLevels.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <string>
 #include <string_view>
 
@@ -13,6 +14,8 @@ class TraceSource
 public:
     TraceSource(std::string_view name) : _name{ name } { }
     TraceSource(std::string_view name, Diagnostics::SourceLevels default_level) : _name{ name }, _level{ default_level } { }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     Diagnostics::SourceLevels DefaultLevel() const { return _level; }
 

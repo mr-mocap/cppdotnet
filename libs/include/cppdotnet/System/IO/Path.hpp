@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cppdotnet/System/TypeCode.hpp>
 #include <filesystem>
 
 
@@ -53,6 +54,8 @@ public:
     static bool Exists(const std::string &path) { return std::filesystem::exists( path ); }
 
     static bool HasExtension(const std::string &path) { return std::filesystem::path(path).has_extension(); }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 };
 
 }

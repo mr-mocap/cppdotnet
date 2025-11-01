@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cppdotnet/System/TypeCode.hpp>
 #include <set>
 #include <string>
 
@@ -15,6 +16,8 @@ public:
     using underlying_datatype = std::set<TraceListener *>;
 
     TraceListenerCollection() = default;
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     TraceListener *operator [](size_t index);
     TraceListener *operator [](std::string_view name);

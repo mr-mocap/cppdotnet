@@ -85,6 +85,8 @@ public:
 
     static constexpr size_t extent = std::span<Type, Extent>::extent;
 
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
+
     static constexpr ReadOnlySpan<Type> Empty() { return ReadOnlySpan<Type>(); }
 
     constexpr bool IsEmpty() const { return _data.empty(); }

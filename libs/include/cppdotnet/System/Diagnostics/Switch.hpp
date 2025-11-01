@@ -2,6 +2,7 @@
 
 #include <cppdotnet/System/Collections/Specialized/StringDictionary.hpp>
 #include <cppdotnet/System/EventHandler.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <set>
 #include <string>
 #include <string_view>
@@ -28,6 +29,7 @@ class Switch {
 public:
     virtual ~Switch();
 
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     std::string_view DisplayName() const  { return _displayName; }
     std::string_view Description() const  { return _description; }

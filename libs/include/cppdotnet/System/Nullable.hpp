@@ -19,6 +19,8 @@ public:
     {
     }
 
+    constexpr TypeCode GetTypeCode() const { return HasValue() ? TypeCode::Object : TypeCode::Empty; }
+
     constexpr bool HasValue() const
     {
         return _data.has_value();

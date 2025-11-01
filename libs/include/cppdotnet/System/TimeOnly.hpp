@@ -44,6 +44,8 @@ public:
     constexpr TimeOnly(const TimeOnly &) = default;
     constexpr TimeOnly &operator =(const TimeOnly &) = default;
 
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
+
     int Hour() const { return _time_span.Hours(); }
     int Minute() const { return _time_span.Minutes(); }
     int Second() const { return _time_span.Seconds(); }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cppdotnet/System/Exception.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <span>
 #include <type_traits>
 #include <algorithm>
@@ -79,6 +80,8 @@ public:
 
     template <std::size_t OtherExtent>
     constexpr Span(std::span<Type, OtherExtent> from) : _data{ from } { }
+
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     static constexpr Span<Type> Empty() { return Span<Type>(); }
 

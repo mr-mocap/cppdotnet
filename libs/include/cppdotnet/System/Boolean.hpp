@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cppdotnet/System/IConvertible.hpp>
+#include <cppdotnet/System/TypeCode.hpp>
 #include <cppdotnet/System/Numerics/INumber.hpp>
 #include <string_view>
 #include <compare>
@@ -8,8 +8,7 @@
 namespace System
 {
 
-class Boolean : public IConvertible,
-                public Numerics::INumber<Boolean>
+class Boolean
 {
 public:
     constexpr Boolean() { }
@@ -24,35 +23,46 @@ public:
     bool Value() const { return _value; }
     void Value(bool new_value) { new_value = new_value; }
 
-    // IConvertible Interface
-    TypeCode GetTypeCode() const override { return TypeCode::Boolean; }
+    /** @name IConvertible Interface
+     *  @{
+     */
+    static constexpr TypeCode GetTypeCode() { return TypeCode::Boolean; }
 
-    bool ToBoolean() const override { return _value; }
+    bool ToBoolean() const { return _value; }
 
-    std::byte ToByte() const override { return std::byte{_value}; }
+    std::byte ToByte() const { return std::byte{_value}; }
 
-    char ToChar() const override { return {_value}; }
+    char ToChar() const { return {_value}; }
 
-    std::int16_t ToInt16() const override { return {_value}; }
-    std::int32_t ToInt32() const override { return {_value}; }
-    std::int64_t ToInt64() const override { return {_value}; }
+    std::int16_t ToInt16() const { return {_value}; }
+    std::int32_t ToInt32() const { return {_value}; }
+    std::int64_t ToInt64() const { return {_value}; }
 
-    std::uint16_t ToUInt16() const override { return {_value}; }
-    std::uint32_t ToUInt32() const override { return {_value}; }
-    std::uint64_t ToUInt64() const override { return {_value}; }
+    std::uint16_t ToUInt16() const { return {_value}; }
+    std::uint32_t ToUInt32() const { return {_value}; }
+    std::uint64_t ToUInt64() const { return {_value}; }
 
-    float  ToSingle() const override { return static_cast<float>(_value); }
-    double ToDouble() const override { return static_cast<double>(_value); }
+    float  ToSingle() const { return static_cast<float>(_value); }
+    double ToDouble() const { return static_cast<double>(_value); }
 
-    std::string ToString() const override { return (_value) ? std::string{TrueString} : std::string{FalseString}; }
+    std::string ToString() const { return (_value) ? std::string{TrueString} : std::string{FalseString}; }
+    /// @}
 
-    // IComparable Interface
+    /** @name IComparable Interface
+     *  @{
+     */
     int CompareTo(const Boolean &other) const;
+    /// @}
 
-    // IEquatable Interface
+    /** @name IEquitable Interface
+     *  @{
+     */
     constexpr bool Equals(const Boolean &other) const { return *this == other; }
+    /// @}
 
-    // INumberBase Interface
+    /** @name INumberBase Interface
+     *  @{
+     */
     static constexpr Boolean One() { return Numerics::INumberBase<bool>::One(); }
     static constexpr Boolean Zero() { return Numerics::INumberBase<bool>::Zero(); }
     static constexpr int   Radix = Numerics::INumberBase<bool>::Radix;
@@ -199,8 +209,11 @@ public:
     {
         return Numerics::INumberBase<bool>::TryParse(value_string);
     }
+    /// @}
 
-    // INumber Interface
+    /** @name INumber Interface
+     *  @{
+     */
     static constexpr Boolean Clamp(Boolean value, Boolean min, Boolean max)
     {
         return Numerics::INumber<bool>::Clamp(value, min, max);
@@ -235,6 +248,7 @@ public:
     {
         return Numerics::INumber<bool>::Sign(value);
     }
+    /// @}
 
     constexpr operator bool() const { return _value; }
 
