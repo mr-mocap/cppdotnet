@@ -117,7 +117,7 @@ public:
 protected:
     std::string  _name;
     int          _indentLevel = 0;
-    int          _indentSize  = 0;
+    int          _indentSize  = 4;
     TraceOptions _options     = TraceOptions::None;
     bool         _needIndent  = false;
     std::string  _indentString;
