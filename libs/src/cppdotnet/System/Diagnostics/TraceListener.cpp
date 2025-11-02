@@ -74,9 +74,39 @@ void TraceListener::TraceData(System::Diagnostics::TraceEventCache &event_cache,
 {
     if ( !Filter() || (Filter() && Filter()->ShouldTrace( event_cache, source, event_type, id, message ) ) )
     {
-        WriteLine("[Trace Header: Source=\"{}\" EventType=\"{}\" ID=\"{}\"]", source, event_type, id);
+        WriteLine("[Trace Data Header: Source=\"{}\" EventType=\"{}\" ID=\"{}\"]", source, event_type, id);
         WriteLine(message);
-        WriteLine("[Trace Footer: Time=\"{}\" PID=\"{}\" TID=\"{}\" Timestamp=\"{}\"]",
+        WriteLine("[Trace Data Footer: Time=\"{}\" PID=\"{}\" TID=\"{}\" Timestamp=\"{}\"]",
+                  event_cache.DateTime().ToString(),
+                  event_cache.ProcessId(),
+                  event_cache.ThreadId(),
+                  event_cache.Timestamp()
+                 );
+    }
+}
+
+void TraceListener::TraceEvent(System::Diagnostics::TraceEventCache &event_cache,
+                                                   std::string_view  source,
+                                System::Diagnostics::TraceEventType  event_type,
+                                                                int  id
+                          )
+{
+    // Treat as a partial function and really call the same method, but with an empty message
+    TraceEvent( event_cache, source, event_type, id, std::string() );
+}
+
+void TraceListener::TraceEvent(System::Diagnostics::TraceEventCache &event_cache,
+                                                   std::string_view  source,
+                                System::Diagnostics::TraceEventType  event_type,
+                                                                int  id,
+                                                   std::string_view  message
+                          )
+{
+    if ( !Filter() || (Filter() && Filter()->ShouldTrace( event_cache, source, event_type, id, message ) ) )
+    {
+        WriteLine("[Trace Event Header: Source=\"{}\" EventType=\"{}\" ID=\"{}\"]", source, event_type, id);
+        WriteLine(message);
+        WriteLine("[Trace Event Footer: Time=\"{}\" PID=\"{}\" TID=\"{}\" Timestamp=\"{}\"]",
                   event_cache.DateTime().ToString(),
                   event_cache.ProcessId(),
                   event_cache.ThreadId(),

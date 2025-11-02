@@ -106,6 +106,35 @@ public:
                  );
     }
 
+    virtual void TraceEvent(System::Diagnostics::TraceEventCache &event_cache,
+                                               std::string_view  source,
+                            System::Diagnostics::TraceEventType  event_type,
+                                                            int  id
+                          );
+
+    virtual void TraceEvent(System::Diagnostics::TraceEventCache &event_cache,
+                                               std::string_view  source,
+                            System::Diagnostics::TraceEventType  event_type,
+                                                            int  id,
+                                               std::string_view  message
+                          );
+
+    template <typename ...Args>
+    void TraceEvent(System::Diagnostics::TraceEventCache  &event_cache,
+                                        std::string_view   source,
+                     System::Diagnostics::TraceEventType   event_type,
+                                                     int   id,
+                             std::format_string<Args...> &&fmt,
+                                                    Args &&... args)
+    {
+        TraceEvent( event_cache,
+                    source,
+                    event_type,
+                    id,
+                    std::string_view( std::vformat( fmt.get(), std::make_wformat_args( args... ) ) )
+                 );
+    }
+
     const Collections::Specialized::StringDictionary &Attributes() const { return _attributes; }
 
     //?? GetSupportedAttributes() const;

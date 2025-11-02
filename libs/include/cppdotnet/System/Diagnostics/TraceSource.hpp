@@ -1,7 +1,10 @@
 #pragma once
 
-#include <cppdotnet/System/Diagnostics/SourceLevels.hpp>
 #include <cppdotnet/System/TypeCode.hpp>
+#include <cppdotnet/System/Diagnostics/SourceLevels.hpp>
+#include <cppdotnet/System/Diagnostics/TraceListenerCollection.hpp>
+#include <cppdotnet/System/Diagnostics/TraceEventType.hpp>
+#include <cppdotnet/System/Collections/Specialized/StringDictionary.hpp>
 #include <string>
 #include <string_view>
 
@@ -20,9 +23,25 @@ public:
     Diagnostics::SourceLevels DefaultLevel() const { return _level; }
 
     std::string_view Name() const { return _name; }
+
+    const Collections::Specialized::StringDictionary &Attributes() { return _attributes; }
+
+    const Diagnostics::TraceListenerCollection &Listeners() { return _listeners; }
+
+    // TODO: Implement the Switch() method
+    // TODO: Implement the Initializing event
+
+    void Close();
+    void Flush();
+
+    void TraceData(TraceEventType event_type, int id);
+    void TraceEvent(TraceEventType event_type, int id);
+    void TraceInformation(std::string_view message);
 protected:
     std::string               _name;
     Diagnostics::SourceLevels _level{ Diagnostics::SourceLevels::Off };
+    Collections::Specialized::StringDictionary _attributes;
+    Diagnostics::TraceListenerCollection       _listeners;
 };
 
 }
