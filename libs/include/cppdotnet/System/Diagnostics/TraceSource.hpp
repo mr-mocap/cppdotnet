@@ -24,9 +24,11 @@ public:
 
     std::string_view Name() const { return _name; }
 
-    const Collections::Specialized::StringDictionary &Attributes() { return _attributes; }
+    const Collections::Specialized::StringDictionary &Attributes() const { return _attributes; }
+          Collections::Specialized::StringDictionary &Attributes()       { return _attributes; }
 
-    const Diagnostics::TraceListenerCollection &Listeners() { return _listeners; }
+    const Diagnostics::TraceListenerCollection &Listeners() const { return _listeners; }
+          Diagnostics::TraceListenerCollection &Listeners()       { return _listeners; }
 
     // TODO: Implement the Switch() method
     // TODO: Implement the Initializing event
