@@ -25,7 +25,6 @@ public:
     static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     std::string_view Name() const;
-    void Name(const std::string &new_name) { _name = new_name; }
     void Name(std::string_view new_name) { _name = new_name; }
 
     TraceOptions TraceOutputOptions() const { return _options; }
