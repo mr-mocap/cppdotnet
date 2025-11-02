@@ -4,6 +4,7 @@
 #include <cppdotnet/System/Diagnostics/Debug.hpp>
 #include <cstdlib>
 #include <format>
+#include <mutex>
 
 
 static std::string FormatAssert(const std::source_location location)
@@ -70,41 +71,24 @@ void ITracer::WriteLineIf(bool condition, std::string_view message, std::string_
         WriteLine( message, category );
 }
 
-GlobalTracer::GlobalTracer()
+DefaultTracer::DefaultTracer()
 {
     _indentString.resize( _indentLevel * _indentSize, ' ' );
-
-    // Potential memory leak! TODO: FIXME
-    DefaultTraceListener *dtl = new DefaultTraceListener();
-
-    Listeners().Add( dtl );
 }
 
-GlobalTracer::GlobalTracer(std::string_view name)
+DefaultTracer::DefaultTracer(std::string_view name)
     :
     ITracer(name)
 {
     _indentString.resize( _indentLevel * _indentSize, ' ' );
-
-    // Potential memory leak! TODO: FIXME
-    DefaultTraceListener *dtl = new DefaultTraceListener();
-
-    Listeners().Add( dtl );
 }
 
-ITracer &GlobalTracer::Instance()
-{
-    static std::unique_ptr<GlobalTracer>  instance{ std::make_unique<GlobalTracer>() };
-
-    return *instance;
-}
-
-int GlobalTracer::IndentLevel()
+int DefaultTracer::IndentLevel()
 {
     return _indentLevel;
 }
 
-void GlobalTracer::IndentLevel(int new_value)
+void DefaultTracer::IndentLevel(int new_value)
 {
     if ( new_value != _indentLevel )
     {
@@ -114,12 +98,12 @@ void GlobalTracer::IndentLevel(int new_value)
     }
 }
 
-int GlobalTracer::IndentSize()
+int DefaultTracer::IndentSize()
 {
     return _indentSize;
 }
 
-void GlobalTracer::IndentSize(int new_value)
+void DefaultTracer::IndentSize(int new_value)
 {
     if ( new_value != _indentSize )
     {
@@ -129,75 +113,79 @@ void GlobalTracer::IndentSize(int new_value)
     }
 }
 
-void GlobalTracer::Indent()
+void DefaultTracer::Indent()
 {
     IndentLevel( IndentLevel() + 1 );
+    for (TraceListener *iCurrentListener : Listeners() )
+        iCurrentListener->IndentLevel( IndentLevel() );
 }
 
-void GlobalTracer::Unindent()
+void DefaultTracer::Unindent()
 {
     IndentLevel( IndentLevel() - 1 );
+    for (TraceListener *iCurrentListener : Listeners() )
+        iCurrentListener->IndentLevel( IndentLevel() );
 }
 
-bool GlobalTracer::AutoFlush()
+bool DefaultTracer::AutoFlush()
 {
     return _autoFlush;
 }
 
-void GlobalTracer::AutoFlush(bool new_value)
+void DefaultTracer::AutoFlush(bool new_value)
 {
     _autoFlush = new_value;
 }
 
-void GlobalTracer::Flush()
+void DefaultTracer::Flush()
 {
-    for (auto iCurrentListener : Instance().Listeners() )
+    for (auto iCurrentListener : Listeners() )
         iCurrentListener->Flush();
 }
 
-void GlobalTracer::Close()
+void DefaultTracer::Close()
 {
-    for (auto iCurrentListener : Instance().Listeners() )
+    for (auto iCurrentListener : Listeners() )
         iCurrentListener->Close();
 }
 
-void GlobalTracer::Write(std::string_view message)
+void DefaultTracer::Write(std::string_view message)
 {
-    for (auto iCurrentListener : Instance().Listeners() )
+    for (auto iCurrentListener : Listeners() )
         iCurrentListener->Write( message );
     
     if ( AutoFlush() )
         Flush();
 }
 
-void GlobalTracer::Write(std::string_view message, std::string_view category)
+void DefaultTracer::Write(std::string_view message, std::string_view category)
 {
-    for (auto iCurrentListener : Instance().Listeners() )
+    for (auto iCurrentListener : Listeners() )
         iCurrentListener->Write( message, category );
     
     if ( AutoFlush() )
         Flush();
 }
 
-void GlobalTracer::WriteLine(std::string_view message)
+void DefaultTracer::WriteLine(std::string_view message)
 {
-    for (auto iCurrentListener : Instance().Listeners() )
+    for (auto iCurrentListener : Listeners() )
         iCurrentListener->WriteLine( message );
     
     if ( AutoFlush() )
         Flush();
 }
 
-void GlobalTracer::WriteLine(std::string_view message, std::string_view category)
+void DefaultTracer::WriteLine(std::string_view message, std::string_view category)
 {
-    for (auto iCurrentListener : Instance().Listeners() )
+    for (auto iCurrentListener : Listeners() )
         iCurrentListener->WriteLine( message, category );
     
     if ( AutoFlush() )
         Flush();
 }
 
-void GlobalTracer::Assert(bool condition, const std::source_location location)
+void DefaultTracer::Assert(bool condition, const std::source_location location)
 {
     // TODO: Output the call stack
 
@@ -205,7 +193,7 @@ void GlobalTracer::Assert(bool condition, const std::source_location location)
     WriteLineIf( !condition, FormatAssert(location) );
 }
 
-void GlobalTracer::Assert(bool condition,
+void DefaultTracer::Assert(bool condition,
                           std::string_view message,
                           const std::source_location location)
 {
@@ -215,7 +203,7 @@ void GlobalTracer::Assert(bool condition,
     WriteLineIf( !condition, FormatAssertMessage(location, message) );
 }
 
-void GlobalTracer::Assert(bool condition,
+void DefaultTracer::Assert(bool condition,
                           std::string_view message,
                           std::string_view detail_message,
                           const std::source_location location)
@@ -226,19 +214,57 @@ void GlobalTracer::Assert(bool condition,
     WriteLineIf( !condition, FormatAssertMessageCategory(location, message, detail_message) );
 }
 
-void GlobalTracer::Fail(std::string_view message)
+void DefaultTracer::Fail(std::string_view message)
 {
     WriteLine( FormatFailMessage( message ) );
 }
 
-void GlobalTracer::Fail(std::string_view message, std::string_view category)
+void DefaultTracer::Fail(std::string_view message, std::string_view category)
 {
     WriteLine( FormatFailMessageCategory( message, category ) );
 }
 
-bool GlobalTracer::NeedIndent()
+bool DefaultTracer::NeedIndent()
 {
     return ( IndentLevel() > 0) && ( IndentSize() > 0);
 }
+
+std::unique_ptr<ITracer> DefaultTracerFactory::CreateTracer()
+{
+    return std::make_unique<DefaultTracer>();
+}
+
+std::unique_ptr<ITracer> DefaultTracerFactory::CreateTracer(std::string_view name)
+{
+    return std::make_unique<DefaultTracer>( name );
+}
+
+static void DefaultSetupGlobalTracer()
+{
+    GlobalTracerFactoryInstancePtr = std::make_unique<DefaultTracerFactory>();
+    GlobalTracerInstancePtr        = GlobalTracerFactoryInstancePtr->CreateTracer();
+
+    GlobalTracerInstancePtr->Listeners().Add( std::make_unique<DefaultTraceListener>() );
+}
+
+void InitializeGlobalTracer(std::function<void()> init_function)
+{
+    if ( init_function )
+        init_function();
+    else
+        DefaultSetupGlobalTracer();
+}
+
+ITracer *GetGlobalTracer()
+{
+    static std::once_flag initFlag;
+
+    std::call_once( initFlag, InitializeGlobalTracer, GlobalTracerInitFunction );
+    return GlobalTracerInstancePtr.get();
+}
+
+std::unique_ptr<ITracerFactory> GlobalTracerFactoryInstancePtr;
+std::unique_ptr<ITracer>        GlobalTracerInstancePtr;
+std::function<void()>           GlobalTracerInitFunction;
 
 }

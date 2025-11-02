@@ -3,6 +3,7 @@
 #include <cppdotnet/System/Diagnostics/Private/DebugAndTraceCommon.hpp>
 
 #include <iterator>
+#include <utility>
 
 
 namespace System::Diagnostics
@@ -29,9 +30,9 @@ TraceListener *TraceListenerCollection::operator [](std::string_view name)
     return nullptr;
 }
 
-int TraceListenerCollection::Add(TraceListener *listener)
+int TraceListenerCollection::Add(std::unique_ptr<TraceListener> &&listener)
 {
-    auto inserted_at = _list.insert( listener );
+    auto inserted_at = _list.insert( listener.release());
 
     return (inserted_at.second) ? std::distance( _list.begin(), inserted_at.first ) : -1;
 }
@@ -46,7 +47,11 @@ void TraceListenerCollection::Remove(std::string_view name)
     for (TraceListener *iCurrentListener : _list)
     {
         if ( iCurrentListener->Name() == name )
-            Remove( iCurrentListener );
+        {
+            std::unique_ptr<TraceListener> to_delete( iCurrentListener );
+
+            Remove( to_delete.get() );
+        }
     }
 }
 
@@ -58,12 +63,6 @@ void TraceListenerCollection::Clear()
 bool TraceListenerCollection::Contains(TraceListener *listener)
 {
     return _list.contains( listener );
-}
-
-void TraceListenerCollection::InitializeListener(TraceListener *listener)
-{
-    listener->IndentSize( Private::GlobalTracer::Instance().IndentSize() );
-    listener->IndentLevel( Private::GlobalTracer::Instance().IndentLevel() );
 }
 
 size_t TraceListenerCollection::IndexOf(TraceListener *listener)

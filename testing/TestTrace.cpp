@@ -8,22 +8,6 @@
 namespace TestTrace
 {
 
-static std::unique_ptr<System::Diagnostics::ConsoleTraceListener> ConsoleListener;
-
-void TestSetup()
-{
-    ConsoleListener = std::make_unique<System::Diagnostics::ConsoleTraceListener>();
-    
-    System::Diagnostics::Trace::Listeners().Add(ConsoleListener.get());
-}
-
-void TestTeardown()
-{
-    System::Diagnostics::Trace::Listeners().Remove(ConsoleListener.get());
-
-    ConsoleListener.reset();
-}
-
 void Write()
 {
     System::Diagnostics::Trace::Write("This is a message\n"); // We have to add newline here
@@ -254,37 +238,33 @@ void TestTraceLevel()
 
 void Run()
 {
-    TestSetup();
-    {
-        Write();
-        WriteWithCategory();
-        WriteWithArgs();
-        WriteIf();
-        WriteIfWithCategory();
-        WriteIfWithArgs();
-        WriteLine();
-        WriteLineWithCategory();
-        WriteLineWithArgs();
-        WriteLineIf();
-        WriteLineIfWithCategory();
-        WriteLineIfWithArgs();
-        TraceAssert();
-        TraceAssertWithMessage();
-        TraceAssertWithMessageAndCategory();
-        TraceAssertWithMessageAndArgs();
-        TraceFail();
-        TraceFailWithCategory();
-        TraceFailWithArgs();
-        TraceError();
-        TraceErrorWithArgs();
-        TraceWarning();
-        TraceWarningWithArgs();
-        TraceInformation();
-        TraceInformationWithArgs();
-        IndentLevel();
-        TestTraceLevel();
-    }
-    TestTeardown();
+    Write();
+    WriteWithCategory();
+    WriteWithArgs();
+    WriteIf();
+    WriteIfWithCategory();
+    WriteIfWithArgs();
+    WriteLine();
+    WriteLineWithCategory();
+    WriteLineWithArgs();
+    WriteLineIf();
+    WriteLineIfWithCategory();
+    WriteLineIfWithArgs();
+    TraceAssert();
+    TraceAssertWithMessage();
+    TraceAssertWithMessageAndCategory();
+    TraceAssertWithMessageAndArgs();
+    TraceFail();
+    TraceFailWithCategory();
+    TraceFailWithArgs();
+    TraceError();
+    TraceErrorWithArgs();
+    TraceWarning();
+    TraceWarningWithArgs();
+    TraceInformation();
+    TraceInformationWithArgs();
+    IndentLevel();
+    TestTraceLevel();
 }
 
 }

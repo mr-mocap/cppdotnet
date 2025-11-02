@@ -7,11 +7,23 @@
 #include <string_view>
 #include <mutex>
 #include <memory>
+#include <functional>
 #include <source_location>
 
 
 namespace System::Diagnostics::Private
 {
+
+class ITracer;
+
+class ITracerFactory
+{
+public:
+    virtual ~ITracerFactory() = default;
+
+    virtual std::unique_ptr<ITracer> CreateTracer() = 0; 
+    virtual std::unique_ptr<ITracer> CreateTracer(std::string_view name) = 0; 
+};
 
 class ITracer
 {
@@ -78,19 +90,17 @@ protected:
     bool _useGlobalLock = true;
 };
 
-class GlobalTracer : public ITracer
+class DefaultTracer : public ITracer
 {
 public:
-    GlobalTracer();
-    GlobalTracer(std::string_view name);
+    DefaultTracer();
+    DefaultTracer(std::string_view name);
     
     // No copying/moving
-    GlobalTracer(const GlobalTracer &) = delete;
-    GlobalTracer operator =(const GlobalTracer &) = delete;
+    DefaultTracer(const DefaultTracer &) = delete;
+    DefaultTracer operator =(const DefaultTracer &) = delete;
 
-   ~GlobalTracer() override = default;
-
-    static ITracer &Instance();
+   ~DefaultTracer() override = default;
 
     int  IndentLevel() override;
     void IndentLevel(int new_value) override;
@@ -130,5 +140,22 @@ protected:
 
     bool NeedIndent();
 };
+
+class DefaultTracerFactory : public ITracerFactory
+{
+public:
+    ~DefaultTracerFactory() override = default;
+
+    std::unique_ptr<ITracer> CreateTracer() override;
+    std::unique_ptr<ITracer> CreateTracer(std::string_view name) override;
+};
+
+extern std::unique_ptr<ITracerFactory> GlobalTracerFactoryInstancePtr;
+extern std::unique_ptr<ITracer>        GlobalTracerInstancePtr;
+extern std::function<void()>           GlobalTracerInitFunction;
+
+void InitializeGlobalTracer(std::function<void()> init_function = nullptr);
+
+ITracer *GetGlobalTracer();
 
 }

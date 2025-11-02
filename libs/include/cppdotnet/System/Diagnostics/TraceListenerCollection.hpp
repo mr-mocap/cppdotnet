@@ -2,7 +2,8 @@
 
 #include <cppdotnet/System/TypeCode.hpp>
 #include <set>
-#include <string>
+#include <string_view>
+#include <memory>
 
 
 namespace System::Diagnostics
@@ -24,7 +25,7 @@ public:
 
     size_t Count() const { return _list.size(); }
 
-    int  Add(TraceListener *listener);
+    int  Add(std::unique_ptr<TraceListener> &&listener);
     void Remove(TraceListener *listener);
     void Remove(std::string_view name);
 

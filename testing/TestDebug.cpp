@@ -11,8 +11,9 @@ void CommonUsage()
     using namespace System::Diagnostics;
 
     std::unique_ptr<System::Diagnostics::ConsoleTraceListener> consoleListener = std::make_unique<System::Diagnostics::ConsoleTraceListener>();
+    System::Diagnostics::ConsoleTraceListener *consoleListenerPtr = consoleListener.get();
     
-    Debug::Listeners().Add(consoleListener.get());
+    Debug::Listeners().Add( std::move(consoleListener) );
 
     Debug::Print("Debug::Print()"sv);
     Debug::Indent();
@@ -52,7 +53,7 @@ void CommonUsage()
     // This will be interpreted as a message and category (cannot resolve the overload)
     Debug::WriteLineIf(true, "Debug::WriteLineIf(true, ...) With Parameter '{}'", "Example Parameter");
 
-    Debug::Listeners().Remove(consoleListener.get());
+    Debug::Listeners().Remove(consoleListenerPtr);
 }
 
 void Run()
