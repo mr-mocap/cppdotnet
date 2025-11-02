@@ -29,6 +29,8 @@ public:
 
 protected:
     mutable std::optional<System::DateTime> _datetime;
+    mutable std::optional<std::string>      _thread_id;
+    mutable std::optional<int>              _process_id;
 };
 
 }

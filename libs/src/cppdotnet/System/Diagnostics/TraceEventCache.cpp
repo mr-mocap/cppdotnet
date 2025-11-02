@@ -1,6 +1,9 @@
 #include <cppdotnet/System/Diagnostics/TraceEventCache.hpp>
 #include <cppdotnet/System/Environment.hpp>
-
+#include <thread>
+#include <format>
+#include <sstream>
+#include <unistd.h> // For getpid() (NOTE: Can we use this under Windows?)
 
 namespace System::Diagnostics
 {
@@ -25,15 +28,29 @@ Collections::Stack TraceEventCache::LogicalOperationStack() const
 
 std::string_view TraceEventCache::ThreadId() const
 {
-    using namespace std::literals;
+    if ( !_thread_id.has_value() )
+    {
+        std::thread::id thread_id = std::this_thread::get_id();
 
-    return "System::Diagnostics::TraceEventCache::ThreadId() IMPLEMENT ME!"sv;
+#ifdef __cpp_lib_formatters
+        _thread_id = std::format( "{}", thread_id );
+#else
+        std::ostringstream oss;
+
+        oss << thread_id;
+        _thread_id = oss.str();
+#endif
+    }
+
+    return _thread_id.value();
 }
 
 int TraceEventCache::ProcessId() const
 {
-    // TODO: FIXME
-    return 0;
+    if ( !_process_id.has_value() )
+        _process_id = static_cast<int>( ::getpid() );
+
+    return _process_id.value();
 }
 
 }

@@ -4,6 +4,7 @@
 #include <cppdotnet/System/Diagnostics/SourceLevels.hpp>
 #include <cppdotnet/System/Diagnostics/TraceListenerCollection.hpp>
 #include <cppdotnet/System/Diagnostics/TraceEventType.hpp>
+#include <cppdotnet/System/Diagnostics/TraceEventCache.hpp>
 #include <cppdotnet/System/Collections/Specialized/StringDictionary.hpp>
 #include <string>
 #include <string_view>
@@ -41,9 +42,10 @@ public:
     void TraceInformation(std::string_view message);
 protected:
     std::string               _name;
-    Diagnostics::SourceLevels _level{ Diagnostics::SourceLevels::Off };
+    SourceLevels              _level{ Diagnostics::SourceLevels::Off };
     Collections::Specialized::StringDictionary _attributes;
-    Diagnostics::TraceListenerCollection       _listeners;
+    TraceListenerCollection   _listeners;
+    TraceEventCache           _eventCache;
 };
 
 }

@@ -1,6 +1,5 @@
 #include <cppdotnet/System/Diagnostics/TraceSource.hpp>
 #include <cppdotnet/System/Diagnostics/TraceListener.hpp>
-#include <cppdotnet/System/Private/private.hpp>
 
 namespace System::Diagnostics
 {
@@ -19,32 +18,22 @@ void TraceSource::Flush()
 
 void TraceSource::TraceData(Diagnostics::TraceEventType event_type, int id)
 {
-    // TODO: Implement Me
-    UNUSED(event_type);
-    UNUSED(id);
-#if 0
     for (TraceListener *listener : _listeners)
-        listener->TraceEvent( TraceEventCache{},
+        listener->TraceEvent( _eventCache,
                               _name,
                               event_type,
                               id
                             );
-#endif
 }
 
 void TraceSource::TraceEvent(Diagnostics::TraceEventType event_type, int id)
 {
-    // TODO: Implement Me
-    UNUSED(event_type);
-    UNUSED(id);
-#if 0
     for (TraceListener *listener : _listeners)
-        listener->TraceEvent( TraceEventCache{},
+        listener->TraceEvent( _eventCache,
                               _name,
                               event_type,
                               id
                             );
-#endif
 }
 
 void TraceSource::TraceInformation(std::string_view message)
