@@ -18,6 +18,15 @@ MemoryStream::MemoryStream()
 {
 }
 
+MemoryStream::MemoryStream(std::string_view initial_buffer)
+    :
+    // TODO: Remove the creation of a temporary string here in C++26
+    Stream( std::make_unique<std::stringstream>( std::string{initial_buffer} ), true, true, true ),
+    _initial_capacity{ initial_buffer.size() },
+    _capacity{ _initial_capacity }
+{
+}
+
 MemoryStream::MemoryStream(const std::string &initial_buffer)
     :
     Stream( std::make_unique<std::stringstream>( initial_buffer ), true, true, true ),
@@ -30,18 +39,16 @@ MemoryStream::MemoryStream(const std::string &initial_buffer, int index, int cou
     :
     Stream( std::make_unique<std::stringstream>( initial_buffer.substr(index, count) ), true, writable, true )
 {
-    using namespace std::literals;
-
     if ( index < 0 )
-        ThrowWithTarget( ArgumentOutOfRangeException("index"sv, "Value is less than 0"sv) );
+        ThrowWithTarget( ArgumentOutOfRangeException("index", "Value is less than 0") );
     if ( count < 0 )
-        ThrowWithTarget( ArgumentOutOfRangeException("count"sv, "Value is less than 0"sv) );
+        ThrowWithTarget( ArgumentOutOfRangeException("count", "Value is less than 0") );
 
     std::size_t s_count = static_cast<std::size_t>(count);
     std::size_t s_index = static_cast<std::size_t>(index);
 
     if ( (initial_buffer.size() - s_index) < s_count )
-        ThrowWithTarget( ArgumentException("initial_buffer size minus index is less than count"sv) );
+        ThrowWithTarget( ArgumentException("initial_buffer size minus index is less than count") );
     
     _initial_capacity = std::min(s_count, s_index);
     _capacity = _initial_capacity;

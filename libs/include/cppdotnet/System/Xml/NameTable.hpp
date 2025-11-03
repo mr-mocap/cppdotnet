@@ -10,7 +10,14 @@ namespace System::Xml
 class NameTable : public XmlNameTable
 {
   public:
-    ~NameTable() override = default;
+    NameTable() = default;
+   ~NameTable() override = default;
+
+    NameTable(const NameTable &other);
+    NameTable &operator=(const NameTable &other);
+
+    NameTable(NameTable &&other);
+    NameTable &operator=(NameTable &&other);
 
     /** Adds a name to the name table.
      *  

@@ -4,6 +4,36 @@
 namespace System::Xml
 {
 
+NameTable::NameTable(const NameTable &other)
+    :
+    _names( other._names )
+{
+}
+
+NameTable &NameTable::operator=(const NameTable &other)
+{
+    if ( this != &other )
+    {
+        _names = other._names;
+    }
+    return *this;
+}
+
+NameTable::NameTable(NameTable &&other)
+    :
+    _names( std::move(other._names) )
+{
+}
+
+NameTable &NameTable::operator=(NameTable &&other)
+{
+    if ( this != &other )
+    {
+        _names = std::move(other._names);
+    }
+    return *this;
+}
+
 std::string_view NameTable::Add(std::string_view name)
 {
     if ( name.empty() )
