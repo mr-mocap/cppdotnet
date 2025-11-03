@@ -5,6 +5,12 @@
 namespace System::IO
 {
 
+BinaryWriter::~BinaryWriter()
+{
+    _stream->Flush();
+    _stream->Close();
+}
+
 void BinaryWriter::Close()
 {
     _stream->Close();

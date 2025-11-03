@@ -17,6 +17,7 @@ StreamWriter::StreamWriter(std::string_view filename)
 
 StreamWriter::~StreamWriter()
 {
+    Flush();
 }
 
 void StreamWriter::Close()

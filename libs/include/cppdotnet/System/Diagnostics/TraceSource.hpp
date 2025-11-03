@@ -19,6 +19,14 @@ public:
     TraceSource(std::string_view name) : _name{ name } { }
     TraceSource(std::string_view name, Diagnostics::SourceLevels default_level) : _name{ name }, _level{ default_level } { }
 
+    // NO_COPY
+    TraceSource(const TraceSource &) = delete;
+    TraceSource &operator =(const TraceSource &) = delete;
+
+    // MOVE
+    TraceSource(TraceSource &&) = default;
+    TraceSource &operator =(TraceSource &&) = default;
+
     static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
     Diagnostics::SourceLevels DefaultLevel() const { return _level; }

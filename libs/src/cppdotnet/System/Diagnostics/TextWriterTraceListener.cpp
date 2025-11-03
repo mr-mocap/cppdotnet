@@ -43,20 +43,21 @@ TextWriterTraceListener::TextWriterTraceListener(std::unique_ptr<System::IO::Str
 
 }
 
+TextWriterTraceListener::~TextWriterTraceListener()
+{
+    Flush();
+}
+
 void TextWriterTraceListener::Close()
 {
     if ( _text_writer )
-    {
         _text_writer->Close();
-    }
 }
 
 void TextWriterTraceListener::Flush()
 {
     if ( _text_writer )
-    {
         _text_writer->Flush();
-    }
 }
 
 void TextWriterTraceListener::Write(std::string_view message)
@@ -117,9 +118,7 @@ void TextWriterTraceListener::WriteLineRaw(std::string_view data)
 void TextWriterTraceListener::WriteIndent()
 {
     if ( _needIndent )
-    {
         WriteRaw( _indentString );
-    }
 }
 
 }

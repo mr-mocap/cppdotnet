@@ -17,6 +17,15 @@ public:
     using underlying_datatype = std::set<TraceListener *>;
 
     TraceListenerCollection() = default;
+   ~TraceListenerCollection();
+
+    // NO_COPY
+    TraceListenerCollection(const TraceListenerCollection &) = delete;
+    TraceListenerCollection &operator =(const TraceListenerCollection &) = delete;
+
+    // MOVE
+    TraceListenerCollection(TraceListenerCollection &&) = default;
+    TraceListenerCollection &operator =(TraceListenerCollection &&) = default;
 
     static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
@@ -32,6 +41,7 @@ public:
     void Clear();
 
     bool Contains(TraceListener *listener);
+    bool Contains(std::string_view name);
 
     size_t IndexOf(TraceListener *listener);
 

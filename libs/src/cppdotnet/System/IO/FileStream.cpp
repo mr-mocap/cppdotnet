@@ -48,6 +48,8 @@ FileStream::FileStream(std::string_view filename, const FileMode mode)
 
 FileStream::~FileStream()
 {
+    Flush();
+    Close();
     _stream.reset();
 }
 

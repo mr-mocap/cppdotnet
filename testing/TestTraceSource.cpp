@@ -6,6 +6,16 @@
 namespace TestTraceSource
 {
 
+System::Diagnostics::TraceSource SetupTraceSourceWithName(std::string_view name)
+{
+    System::Diagnostics::TraceSource trace_source(name);
+    int index = trace_source.Listeners().Add( std::make_unique<System::Diagnostics::ConsoleTraceListener>() );
+
+    trace_source.Listeners()[index]->Name("console");
+
+    return trace_source;
+}
+
 void TraceSourceConstructedWithNameSetsName()
 {
     System::Diagnostics::TraceSource trace_source("MyTraceSource");
@@ -22,13 +32,10 @@ void TraceSourceConstructedWithNameAllOtherValues()
 
 void TraceSourceWithConsoleTraceListener()
 {
-    System::Diagnostics::TraceSource trace_source("MyTraceSource");
-
-    int index = trace_source.Listeners().Add( std::make_unique<System::Diagnostics::ConsoleTraceListener>() );
-
-    trace_source.Listeners()[index]->Name("console");
+    System::Diagnostics::TraceSource trace_source = SetupTraceSourceWithName("MyTraceSource");
 
     assert( trace_source.Listeners().Count() == 1 );
+    assert( trace_source.Listeners().Contains("console") );
 
     System::Diagnostics::TraceListener *listener = trace_source.Listeners()["console"];
 
@@ -36,11 +43,22 @@ void TraceSourceWithConsoleTraceListener()
     trace_source.TraceEvent( System::Diagnostics::TraceEventType::Information, 1 );
 }
 
+void TraceSourceWithConsoleTraceListenerTraceInformation()
+{
+    System::Diagnostics::TraceSource trace_source = SetupTraceSourceWithName("MyTraceSource");
+
+    assert( trace_source.Listeners().Count() == 1 );
+    assert( trace_source.Listeners().Contains("console") );
+
+    trace_source.TraceInformation( "This is a trace information message." );
+}
+
 void Run()
 {
     TraceSourceConstructedWithNameSetsName();
     TraceSourceConstructedWithNameAllOtherValues();
     TraceSourceWithConsoleTraceListener();
+    TraceSourceWithConsoleTraceListenerTraceInformation();
 }
 
 }

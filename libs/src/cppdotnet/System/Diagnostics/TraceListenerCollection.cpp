@@ -9,6 +9,17 @@
 namespace System::Diagnostics
 {
 
+TraceListenerCollection::~TraceListenerCollection()
+{
+    for ( TraceListener *iCurrentListener : _list )
+    {
+        iCurrentListener->Flush();
+        iCurrentListener->Close();
+        delete iCurrentListener;
+    }
+    _list.clear();
+}
+
 TraceListener *TraceListenerCollection::operator [](size_t index)
 {
     if ( index >= _list.size() )
@@ -63,6 +74,16 @@ void TraceListenerCollection::Clear()
 bool TraceListenerCollection::Contains(TraceListener *listener)
 {
     return _list.contains( listener );
+}
+
+bool TraceListenerCollection::Contains(std::string_view name)
+{
+    for (TraceListener *iCurrentListener : _list)
+    {
+        if ( iCurrentListener->Name() == name )
+            return true;
+    }
+    return false;
 }
 
 size_t TraceListenerCollection::IndexOf(TraceListener *listener)

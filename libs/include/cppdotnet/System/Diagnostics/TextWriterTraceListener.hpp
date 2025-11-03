@@ -28,7 +28,7 @@ public:
 
     TextWriterTraceListener(std::unique_ptr<System::IO::Stream> new_stream);
     TextWriterTraceListener(std::unique_ptr<System::IO::Stream> new_stream, std::string_view name);
-   ~TextWriterTraceListener() = default;
+   ~TextWriterTraceListener() override;
 
     static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 

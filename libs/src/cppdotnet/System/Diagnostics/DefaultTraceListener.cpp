@@ -40,6 +40,8 @@ DefaultTraceListener::DefaultTraceListener()
 
 DefaultTraceListener::~DefaultTraceListener()
 {
+    Flush();
+    Close();
 }
 
 std::string_view DefaultTraceListener::LogFileName() const

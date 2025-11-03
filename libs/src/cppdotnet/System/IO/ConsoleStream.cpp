@@ -32,6 +32,8 @@ ConsoleStream::ConsoleStream(Which which)
 
 ConsoleStream::~ConsoleStream()
 {
+    Flush();
+    Close();
 }
 
 }

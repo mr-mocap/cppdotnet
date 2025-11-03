@@ -16,6 +16,7 @@ public:
     BinaryWriter() : BinaryWriter( Stream::Null() ) { }
     BinaryWriter(std::unique_ptr<Stream> output) : _stream( std::move(output) ) { }
     BinaryWriter(std::shared_ptr<Stream> p) : _stream( p ) { }
+    virtual ~BinaryWriter();
 
     static constexpr TypeCode GetTypeCode() { return TypeCode::Object; }
 
