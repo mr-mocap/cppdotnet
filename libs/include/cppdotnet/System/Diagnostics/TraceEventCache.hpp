@@ -25,7 +25,7 @@ public:
 
     std::string_view ThreadId() const;
 
-    long Timestamp() const { return DateTime().Ticks(); }
+    long Timestamp() const;
 
 protected:
     mutable std::optional<System::DateTime> _datetime;

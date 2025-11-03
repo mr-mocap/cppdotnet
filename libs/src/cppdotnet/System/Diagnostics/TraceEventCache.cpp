@@ -1,4 +1,5 @@
 #include <cppdotnet/System/Diagnostics/TraceEventCache.hpp>
+#include <cppdotnet/System/Diagnostics/Stopwatch.hpp>
 #include <cppdotnet/System/Environment.hpp>
 #include <thread>
 #include <format>
@@ -51,6 +52,11 @@ int TraceEventCache::ProcessId() const
         _process_id = static_cast<int>( ::getpid() );
 
     return _process_id.value();
+}
+
+long TraceEventCache::Timestamp() const
+{
+    return Stopwatch::GetTimestamp();
 }
 
 }
