@@ -15,6 +15,13 @@ public:
 
     std::string Callstack() const;
 
+    /** Gets the date and time of the event
+     * 
+     *  @return const System::DateTime & 
+     *   
+     *  @note DateTime is in UTC.
+     *  @note Caches the value after the first call.
+     */
     const System::DateTime &DateTime() const;
 
 #if 0
