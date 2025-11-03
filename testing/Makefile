@@ -16,7 +16,8 @@ TESTS = Activity ActivitySource BinaryWriter BitConverter Console ConsoleTraceLi
 		Counter DateOnly DateTime DateTimeOffset Debug DefaultTraceListener Delegates \
 		Dictionary Enum Environment Exception Guid ICollection IDictionary IList Int32 \
 		LinkedList List Nullable Path Progress ReadOnlySpan Span Stack Stopwatch StringBuilder \
-		StringReader StringWriter TimeOnly TimeSpan Trace TraceSource ValueTuple Version
+		StringReader StringWriter TimeOnly TimeSpan Trace TraceSource ValueTuple Version \
+		NameTable
 TEST_BINARIES = $(patsubst %,Test%,${TESTS})
 PASSING_TESTS = $(patsubst %,%.pass,${TEST_BINARIES})
 
@@ -40,6 +41,10 @@ $(LIB_TARGET): $(LIB_BUILD_DIR)
 .PHONY: lib
 lib: $(LIB_TARGET)
 	@cd .. && $(MAKE) lib
+
+TestNameTable: TestNameTable.cpp
+
+TestNameTable.pass: TestNameTable
 
 TestVersion: TestVersion.cpp
 

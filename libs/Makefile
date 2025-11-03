@@ -22,7 +22,8 @@ LIB_SRC  = $(wildcard *.cpp \
 					  $(SRC_DIR)/System/Diagnostics/Private/*.cpp \
 					  $(SRC_DIR)/System/Diagnostics/Metrics/*.cpp \
 					  $(SRC_DIR)/System/IO/*.cpp \
-					  $(SRC_DIR)/System/Text/*.cpp)
+					  $(SRC_DIR)/System/Text/*.cpp \
+					  $(SRC_DIR)/System/Xml/*.cpp)
 LIB_OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,${LIB_SRC})
 LIB_DEP  = $(BUILD_DIR)/*.d \
            $(BUILD_DIR)/System/*.d \
@@ -31,7 +32,8 @@ LIB_DEP  = $(BUILD_DIR)/*.d \
 		   $(BUILD_DIR)/System/Diagnostics/Metrics/*.d \
 		   $(BUILD_DIR)/System/Diagnostics/Private/*.d \
 		   $(BUILD_DIR)/System/IO/*.d \
-		   $(BUILD_DIR)/System/Text/*.d
+		   $(BUILD_DIR)/System/Text/*.d \
+		   $(BUILD_DIR)/System/Xml/*.d
 
 .PHONY: all
 all: lib
