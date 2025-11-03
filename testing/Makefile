@@ -16,7 +16,7 @@ TESTS = Activity ActivitySource BinaryWriter BitConverter Console ConsoleTraceLi
 		Counter DateOnly DateTime DateTimeOffset Debug DefaultTraceListener Delegates \
 		Dictionary Enum Environment Exception Guid ICollection IDictionary IList Int32 \
 		LinkedList List Nullable Path Progress ReadOnlySpan Span Stack Stopwatch StringBuilder \
-		StringReader StringWriter TimeOnly TimeSpan Trace ValueTuple Version
+		StringReader StringWriter TimeOnly TimeSpan Trace TraceSource ValueTuple Version
 TEST_BINARIES = $(patsubst %,Test%,${TESTS})
 PASSING_TESTS = $(patsubst %,%.pass,${TEST_BINARIES})
 
@@ -48,6 +48,10 @@ TestVersion.pass: TestVersion
 TestValueTuple: TestValueTuple.cpp
 
 TestValueTuple.pass: TestValueTuple
+
+TestTraceSource: TestTraceSource.cpp
+
+TestTraceSource.pass: TestTraceSource
 
 TestTrace: TestTrace.cpp
 
