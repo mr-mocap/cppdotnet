@@ -108,7 +108,7 @@ public:
         return true;
     }
 protected:
-    std::unordered_set<Key> m_data;
+    std::unordered_set<Key, Hash, KeyEqual, Allocator> m_data;
 };
 
 }
