@@ -33,17 +33,17 @@ struct StringDictionaryTransparentEqual
         return lhs == rhs;
     }
 
-    bool operator()(const std::string& lhs, const std::string& rhs) const noexcept
+    bool operator()(const std::string &lhs, const std::string &rhs) const noexcept
     {
         return lhs == rhs;
     }
 
-    bool operator()(std::string_view lhs, const std::string& rhs) const noexcept
+    bool operator()(std::string_view lhs, const std::string &rhs) const noexcept
     {
         return lhs == rhs;
     }
 
-    bool operator()(const std::string& lhs, std::string_view rhs) const noexcept
+    bool operator()(const std::string &lhs, std::string_view rhs) const noexcept
     {
         return lhs == rhs;
     }
