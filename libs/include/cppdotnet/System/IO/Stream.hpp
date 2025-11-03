@@ -7,6 +7,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <cstdint>
 
 namespace System::IO
@@ -48,7 +49,7 @@ protected:
     bool _canSeek  = false;
 
     Stream() = default;
-    Stream(std::unique_ptr<std::iostream> stream, bool can_read, bool can_write, bool can_seek);
+    Stream(std::unique_ptr<std::iostream> &&stream, bool can_read, bool can_write, bool can_seek);
 
     virtual void   _close();
     virtual void   _flush();

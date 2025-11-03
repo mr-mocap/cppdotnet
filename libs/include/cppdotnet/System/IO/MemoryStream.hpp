@@ -10,6 +10,7 @@ class MemoryStream : public Stream
 {
 public:
     MemoryStream();
+    MemoryStream(std::string_view initial_buffer);
     MemoryStream(const std::string &initial_buffer);
     MemoryStream(const std::string &initial_buffer, int index, int count, bool writable = true);
    ~MemoryStream() override;
