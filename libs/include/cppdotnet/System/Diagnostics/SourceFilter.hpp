@@ -11,6 +11,11 @@ class SourceFilter : public TraceFilter
 {
 public:
     SourceFilter() = delete;
+    
+    /** Construct a new SourceFilter
+     * 
+     *  @param source The name of the TraceSource to filter on
+     */
     SourceFilter(std::string_view source) : _source( source ) { }
    ~SourceFilter() = default;
 
