@@ -28,10 +28,13 @@ DateTime DateTime::Now()
 
     return DateTime( sys_time( local_tp.time_since_epoch() ) );
 #else
+    // Convert to local time
     system_clock::time_point now = system_clock::now();
-    year_month_day ymd{ floor<days>(now) };
+    local_time<nanoseconds> local_tp = current_zone()->to_local( now );
+    year_month_day ymd{ floor<days>(local_tp) };
+    hh_mm_ss time_of_day{ local_tp - floor<days>(local_tp) };
 
-    return DateTime( DateOnly( ymd ), TimeOnly( now.time_since_epoch() ) );
+    return DateTime( DateOnly( ymd ), TimeOnly( time_of_day.to_duration() ) );
 #endif
 }
 
@@ -39,8 +42,9 @@ DateTime DateTime::UtcNow()
 {
     system_clock::time_point now = clock_cast<system_clock, utc_clock>( utc_clock::now() );
     year_month_day ymd{ floor<days>(now) };
+    hh_mm_ss time_of_day{ now - floor<days>(now) };
 
-    return DateTime( DateOnly( ymd ), TimeOnly( now.time_since_epoch() ) );
+    return DateTime( DateOnly( ymd ), TimeOnly( time_of_day.to_duration() ) );
 }
 
 DateTime DateTime::Today()
