@@ -11,6 +11,16 @@ static std::string FormatTraceType(System::Diagnostics::TraceLevel level, std::s
 namespace System::Diagnostics
 {
 
+bool Trace::UseGlobalLock()
+{
+    return Private::GetGlobalTracer()->UseGlobalLock();
+}
+
+void Trace::UseGlobalLock(bool new_value)
+{
+    return Private::GetGlobalTracer()->UseGlobalLock( new_value );
+}
+
 int Trace::IndentLevel()
 {
     return Private::GetGlobalTracer()->IndentLevel();

@@ -15,8 +15,12 @@ class Trace final
 {
 public:
 
+    static bool UseGlobalLock();
+    static void UseGlobalLock(bool new_value);
+
     static void Close();
     static void Flush();
+
     static bool AutoFlush();
     static void AutoFlush(bool new_value);
 
