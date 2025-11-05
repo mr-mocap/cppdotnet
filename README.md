@@ -19,8 +19,8 @@ I also plan on writing better unit tests for this so I can practice doing that a
 * Optimize string handling
     * Return std::string_view from functions that use a hard-coded const char * string inside.
         * You can just return "Some String", as this will invoke an automatic conversion
-          to std::string_view.  We make the final version const so that we can make it difficult
-          to write into the returned view.
+          to std::string_view. The string_view is basically a const object, so we don't
+          need to worry about const-ness.
     * Don't automatically turn a hard-coded string into a std::string
         * This possibly creates two instances of the string in the runtime?
     * Use std::string_view instead of std::string as input to
@@ -29,9 +29,11 @@ I also plan on writing better unit tests for this so I can practice doing that a
 * Using std::source_location
 * Allow Exception classes to only be moved and not copied
 * Use the std library pointers and try to make it difficult/impossible to extract a raw pointer from inside an object and copy it.
-* Singleton pattern
-* Heterogenous lookup on map-type structures
+* Singleton pattern (Meyers!)
+* Heterogenous lookup on map-type structures (using either std::string or std::string_view as lookup/equality on a
+  std structure.
 * Reverse the template parameters for System::Func<...>
+    * Use template trickery/sorcery
 * C++20 Modules!
 
 ## Lessons Learned So Far
@@ -44,8 +46,7 @@ I also plan on writing better unit tests for this so I can practice doing that a
       This isn't ideal, but I think it is better than just returning a raw
       const char *.  The underlying hard-coded string isn't going anywhere
       because it is compiled into the binary, so there should be no problem
-      with returning a std::string_view.  Returning a const object
-      should help enforce not being able to modify it easily.
+      with returning a std::string_view.
     * **Return std::string in cases where I actually generate a temporary
       string in a function.**
       Returning a std::string_view would be asking for trouble here.  Unfortunately, this means that there is an inconsistency
@@ -92,6 +93,7 @@ I also plan on writing better unit tests for this so I can practice doing that a
 * Heterogenous Lookup for C++ map-type data structure
     * Implemented in System::Collections::Specialized::StringDictionary
         * You can take advantage of this to allow lookup of, say, a std::string key with a std::string_view or even a const char *
+        * Unfortunately, it is so new that not all compilers implement it, or you have to use a standard after C++20/23.
 * Get rid of a lot of the interface class inheritance and just implement the interfaces in the resulting class directly.  This
   shrinks the size of the final object in memory (yay!) while still allowing the use of the "type erasure" pattern to throw
   around objects as the correct base-class types.
