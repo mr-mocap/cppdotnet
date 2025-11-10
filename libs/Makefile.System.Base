@@ -1,0 +1,76 @@
+BUILD_DIR = build
+LIB_BASENAME = System.Base
+LIB_NAME = lib$(LIB_BASENAME).a
+LIB_PATH = $(BUILD_DIR)
+
+INCLUDE_DIR = ./include
+SRC_DIR = ./src/cppdotnet
+INC_PARAMS = $(INCLUDE_DIR:%=-I%) -I.
+DEBUG_FLAGS = -g3
+EXTRA_LIBS = -luuid
+
+CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP $(INC_PARAMS) $(DEBUG_FLAGS) $(EXTRA_LIBS)
+
+TARGET = $(BUILD_DIR)/$(LIB_NAME)
+
+LIB_SRC  = $(SRC_DIR)/System/Action.cpp \
+           $(SRC_DIR)/System/Boolean.cpp \
+           $(SRC_DIR)/System/Byte.cpp \
+           $(SRC_DIR)/System/Comparison.cpp \
+           $(SRC_DIR)/System/Convert.cpp \
+           $(SRC_DIR)/System/Converter.cpp \
+           $(SRC_DIR)/System/DateOnly.cpp \
+           $(SRC_DIR)/System/DateTime.cpp \
+           $(SRC_DIR)/System/DateTimeOffset.cpp \
+           $(SRC_DIR)/System/Enum.cpp \
+           $(SRC_DIR)/System/Environment.cpp \
+           $(SRC_DIR)/System/EventHandler.cpp \
+           $(SRC_DIR)/System/Exception.cpp \
+           $(SRC_DIR)/System/Func.cpp \
+           $(SRC_DIR)/System/Guid.cpp \
+           $(SRC_DIR)/System/Int16.cpp \
+           $(SRC_DIR)/System/Int32.cpp \
+           $(SRC_DIR)/System/Int64.cpp \
+           $(SRC_DIR)/System/Nullable.cpp \
+           $(SRC_DIR)/System/OperatingSystem.cpp \
+           $(SRC_DIR)/System/Predicate.cpp \
+           $(SRC_DIR)/System/ReadOnlySpan.cpp \
+           $(SRC_DIR)/System/Span.cpp \
+           $(SRC_DIR)/System/TimeOnly.cpp \
+           $(SRC_DIR)/System/TimeSpan.cpp \
+           $(SRC_DIR)/System/UInt16.cpp \
+           $(SRC_DIR)/System/UInt32.cpp \
+           $(SRC_DIR)/System/UInt64.cpp \
+           $(SRC_DIR)/System/ValueTuple.cpp \
+           $(SRC_DIR)/System/Version.cpp \
+           $(SRC_DIR)/System/Text/StringBuilder.cpp
+
+LIB_OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,${LIB_SRC})
+
+LIB_DEP  = $(patsubst $(BUILD_DIR)/%.o,$(BUILD_DIR)/%.d,${LIB_OBJS})
+
+.PHONY: all
+all: lib
+	@ar -crs $(TARGET) -l "-luuid" $(LIB_OBJS)
+	@ranlib $(TARGET)
+
+$(BUILD_DIR):
+	@mkdir -p $(BUILD_DIR)
+
+.PHONY: lib
+lib: $(TARGET) | $(BUILD_DIR)
+
+$(TARGET): $(LIB_OBJS)
+	@ar -crs $(TARGET) $(LIB_OBJS)
+	@ranlib $(TARGET)
+
+.PHONY: $(LIB_BASENAME)
+$(LIB_BASENAME): $(LIB_OBJS)
+
+$(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
+	@mkdir -p ${dir $@}
+	$(CXX) -o $@ $< -c $(CPPFLAGS) $(CXXFLAGS)
+
+default: lib
+
+-include $(LIB_DEP)

@@ -8,7 +8,7 @@ LIB_TARGET = $(LIB_BUILD_DIR)/$(LIB_NAME)
 INC_PARAMS = $(INCLUDE_DIRS:%=-I%)
 DEBUG_FLAGS = -g3
 
-EXTERNAL_LIBS = -l$(LIB_BASE_NAME) -luuid
+EXTERNAL_LIBS = -lSystem.Diagnostics -lSystem.Xml -lSystem.IO -lSystem.Collections -lSystem.Base -luuid
 CXXFLAGS=-std=c++20 -W -Wall -Wextra -MMD -MP -pedantic -I . $(INC_PARAMS) $(DEBUG_FLAGS)
 LDFLAGS=-L$(LIB_BUILD_DIR)
 

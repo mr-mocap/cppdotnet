@@ -37,8 +37,8 @@ LIB_DEP  = $(BUILD_DIR)/*.d \
 
 .PHONY: all
 all: lib
-	@ar -crs $(TARGET) $(LIB_OBJS)
-	@ranlib $(TARGET)
+#	@ar -crs $(TARGET) $(LIB_OBJS)
+#	@ranlib $(TARGET)
 
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)
@@ -46,9 +46,28 @@ $(BUILD_DIR):
 .PHONY: lib
 lib: $(TARGET) | $(BUILD_DIR)
 
-$(TARGET): $(LIB_OBJS)
-	@ar -crs $(TARGET) $(LIB_OBJS)
-	@ranlib $(TARGET)
+$(BUILD_DIR)/libSystem.Base.a:
+	$(MAKE) -f Makefile.System.Base
+
+$(BUILD_DIR)/libSystem.Collections.a:
+	$(MAKE) -f Makefile.System.Collections
+
+$(BUILD_DIR)/libSystem.IO.a:
+	$(MAKE) -f Makefile.System.IO
+
+$(BUILD_DIR)/libSystem.Diagnostics.a:
+	$(MAKE) -f Makefile.System.Diagnostics
+
+$(BUILD_DIR)/libSystem.Xml.a:
+	$(MAKE) -f Makefile.System.Xml
+
+#$(TARGET): $(LIB_OBJS)
+#	@ar -crs $(TARGET) $(LIB_OBJS)
+#	@ranlib $(TARGET)
+
+$(TARGET): $(BUILD_DIR)/libSystem.Diagnostics.a $(BUILD_DIR)/libSystem.Xml.a $(BUILD_DIR)/libSystem.IO.a $(BUILD_DIR)/libSystem.Collections.a $(BUILD_DIR)/libSystem.Base.a
+#	@ar -crs $(TARGET) $^
+#	@ranlib $(TARGET)
 
 $(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
 	@mkdir -p ${dir $@}

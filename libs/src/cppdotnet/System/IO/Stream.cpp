@@ -1,6 +1,6 @@
 #include <cppdotnet/System/IO/Stream.hpp>
 #include <cppdotnet/System/IO/NullStream.hpp>
-#include <cppdotnet/System/IO/IOException.hpp>
+#include <cppdotnet/System/IO/Exception.hpp>
 
 
 namespace System::IO
