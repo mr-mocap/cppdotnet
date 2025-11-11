@@ -7,7 +7,6 @@ INCLUDE_DIR = ./include
 SRC_DIR = ./src/cppdotnet
 INC_PARAMS = $(INCLUDE_DIR:%=-I%) -I.
 DEBUG_FLAGS = -g3
-EXTERNAL_LIB_DEPS = libSystem.Base.a
 
 CXXFLAGS=-std=c++20 -W -Wall -pedantic -MMD -MP $(INC_PARAMS) $(DEBUG_FLAGS)
 
