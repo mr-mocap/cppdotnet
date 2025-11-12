@@ -10,7 +10,10 @@ class XmlDocument : public XmlNode
 {
 public:
     XmlDocument() = default;
-   ~XmlDocument() = default override;
+   ~XmlDocument() override = default;
+
+protected:
+    XmlNodeType _getNodeType() override const;
 };
 
 }

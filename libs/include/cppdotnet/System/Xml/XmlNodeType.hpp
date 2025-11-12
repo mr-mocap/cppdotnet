@@ -2,9 +2,10 @@
 
 #include <cppdotnet/System/Private/enum.hpp>
 
-namespace System::Xml {
+namespace System::Xml
+{
 
-enum class NodeType
+enum class XmlNodeType
 {
     None      = 0,
     Element   = 1,
@@ -32,29 +33,29 @@ namespace System::Xml
 {
 
 template <>
-struct EnumPolicy<System::Xml::NodeType> : EnumTraitTypes<System::Xml::NodeType>
+struct EnumPolicy<XmlNodeType> : EnumTraitTypes<XmlNodeType>
 {
-    static constexpr std::string_view EnumName = "NodeType";
+    static constexpr std::string_view EnumName = "XmlNodeType";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "None",                  NodeType::None                  },
-            { "Element",               NodeType::Element               },
-            { "Attribute",             NodeType::Attribute             },
-            { "Text",                  NodeType::Text                  },
-            { "CDATA",                 NodeType::CDATA                 },
-            { "EntityReference",       NodeType::EntityReference       },
-            { "Entity",                NodeType::Entity                },
-            { "ProcessingInstruction", NodeType::ProcessingInstruction },
-            { "Comment",               NodeType::Comment               },
-            { "Document",              NodeType::Document              },
-            { "DocumentType",          NodeType::DocumentType          },
-            { "DocumentFragment",      NodeType::DocumentFragment      },
-            { "Notation",              NodeType::Notation              },
-            { "Whitespace",            NodeType::Whitespace            },
-            { "SignificantWhitespace", NodeType::SignificantWhitespace },
-            { "EndElement",            NodeType::EndElement            },
-            { "EndEntity",             NodeType::EndEntity             },
-            { "XmlDeclaration",        NodeType::XmlDeclaration        }
+            { "None",                  XmlNodeType::None                  },
+            { "Element",               XmlNodeType::Element               },
+            { "Attribute",             XmlNodeType::Attribute             },
+            { "Text",                  XmlNodeType::Text                  },
+            { "CDATA",                 XmlNodeType::CDATA                 },
+            { "EntityReference",       XmlNodeType::EntityReference       },
+            { "Entity",                XmlNodeType::Entity                },
+            { "ProcessingInstruction", XmlNodeType::ProcessingInstruction },
+            { "Comment",               XmlNodeType::Comment               },
+            { "Document",              XmlNodeType::Document              },
+            { "DocumentType",          XmlNodeType::DocumentType          },
+            { "DocumentFragment",      XmlNodeType::DocumentFragment      },
+            { "Notation",              XmlNodeType::Notation              },
+            { "Whitespace",            XmlNodeType::Whitespace            },
+            { "SignificantWhitespace", XmlNodeType::SignificantWhitespace },
+            { "EndElement",            XmlNodeType::EndElement            },
+            { "EndEntity",             XmlNodeType::EndEntity             },
+            { "XmlDeclaration",        XmlNodeType::XmlDeclaration        }
         };
 };
 
