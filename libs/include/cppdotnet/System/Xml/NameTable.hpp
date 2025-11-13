@@ -39,6 +39,12 @@ class NameTable : public XmlNameTable
      */
     std::string_view Get(std::string_view name) const override;
 
+    bool empty() const override
+    {
+        return _names.empty();
+    }
+
+    std::shared_ptr<XmlNameTable> MemberwiseClone() const override;
 protected:
     /** @name Internal Helper Classes
      *  @{
