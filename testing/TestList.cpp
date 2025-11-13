@@ -455,6 +455,20 @@ public:
     }
 };
 
+void FindIndex()
+{
+    std::string a[] = { "one", "two", "three" };
+    Collections::Generic::List<std::string> list( a );
+    Matches<std::string> same_name_as{ "three" };
+
+    assert( list.Count() == 3 );
+    assert( a[0] == "one" );
+    assert( a[1] == "two" );
+    assert( a[2] == "three" );
+
+    assert( list.FindIndex( same_name_as ) == 2 );
+}
+
 void FindLast()
 {
     // Empty list won't contain the data
@@ -507,6 +521,7 @@ void Run()
     DefaultConstructsToEmpty();
     ConstructWithExternalSequence();
     Find();
+    FindIndex();
     FindLast();
     FindAll();
 
