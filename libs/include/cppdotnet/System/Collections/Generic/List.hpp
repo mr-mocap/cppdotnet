@@ -166,6 +166,15 @@ public:
         return *iter;
     }
 
+    int FindIndex(predicate unary_predicate) const
+    {
+        auto iter = std::find_if( begin(), end(), unary_predicate );
+
+        if ( iter == end() )
+            return -1;
+        return static_cast<int>( std::distance( begin(), iter ) );
+    }
+
     const_reference FindLast(predicate unary_predicate) const
     {
         auto iter = std::find_if( rbegin(), rend(), unary_predicate );
@@ -212,6 +221,15 @@ public:
             ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
       
         _list.erase( std::next( begin(), index ) );
+    }
+
+    int RemoveAll(predicate unary_predicate)
+    {
+        auto [first, last] = std::ranges::remove_if( _list, unary_predicate );
+        int  number_removed = static_cast<int>( std::distance(first, last) );
+
+        _list.erase( first, last );
+        return number_removed;
     }
 
     // ICollection interface
