@@ -110,20 +110,23 @@ std::shared_ptr<XmlNode> XmlAttributeCollection::RemoveNamedItem(std::string_vie
     return local_copy;
 }
 
+std::shared_ptr<XmlNode> XmlAttributeCollection::RemoveAt(size_t index)
+{
+    if ( index >= _nodes.Count() )
+        return nullptr;
+    
+    std::shared_ptr<XmlNode> local_copy = _nodes[ index ];
+
+    _nodes.RemoveAt( index );
+    return local_copy;
+}
+
 std::shared_ptr<XmlNode> XmlAttributeCollection::RemoveAt(int index)
 {
     if ( index < 0 )
         return nullptr;
     
-    size_t index_as_size_t = static_cast<size_t>(index);
-
-    if ( index_as_size_t >= _nodes.Count() )
-        return nullptr;
-    
-    std::shared_ptr<XmlNode> local_copy = _nodes[ index_as_size_t ];
-
-    _nodes.RemoveAt( index_as_size_t );
-    return local_copy;
+    return RemoveAt( static_cast<size_t>( index ) );
 }
 
 void XmlAttributeCollection::RemoveAll()
