@@ -7,67 +7,80 @@
 namespace System::Xml
 {
 
+XmlDocument::XmlDocument()
+    :
+    XmlNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
+    _implementation( std::make_shared<XmlImplementation>() )
+{
+    INVARIANT( _implementation );
+}
+
+XmlDocument::XmlDocument(std::shared_ptr<XmlImplementation> implementation)
+    :
+    XmlNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
+    _implementation( implementation )
+{
+    INVARIANT( _implementation );
+}
+
 XmlDocument::XmlDocument(const XmlNameTable &name_table)
     :
     XmlNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _name_table( name_table.MemberwiseClone() )
+    _implementation( std::make_shared<XmlImplementation>( name_table.MemberwiseClone() ) )
 {
+    INVARIANT( _implementation );
 }
 
 XmlDocument::XmlDocument(std::unique_ptr<XmlNameTable> &&name_table)
     :
     XmlNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _name_table( std::move(name_table) )
+    _implementation( std::make_shared<XmlImplementation>( std::move( name_table ) ) )
 {
-    INVARIANT( _name_table );
+    INVARIANT( _implementation );
 }
 
 XmlDocument::XmlDocument(std::shared_ptr<XmlNameTable> &name_table)
     :
     XmlNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _name_table( name_table )
+    _implementation( std::make_shared<XmlImplementation>( name_table ) )
 {
-    INVARIANT( _name_table );
+    INVARIANT( _implementation );
 }
 
 XmlDocument::XmlDocument(const std::shared_ptr<XmlNameTable> &name_table)
     :
     XmlNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _name_table( name_table )
+    _implementation( std::make_shared<XmlImplementation>( name_table ) )
 {
-    INVARIANT( _name_table );
+    INVARIANT( _implementation );
 }
 
 XmlDocument::XmlDocument(std::shared_ptr<XmlNameTable> &&name_table)
     :
     XmlNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _name_table( std::move(name_table) )
+    _implementation( std::make_shared<XmlImplementation>( name_table ) )
 {
-    INVARIANT( _name_table );
-}
-
-XmlDocument::XmlDocument()
-    :
-    XmlNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _name_table( std::make_shared<System::Xml::NameTable>() )
-{
-    INVARIANT( _name_table );
+    INVARIANT( _implementation );
 }
 
 std::shared_ptr<XmlNode> XmlDocument::CloneNode(bool deep) const
 {
+    INVARIANT( _implementation );
+
     if ( deep )
     {
-        return std::make_shared<XmlDocument>( _name_table->MemberwiseClone() );
+        return std::make_shared<XmlDocument>( _implementation->NameTable()->MemberwiseClone() );
     }
     else
     {
-        return std::make_shared<XmlDocument>( _name_table );
+        return std::make_shared<XmlDocument>( _implementation->NameTable() );
     }
 }
 
 std::shared_ptr<XmlAttribute> XmlDocument::CreateAttribute(std::string_view name)
 {
+    INVARIANT( _implementation );
+
     size_t has_colon = name.find( ':' );
     std::string_view prefix;
 
@@ -86,43 +99,80 @@ std::shared_ptr<XmlAttribute> XmlDocument::CreateAttribute(std::string_view name
                                          );
 }
 
+std::shared_ptr<const XmlImplementation> XmlDocument::Implementation() const
+{
+    INVARIANT( _implementation );
+
+    return _implementation;
+}
+
+std::shared_ptr<XmlImplementation> XmlDocument::Implementation()
+{
+    INVARIANT( _implementation );
+
+    return _implementation;
+}
+
 std::string_view XmlDocument::LocalName() const
 {
+    INVARIANT( _implementation );
+
     return "XmlDocument::LocalName() Not Implemented!";
 }
 
 std::string_view XmlDocument::Name() const
 {
+    INVARIANT( _implementation );
+
     return "XmlDocument::Name() Not Implemented!";
 }
 
 std::string_view XmlDocument::NamespaceURI() const
 {
+    INVARIANT( _implementation );
+
     return "XmlDocument::NamespaceURI() Not Implemented!";
 }
 
-std::shared_ptr<XmlDocument> XmlDocument::OwnerDocument() const
+std::shared_ptr<const XmlDocument> XmlDocument::OwnerDocument() const
 {
+    INVARIANT( _implementation );
+
+    return nullptr;
+}
+
+std::shared_ptr<XmlDocument> XmlDocument::OwnerDocument()
+{
+    INVARIANT( _implementation );
+
     return nullptr;
 }
 
 std::string_view XmlDocument::Prefix() const
 {
+    INVARIANT( _implementation );
+
     return "XmlDocument::Prefix() NOT IMPLEMENTED";
 }
 
 void XmlDocument::Prefix(std::string_view new_prefix)
 {
+    INVARIANT( _implementation );
+
     UNUSED( new_prefix );
 }
 
 void XmlDocument::RemoveAll()
 {
+    INVARIANT( _implementation );
+
     _children = std::make_shared<Private::DefaultNodeListImplementation>();
 }
 
 std::shared_ptr<XmlNode> XmlDocument::RemoveChild(std::shared_ptr<XmlNode> old_child)
 {
+    INVARIANT( _implementation );
+
     std::shared_ptr<Private::DefaultNodeListImplementation> children_as_derived_type = std::static_pointer_cast<Private::DefaultNodeListImplementation>( _children );
 
     return children_as_derived_type->RemoveChild( old_child );
@@ -130,6 +180,8 @@ std::shared_ptr<XmlNode> XmlDocument::RemoveChild(std::shared_ptr<XmlNode> old_c
 
 std::shared_ptr<XmlNode> XmlDocument::ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child)
 {
+    INVARIANT( _implementation );
+
     std::shared_ptr<Private::DefaultNodeListImplementation> children_as_derived_type = std::static_pointer_cast<Private::DefaultNodeListImplementation>( _children );
 
     return children_as_derived_type->ReplaceChild( new_child, old_child );
@@ -137,11 +189,15 @@ std::shared_ptr<XmlNode> XmlDocument::ReplaceChild(std::shared_ptr<XmlNode> new_
 
 Nullable<std::string> XmlDocument::Value() const
 {
+    INVARIANT( _implementation );
+
     return { };
 }
 
 XmlNodeType XmlDocument::_getNodeType() const
 {
+    INVARIANT( _implementation );
+
     return XmlNodeType::Document;
 }
 

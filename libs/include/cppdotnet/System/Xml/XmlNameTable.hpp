@@ -16,7 +16,8 @@ class XmlNameTable
 
     virtual bool empty() const = 0; // C++-ism
 
-    virtual std::shared_ptr<XmlNameTable> MemberwiseClone() const = 0;
+    virtual std::shared_ptr<const XmlNameTable> MemberwiseClone() const = 0;
+    virtual std::shared_ptr<XmlNameTable>       MemberwiseClone()       = 0;
 };
 
 }

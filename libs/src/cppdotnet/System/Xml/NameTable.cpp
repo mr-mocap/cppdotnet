@@ -4,6 +4,10 @@
 namespace System::Xml
 {
 
+NameTable::NameTable()
+{
+}
+
 NameTable::NameTable(const NameTable &other)
     :
     _names( other._names )
@@ -22,6 +26,10 @@ NameTable &NameTable::operator=(const NameTable &other)
 NameTable::NameTable(NameTable &&other)
     :
     _names( std::move(other._names) )
+{
+}
+
+NameTable::~NameTable()
 {
 }
 
@@ -54,7 +62,12 @@ std::string_view NameTable::Get(std::string_view name) const
     return (it != _names.end()) ? *it : std::string_view{};
 }
 
-std::shared_ptr<XmlNameTable> NameTable::MemberwiseClone() const
+std::shared_ptr<const XmlNameTable> NameTable::MemberwiseClone() const
+{
+    return std::make_shared<const NameTable>( *this );
+}
+
+std::shared_ptr<XmlNameTable> NameTable::MemberwiseClone()
 {
     return std::make_shared<NameTable>( *this );
 }

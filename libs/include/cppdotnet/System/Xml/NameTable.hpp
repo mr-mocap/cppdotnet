@@ -10,8 +10,8 @@ namespace System::Xml
 class NameTable : public XmlNameTable
 {
   public:
-    NameTable() = default;
-   ~NameTable() override = default;
+    NameTable();
+   ~NameTable() override;
 
     NameTable(const NameTable &other);
     NameTable &operator=(const NameTable &other);
@@ -44,7 +44,8 @@ class NameTable : public XmlNameTable
         return _names.empty();
     }
 
-    std::shared_ptr<XmlNameTable> MemberwiseClone() const override;
+    std::shared_ptr<const XmlNameTable> MemberwiseClone() const override;
+    std::shared_ptr<XmlNameTable>       MemberwiseClone()       override;
 protected:
     /** @name Internal Helper Classes
      *  @{

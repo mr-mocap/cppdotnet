@@ -2,6 +2,7 @@
 
 #include <cppdotnet/System/Xml/XmlNode.hpp>
 #include <cppdotnet/System/Xml/XmlNameTable.hpp>
+#include <cppdotnet/System/Xml/XmlImplementation.hpp>
 #include <cppdotnet/System/Private/private.hpp>
 #include <memory>
 
@@ -14,6 +15,7 @@ class XmlDocument : public XmlNode
 {
 public:
     XmlDocument();
+    XmlDocument(std::shared_ptr<XmlImplementation> implementation);
     XmlDocument(const XmlNameTable &name_table);
     XmlDocument(std::unique_ptr<XmlNameTable> &&name_table);
 
@@ -29,23 +31,27 @@ public:
 
     const XmlNameTable &NameTable() const
     {
-        INVARIANT( _name_table );
+        INVARIANT( _implementation );
 
-        return *_name_table;
+        return *_implementation->NameTable();
     }
 
           XmlNameTable &NameTable()
     {
-        INVARIANT( _name_table );
+        INVARIANT( _implementation );
 
-        return *_name_table;
+        return *_implementation->NameTable();
     }
+
+    std::shared_ptr<const XmlImplementation> Implementation() const;
+    std::shared_ptr<XmlImplementation>       Implementation();
 
     std::string_view LocalName() const override;
     std::string_view Name() const override;
     std::string_view NamespaceURI() const override;
 
-    std::shared_ptr<XmlDocument> OwnerDocument() const override;
+    std::shared_ptr<const XmlDocument> OwnerDocument() const override;
+    std::shared_ptr<XmlDocument>       OwnerDocument()       override;
 
     std::string_view Prefix() const override;
                 void Prefix(std::string_view new_prefix) override;
@@ -57,7 +63,7 @@ public:
 
     Nullable<std::string> Value() const override;
 protected:
-    std::shared_ptr<XmlNameTable> _name_table;
+    std::shared_ptr<XmlImplementation> _implementation;
 
     XmlNodeType _getNodeType() const override;
     std::shared_ptr<XmlDocument> _localSharedFromThis();

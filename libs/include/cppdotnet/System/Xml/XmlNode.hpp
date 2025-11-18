@@ -27,16 +27,17 @@ public:
     virtual std::shared_ptr<XmlAttributeCollection> Attributes() const;
     
     virtual std::shared_ptr<XmlNode> Clone() const;
+
     virtual std::shared_ptr<XmlNode> CloneNode(bool deep) const = 0;
 
     virtual const XmlNodeList &ChildNodes() const;
     virtual       XmlNodeList &ChildNodes();
 
     virtual std::shared_ptr<const XmlNode> FirstChild() const;
-    virtual std::shared_ptr<XmlNode> FirstChild();
+    virtual std::shared_ptr<XmlNode>       FirstChild();
 
     virtual std::shared_ptr<const XmlNode> LastChild() const;
-    virtual std::shared_ptr<XmlNode> LastChild();
+    virtual std::shared_ptr<XmlNode>       LastChild();
 
     virtual bool HasChildNodes() const;
 
@@ -48,9 +49,10 @@ public:
     virtual std::string_view LocalName() const = 0;
     virtual std::string_view Name() const = 0;
     virtual std::string_view NamespaceURI() const = 0;
-#if 0
-    virtual std::shared_ptr<XmlNode> NextSibling() const = 0;
-#endif
+
+    virtual std::shared_ptr<const XmlNode> NextSibling() const;
+    virtual std::shared_ptr<XmlNode>       NextSibling();
+
     XmlNodeType NodeType() const
     {
         XmlNodeType type = _getNodeType();
@@ -62,17 +64,19 @@ public:
         return type;
     }
 
-    virtual std::shared_ptr<XmlDocument> OwnerDocument() const = 0;
+    virtual std::shared_ptr<const XmlDocument> OwnerDocument() const = 0;
+    virtual std::shared_ptr<XmlDocument>       OwnerDocument()       = 0;
 
     virtual Nullable<std::string> Value() const = 0;
 
-    virtual std::shared_ptr<XmlNode> ParentNode() const;
+    virtual std::shared_ptr<const XmlNode> ParentNode() const;
+    virtual std::shared_ptr<XmlNode>       ParentNode();
 
     virtual std::string_view Prefix() const = 0;
     virtual             void Prefix(std::string_view new_prefix) = 0;
-#if 0
-    virtual std::shared_ptr<XmlNode> PreviousSibling() const = 0;
-#endif
+
+    virtual std::shared_ptr<const XmlNode> PreviousSibling() const;
+    virtual std::shared_ptr<XmlNode>       PreviousSibling();
 
     virtual void RemoveAll() = 0;
 

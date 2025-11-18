@@ -22,7 +22,8 @@ public:
     std::string_view Name() const override;
     std::string_view NamespaceURI() const override;
 
-    std::shared_ptr<XmlDocument> OwnerDocument() const override;
+    std::shared_ptr<const XmlDocument> OwnerDocument() const override;
+    std::shared_ptr<XmlDocument>       OwnerDocument()       override;
 
     void RemoveAll() override;
 

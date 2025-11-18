@@ -23,16 +23,17 @@ public:
     std::shared_ptr<XmlNode>       operator [](int    index)       override;
 
     std::shared_ptr<const XmlNode> Item(size_t index) const override;
-    std::shared_ptr<XmlNode>       Item(size_t index) override;
+    std::shared_ptr<XmlNode>       Item(size_t index)       override;
     std::shared_ptr<const XmlNode> Item(int    index) const override;
-    std::shared_ptr<XmlNode>       Item(int    index) override;
+    std::shared_ptr<XmlNode>       Item(int    index)       override;
 
     std::shared_ptr<const XmlNodeList> MemberwiseClone() const override;
-    std::shared_ptr<XmlNodeList>       MemberwiseClone() override;
+    std::shared_ptr<XmlNodeList>       MemberwiseClone()       override;
 
     std::shared_ptr<XmlNode> Append(std::shared_ptr<XmlNode> new_node) override;
+
     std::shared_ptr<XmlNode> Insert(size_t index, std::shared_ptr<XmlNode> new_node) override;
-    std::shared_ptr<XmlNode> Insert(int index, std::shared_ptr<XmlNode> new_node) override;
+    std::shared_ptr<XmlNode> Insert(int    index, std::shared_ptr<XmlNode> new_node) override;
 
     std::shared_ptr<XmlNode> RemoveChild(std::shared_ptr<XmlNode> child_node);
     std::shared_ptr<XmlNode> ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child);
