@@ -17,6 +17,7 @@ LIB_SRC  = $(SRC_DIR)/System/Xml/NameTable.cpp \
            $(SRC_DIR)/System/Xml/XmlAttribute.cpp \
            $(SRC_DIR)/System/Xml/XmlAttributeCollection.cpp \
            $(SRC_DIR)/System/Xml/XmlDocument.cpp \
+           $(SRC_DIR)/System/Xml/XmlImplementation.cpp \
            $(SRC_DIR)/System/Xml/XmlNode.cpp \
            $(SRC_DIR)/System/Xml/XmlNodeReader.cpp \
            $(SRC_DIR)/System/Xml/XmlReader.cpp \
