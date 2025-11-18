@@ -29,33 +29,33 @@ enum class XmlNodeType
 
 }
 
-namespace System::Xml
+namespace System
 {
 
 template <>
-struct EnumPolicy<XmlNodeType> : EnumTraitTypes<XmlNodeType>
+struct EnumPolicy<System::Xml::XmlNodeType> : EnumTraitTypes<System::Xml::XmlNodeType>
 {
     static constexpr std::string_view EnumName = "XmlNodeType";
 
     static constexpr name_value_pair_type NameValueArray[] = {
-            { "None",                  XmlNodeType::None                  },
-            { "Element",               XmlNodeType::Element               },
-            { "Attribute",             XmlNodeType::Attribute             },
-            { "Text",                  XmlNodeType::Text                  },
-            { "CDATA",                 XmlNodeType::CDATA                 },
-            { "EntityReference",       XmlNodeType::EntityReference       },
-            { "Entity",                XmlNodeType::Entity                },
-            { "ProcessingInstruction", XmlNodeType::ProcessingInstruction },
-            { "Comment",               XmlNodeType::Comment               },
-            { "Document",              XmlNodeType::Document              },
-            { "DocumentType",          XmlNodeType::DocumentType          },
-            { "DocumentFragment",      XmlNodeType::DocumentFragment      },
-            { "Notation",              XmlNodeType::Notation              },
-            { "Whitespace",            XmlNodeType::Whitespace            },
-            { "SignificantWhitespace", XmlNodeType::SignificantWhitespace },
-            { "EndElement",            XmlNodeType::EndElement            },
-            { "EndEntity",             XmlNodeType::EndEntity             },
-            { "XmlDeclaration",        XmlNodeType::XmlDeclaration        }
+            { "None",                  System::Xml::XmlNodeType::None                  },
+            { "Element",               System::Xml::XmlNodeType::Element               },
+            { "Attribute",             System::Xml::XmlNodeType::Attribute             },
+            { "Text",                  System::Xml::XmlNodeType::Text                  },
+            { "CDATA",                 System::Xml::XmlNodeType::CDATA                 },
+            { "EntityReference",       System::Xml::XmlNodeType::EntityReference       },
+            { "Entity",                System::Xml::XmlNodeType::Entity                },
+            { "ProcessingInstruction", System::Xml::XmlNodeType::ProcessingInstruction },
+            { "Comment",               System::Xml::XmlNodeType::Comment               },
+            { "Document",              System::Xml::XmlNodeType::Document              },
+            { "DocumentType",          System::Xml::XmlNodeType::DocumentType          },
+            { "DocumentFragment",      System::Xml::XmlNodeType::DocumentFragment      },
+            { "Notation",              System::Xml::XmlNodeType::Notation              },
+            { "Whitespace",            System::Xml::XmlNodeType::Whitespace            },
+            { "SignificantWhitespace", System::Xml::XmlNodeType::SignificantWhitespace },
+            { "EndElement",            System::Xml::XmlNodeType::EndElement            },
+            { "EndEntity",             System::Xml::XmlNodeType::EndEntity             },
+            { "XmlDeclaration",        System::Xml::XmlNodeType::XmlDeclaration        }
         };
 };
 

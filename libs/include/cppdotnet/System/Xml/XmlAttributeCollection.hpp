@@ -23,12 +23,12 @@ public:
 
     std::shared_ptr<XmlNode> RemoveAt(int index);
 
+    void RemoveAll();
+
     const std::shared_ptr<XmlNode> Item(size_t index) const override;
           std::shared_ptr<XmlNode> Item(size_t index) override;
     const std::shared_ptr<XmlNode> Item(int index) const override;
           std::shared_ptr<XmlNode> Item(int index) override;
-
-    void RemoveAll();
 protected:
     System::Collections::Generic::List<std::shared_ptr<XmlNode>> _nodes;
 };
