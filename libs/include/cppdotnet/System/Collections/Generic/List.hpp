@@ -19,13 +19,19 @@ class ListIListInterfaceCustomization
 {
 public:
     template <typename U>
-    size_t IndexOf(const U &item) const
+    int IndexOf(const U &item) const
     {
         return static_cast<const List<T> &>(*this).IListIndexOf( item );
     }
 
     template <typename U>
     void Insert(size_t index, const U &item)
+    {
+        static_cast<List<T> &>(*this).IListInsert( index, item );
+    }
+
+    template <typename U>
+    void Insert(int index, const U &item)
     {
         static_cast<List<T> &>(*this).IListInsert( index, item );
     }
@@ -263,14 +269,14 @@ protected:
 
     // Default implementations...
     template <typename U>
-    size_t IListIndexOf(const U &item) const
+    int IListIndexOf(const U &item) const
     {
         auto iter_found = std::find( begin(), end(), item );
 
         if ( iter_found == end() )
             return -1;
         
-        return std::distance( begin(), iter_found );
+        return static_cast<int>( std::distance( begin(), iter_found ) );
     }
 
     template <typename U>
@@ -283,6 +289,15 @@ protected:
         
         // OK to insert at end(), which is when index == Count()
         _list.emplace( std::next( begin(), index ), item );
+    }
+
+    template <typename U>
+    void IListInsert(int index, const U &item)
+    {
+        if ( index < 0 )
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
+        
+        IListInsert( static_cast<size_t>( index ), item );
     }
 
     template <typename U>
