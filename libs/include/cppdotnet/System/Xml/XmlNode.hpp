@@ -83,6 +83,8 @@ public:
     virtual std::shared_ptr<XmlNode> RemoveChild(std::shared_ptr<XmlNode> old_child) = 0;
 
     virtual std::shared_ptr<XmlNode> ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child) = 0;
+
+    virtual void WriteTo();
 protected:
     std::shared_ptr<XmlNodeList> _children;
 

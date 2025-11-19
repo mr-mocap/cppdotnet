@@ -1,5 +1,6 @@
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
 #include <cppdotnet/System/Xml/XmlAttribute.hpp>
+#include <cppdotnet/System/Xml/XmlElement.hpp>
 #include <cppdotnet/System/Xml/NameTable.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 #include <cppdotnet/System/Private/private.hpp>
@@ -77,6 +78,19 @@ std::shared_ptr<XmlNode> XmlDocument::CloneNode(bool deep) const
     }
 }
 
+std::shared_ptr<XmlAttribute> XmlDocument::CreateAttribute(std::string_view prefix,
+                                                           std::string_view local_name,
+                                                           std::string_view namespace_uri)
+{
+    return std::make_shared<XmlAttribute>( prefix, local_name, namespace_uri, _localSharedFromThis() );
+}
+
+std::shared_ptr<XmlAttribute> XmlDocument::CreateAttribute(std::string_view local_name,
+                                                           std::string_view namespace_uri)
+{
+    return CreateAttribute( std::string_view(), local_name, namespace_uri );
+}
+
 std::shared_ptr<XmlAttribute> XmlDocument::CreateAttribute(std::string_view name)
 {
     INVARIANT( _implementation );
@@ -92,11 +106,38 @@ std::shared_ptr<XmlAttribute> XmlDocument::CreateAttribute(std::string_view name
     }
     std::string_view local_name = (has_colon == std::string_view::npos) ? name : name.substr( has_colon + 1 );
 
-    return std::make_shared<XmlAttribute>( prefix,
-                                           local_name,
-                                           std::string_view(),
-                                           _localSharedFromThis()
-                                         );
+    return CreateAttribute( prefix, local_name, std::string_view() );
+}
+
+std::shared_ptr<XmlElement> XmlDocument::CreateElement(std::string_view prefix,
+                                                       std::string_view local_name,
+                                                       std::string_view namespace_uri)
+{
+    return std::make_shared<XmlElement>( prefix, local_name, namespace_uri, _localSharedFromThis() );
+}
+
+std::shared_ptr<XmlElement> XmlDocument::CreateElement(std::string_view local_name,
+                                                       std::string_view namespace_uri)
+{
+    return CreateElement( std::string_view(), local_name, namespace_uri );
+}
+
+std::shared_ptr<XmlElement> XmlDocument::CreateElement(std::string_view name)
+{
+    INVARIANT( _implementation );
+
+    size_t has_colon = name.find( ':' );
+    std::string_view prefix;
+
+    if ( has_colon != std::string_view::npos )
+    {
+        // Check for a ':', but has nothing before it
+        if ( has_colon > 0 )
+            prefix = name.substr( 0, has_colon + 1 );
+    }
+    std::string_view local_name = (has_colon == std::string_view::npos) ? name : name.substr( has_colon + 1 );
+
+    return CreateElement( prefix, local_name, std::string_view() );
 }
 
 std::shared_ptr<const XmlImplementation> XmlDocument::Implementation() const

@@ -24,7 +24,10 @@ LIB_SRC  = $(SRC_DIR)/System/Xml/NameTable.cpp \
            $(SRC_DIR)/System/Xml/XmlNodeReader.cpp \
            $(SRC_DIR)/System/Xml/XmlReader.cpp \
            $(SRC_DIR)/System/Xml/XmlReaderSettings.cpp \
-           $(SRC_DIR)/System/Xml/XmlTextReader.cpp
+           $(SRC_DIR)/System/Xml/XmlTextReader.cpp \
+           $(SRC_DIR)/System/Xml/XmlWriter.cpp \
+           $(SRC_DIR)/System/Xml/XmlWriterSettings.cpp \
+           $(SRC_DIR)/System/Xml/XmlTextWriter.cpp
 
 LIB_OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,${LIB_SRC})
 

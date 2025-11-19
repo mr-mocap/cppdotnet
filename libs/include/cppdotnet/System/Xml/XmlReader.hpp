@@ -3,7 +3,6 @@
 #include <cppdotnet/System/IO/TextReader.hpp>
 #include <cppdotnet/System/IO/Stream.hpp>
 #include <cppdotnet/System/Xml/XmlReaderSettings.hpp>
-#include <cppdotnet/System/Xml/XmlReader.hpp>
 #include <memory>
 
 namespace System::Xml

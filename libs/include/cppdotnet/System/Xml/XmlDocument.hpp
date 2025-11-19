@@ -10,6 +10,7 @@ namespace System::Xml
 {
 
 class XmlAttribute;
+class XmlElement;
 
 class XmlDocument : public XmlNode
 {
@@ -28,6 +29,22 @@ public:
     std::shared_ptr<XmlNode> CloneNode(bool deep) const override;
 
     virtual std::shared_ptr<XmlAttribute> CreateAttribute(std::string_view name);
+
+    virtual std::shared_ptr<XmlAttribute> CreateAttribute(std::string_view local_name,
+                                                          std::string_view namespace_uri);
+
+    virtual std::shared_ptr<XmlAttribute> CreateAttribute(std::string_view prefix,
+                                                          std::string_view local_name,
+                                                          std::string_view namespace_uri);
+
+    virtual std::shared_ptr<XmlElement>   CreateElement(std::string_view name);
+
+    virtual std::shared_ptr<XmlElement>   CreateElement(std::string_view local_name,
+                                                        std::string_view namespace_uri);
+
+    virtual std::shared_ptr<XmlElement>   CreateElement(std::string_view prefix,
+                                                        std::string_view local_name,
+                                                        std::string_view namespace_uri);
 
     const XmlNameTable &NameTable() const
     {
