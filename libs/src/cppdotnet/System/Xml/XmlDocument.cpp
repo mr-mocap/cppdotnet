@@ -140,14 +140,7 @@ std::shared_ptr<XmlElement> XmlDocument::CreateElement(std::string_view name)
     return CreateElement( prefix, local_name, std::string_view() );
 }
 
-std::shared_ptr<const XmlImplementation> XmlDocument::Implementation() const
-{
-    INVARIANT( _implementation );
-
-    return _implementation;
-}
-
-std::shared_ptr<XmlImplementation> XmlDocument::Implementation()
+std::shared_ptr<XmlImplementation> XmlDocument::Implementation() const
 {
     INVARIANT( _implementation );
 
@@ -175,14 +168,7 @@ std::string_view XmlDocument::NamespaceURI() const
     return "XmlDocument::NamespaceURI() Not Implemented!";
 }
 
-std::shared_ptr<const XmlDocument> XmlDocument::OwnerDocument() const
-{
-    INVARIANT( _implementation );
-
-    return nullptr;
-}
-
-std::shared_ptr<XmlDocument> XmlDocument::OwnerDocument()
+std::shared_ptr<XmlDocument> XmlDocument::OwnerDocument() const
 {
     INVARIANT( _implementation );
 

@@ -64,12 +64,7 @@ std::string_view XmlElement::NamespaceURI() const
     return _namespace_uri;
 }
 
-std::shared_ptr<const XmlDocument> XmlElement::OwnerDocument() const
-{
-    return _owner_document;
-}
-
-std::shared_ptr<XmlDocument> XmlElement::OwnerDocument()
+std::shared_ptr<XmlDocument> XmlElement::OwnerDocument() const
 {
     return _owner_document;
 }

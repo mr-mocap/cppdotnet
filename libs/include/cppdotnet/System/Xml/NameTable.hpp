@@ -44,8 +44,7 @@ class NameTable : public XmlNameTable
         return _names.empty();
     }
 
-    std::shared_ptr<const XmlNameTable> MemberwiseClone() const override;
-    std::shared_ptr<XmlNameTable>       MemberwiseClone()       override;
+    std::shared_ptr<XmlNameTable> MemberwiseClone() const override;
 protected:
     /** @name Internal Helper Classes
      *  @{

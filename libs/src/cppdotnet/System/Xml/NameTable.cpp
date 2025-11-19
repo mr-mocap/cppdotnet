@@ -62,12 +62,7 @@ std::string_view NameTable::Get(std::string_view name) const
     return (it != _names.end()) ? *it : std::string_view{};
 }
 
-std::shared_ptr<const XmlNameTable> NameTable::MemberwiseClone() const
-{
-    return std::make_shared<const NameTable>( *this );
-}
-
-std::shared_ptr<XmlNameTable> NameTable::MemberwiseClone()
+std::shared_ptr<XmlNameTable> NameTable::MemberwiseClone() const
 {
     return std::make_shared<NameTable>( *this );
 }

@@ -27,7 +27,7 @@ int DefaultNodeListImplementation::Count() const
     return _nodes.Count();
 }
 
-std::shared_ptr<const XmlNode> DefaultNodeListImplementation::operator [](size_t index) const
+std::shared_ptr<XmlNode> DefaultNodeListImplementation::operator [](size_t index) const
 {
     if ( index >= _nodes.Count() )
         return nullptr;
@@ -35,15 +35,7 @@ std::shared_ptr<const XmlNode> DefaultNodeListImplementation::operator [](size_t
     return _nodes[ index ];
 }
 
-std::shared_ptr<XmlNode> DefaultNodeListImplementation::operator [](size_t index)
-{
-    if ( index >= _nodes.Count() )
-        return nullptr;
-    
-    return _nodes[ index ];
-}
-
-std::shared_ptr<const XmlNode> DefaultNodeListImplementation::operator [](int index) const
+std::shared_ptr<XmlNode> DefaultNodeListImplementation::operator [](int index) const
 {
     if ( index < 0 )
         return nullptr;
@@ -51,15 +43,7 @@ std::shared_ptr<const XmlNode> DefaultNodeListImplementation::operator [](int in
     return operator []( static_cast<size_t>( index ) );
 }
 
-std::shared_ptr<XmlNode> DefaultNodeListImplementation::operator [](int index)
-{
-    if ( index < 0 )
-        return nullptr;
-    
-    return operator []( static_cast<size_t>( index ) );
-}
-
-std::shared_ptr<const XmlNode> DefaultNodeListImplementation::Item(size_t index) const
+std::shared_ptr<XmlNode> DefaultNodeListImplementation::Item(size_t index) const
 {
     if ( index >= _nodes.Count() )
         return nullptr;
@@ -67,15 +51,7 @@ std::shared_ptr<const XmlNode> DefaultNodeListImplementation::Item(size_t index)
     return _nodes[ index ];
 }
 
-std::shared_ptr<XmlNode> DefaultNodeListImplementation::Item(size_t index)
-{
-    if ( index >= _nodes.Count() )
-        return nullptr;
-    
-    return _nodes[ index ];
-}
-
-std::shared_ptr<const XmlNode> DefaultNodeListImplementation::Item(int index) const
+std::shared_ptr<XmlNode> DefaultNodeListImplementation::Item(int index) const
 {
     if ( index < 0 )
         return nullptr;
@@ -83,20 +59,7 @@ std::shared_ptr<const XmlNode> DefaultNodeListImplementation::Item(int index) co
     return Item( static_cast<size_t>( index ) );
 }
 
-std::shared_ptr<XmlNode> DefaultNodeListImplementation::Item(int index)
-{
-    if ( index < 0 )
-        return nullptr;
-    
-    return Item( static_cast<size_t>( index ) );
-}
-
-std::shared_ptr<const XmlNodeList> DefaultNodeListImplementation::MemberwiseClone() const
-{
-    return std::make_shared<const DefaultNodeListImplementation>( *this );
-}
-
-std::shared_ptr<XmlNodeList> DefaultNodeListImplementation::MemberwiseClone()
+std::shared_ptr<XmlNodeList> DefaultNodeListImplementation::MemberwiseClone() const
 {
     return std::make_shared<DefaultNodeListImplementation>( *this );
 }

@@ -10,21 +10,14 @@ size_t XmlAttributeCollection::Count() const
     return _nodes.Count();
 }
     
-const std::shared_ptr<XmlNode> XmlAttributeCollection::Item(size_t index) const
+std::shared_ptr<XmlNode> XmlAttributeCollection::Item(size_t index) const
 {
     if ( index >= _nodes.Count() )
         return nullptr;
     return _nodes[ index ];
 }
 
-std::shared_ptr<XmlNode> XmlAttributeCollection::Item(size_t index)
-{
-    if ( index >= _nodes.Count() )
-        return nullptr;
-    return _nodes[ index ];
-}
-
-const std::shared_ptr<XmlNode> XmlAttributeCollection::Item(int index) const
+std::shared_ptr<XmlNode> XmlAttributeCollection::Item(int index) const
 {
     if ( index < 0 )
         return nullptr;
@@ -37,33 +30,9 @@ const std::shared_ptr<XmlNode> XmlAttributeCollection::Item(int index) const
     return _nodes[ index ];
 }
 
-std::shared_ptr<XmlNode> XmlAttributeCollection::Item(int index)
-{
-    if ( index < 0 )
-        return nullptr;
-    
-    size_t s_index = static_cast<size_t>(index);
-
-    if ( s_index >= _nodes.Count() )
-        return nullptr;
-
-    return _nodes[ index ];
-}
-
-const std::shared_ptr<XmlNode> XmlAttributeCollection::GetNamedItem(std::string_view name) const
+std::shared_ptr<XmlNode> XmlAttributeCollection::GetNamedItem(std::string_view name) const
 {
     for (const std::shared_ptr<XmlNode> &iCurrentNode : _nodes)
-    {
-        if ( iCurrentNode->Name() == name )
-            return iCurrentNode;
-    }
-
-    return nullptr;
-}
-
-std::shared_ptr<XmlNode> XmlAttributeCollection::GetNamedItem(std::string_view name)
-{
-    for (std::shared_ptr<XmlNode> &iCurrentNode : _nodes)
     {
         if ( iCurrentNode->Name() == name )
             return iCurrentNode;

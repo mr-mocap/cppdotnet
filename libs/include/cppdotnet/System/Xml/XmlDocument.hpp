@@ -46,29 +46,20 @@ public:
                                                         std::string_view local_name,
                                                         std::string_view namespace_uri);
 
-    const XmlNameTable &NameTable() const
+    XmlNameTable &NameTable() const
     {
         INVARIANT( _implementation );
 
         return *_implementation->NameTable();
     }
 
-          XmlNameTable &NameTable()
-    {
-        INVARIANT( _implementation );
-
-        return *_implementation->NameTable();
-    }
-
-    std::shared_ptr<const XmlImplementation> Implementation() const;
-    std::shared_ptr<XmlImplementation>       Implementation();
+    std::shared_ptr<XmlImplementation> Implementation() const;
 
     std::string_view LocalName() const override;
     std::string_view Name() const override;
     std::string_view NamespaceURI() const override;
 
-    std::shared_ptr<const XmlDocument> OwnerDocument() const override;
-    std::shared_ptr<XmlDocument>       OwnerDocument()       override;
+    std::shared_ptr<XmlDocument> OwnerDocument() const override;
 
     std::string_view Prefix() const override;
                 void Prefix(std::string_view new_prefix) override;

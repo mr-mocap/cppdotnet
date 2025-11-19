@@ -84,21 +84,14 @@ std::shared_ptr<XmlNode> XmlNode::InsertBefore(std::shared_ptr<XmlNode> new_chil
     return new_child;
 }
 
-const XmlNodeList &XmlNode::ChildNodes() const
+XmlNodeList &XmlNode::ChildNodes() const
 {
     INVARIANT( _children );
 
     return *_children;
 }
 
-XmlNodeList &XmlNode::ChildNodes()
-{
-    INVARIANT( _children );
-
-    return *_children;
-}
-
-std::shared_ptr<const XmlNode> XmlNode::FirstChild() const
+std::shared_ptr<XmlNode> XmlNode::FirstChild() const
 {
     INVARIANT( _children );
 
@@ -108,27 +101,7 @@ std::shared_ptr<const XmlNode> XmlNode::FirstChild() const
     return nullptr;
 }
 
-std::shared_ptr<XmlNode> XmlNode::FirstChild()
-{
-    INVARIANT( _children );
-
-    if ( HasChildNodes() )
-        return ChildNodes().Item(0);
-
-    return nullptr;
-}
-
-std::shared_ptr<const XmlNode> XmlNode::LastChild() const
-{
-    INVARIANT( _children );
-
-    if ( HasChildNodes() )
-        return ChildNodes().Item( ChildNodes().Count() - 1 );
-
-    return nullptr;
-}
-
-std::shared_ptr<XmlNode> XmlNode::LastChild()
+std::shared_ptr<XmlNode> XmlNode::LastChild() const
 {
     INVARIANT( _children );
 
@@ -145,30 +118,7 @@ bool XmlNode::HasChildNodes() const
     return ChildNodes().Count() != 0;
 }
 
-std::shared_ptr<const XmlNode> XmlNode::NextSibling() const
-{
-    if ( !ParentNode() )
-        return nullptr; // No siblings
-
-    const XmlNodeList &siblings = ParentNode()->ChildNodes();
-
-    for (int i = 0; i < siblings.Count(); ++i)
-    {
-        const XmlNode *iCurrentSibling = siblings[ i ].get();
-
-        if ( iCurrentSibling == this )
-        {
-            if ( i == siblings.Count() - 1 ) // No next after the last sibling
-                return nullptr;
-
-            return siblings[ i + 1 ];
-        }
-    }
-
-    return nullptr; // This node wasn't in the siblings list
-}
-
-std::shared_ptr<XmlNode> XmlNode::NextSibling()
+std::shared_ptr<XmlNode> XmlNode::NextSibling() const
 {
     if ( !ParentNode() )
         return nullptr; // No siblings
@@ -191,30 +141,7 @@ std::shared_ptr<XmlNode> XmlNode::NextSibling()
     return nullptr; // This node wasn't in the siblings list
 }
 
-std::shared_ptr<const XmlNode> XmlNode::PreviousSibling() const
-{
-    if ( !ParentNode() )
-        return nullptr; // No siblings
-
-    const XmlNodeList &siblings = ParentNode()->ChildNodes();
-
-    for (int i = 0; i < siblings.Count(); ++i)
-    {
-        const XmlNode *iCurrentSibling = siblings[ i ].get();
-
-        if ( iCurrentSibling == this )
-        {
-            if ( i == 0 )
-                return nullptr; // No previous to the first sibling
-
-            return siblings[ i - 1 ];
-        }
-    }
-
-    return nullptr; // This node wasn't in the siblings list
-}
-
-std::shared_ptr<XmlNode> XmlNode::PreviousSibling()
+std::shared_ptr<XmlNode> XmlNode::PreviousSibling() const
 {
     if ( !ParentNode() )
         return nullptr; // No siblings
@@ -237,12 +164,7 @@ std::shared_ptr<XmlNode> XmlNode::PreviousSibling()
     return nullptr; // This node wasn't in the siblings list
 }
 
-std::shared_ptr<const XmlNode> XmlNode::ParentNode() const
-{
-    return nullptr;
-}
-
-std::shared_ptr<XmlNode> XmlNode::ParentNode()
+std::shared_ptr<XmlNode> XmlNode::ParentNode() const
 {
     return nullptr;
 }

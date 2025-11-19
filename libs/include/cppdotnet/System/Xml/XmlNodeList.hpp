@@ -12,18 +12,13 @@ public:
 
     virtual int Count() const = 0;
 
-    virtual std::shared_ptr<const XmlNode> operator [](size_t index) const = 0;
-    virtual std::shared_ptr<XmlNode>       operator [](size_t index)       = 0;
-    virtual std::shared_ptr<const XmlNode> operator [](int index) const = 0;
-    virtual std::shared_ptr<XmlNode>       operator [](int index)       = 0;
+    virtual std::shared_ptr<XmlNode> operator [](size_t index) const = 0;
+    virtual std::shared_ptr<XmlNode> operator [](int index) const = 0;
 
-    virtual std::shared_ptr<const XmlNode> Item(int index) const = 0;
-    virtual std::shared_ptr<XmlNode>       Item(int index)       = 0;
-    virtual std::shared_ptr<const XmlNode> Item(size_t index) const = 0;
-    virtual std::shared_ptr<XmlNode>       Item(size_t index)       = 0;
+    virtual std::shared_ptr<XmlNode> Item(size_t index) const = 0;
+    virtual std::shared_ptr<XmlNode> Item(int index) const = 0;
 
-    virtual std::shared_ptr<const XmlNodeList> MemberwiseClone() const = 0;
-    virtual std::shared_ptr<XmlNodeList>       MemberwiseClone()       = 0;
+    virtual std::shared_ptr<XmlNodeList> MemberwiseClone() const = 0;
 
     virtual std::shared_ptr<XmlNode> Append(std::shared_ptr<XmlNode> new_node) = 0;
 

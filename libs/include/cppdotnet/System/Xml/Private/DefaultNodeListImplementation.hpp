@@ -17,18 +17,13 @@ public:
 
     int Count() const override;
 
-    std::shared_ptr<const XmlNode> operator [](size_t index) const override;
-    std::shared_ptr<XmlNode>       operator [](size_t index)       override;
-    std::shared_ptr<const XmlNode> operator [](int    index) const override;
-    std::shared_ptr<XmlNode>       operator [](int    index)       override;
+    std::shared_ptr<XmlNode> operator [](size_t index) const override;
+    std::shared_ptr<XmlNode> operator [](int    index) const override;
 
-    std::shared_ptr<const XmlNode> Item(size_t index) const override;
-    std::shared_ptr<XmlNode>       Item(size_t index)       override;
-    std::shared_ptr<const XmlNode> Item(int    index) const override;
-    std::shared_ptr<XmlNode>       Item(int    index)       override;
+    std::shared_ptr<XmlNode> Item(size_t index) const override;
+    std::shared_ptr<XmlNode> Item(int    index) const override;
 
-    std::shared_ptr<const XmlNodeList> MemberwiseClone() const override;
-    std::shared_ptr<XmlNodeList>       MemberwiseClone()       override;
+    std::shared_ptr<XmlNodeList> MemberwiseClone() const override;
 
     std::shared_ptr<XmlNode> Append(std::shared_ptr<XmlNode> new_node) override;
 

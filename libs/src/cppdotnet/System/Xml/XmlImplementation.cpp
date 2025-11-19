@@ -17,12 +17,6 @@ XmlImplementation::XmlImplementation(std::unique_ptr<XmlNameTable> &&name_table)
 {
 }
 
-XmlImplementation::XmlImplementation(std::shared_ptr<const XmlNameTable> name_table)
-    :
-    _name_table( std::const_pointer_cast<XmlNameTable>(name_table) )
-{
-}
-
 XmlImplementation::XmlImplementation(std::shared_ptr<XmlNameTable> name_table)
     :
     _name_table( name_table )
@@ -33,18 +27,13 @@ XmlImplementation::~XmlImplementation()
 {
 }
 
-std::shared_ptr<XmlDocument> XmlImplementation::CreateDocument()
+std::shared_ptr<XmlDocument> XmlImplementation::CreateDocument() const
 {
     // All created documents share the same XmlNameTable!
     return std::make_shared<XmlDocument>( _name_table );
 }
 
-std::shared_ptr<const XmlNameTable> XmlImplementation::NameTable() const
-{
-    return std::const_pointer_cast<const XmlNameTable>(_name_table);
-}
-
-std::shared_ptr<XmlNameTable> XmlImplementation::NameTable()
+std::shared_ptr<XmlNameTable> XmlImplementation::NameTable() const
 {
     return _name_table;
 }
