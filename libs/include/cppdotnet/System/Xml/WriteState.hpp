@@ -7,13 +7,13 @@ namespace System::Xml
 
 enum class WriteState
 {
-    Start,
-    Prolog,
-    Element,
-    Attribute,
-    Content,
-    Closed,
-    Error
+    Start,      ///@< Indicates that a Write method has not yet been called
+    Prolog,     ///@< Indicates that the prolog is being written
+    Element,    ///@< Indicates that an element start tag is being written
+    Attribute,  ///@< Indicates that an attribute value is being written
+    Content,    ///@< Indicates that element content is being written
+    Closed,     ///@< Indicates that the @c Close() method has been called
+    Error       ///@< An exception has been thrown, which has left the XmlWriter in an invalid state
 };
 
 }
