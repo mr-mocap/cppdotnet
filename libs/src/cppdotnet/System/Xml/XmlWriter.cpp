@@ -1,6 +1,7 @@
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/XmlTextWriter.hpp>
 #include <cppdotnet/System/IO/StreamWriter.hpp>
+#include <cppdotnet/System/Convert.hpp>
 #include <cppdotnet/System/Private/private.hpp>
 
 namespace System::Xml
@@ -38,53 +39,9 @@ std::unique_ptr<XmlWriter> XmlWriter::Create(std::unique_ptr<System::IO::TextWri
     return writer;
 }
 
-void XmlWriter::WriteValue(bool value)
-{
-    UNUSED( value );
-
-    // TODO: Implement Me
-}
-
-void XmlWriter::WriteValue(float value)
-{
-    UNUSED( value );
-
-    // TODO: Implement Me
-}
-
-void XmlWriter::WriteValue(double value)
-{
-    UNUSED( value );
-
-    // TODO: Implement Me
-}
-
-void XmlWriter::WriteValue(int32_t value)
-{
-    UNUSED( value );
-
-    // TODO: Implement Me
-}
-
-void XmlWriter::WriteValue(int64_t value)
-{
-    UNUSED( value );
-
-    // TODO: Implement Me
-}
-
-void XmlWriter::WriteValue(std::string_view value)
-{
-    UNUSED( value );
-
-    // TODO: Implement Me
-}
-
 void XmlWriter::WriteValue(DateTime value)
 {
-    UNUSED( value );
-
-    // TODO: Implement Me
+    WriteValue( value.ToString() );
 }
 
 void XmlWriter::WriteValue(DateTimeOffset value)
@@ -94,11 +51,9 @@ void XmlWriter::WriteValue(DateTimeOffset value)
     // TODO: Implement Me
 }
 
-void WriteWhitespace(std::string_view ws)
+void XmlWriter::WriteWhitespace(std::string_view ws)
 {
-    UNUSED( ws );
-
-    // TODO: Implement Me
+    WriteValue( ws );
 }
 
 }

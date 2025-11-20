@@ -5,6 +5,7 @@
 #include <cppdotnet/System/IO/TextWriter.hpp>
 #include <cppdotnet/System/IO/Stream.hpp>
 #include <cppdotnet/System/Xml/XmlWriterSettings.hpp>
+#include <cppdotnet/System/Xml/WriteState.hpp>
 #include <memory>
 #include <cstdint>
 #include <string_view>
@@ -26,16 +27,20 @@ public:
     static std::unique_ptr<XmlWriter> Create(std::unique_ptr<System::IO::TextWriter> &&text_reader);
     static std::unique_ptr<XmlWriter> Create(std::unique_ptr<System::IO::TextWriter> &&text_reader, XmlWriterSettings &&reader_settings);
 
-    virtual void WriteValue(bool value);
-    virtual void WriteValue(float value);
-    virtual void WriteValue(double value);
-    virtual void WriteValue(int32_t value);
-    virtual void WriteValue(int64_t value);
-    virtual void WriteValue(std::string_view value);
+    virtual void WriteValue(bool value) = 0;
+    virtual void WriteValue(float value) = 0;
+    virtual void WriteValue(double value) = 0;
+    virtual void WriteValue(int32_t value) = 0;
+    virtual void WriteValue(int64_t value) = 0;
+    virtual void WriteValue(std::string_view value) = 0;
     virtual void WriteValue(DateTime value);
     virtual void WriteValue(DateTimeOffset value);
 
     virtual void WriteWhitespace(std::string_view ws);
+
+    virtual void Close() = 0;
+
+    virtual System::Xml::WriteState WriteState() const = 0;
 };
 
 }
