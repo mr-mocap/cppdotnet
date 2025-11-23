@@ -63,8 +63,8 @@ public:
 
     virtual std::shared_ptr<XmlDocument> OwnerDocument() const = 0;
 
-    virtual Nullable<std::string> Value() const = 0;
-    virtual void                  Value(Nullable<std::string> new_value) = 0;
+    virtual Nullable<std::string> Value() const;
+    virtual void                  Value(Nullable<std::string> new_value);
 
     virtual std::shared_ptr<XmlNode> ParentNode() const;
 

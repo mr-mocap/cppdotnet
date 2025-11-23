@@ -169,4 +169,14 @@ std::shared_ptr<XmlNode> XmlNode::ParentNode() const
     return nullptr;
 }
 
+Nullable<std::string> XmlNode::Value() const
+{
+    return { };
+}
+
+void XmlNode::Value(Nullable<std::string> new_value)
+{
+    UNUSED( new_value );
+}
+
 }

@@ -70,16 +70,6 @@ std::shared_ptr<XmlDocument> XmlElement::OwnerDocument() const
     return _owner_document;
 }
 
-Nullable<std::string> XmlElement::Value() const
-{
-    return _value;
-}
-
-void XmlElement::Value(Nullable<std::string> new_value)
-{
-    _value = new_value;
-}
-
 std::string_view XmlElement::Prefix() const
 {
     return _prefix;

@@ -214,18 +214,6 @@ std::shared_ptr<XmlNode> XmlDocument::ReplaceChild(std::shared_ptr<XmlNode> new_
     return children_as_derived_type->ReplaceChild( new_child, old_child );
 }
 
-Nullable<std::string> XmlDocument::Value() const
-{
-    INVARIANT( _implementation );
-
-    return { };
-}
-
-void XmlDocument::Value(Nullable<std::string> new_value)
-{
-    UNUSED( new_value );
-}
-
 void XmlDocument::WriteTo(XmlWriter &xml_writer) const
 {
     assert( false );

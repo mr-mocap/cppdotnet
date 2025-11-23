@@ -59,8 +59,7 @@ void XmlElementWithValue()
     element->Value( std::string("Pride And Prejudice") );
 
     assert( element->Name() == "book" );
-    assert( element->Value().HasValue() );
-    assert( element->Value().Value() == "Pride And Prejudice" );
+    assert( !element->Value().HasValue() );
 
     std::string prolog_written = fixture.string_writer->GetStringBuilder().ToString();
 
