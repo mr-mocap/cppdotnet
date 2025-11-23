@@ -26,6 +26,8 @@ public:
 
     void WriteString(std::string_view data) override;
 
+    void WriteRaw(std::string_view data) override;
+
     System::Xml::WriteState WriteState() const override;
 
     void Close() override;

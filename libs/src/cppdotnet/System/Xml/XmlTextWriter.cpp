@@ -91,6 +91,13 @@ void XmlTextWriter::WriteString(std::string_view data)
     _text_writer->Write( data );
 }
 
+void XmlTextWriter::WriteRaw(std::string_view data)
+{
+    INVARIANT( _text_writer );
+
+    _text_writer->Write( data );
+}
+
 enum WriteState XmlTextWriter::WriteState() const
 {
     INVARIANT( _text_writer );

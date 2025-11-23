@@ -54,6 +54,8 @@ public:
 
     virtual void WriteString(std::string_view value) = 0;
 
+    virtual void WriteRaw(std::string_view data) = 0;
+
     virtual void WriteWhitespace(std::string_view ws);
 
     virtual void Close() = 0;

@@ -1,5 +1,6 @@
 #include <cppdotnet/System/Xml/XmlAttribute.hpp>
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
+#include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 
 namespace System::Xml
@@ -71,7 +72,12 @@ std::shared_ptr<XmlDocument> XmlAttribute::OwnerDocument() const
 
 Nullable<std::string> XmlAttribute::Value() const
 {
-    return { _value };
+    return _value;
+}
+
+void XmlAttribute::Value(Nullable<std::string> new_value)
+{
+    _value = new_value;
 }
 
 std::string_view XmlAttribute::Prefix() const
@@ -101,6 +107,11 @@ std::shared_ptr<XmlNode> XmlAttribute::ReplaceChild(std::shared_ptr<XmlNode> new
     std::shared_ptr<Private::DefaultNodeListImplementation> children_as_derived_type = std::static_pointer_cast<Private::DefaultNodeListImplementation>( _children );
 
     return children_as_derived_type->ReplaceChild( new_child, old_child );
+}
+
+void XmlAttribute::WriteTo(XmlWriter &xml_writer) const
+{
+    assert( false );
 }
 
 XmlNodeType XmlAttribute::_getNodeType() const

@@ -97,7 +97,7 @@ void XmlWriter::WriteEndDocument()
 void XmlWriter::WriteStartElement(std::string_view local_name)
 {
     WriteState( Xml::WriteState::Element );
-    WriteString( std::format("<{}>", local_name) );
+    WriteRaw( std::format("<{}", local_name) );
 
     POSTCONDITION( WriteState() == Xml::WriteState::Element );
 }
@@ -123,7 +123,7 @@ void XmlWriter::WriteProcessingInstruction(std::string_view name, std::string_vi
         ThrowWithTarget( ArgumentException( "WriteStartDocument() had already been called" ) );
 
     WriteState( Xml::WriteState::Prolog );
-    WriteString( std::format("<?{} {}?>", name, text) );
+    WriteRaw( std::format("<?{} {}?>", name, text) );
 }
 
 void XmlWriter::WriteWhitespace(std::string_view ws)

@@ -1,5 +1,6 @@
 #include <cppdotnet/System/Xml/XmlElement.hpp>
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
+#include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 
 namespace System::Xml
@@ -56,7 +57,7 @@ std::string_view XmlElement::LocalName() const
 
 std::string_view XmlElement::Name() const
 {
-    return "XmlElement::Name() NOT IMPLEMENTED";
+    return _local_name;
 }
 
 std::string_view XmlElement::NamespaceURI() const
@@ -71,7 +72,12 @@ std::shared_ptr<XmlDocument> XmlElement::OwnerDocument() const
 
 Nullable<std::string> XmlElement::Value() const
 {
-    return { _value };
+    return _value;
+}
+
+void XmlElement::Value(Nullable<std::string> new_value)
+{
+    _value = new_value;
 }
 
 std::string_view XmlElement::Prefix() const
@@ -101,6 +107,23 @@ std::shared_ptr<XmlNode> XmlElement::ReplaceChild(std::shared_ptr<XmlNode> new_c
     std::shared_ptr<Private::DefaultNodeListImplementation> children_as_derived_type = std::static_pointer_cast<Private::DefaultNodeListImplementation>( _children );
 
     return children_as_derived_type->ReplaceChild( new_child, old_child );
+}
+
+void XmlElement::WriteTo(XmlWriter &xml_writer) const
+{
+    Nullable<std::string> value = Value();
+
+    if ( value.HasValue() )
+    {
+        xml_writer.WriteRaw( std::format("<{}>{}</{}>", LocalName(),
+                                                        value.Value(),
+                                                        LocalName()
+                                        ) );
+    }
+    else
+    {
+        xml_writer.WriteRaw( std::format("<{} />", LocalName()) );
+    }
 }
 
 XmlNodeType XmlElement::_getNodeType() const

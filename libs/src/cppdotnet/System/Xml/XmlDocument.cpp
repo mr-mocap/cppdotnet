@@ -221,6 +221,16 @@ Nullable<std::string> XmlDocument::Value() const
     return { };
 }
 
+void XmlDocument::Value(Nullable<std::string> new_value)
+{
+    UNUSED( new_value );
+}
+
+void XmlDocument::WriteTo(XmlWriter &xml_writer) const
+{
+    assert( false );
+}
+
 XmlNodeType XmlDocument::_getNodeType() const
 {
     INVARIANT( _implementation );

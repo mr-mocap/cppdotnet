@@ -14,6 +14,7 @@ namespace System::Xml
 class XmlNode;
 class XmlDocument;
 class XmlNodeList;
+class XmlWriter;
 
 class XmlNode : public std::enable_shared_from_this<XmlNode>
 {
@@ -63,6 +64,7 @@ public:
     virtual std::shared_ptr<XmlDocument> OwnerDocument() const = 0;
 
     virtual Nullable<std::string> Value() const = 0;
+    virtual void                  Value(Nullable<std::string> new_value) = 0;
 
     virtual std::shared_ptr<XmlNode> ParentNode() const;
 
@@ -77,7 +79,7 @@ public:
 
     virtual std::shared_ptr<XmlNode> ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child) = 0;
 
-    virtual void WriteTo();
+    virtual void WriteTo(XmlWriter &xml_writer) const = 0;
 protected:
     std::shared_ptr<XmlNodeList> _children;
 

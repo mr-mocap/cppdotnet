@@ -29,14 +29,17 @@ public:
     std::shared_ptr<XmlNode> ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child) override;
 
     Nullable<std::string> Value() const override;
+    void                  Value(Nullable<std::string> new_value) override;
 
     std::string_view Prefix() const override;
                 void Prefix(std::string_view new_prefix) override;
+
+    void WriteTo(XmlWriter &xml_writer) const override;
 protected:
     std::string _prefix;
     std::string _local_name;
     std::string _namespace_uri;
-    std::string _value;
+    Nullable<std::string> _value;
     std::shared_ptr<XmlDocument> _owner_document;
 
     XmlNodeType _getNodeType() const override;

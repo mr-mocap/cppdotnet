@@ -18,6 +18,8 @@ public:
         _data{ init_value }
     {
     }
+    Nullable(const Nullable &other) = default;
+    Nullable(Nullable &&other) = default;
 
     constexpr TypeCode GetTypeCode() const { return HasValue() ? TypeCode::Object : TypeCode::Empty; }
 

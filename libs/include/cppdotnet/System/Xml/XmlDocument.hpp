@@ -70,6 +70,9 @@ public:
     std::shared_ptr<XmlNode> ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child) override;
 
     Nullable<std::string> Value() const override;
+    void                  Value(Nullable<std::string> new_value) override;
+
+    void WriteTo(XmlWriter &xml_writer) const override;
 protected:
     std::shared_ptr<XmlImplementation> _implementation;
 
