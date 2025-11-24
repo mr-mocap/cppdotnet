@@ -16,6 +16,7 @@ LIB_SRC  = $(SRC_DIR)/System/Xml/NameTable.cpp \
            $(SRC_DIR)/System/Xml/Private/DefaultNodeListImplementation.cpp \
            $(SRC_DIR)/System/Xml/XmlAttribute.cpp \
            $(SRC_DIR)/System/Xml/XmlAttributeCollection.cpp \
+           $(SRC_DIR)/System/Xml/XmlCharacterData.cpp \
            $(SRC_DIR)/System/Xml/XmlDocument.cpp \
            $(SRC_DIR)/System/Xml/XmlElement.cpp \
            $(SRC_DIR)/System/Xml/XmlImplementation.cpp \
@@ -24,6 +25,7 @@ LIB_SRC  = $(SRC_DIR)/System/Xml/NameTable.cpp \
            $(SRC_DIR)/System/Xml/XmlNodeReader.cpp \
            $(SRC_DIR)/System/Xml/XmlReader.cpp \
            $(SRC_DIR)/System/Xml/XmlReaderSettings.cpp \
+           $(SRC_DIR)/System/Xml/XmlText.cpp \
            $(SRC_DIR)/System/Xml/XmlTextReader.cpp \
            $(SRC_DIR)/System/Xml/XmlTextWriter.cpp \
            $(SRC_DIR)/System/Xml/XmlWriter.cpp \

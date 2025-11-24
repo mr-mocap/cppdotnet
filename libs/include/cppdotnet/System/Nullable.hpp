@@ -3,7 +3,9 @@
 #include <cppdotnet/System/Exception.hpp>
 #include <optional>
 #include <utility>
-
+#include <concepts>
+#include <string>
+#include <string_view>
 
 namespace System
 {
@@ -13,6 +15,11 @@ class Nullable
 {
 public:
     Nullable() = default;
+    constexpr Nullable(std::nullopt_t null_value)
+        :
+        _data{ null_value }
+    {
+    }
     constexpr Nullable(const T &init_value)
         :
         _data{ init_value }
@@ -20,6 +27,17 @@ public:
     }
     Nullable(const Nullable &other) = default;
     Nullable(Nullable &&other) = default;
+
+    constexpr Nullable(std::string_view sv) requires std::same_as<T, std::string>
+        :
+        _data{ sv }
+    {
+    }
+    constexpr Nullable(const char *s) requires std::same_as<T, std::string>
+        :
+        _data{ s }
+    {
+    }
 
     constexpr TypeCode GetTypeCode() const { return HasValue() ? TypeCode::Object : TypeCode::Empty; }
 

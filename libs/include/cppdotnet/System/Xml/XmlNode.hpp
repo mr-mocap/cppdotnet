@@ -25,7 +25,8 @@ public:
     virtual std::shared_ptr<XmlNode> AppendChild(std::shared_ptr<XmlNode> new_child);
     virtual std::shared_ptr<XmlNode> PrependChild(std::shared_ptr<XmlNode> new_child);
 
-    virtual std::shared_ptr<XmlAttributeCollection> Attributes() const;
+    const XmlAttributeCollection &Attributes() const;
+          XmlAttributeCollection &Attributes();
     
     virtual std::shared_ptr<XmlNode> Clone() const;
 
@@ -64,7 +65,18 @@ public:
     virtual std::shared_ptr<XmlDocument> OwnerDocument() const = 0;
 
     virtual Nullable<std::string> Value() const;
-    virtual void                  Value(Nullable<std::string> new_value);
+            void                  Value(std::nullopt_t new_value_that_is_null)
+            {
+                Value( Nullable<std::string>{ new_value_that_is_null } );
+            }
+            void                  Value(std::string_view new_value)
+            {
+                Value( Nullable<std::string>{ std::string(new_value) } );
+            }
+            void                  Value(const char *new_value)
+            {
+                Value( std::string_view( new_value ) );
+            }
 
     virtual std::shared_ptr<XmlNode> ParentNode() const;
 
@@ -81,11 +93,13 @@ public:
 
     virtual void WriteTo(XmlWriter &xml_writer) const = 0;
 protected:
+    XmlAttributeCollection       _attributes;
     std::shared_ptr<XmlNodeList> _children;
 
     XmlNode(std::shared_ptr<XmlNodeList> specific_children_object);
 
     virtual XmlNodeType _getNodeType() const = 0;
+    virtual void Value(Nullable<std::string> s);
 };
 
 }

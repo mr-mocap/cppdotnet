@@ -1,7 +1,10 @@
 #include <cppdotnet/System/Xml/XmlElement.hpp>
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
+#include <cppdotnet/System/Xml/XmlAttribute.hpp>
+#include <cppdotnet/System/Xml/XmlAttributeCollection.hpp>
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
+#include <cppdotnet/System/Exception.hpp>
 
 namespace System::Xml
 {
@@ -99,26 +102,59 @@ std::shared_ptr<XmlNode> XmlElement::ReplaceChild(std::shared_ptr<XmlNode> new_c
     return children_as_derived_type->ReplaceChild( new_child, old_child );
 }
 
+void XmlElement::SetAttribute(std::string_view name, std::string_view value)
+{
+    std::shared_ptr<XmlNode> attr_node = Attributes().GetNamedItem( name );
+
+    if ( attr_node )
+    {
+        attr_node->Value( value );
+        return;
+    }
+
+    attr_node =  OwnerDocument()->CreateAttribute(name);
+    _attributes.SetNamedItem( attr_node )->Value( value );
+}
+
 void XmlElement::WriteTo(XmlWriter &xml_writer) const
 {
-    Nullable<std::string> value = Value();
+    XmlNodeList &children = ChildNodes();
 
-    if ( value.HasValue() )
+    if ( children.Count() == 0 )
     {
-        xml_writer.WriteRaw( std::format("<{}>{}</{}>", LocalName(),
-                                                        value.Value(),
-                                                        LocalName()
-                                        ) );
+        xml_writer.WriteRaw( std::format("<{}", LocalName()) ); 
+        _writeAttributes( xml_writer );
+        xml_writer.WriteRaw( " />" );
     }
     else
     {
-        xml_writer.WriteRaw( std::format("<{} />", LocalName()) );
+        xml_writer.WriteRaw( std::format("<{}", LocalName()) );
+        _writeAttributes( xml_writer );
+        xml_writer.WriteRaw( ">" );
+
+        _writeChildren( xml_writer );
+        
+        xml_writer.WriteRaw( std::format("</{}>", LocalName()) );
     }
 }
 
 XmlNodeType XmlElement::_getNodeType() const
 {
     return XmlNodeType::Element;
+}
+
+void XmlElement::_writeAttributes(XmlWriter &xml_writer) const
+{
+    const XmlAttributeCollection &attributes = Attributes();
+
+    for (int a = 0; a < attributes.Count(); ++a)
+        attributes.Item( a )->WriteTo( xml_writer );
+}
+
+void XmlElement::_writeChildren(XmlWriter &xml_writer) const
+{
+    for (int i = 0; i < ChildNodes().Count(); ++i)
+        ChildNodes()[ i ]->WriteTo( xml_writer );
 }
 
 }

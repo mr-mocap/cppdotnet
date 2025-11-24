@@ -57,7 +57,7 @@ std::string_view XmlAttribute::LocalName() const
 
 std::string_view XmlAttribute::Name() const
 {
-    return "XmlAttribute::Name() NOT IMPLEMENTED";
+    return _local_name;
 }
 
 std::string_view XmlAttribute::NamespaceURI() const
@@ -111,6 +111,9 @@ std::shared_ptr<XmlNode> XmlAttribute::ReplaceChild(std::shared_ptr<XmlNode> new
 
 void XmlAttribute::WriteTo(XmlWriter &xml_writer) const
 {
+    UNUSED( xml_writer );
+
+    //xml_writer.WriteRaw( std::format(" {}={}", LocalName(), Value()) );
     assert( false );
 }
 

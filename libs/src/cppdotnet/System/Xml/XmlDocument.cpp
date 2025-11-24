@@ -1,6 +1,7 @@
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
 #include <cppdotnet/System/Xml/XmlAttribute.hpp>
 #include <cppdotnet/System/Xml/XmlElement.hpp>
+#include <cppdotnet/System/Xml/XmlText.hpp>
 #include <cppdotnet/System/Xml/NameTable.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 #include <cppdotnet/System/Private/private.hpp>
@@ -140,6 +141,11 @@ std::shared_ptr<XmlElement> XmlDocument::CreateElement(std::string_view name)
     return CreateElement( prefix, local_name, std::string_view() );
 }
 
+std::shared_ptr<XmlText> XmlDocument::CreateTextNode(std::string_view text)
+{
+    return std::make_shared<XmlText>( text, _localSharedFromThis() );
+}
+
 std::shared_ptr<XmlImplementation> XmlDocument::Implementation() const
 {
     INVARIANT( _implementation );
@@ -216,6 +222,8 @@ std::shared_ptr<XmlNode> XmlDocument::ReplaceChild(std::shared_ptr<XmlNode> new_
 
 void XmlDocument::WriteTo(XmlWriter &xml_writer) const
 {
+    UNUSED( xml_writer );
+
     assert( false );
 }
 

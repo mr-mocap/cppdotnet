@@ -31,7 +31,6 @@ public:
     std::shared_ptr<XmlNode> ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child) override;
 
     Nullable<std::string> Value() const override;
-    void                  Value(Nullable<std::string> new_value) override;
 
     std::string_view Prefix() const override;
                 void Prefix(std::string_view new_prefix) override;
@@ -45,6 +44,7 @@ protected:
     std::shared_ptr<XmlDocument> _owner_document;
 
     XmlNodeType _getNodeType() const override;
+    void        Value(Nullable<std::string> new_value) override;
 };
 
 }

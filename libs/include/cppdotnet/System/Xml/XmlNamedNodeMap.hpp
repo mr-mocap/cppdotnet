@@ -21,8 +21,6 @@ public:
 
     virtual std::shared_ptr<XmlNode> RemoveNamedItem(std::string_view name) = 0;
 
-    virtual void  RemoveAll();
-
     virtual std::shared_ptr<XmlNode> Item(size_t index) const = 0;
     virtual std::shared_ptr<XmlNode> Item(int index) const = 0;
 };

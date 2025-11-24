@@ -11,6 +11,7 @@ namespace System::Xml
 
 class XmlAttribute;
 class XmlElement;
+class XmlText;
 
 class XmlDocument : public XmlNode
 {
@@ -45,6 +46,8 @@ public:
     virtual std::shared_ptr<XmlElement>   CreateElement(std::string_view prefix,
                                                         std::string_view local_name,
                                                         std::string_view namespace_uri);
+
+    virtual std::shared_ptr<XmlText> CreateTextNode(std::string_view text);
 
     XmlNameTable &NameTable() const
     {

@@ -4,6 +4,7 @@
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/XmlImplementation.hpp>
 #include <cppdotnet/System/Xml/XmlElement.hpp>
+#include <cppdotnet/System/Xml/XmlText.hpp>
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
 
 namespace TestXmlNodeWriteTo
@@ -56,12 +57,38 @@ void XmlElementWithValue()
 
     std::shared_ptr<System::Xml::XmlElement> element = fixture.xml_doc->CreateElement("book");
 
-    element->Value( std::string("Pride And Prejudice") );
+    assert( element->Name() == "book" );
+    assert( !element->Value().HasValue() );
+
+    try
+    {
+        element->Value( "Pride And Prejudice" );
+        assert( false );
+    }
+    catch (const System::InvalidOperationException &e)
+    {
+        assert( true);
+    }
+}
+
+void XmlElementWithTextNodeChild()
+{
+    XmlNodeTestFixture fixture;
+
+    fixture.xml_writer->WriteStartDocument();
+
+    std::shared_ptr<System::Xml::XmlElement> element = fixture.xml_doc->CreateElement("book");
 
     assert( element->Name() == "book" );
     assert( !element->Value().HasValue() );
 
     std::string prolog_written = fixture.string_writer->GetStringBuilder().ToString();
+
+    {
+        std::shared_ptr<System::Xml::XmlNode> text_node = fixture.xml_doc->CreateTextNode( "Pride And Prejudice" );
+
+        element->AppendChild( text_node );
+    }
 
     element->WriteTo( *(fixture.xml_writer) );
 
@@ -77,6 +104,7 @@ void Run()
 {
     EmptyXmlElement();
     XmlElementWithValue();
+    XmlElementWithTextNodeChild();
 }
 
 }

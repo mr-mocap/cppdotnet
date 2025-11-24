@@ -31,9 +31,14 @@ std::shared_ptr<XmlNode> XmlNode::PrependChild(std::shared_ptr<XmlNode> new_chil
     return new_child;
 }
 
-std::shared_ptr<XmlAttributeCollection> XmlNode::Attributes() const
+const XmlAttributeCollection &XmlNode::Attributes() const
 {
-    return nullptr;
+    return _attributes;
+}
+
+XmlAttributeCollection &XmlNode::Attributes()
+{
+    return _attributes;
 }
 
 bool XmlNode::IsReadOnly() const
@@ -177,6 +182,8 @@ Nullable<std::string> XmlNode::Value() const
 void XmlNode::Value(Nullable<std::string> new_value)
 {
     UNUSED( new_value );
+
+    ThrowWithTarget( InvalidOperationException( std::format("Cannot set a value on node type '{}'", NodeType()) ) );
 }
 
 }
