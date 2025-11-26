@@ -31,7 +31,13 @@ public:
     std::string_view Prefix() const override;
                 void Prefix(std::string_view new_prefix) override;
 
-    virtual void SetAttribute(std::string_view name, std::string_view value);
+    virtual std::shared_ptr<XmlAttribute> GetAttributeNode(std::string_view name) const;
+    virtual void                          SetAttributeNode(std::shared_ptr<XmlAttribute> new_attribute);
+
+    virtual std::string_view GetAttribute(std::string_view name) const;
+    virtual void             SetAttribute(std::string_view name, std::string_view value);
+
+    virtual void RemoveAttribute(std::string_view name);
 
     void WriteTo(XmlWriter &xml_writer) const override;
 protected:

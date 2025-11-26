@@ -49,7 +49,7 @@ void EmptyXmlElement()
     assert( data_written == "<book />" );
 }
 
-void XmlElementWithValue()
+void CannotAddValueToXmlElement()
 {
     XmlNodeTestFixture fixture;
 
@@ -103,7 +103,7 @@ void XmlElementWithTextNodeChild()
 void Run()
 {
     EmptyXmlElement();
-    XmlElementWithValue();
+    CannotAddValueToXmlElement();
     XmlElementWithTextNodeChild();
 }
 

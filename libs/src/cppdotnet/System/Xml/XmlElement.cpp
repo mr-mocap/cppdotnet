@@ -102,9 +102,31 @@ std::shared_ptr<XmlNode> XmlElement::ReplaceChild(std::shared_ptr<XmlNode> new_c
     return children_as_derived_type->ReplaceChild( new_child, old_child );
 }
 
-void XmlElement::SetAttribute(std::string_view name, std::string_view value)
+std::shared_ptr<XmlAttribute> XmlElement::GetAttributeNode(std::string_view name) const
 {
     std::shared_ptr<XmlNode> attr_node = Attributes().GetNamedItem( name );
+
+    return std::static_pointer_cast<XmlAttribute>( attr_node );
+}
+
+void XmlElement::SetAttributeNode(std::shared_ptr<XmlAttribute> new_attribute)
+{
+    _attributes.SetNamedItem( new_attribute );
+}
+
+std::string_view XmlElement::GetAttribute(std::string_view name) const
+{
+    std::shared_ptr<XmlAttribute> attr_node = GetAttributeNode( name );
+
+    if ( attr_node )
+        return attr_node->GetValueOrDefault( "" );
+
+    return "";
+}
+
+void XmlElement::SetAttribute(std::string_view name, std::string_view value)
+{
+    std::shared_ptr<XmlAttribute> attr_node = GetAttributeNode( name );
 
     if ( attr_node )
     {
@@ -112,8 +134,14 @@ void XmlElement::SetAttribute(std::string_view name, std::string_view value)
         return;
     }
 
-    attr_node =  OwnerDocument()->CreateAttribute(name);
-    _attributes.SetNamedItem( attr_node )->Value( value );
+    attr_node = OwnerDocument()->CreateAttribute(name);
+    attr_node->Value( value );
+    _attributes.SetNamedItem( attr_node );
+}
+
+void XmlElement::RemoveAttribute(std::string_view name)
+{
+    _attributes.RemoveNamedItem( name );
 }
 
 void XmlElement::WriteTo(XmlWriter &xml_writer) const
