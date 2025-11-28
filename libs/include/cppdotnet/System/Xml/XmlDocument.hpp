@@ -12,6 +12,7 @@ namespace System::Xml
 class XmlAttribute;
 class XmlElement;
 class XmlText;
+class XmlDeclaration;
 
 class XmlDocument : public XmlNode
 {
@@ -48,6 +49,13 @@ public:
                                                         std::string_view namespace_uri);
 
     virtual std::shared_ptr<XmlText> CreateTextNode(std::string_view text);
+
+    virtual std::shared_ptr<XmlDeclaration> CreateXmlDeclaration(std::string_view version);
+    virtual std::shared_ptr<XmlDeclaration> CreateXmlDeclaration(std::string_view version,
+                                                                 std::string_view encoding);
+    virtual std::shared_ptr<XmlDeclaration> CreateXmlDeclaration(std::string_view version,
+                                                                 std::string_view encoding,
+                                                                 std::string_view standalone);
 
     XmlNameTable &NameTable() const
     {

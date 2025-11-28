@@ -2,6 +2,7 @@
 #include <cppdotnet/System/Xml/XmlAttribute.hpp>
 #include <cppdotnet/System/Xml/XmlElement.hpp>
 #include <cppdotnet/System/Xml/XmlText.hpp>
+#include <cppdotnet/System/Xml/XmlDeclaration.hpp>
 #include <cppdotnet/System/Xml/NameTable.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 #include <cppdotnet/System/Private/private.hpp>
@@ -144,6 +145,24 @@ std::shared_ptr<XmlElement> XmlDocument::CreateElement(std::string_view name)
 std::shared_ptr<XmlText> XmlDocument::CreateTextNode(std::string_view text)
 {
     return std::make_shared<XmlText>( text, _localSharedFromThis() );
+}
+
+std::shared_ptr<XmlDeclaration> XmlDocument::CreateXmlDeclaration(std::string_view version)
+{
+    return std::make_shared<XmlDeclaration>( version, _localSharedFromThis() );
+}
+
+std::shared_ptr<XmlDeclaration> XmlDocument::CreateXmlDeclaration(std::string_view version,
+                                                                  std::string_view encoding)
+{
+    return std::make_shared<XmlDeclaration>( version, encoding, _localSharedFromThis() );
+}
+
+std::shared_ptr<XmlDeclaration> XmlDocument::CreateXmlDeclaration(std::string_view version,
+                                                                  std::string_view encoding,
+                                                                  std::string_view standalone)
+{
+    return std::make_shared<XmlDeclaration>( version, encoding, standalone, _localSharedFromThis() );
 }
 
 std::shared_ptr<XmlImplementation> XmlDocument::Implementation() const
