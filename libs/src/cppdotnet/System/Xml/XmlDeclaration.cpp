@@ -1,4 +1,5 @@
 #include <cppdotnet/System/Xml/XmlDeclaration.hpp>
+#include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 #include <cppdotnet/System/Private/private.hpp>
 
@@ -7,7 +8,8 @@ namespace System::Xml
 
 XmlDeclaration::XmlDeclaration()
     :
-    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() )
+    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
+    _value( std::format("version=\"{}\"", _version) )
 {
 }
 
@@ -15,7 +17,8 @@ XmlDeclaration::XmlDeclaration(std::string_view version, std::shared_ptr<XmlDocu
     :
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
     _version( version ),
-    _owner_document( document )
+    _owner_document( document ),
+    _value( std::format("version=\"{}\"", version) )
 {
 }
 
@@ -26,7 +29,8 @@ XmlDeclaration::XmlDeclaration(std::string_view version,
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
     _version( version ),
     _encoding( encoding ),
-    _owner_document( document )
+    _owner_document( document ),
+    _value( std::format("version=\"{}\" encoding=\"{}\"", version, encoding) )
 {
 }
 
@@ -39,7 +43,8 @@ XmlDeclaration::XmlDeclaration(std::string_view version,
     _version( version ),
     _encoding( encoding ),
     _standalone( standalone ),
-    _owner_document( document )
+    _owner_document( document ),
+    _value( std::format("version=\"{}\" encoding=\"{}\" standalone=\"{}\"", version, encoding, standalone) )
 {   
 }
 
@@ -49,7 +54,8 @@ XmlDeclaration::XmlDeclaration(const XmlDeclaration &other)
     _version( other._version ),
     _encoding( other._encoding ),
     _standalone( other._standalone ),
-    _owner_document( other._owner_document )
+    _owner_document( other._owner_document ),
+    _value( other._value )
 {
 }
 
@@ -61,6 +67,7 @@ XmlDeclaration &XmlDeclaration::operator =(const XmlDeclaration &other)
         _encoding       = other._encoding;
         _standalone     = other._standalone;
         _owner_document = other._owner_document;
+        _value          = other._value;
     }
     return *this;
 }
@@ -125,9 +132,25 @@ std::shared_ptr<XmlNode> XmlDeclaration::ReplaceChild(std::shared_ptr<XmlNode> n
     return children_as_derived_type->ReplaceChild( new_child, old_child );
 }
 
+Nullable<std::string> XmlDeclaration::Value() const
+{
+    PRECONDITION( !Version().empty() );
+
+    return { _value };
+}
+
 void XmlDeclaration::WriteTo(XmlWriter &xml_writer) const
 {
-    xml_writer.WriteRaw( std::format("<{} version=\"{}\" encoding=\"{}\">", LocalName(), Version(), Encoding()) ); 
+    std::string text = std::format("version=\"{}\"", Version());
+
+    if ( !Encoding().empty() )
+        text += std::format(" encoding=\"{}\"", Encoding());
+    if ( !Standalone().empty() )
+        text += std::format(" standalone=\"{}\"", Standalone());
+
+    xml_writer.WriteProcessingInstruction( LocalName(), text);
+
+    POSTCONDITION( xml_writer.WriteState() == Xml::WriteState::Prolog );
 }
 
 XmlNodeType XmlDeclaration::_getNodeType() const

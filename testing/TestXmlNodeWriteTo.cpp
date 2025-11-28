@@ -3,29 +3,44 @@
 #include <cppdotnet/System/IO/StringWriter.hpp>
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/XmlImplementation.hpp>
+#include <cppdotnet/System/Xml/XmlDeclaration.hpp>
 #include <cppdotnet/System/Xml/XmlElement.hpp>
 #include <cppdotnet/System/Xml/XmlText.hpp>
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
+#include "XmlNodeTestFixture.hpp"
 
 namespace TestXmlNodeWriteTo
 {
 
-struct XmlNodeTestFixture
+void EmptyXmlDeclaration()
 {
-    XmlNodeTestFixture()
-        :
-        string_writer( std::make_shared<System::IO::StringWriter>() ),
-        xml_writer( System::Xml::XmlWriter::Create( string_writer ) ),
-        xml_implementation( std::make_shared<System::Xml::XmlImplementation>() ),
-        xml_doc( xml_implementation->CreateDocument() )
-    {
-    }
+    XmlNodeTestFixture fixture;
 
-    std::shared_ptr<System::IO::StringWriter> string_writer;
-    std::unique_ptr<System::Xml::XmlWriter>   xml_writer;
-    std::shared_ptr<System::Xml::XmlImplementation> xml_implementation;
-    std::shared_ptr<System::Xml::XmlDocument>       xml_doc;
-};
+    std::shared_ptr<System::Xml::XmlDeclaration> declaration = fixture.xml_doc->CreateXmlDeclaration("1.0");
+
+    assert( declaration->Name() == "xml" );
+
+    declaration->WriteTo( *(fixture.xml_writer) );
+
+    std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
+
+    assert( data_written == "<?xml version=\"1.0\"?>" );
+}
+
+void XmlDeclarationWithEncoding()
+{
+    XmlNodeTestFixture fixture;
+
+    std::shared_ptr<System::Xml::XmlDeclaration> declaration = fixture.xml_doc->CreateXmlDeclaration("1.0", "UTF-8");
+
+    assert( declaration->Name() == "xml" );
+
+    declaration->WriteTo( *(fixture.xml_writer) );
+
+    std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
+
+    assert( data_written == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
+}
 
 void EmptyXmlElement()
 {
@@ -102,6 +117,8 @@ void XmlElementWithTextNodeChild()
 
 void Run()
 {
+    EmptyXmlDeclaration();
+    XmlDeclarationWithEncoding();
     EmptyXmlElement();
     CannotAddValueToXmlElement();
     XmlElementWithTextNodeChild();

@@ -1,5 +1,6 @@
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/XmlTextWriter.hpp>
+#include <cppdotnet/System/Xml/XmlDeclaration.hpp>
 #include <cppdotnet/System/IO/FileStream.hpp>
 #include <cppdotnet/System/IO/StreamWriter.hpp>
 #include <cppdotnet/System/Exception.hpp>
@@ -82,7 +83,15 @@ void XmlWriter::WriteStartDocument()
     if ( WriteState() != Xml::WriteState::Start )
         ThrowWithTarget( InvalidOperationException() );
 
-    WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
+    if ( Settings().OmitXmlDeclaration() == true )
+    {
+        WriteState( Xml::WriteState::Prolog );
+        return;
+    }
+
+    XmlDeclaration xml_declaration( "1.0", "UTF-8", nullptr );
+
+    xml_declaration.WriteTo( *this );
 
     POSTCONDITION( WriteState() == Xml::WriteState::Prolog );
 }

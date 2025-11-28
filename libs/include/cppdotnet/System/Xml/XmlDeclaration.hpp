@@ -50,12 +50,15 @@ public:
         return _standalone;
     }
 
+    Nullable<std::string> Value() const override;
+
     void WriteTo(XmlWriter &xml_writer) const override;
 protected:
     std::string                  _version{ "1.0" };
-    std::string                  _encoding{ "UTF-8" };
+    std::string                  _encoding;
     std::string                  _standalone;
     std::shared_ptr<XmlDocument> _owner_document;
+    std::string                  _value;
 
     XmlNodeType _getNodeType() const override;
 };
