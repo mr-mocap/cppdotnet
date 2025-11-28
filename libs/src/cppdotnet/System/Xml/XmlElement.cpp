@@ -130,12 +130,12 @@ void XmlElement::SetAttribute(std::string_view name, std::string_view value)
 
     if ( attr_node )
     {
-        attr_node->Value( value );
+        std::static_pointer_cast<XmlNode>(attr_node)->Value( value );
         return;
     }
 
     attr_node = OwnerDocument()->CreateAttribute(name);
-    attr_node->Value( value );
+    std::static_pointer_cast<XmlNode>(attr_node)->Value( value );
     _attributes.SetNamedItem( attr_node );
 }
 
