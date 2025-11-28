@@ -119,7 +119,7 @@ std::string_view XmlElement::GetAttribute(std::string_view name) const
     std::shared_ptr<XmlAttribute> attr_node = GetAttributeNode( name );
 
     if ( attr_node )
-        return attr_node->GetValueOrDefault( "" );
+        return attr_node->Value().GetValueOrDefault( "" );
 
     return "";
 }
@@ -175,7 +175,7 @@ void XmlElement::_writeAttributes(XmlWriter &xml_writer) const
 {
     const XmlAttributeCollection &attributes = Attributes();
 
-    for (int a = 0; a < attributes.Count(); ++a)
+    for (size_t a = 0; a < attributes.Count(); ++a)
         attributes.Item( a )->WriteTo( xml_writer );
 }
 

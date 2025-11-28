@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cppdotnet/System/Xml/XmlLinkedNode.hpp>
+#include <cppdotnet/System/Xml/XmlAttribute.hpp>
 
 namespace System::Xml
 {
