@@ -45,7 +45,8 @@ XmlDeclaration::XmlDeclaration(std::string_view version,
     _standalone( standalone ),
     _owner_document( document ),
     _value( std::format("version=\"{}\" encoding=\"{}\" standalone=\"{}\"", version, encoding, standalone) )
-{   
+{
+    POSTCONDITION( _standalone == "yes" || _standalone == "no" );
 }
 
 XmlDeclaration::XmlDeclaration(const XmlDeclaration &other)
