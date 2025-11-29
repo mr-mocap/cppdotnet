@@ -185,4 +185,16 @@ void XmlElement::_writeChildren(XmlWriter &xml_writer) const
         ChildNodes()[ i ]->WriteTo( xml_writer );
 }
 
+bool XmlElement::_canAddAsChild(std::shared_ptr<XmlNode> new_child) const
+{
+    XmlNodeType new_child_type = new_child->NodeType();
+
+    return new_child_type == XmlNodeType::Element ||
+           new_child_type == XmlNodeType::Text    ||
+           new_child_type == XmlNodeType::CDATA   ||
+           new_child_type == XmlNodeType::Comment ||
+           new_child_type == XmlNodeType::ProcessingInstruction ||
+           new_child_type == XmlNodeType::Whitespace;
+}
+
 }

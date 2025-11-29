@@ -17,16 +17,24 @@ std::shared_ptr<XmlNode> XmlNode::Clone() const
 
 std::shared_ptr<XmlNode> XmlNode::AppendChild(std::shared_ptr<XmlNode> new_child)
 {
-    // TODO: Implement Exception Handling
-    //       InvalidOperationException - This node type doesn't allow nodes of type new_child
-    //       ArgumentException - new_child was created from a different document.
-    //                           This node is read only.
+    if ( !_isFromSameDocument( new_child ) )
+        ThrowWithTarget( ArgumentException( "Cannot add a child node from a different document.", "new_child" ) );
+
+    if ( !_canAddAsChild( new_child ) )
+        ThrowWithTarget( InvalidOperationException( std::format("Cannot add child node of type '{}' to parent node of type '{}'", new_child->NodeType(), NodeType() ) ) );
+    
     ChildNodes().Append( new_child );
     return new_child;
 }
 
 std::shared_ptr<XmlNode> XmlNode::PrependChild(std::shared_ptr<XmlNode> new_child)
 {
+    if ( !_isFromSameDocument( new_child ) )
+        ThrowWithTarget( ArgumentException( "Cannot add a child node from a different document.", "new_child" ) );
+
+    if ( !_canAddAsChild( new_child ) )
+        ThrowWithTarget( InvalidOperationException( std::format("Cannot add child node of type '{}' to parent node of type '{}'", new_child->NodeType(), NodeType() ) ) );
+    
     ChildNodes().Insert( 0, new_child );
     return new_child;
 }
@@ -125,48 +133,12 @@ bool XmlNode::HasChildNodes() const
 
 std::shared_ptr<XmlNode> XmlNode::NextSibling() const
 {
-    if ( !ParentNode() )
-        return nullptr; // No siblings
-
-    XmlNodeList &siblings = ParentNode()->ChildNodes();
-
-    for (int i = 0; i < siblings.Count(); ++i)
-    {
-        XmlNode *iCurrentSibling = siblings[ i ].get();
-
-        if ( iCurrentSibling == this )
-        {
-            if ( i == siblings.Count() - 1 ) // No next after the last sibling
-                return nullptr;
-
-            return siblings[ i + 1 ];
-        }
-    }
-
-    return nullptr; // This node wasn't in the siblings list
+    return nullptr; // Default value
 }
 
 std::shared_ptr<XmlNode> XmlNode::PreviousSibling() const
 {
-    if ( !ParentNode() )
-        return nullptr; // No siblings
-
-    XmlNodeList &siblings = ParentNode()->ChildNodes();
-
-    for (int i = 0; i < siblings.Count(); ++i)
-    {
-        XmlNode *iCurrentSibling = siblings[ i ].get();
-
-        if ( iCurrentSibling == this )
-        {
-            if ( i == 0 )
-                return nullptr; // No previous to the first sibling
-
-            return siblings[ i - 1 ];
-        }
-    }
-
-    return nullptr; // This node wasn't in the siblings list
+    return nullptr; // Default value
 }
 
 std::shared_ptr<XmlNode> XmlNode::ParentNode() const
@@ -184,6 +156,21 @@ void XmlNode::Value(Nullable<std::string> new_value)
     UNUSED( new_value );
 
     ThrowWithTarget( InvalidOperationException( std::format("Cannot set a value on node type '{}'", NodeType()) ) );
+}
+
+bool XmlNode::_canAddAsChild(std::shared_ptr<XmlNode> new_child) const
+{
+    UNUSED( new_child );
+
+    return false;
+}
+
+bool XmlNode::_isFromSameDocument(std::shared_ptr<XmlNode> node)
+{
+    std::shared_ptr<XmlDocument> this_owner_doc  = OwnerDocument();
+    std::shared_ptr<XmlDocument> other_owner_doc = node->OwnerDocument();
+
+    return this_owner_doc == other_owner_doc;
 }
 
 }

@@ -34,6 +34,8 @@ public:
     std::shared_ptr<XmlNode> ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child);
 protected:
     System::Collections::Generic::List<std::shared_ptr<XmlNode>> _nodes;
+
+    static bool _isFromSameDocument(std::shared_ptr<XmlNode> node1, std::shared_ptr<XmlNode> node2);
 };
 
 }

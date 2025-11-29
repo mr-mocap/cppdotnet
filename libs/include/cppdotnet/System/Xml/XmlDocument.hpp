@@ -13,6 +13,7 @@ class XmlAttribute;
 class XmlElement;
 class XmlText;
 class XmlDeclaration;
+class XmlProcessingInstruction;
 
 class XmlDocument : public XmlNode
 {
@@ -57,6 +58,9 @@ public:
                                                                  std::string_view encoding,
                                                                  std::string_view standalone);
 
+    virtual std::shared_ptr<XmlProcessingInstruction> CreateProcessingInstruction(std::string_view target);
+    virtual std::shared_ptr<XmlProcessingInstruction> CreateProcessingInstruction(std::string_view target, std::string_view data);
+
     XmlNameTable &NameTable() const
     {
         INVARIANT( _implementation );
@@ -85,6 +89,8 @@ protected:
     std::shared_ptr<XmlImplementation> _implementation;
 
     XmlNodeType _getNodeType() const override;
+    bool        _canAddAsChild(std::shared_ptr<XmlNode> new_child) const override;
+
     std::shared_ptr<XmlDocument> _localSharedFromThis();
 };
 

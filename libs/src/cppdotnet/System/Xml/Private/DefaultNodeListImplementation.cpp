@@ -84,15 +84,19 @@ std::shared_ptr<XmlNode> DefaultNodeListImplementation::Insert(size_t index, std
 
 std::shared_ptr<XmlNode> DefaultNodeListImplementation::RemoveChild(std::shared_ptr<XmlNode> child_node)
 {
+    if ( !child_node )
+        ThrowWithTarget( ArgumentNullException( "child_node" ) );
+    
     int at_index = _nodes.IndexOf( child_node );
 
     if ( at_index == -1 )
-        ThrowWithTarget( ArgumentException( "child_node", "Not a child of this node" ) );
+        ThrowWithTarget( ArgumentException( "The specified node is not a child of this node", "child_node" ) );
     
     std::shared_ptr<XmlNode> node = _nodes[ at_index ];
     bool removed = _nodes.Remove( child_node );
 
     INVARIANT( removed );
+    INVARIANT( !child_node->ParentNode() );
 
     return node;
 }
@@ -100,15 +104,29 @@ std::shared_ptr<XmlNode> DefaultNodeListImplementation::RemoveChild(std::shared_
 std::shared_ptr<XmlNode> DefaultNodeListImplementation::ReplaceChild(std::shared_ptr<XmlNode> new_child,
                                                                      std::shared_ptr<XmlNode> old_child)
 {
+    if ( !old_child )
+        ThrowWithTarget( ArgumentNullException( "old_child" ) );
+    if ( !new_child )
+        ThrowWithTarget( ArgumentNullException( "new_child" ) );
+    
+    if ( !_isFromSameDocument( new_child, old_child ) )
+        ThrowWithTarget( ArgumentException( "Cannot add a child node from a different document", "new_child" ) );
+
     int at_index = _nodes.IndexOf( old_child );
 
     if ( at_index == -1 )
-        ThrowWithTarget( ArgumentException( "child_node", "Not a child of this node" ) );
+        ThrowWithTarget( ArgumentException( "The specified node is not a child of this node", "old_child" ) );
     
-    std::shared_ptr<XmlNode> node = _nodes[ at_index ];
-
     _nodes[ at_index ] = new_child;
-    return node;
+    return old_child;
+}
+
+bool DefaultNodeListImplementation::_isFromSameDocument(std::shared_ptr<XmlNode> node1, std::shared_ptr<XmlNode> node2)
+{
+    std::shared_ptr<XmlDocument> this_owner_doc  = node1->OwnerDocument();
+    std::shared_ptr<XmlDocument> other_owner_doc = node2->OwnerDocument();
+
+    return this_owner_doc == other_owner_doc;
 }
 
 }

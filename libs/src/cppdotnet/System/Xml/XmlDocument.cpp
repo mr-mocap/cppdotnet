@@ -3,6 +3,7 @@
 #include <cppdotnet/System/Xml/XmlElement.hpp>
 #include <cppdotnet/System/Xml/XmlText.hpp>
 #include <cppdotnet/System/Xml/XmlDeclaration.hpp>
+#include <cppdotnet/System/Xml/XmlProcessingInstruction.hpp>
 #include <cppdotnet/System/Xml/NameTable.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 #include <cppdotnet/System/Private/private.hpp>
@@ -165,6 +166,17 @@ std::shared_ptr<XmlDeclaration> XmlDocument::CreateXmlDeclaration(std::string_vi
     return std::make_shared<XmlDeclaration>( version, encoding, standalone, _localSharedFromThis() );
 }
 
+std::shared_ptr<XmlProcessingInstruction> XmlDocument::CreateProcessingInstruction(std::string_view target)
+{
+    return std::make_shared<XmlProcessingInstruction>( target, _localSharedFromThis() );
+}
+
+std::shared_ptr<XmlProcessingInstruction> XmlDocument::CreateProcessingInstruction(std::string_view target,
+                                                                                   std::string_view data)
+{
+    return std::make_shared<XmlProcessingInstruction>( target, data, _localSharedFromThis() );
+}
+
 std::shared_ptr<XmlImplementation> XmlDocument::Implementation() const
 {
     INVARIANT( _implementation );
@@ -258,6 +270,18 @@ std::shared_ptr<XmlDocument> XmlDocument::_localSharedFromThis()
     // Downcast the XmlNode * to an XmlDocument *, since we KNOW we
     // have an XmlDocument *.
     return std::static_pointer_cast<XmlDocument>( shared_from_this() );
+}
+
+bool XmlDocument::_canAddAsChild(std::shared_ptr<XmlNode> new_child) const
+{
+    INVARIANT( _implementation );
+
+    XmlNodeType new_child_type = new_child->NodeType();
+
+    return new_child_type == XmlNodeType::Element ||
+           new_child_type == XmlNodeType::ProcessingInstruction ||
+           new_child_type == XmlNodeType::Comment ||
+           new_child_type == XmlNodeType::DocumentType;
 }
 
 }

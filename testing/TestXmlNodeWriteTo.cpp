@@ -5,6 +5,7 @@
 #include <cppdotnet/System/Xml/XmlImplementation.hpp>
 #include <cppdotnet/System/Xml/XmlDeclaration.hpp>
 #include <cppdotnet/System/Xml/XmlElement.hpp>
+#include <cppdotnet/System/Xml/XmlProcessingInstruction.hpp>
 #include <cppdotnet/System/Xml/XmlText.hpp>
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
 #include "XmlNodeTestFixture.hpp"
@@ -40,6 +41,44 @@ void XmlDeclarationWithEncoding()
     std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
 
     assert( data_written == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
+}
+
+void XmlProcessingInstructionWithTarget()
+{
+    XmlNodeTestFixture fixture;
+
+    std::shared_ptr<System::Xml::XmlProcessingInstruction> pi = fixture.xml_doc->CreateProcessingInstruction("xml-stylesheet");
+
+    assert( pi->Target() == "xml-stylesheet" );
+    assert( pi->Data().empty() );
+
+    pi->WriteTo( *(fixture.xml_writer) );
+
+    std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
+
+    assert( data_written == "<?xml-stylesheet ?>" );
+}
+
+void XmlProcessingInstructionWithTargetAndData()
+{
+    XmlNodeTestFixture fixture;
+
+    const char *target = "xml-stylesheet";
+    const char *data = "type=\"text/xsl\" href=\"style.xsl\"";
+    std::shared_ptr<System::Xml::XmlProcessingInstruction> pi = fixture.xml_doc->CreateProcessingInstruction(target, data);
+
+    assert( pi->Target() == target );
+    assert( pi->Data() == data );
+
+    pi->WriteTo( *(fixture.xml_writer) );
+
+    std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
+
+    assert( data_written == "<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>" );
+
+    std::string expected = std::format("<?{} {}?>", target, data);
+
+    assert( data_written == expected );
 }
 
 void EmptyXmlElement()
@@ -119,6 +158,8 @@ void Run()
 {
     EmptyXmlDeclaration();
     XmlDeclarationWithEncoding();
+    XmlProcessingInstructionWithTarget();
+    XmlProcessingInstructionWithTargetAndData();
     EmptyXmlElement();
     CannotAddValueToXmlElement();
     XmlElementWithTextNodeChild();
