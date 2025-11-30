@@ -137,7 +137,35 @@ void XmlProcessingInstruction::WriteTo(XmlWriter &xml_writer) const
 {
     INVARIANT( ChildNodes().Count() == 0 );
 
-    xml_writer.WriteProcessingInstruction( Target(), Data() );
+    // Check for invalid state(s)
+    if ( xml_writer.WriteState() == Xml::WriteState::Start )
+        xml_writer.WriteStartDocument();
+
+    if ( xml_writer.WriteState() != Xml::WriteState::Prolog &&
+         xml_writer.WriteState() != Xml::WriteState::Content )
+    {
+        // TODO: Check for more cases where writing a ProcessingInstruction is invalid
+        ThrowWithTarget( InvalidOperationException("Cannot write XML processing instruction node.  Invalid write state.") );
+    }
+
+    Xml::WriteState current_state = xml_writer.WriteState();
+
+    ASSERT( xml_writer.WriteState() != Xml::WriteState::Start );
+
+    if ( Data().empty() )
+    {
+        std::string data = std::format("<?{}?>", Target() );
+
+        xml_writer.WriteRaw( data );
+    }
+    else
+    {
+        std::string data = std::format("<?{} {}?>", Target(), Data());
+
+        xml_writer.WriteRaw( data );
+    }
+
+    POSTCONDITION( xml_writer.WriteState() == current_state );
 }
 
 XmlNodeType XmlProcessingInstruction::_getNodeType() const

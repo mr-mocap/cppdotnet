@@ -150,7 +150,7 @@ void XmlElement::WriteTo(XmlWriter &xml_writer) const
 
     if ( children.Count() == 0 )
     {
-        xml_writer.WriteRaw( std::format("<{}", LocalName()) ); 
+        xml_writer.WriteStartElement( LocalName() );
         _writeAttributes( xml_writer );
         xml_writer.WriteRaw( " />" );
     }

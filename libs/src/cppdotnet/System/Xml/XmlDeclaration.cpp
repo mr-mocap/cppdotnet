@@ -2,6 +2,8 @@
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 #include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Xml/Private/Utils.hpp>
+#include <format>
 
 namespace System::Xml
 {
@@ -9,7 +11,7 @@ namespace System::Xml
 XmlDeclaration::XmlDeclaration()
     :
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _value( std::format("version=\"{}\"", _version) )
+    _value{ std::format("version={}", Private::Utils::Quote(_version)) }
 {
 }
 
@@ -18,7 +20,7 @@ XmlDeclaration::XmlDeclaration(std::string_view version, std::shared_ptr<XmlDocu
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
     _version( version ),
     _owner_document( document ),
-    _value( std::format("version=\"{}\"", version) )
+    _value{ std::format("version={}", Private::Utils::Quote(version)) }
 {
 }
 
@@ -30,7 +32,7 @@ XmlDeclaration::XmlDeclaration(std::string_view version,
     _version( version ),
     _encoding( encoding ),
     _owner_document( document ),
-    _value( std::format("version=\"{}\" encoding=\"{}\"", version, encoding) )
+    _value{ std::format("version={} encoding={}", Private::Utils::Quote(version), Private::Utils::Quote(encoding)) }
 {
 }
 
@@ -44,7 +46,7 @@ XmlDeclaration::XmlDeclaration(std::string_view version,
     _encoding( encoding ),
     _standalone( standalone ),
     _owner_document( document ),
-    _value( std::format("version=\"{}\" encoding=\"{}\" standalone=\"{}\"", version, encoding, standalone) )
+    _value{ std::format("version={} encoding={} standalone={}", Private::Utils::Quote(version), Private::Utils::Quote(encoding), Private::Utils::Quote(standalone)) }
 {
     POSTCONDITION( _standalone == "yes" || _standalone == "no" );
 }
@@ -142,14 +144,30 @@ Nullable<std::string> XmlDeclaration::Value() const
 
 void XmlDeclaration::WriteTo(XmlWriter &xml_writer) const
 {
-    std::string text = std::format("version=\"{}\"", Version());
+    // Check for invalid state(s)
+    if ( xml_writer.WriteState() != Xml::WriteState::Start )
+        ThrowWithTarget( ArgumentException("XML Declaration has already been written") );
+
+    // We are at the start state, so we can write the XML Declaration
+    std::string text = std::format("<?{} version={}", LocalName(), Private::Utils::Quote( Version() ));
 
     if ( !Encoding().empty() )
-        text += std::format(" encoding=\"{}\"", Encoding());
+        text += std::format(" encoding={}", Private::Utils::Quote( Encoding() ));
     if ( !Standalone().empty() )
-        text += std::format(" standalone=\"{}\"", Standalone());
+        text += std::format(" standalone={}", Private::Utils::Quote( Standalone() ));
 
-    xml_writer.WriteProcessingInstruction( LocalName(), text);
+    text += "?>";
+    bool omit_xml_declaration = xml_writer.Settings().OmitXmlDeclaration();
+
+    xml_writer.Settings().OmitXmlDeclaration( true );
+
+    ASSERT( xml_writer.WriteState() == Xml::WriteState::Start );
+    ASSERT( xml_writer.Settings().OmitXmlDeclaration() == true );
+
+    xml_writer.WriteStartDocument(); // Should write nothing because we set OmitXmlDeclaration to true
+    xml_writer.Settings().OmitXmlDeclaration( omit_xml_declaration ); // Restore previous setting
+
+    xml_writer.WriteRaw( text ); // Manually write the XML declaration
 
     POSTCONDITION( xml_writer.WriteState() == Xml::WriteState::Prolog );
 }

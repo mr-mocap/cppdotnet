@@ -3,39 +3,67 @@
 #include <cppdotnet/System/Xml/XmlTextWriter.hpp>
 #include <cppdotnet/System/IO/StringWriter.hpp>
 
+struct XmlWriterTestFixture
+{
+    XmlWriterTestFixture()
+        :
+        string_writer{ std::make_shared<System::IO::StringWriter>() },
+        xml_writer{ System::Xml::XmlWriter::Create( string_writer ) }
+    {
+    }
+
+   ~XmlWriterTestFixture()
+    {
+        xml_writer.reset();
+        string_writer.reset();
+    }
+
+    std::shared_ptr<System::IO::StringWriter> string_writer;
+    std::unique_ptr<System::Xml::XmlWriter>   xml_writer;
+};
+
 namespace TestXmlTextWriter
 {
 
 void InitialXmlWriterState()
 {
-    std::shared_ptr<System::IO::StringWriter> string_writer = std::make_shared<System::IO::StringWriter>();
-    std::unique_ptr<System::Xml::XmlWriter> xml_writer = System::Xml::XmlWriter::Create( string_writer );
+    XmlWriterTestFixture fixture;
 
-    assert( string_writer->GetStringBuilder().Length() == 0 );
-    assert( xml_writer->WriteState() == System::Xml::WriteState::Start );
+    assert( fixture.string_writer->GetStringBuilder().Length() == 0 );
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+    assert( fixture.xml_writer->Settings().OmitXmlDeclaration() == false );
 }
 
-void CanOnlyCallWriteStartDocumentOnceAndWhileWriteStateIsStart()
+void WriteStartDocumentProducesDefaultProlog()
 {
-    std::shared_ptr<System::IO::StringWriter> string_writer = std::make_shared<System::IO::StringWriter>();
-    std::unique_ptr<System::Xml::XmlWriter> xml_writer = System::Xml::XmlWriter::Create( string_writer );
+    XmlWriterTestFixture fixture;
 
-    assert( xml_writer->WriteState() == System::Xml::WriteState::Start );
+    assert( fixture.string_writer->GetStringBuilder().Length() == 0 );
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+    assert( fixture.xml_writer->Settings().OmitXmlDeclaration() == false );
 
-    xml_writer->WriteStartDocument();
+    fixture.xml_writer->WriteStartDocument();
 
-    assert( xml_writer->WriteState() != System::Xml::WriteState::Start );
+    std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
 
-    try
-    {
-        xml_writer->WriteStartDocument();
-        assert( false );  // Shouldn't get here
-    }
-    catch(const System::SystemException &e)
-    {
-        assert( true );
-    }
-    
+    assert( data_written == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
+}
+
+void WriteStartDocumentProducesPrologWithOmittedDeclaration()
+{
+    XmlWriterTestFixture fixture;
+
+    fixture.xml_writer->Settings().OmitXmlDeclaration( true );
+
+    assert( fixture.string_writer->GetStringBuilder().Length() == 0 );
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+    assert( fixture.xml_writer->Settings().OmitXmlDeclaration() == true );
+
+    fixture.xml_writer->WriteStartDocument();
+
+    std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
+
+    assert( data_written == "" );
 }
 
 void CallingWriteStartDocumentPutsWriteStateAtProlog()
@@ -50,6 +78,27 @@ void CallingWriteStartDocumentPutsWriteStateAtProlog()
     assert( xml_writer->WriteState() == System::Xml::WriteState::Prolog );
 }
 
+void CanOnlyCallWriteStartDocumentOnceAndWhileWriteStateIsStart()
+{
+    XmlWriterTestFixture fixture;
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+
+    fixture.xml_writer->WriteStartDocument();
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Prolog );
+
+    try
+    {
+        fixture.xml_writer->WriteStartDocument();
+        assert( false );  // Shouldn't get here
+    }
+    catch(const System::SystemException &e)
+    {
+        assert( true );
+    }
+}
+
 void CanCallWriteProcessingInstructionInsteadOfWriteStartDocument()
 {
     std::shared_ptr<System::IO::StringWriter> string_writer = std::make_shared<System::IO::StringWriter>();
@@ -57,14 +106,16 @@ void CanCallWriteProcessingInstructionInsteadOfWriteStartDocument()
 
     assert( xml_writer->WriteState() == System::Xml::WriteState::Start );
 
-    std::string_view name = "xml";
-    std::string_view value = "attributes go here";
+    std::string_view name = "xml-stylesheet";
+    std::string_view value = "";
 
     xml_writer->WriteProcessingInstruction(name, value);
 
     assert( xml_writer->WriteState() == System::Xml::WriteState::Prolog );
 
-    assert( string_writer->GetStringBuilder().ToString() == "<?xml attributes go here?>" );
+    std::string_view output = string_writer->GetStringBuilder().ToString();
+
+    assert( output == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet?>" );
 }
 
 void CallingWriteProcessingInstructionWithEmptyNameThrowsException()
@@ -77,29 +128,6 @@ void CallingWriteProcessingInstructionWithEmptyNameThrowsException()
     try
     {
         xml_writer->WriteProcessingInstruction("", "Some Text");
-        assert( false );
-    }
-    catch(const System::ArgumentException &)
-    {
-        assert( true );
-    }
-    
-}
-
-void CanOnlyCallWriteProcessingInstructionIfWriteStateIsStart()
-{
-    std::shared_ptr<System::IO::StringWriter> string_writer = std::make_shared<System::IO::StringWriter>();
-    std::unique_ptr<System::Xml::XmlWriter> xml_writer = System::Xml::XmlWriter::Create( string_writer );
-
-    assert( xml_writer->WriteState() == System::Xml::WriteState::Start );
-
-    xml_writer->WriteProcessingInstruction("xml", "some attributes");
-
-    assert( xml_writer->WriteState() == System::Xml::WriteState::Prolog );
-
-    try
-    {
-        xml_writer->WriteProcessingInstruction("stuff", "more attributes");
         assert( false );
     }
     catch(const System::ArgumentException &)
@@ -179,14 +207,15 @@ void SettingOmitXmlDeclarationToTrueAllowsWriteStartElementToBeImmediatelyCalled
 
 void Run()
 {
-    return;
     InitialXmlWriterState();
-    CanOnlyCallWriteStartDocumentOnceAndWhileWriteStateIsStart();
+    WriteStartDocumentProducesDefaultProlog();
+    WriteStartDocumentProducesPrologWithOmittedDeclaration();
     CallingWriteStartDocumentPutsWriteStateAtProlog();
+    CanOnlyCallWriteStartDocumentOnceAndWhileWriteStateIsStart();
     CanCallWriteProcessingInstructionInsteadOfWriteStartDocument();
     CallingWriteProcessingInstructionWithEmptyNameThrowsException();
-    CanOnlyCallWriteProcessingInstructionIfWriteStateIsStart();
     CallingWriteStartDocumentProducesADefaultProlog();
+    return;
     CallingWriteEndDocumentPutsXmlWriterBackInWriteStateOfStart();
     SettingOmitXmlDeclarationToTrueAllowsWriteStartElementToBeImmediatelyCalled();
 }

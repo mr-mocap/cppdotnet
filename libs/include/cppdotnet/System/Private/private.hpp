@@ -8,5 +8,6 @@
 #define PRECONDITION(expr) assert(expr)
 #define POSTCONDITION(expr) assert(expr)
 #define INVARIANT(expr) assert(expr)
+#define ASSERT(expr) assert(expr)
 
 #define IMPLIES(a, b) (!(a) || (b))

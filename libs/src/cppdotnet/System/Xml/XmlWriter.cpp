@@ -1,11 +1,13 @@
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/XmlTextWriter.hpp>
 #include <cppdotnet/System/Xml/XmlDeclaration.hpp>
+#include <cppdotnet/System/Xml/XmlProcessingInstruction.hpp>
 #include <cppdotnet/System/IO/FileStream.hpp>
 #include <cppdotnet/System/IO/StreamWriter.hpp>
 #include <cppdotnet/System/Exception.hpp>
 #include <cppdotnet/System/Convert.hpp>
 #include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Xml/Private/Utils.hpp>
 
 namespace System::Xml
 {
@@ -89,6 +91,8 @@ void XmlWriter::WriteStartDocument()
         return;
     }
 
+    ASSERT( WriteState() == Xml::WriteState::Start );
+
     XmlDeclaration xml_declaration( "1.0", "UTF-8", nullptr );
 
     xml_declaration.WriteTo( *this );
@@ -105,6 +109,12 @@ void XmlWriter::WriteEndDocument()
 
 void XmlWriter::WriteStartElement(std::string_view local_name)
 {
+    if ( local_name.empty() )
+        ThrowWithTarget( ArgumentException( "Argument is empty", "local_name" ) );
+
+    if ( WriteState() == Xml::WriteState::Start )
+        WriteStartDocument();
+
     WriteState( Xml::WriteState::Element );
     WriteRaw( std::format("<{}", local_name) );
 
@@ -128,11 +138,19 @@ void XmlWriter::WriteProcessingInstruction(std::string_view name, std::string_vi
 {
     if ( name.empty() )
         ThrowWithTarget( ArgumentException( "Argument is empty", "name" ) );
-    if ( WriteState() != Xml::WriteState::Start )
-        ThrowWithTarget( ArgumentException( "WriteStartDocument() had already been called" ) );
 
-    WriteState( Xml::WriteState::Prolog );
-    WriteRaw( std::format("<?{} {}?>", name, text) );
+    if ( WriteState() == Xml::WriteState::Start )
+        WriteStartDocument();
+
+    ASSERT( WriteState() != Xml::WriteState::Start );
+
+    Xml::WriteState entry_state = WriteState();
+
+    XmlProcessingInstruction xml_processing_instruction( name, text, nullptr );
+
+    xml_processing_instruction.WriteTo( *this );
+
+    POSTCONDITION( WriteState() == entry_state );
 }
 
 void XmlWriter::WriteWhitespace(std::string_view ws)
