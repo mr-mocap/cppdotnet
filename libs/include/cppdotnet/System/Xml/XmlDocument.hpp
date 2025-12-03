@@ -3,7 +3,7 @@
 #include <cppdotnet/System/Xml/XmlNode.hpp>
 #include <cppdotnet/System/Xml/XmlNameTable.hpp>
 #include <cppdotnet/System/Xml/XmlImplementation.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <memory>
 
 namespace System::Xml

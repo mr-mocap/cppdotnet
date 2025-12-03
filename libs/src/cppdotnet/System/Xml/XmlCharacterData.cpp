@@ -1,6 +1,6 @@
 #include <cppdotnet/System/Xml/XmlCharacterData.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 
 namespace System::Xml
 {

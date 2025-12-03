@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <cppdotnet/System/Diagnostics/TraceEventType.hpp>
 #include <string_view>
 

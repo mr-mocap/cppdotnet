@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <cppdotnet/System/Predicate.hpp>
 #include <cppdotnet/System/Exception.hpp>
 #include <cppdotnet/System/TypeCode.hpp>

@@ -1,7 +1,8 @@
 #include <cppdotnet/System/Xml/XmlDeclaration.hpp>
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 #include <cppdotnet/System/Xml/Private/Utils.hpp>
 #include <format>
 

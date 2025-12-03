@@ -1,7 +1,8 @@
 #include <cppdotnet/System/Diagnostics/ActivitySource.hpp>
 #include <cppdotnet/System/Diagnostics/ActivityListener.hpp>
 #include <cppdotnet/System/Collections/Generic/List.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 
 
 namespace System::Diagnostics

@@ -1,6 +1,7 @@
 #include <cppdotnet/System/Environment.hpp>
 #include <cppdotnet/System/Exception.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 #include <tuple>
 #include <cstring>
 #include <stdlib.h>

@@ -2,6 +2,7 @@
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 
 namespace System::Xml
 {

@@ -3,7 +3,6 @@
 #include <cppdotnet/System/Action.hpp>
 #include <cppdotnet/System/EventHandler.hpp>
 #include <cppdotnet/System/TypeCode.hpp>
-#include <cppdotnet/System/Private/private.hpp>
 #include <utility>
 
 namespace System

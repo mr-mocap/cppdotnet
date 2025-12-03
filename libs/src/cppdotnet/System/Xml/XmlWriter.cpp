@@ -6,7 +6,7 @@
 #include <cppdotnet/System/IO/StreamWriter.hpp>
 #include <cppdotnet/System/Exception.hpp>
 #include <cppdotnet/System/Convert.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <cppdotnet/System/Xml/Private/Utils.hpp>
 
 namespace System::Xml

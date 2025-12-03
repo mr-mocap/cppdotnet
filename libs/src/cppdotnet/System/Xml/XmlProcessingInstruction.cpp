@@ -1,7 +1,8 @@
 #include <cppdotnet/System/Xml/XmlProcessingInstruction.hpp>
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 
 namespace System::Xml
 {

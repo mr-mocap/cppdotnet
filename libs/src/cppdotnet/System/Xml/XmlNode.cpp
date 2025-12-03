@@ -1,5 +1,6 @@
 #include <cppdotnet/System/Xml/XmlNode.hpp>
 #include <cppdotnet/System/Xml/XmlNodeList.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 
 namespace System::Xml
 {

@@ -6,7 +6,7 @@
 #if 0
 #include <cppdotnet/System/DateTime.hpp>
 #endif
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <chrono>
 #include <compare>
 

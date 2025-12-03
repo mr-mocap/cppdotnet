@@ -4,7 +4,7 @@
 #include <cppdotnet/System/IO/StreamWriter.hpp>
 #include <cppdotnet/System/Console.hpp>
 #include <cppdotnet/System/Convert.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <cppdotnet/System/IO/ConsoleStream.hpp>
 #include <format>
 

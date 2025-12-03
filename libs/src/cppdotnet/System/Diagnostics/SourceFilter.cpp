@@ -1,4 +1,5 @@
 #include <cppdotnet/System/Diagnostics/SourceFilter.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 
 
 namespace System::Diagnostics

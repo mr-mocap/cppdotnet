@@ -3,7 +3,7 @@
 #include <cppdotnet/System/Exception.hpp>
 #include <cppdotnet/System/Base.hpp>
 #include <cppdotnet/System/Boolean.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <cppdotnet/System/Enum.hpp>
 #include <cppdotnet/System/TypeCode.hpp>
 #include <string>

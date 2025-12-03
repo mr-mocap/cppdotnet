@@ -2,7 +2,7 @@
 
 #include <cppdotnet/System/Collections/Generic/Dictionary.hpp>
 #include <cppdotnet/System/Collections/Generic/Private/IListInterface.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <format>
 #include <ranges>
 #include <compare>

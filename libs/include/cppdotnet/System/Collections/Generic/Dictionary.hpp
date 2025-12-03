@@ -4,7 +4,7 @@
 #include <cppdotnet/System/Collections/Generic/List.hpp>
 #include <cppdotnet/System/Collections/Generic/KeyValuePair.hpp>
 #include <cppdotnet/System/Exception.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <unordered_map>
 #include <functional>
 #include <iterator>

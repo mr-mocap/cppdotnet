@@ -1,4 +1,5 @@
 #include <cppdotnet/System/Diagnostics/TraceFilter.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 #include <format>
 
 

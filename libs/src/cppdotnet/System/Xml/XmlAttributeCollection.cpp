@@ -1,6 +1,6 @@
 #include <cppdotnet/System/Xml/XmlAttributeCollection.hpp>
 #include <cppdotnet/System/Xml/XmlNode.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 
 namespace System::Xml
 {

@@ -1,7 +1,7 @@
 #include <cppdotnet/System/DateTime.hpp>
 #include <cppdotnet/System/DateOnly.hpp>
 #include <cppdotnet/System/TimeOnly.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <format>
 #include <cmath>
 

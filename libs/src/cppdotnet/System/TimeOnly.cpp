@@ -1,5 +1,6 @@
 #include <cppdotnet/System/TimeOnly.hpp>
 #include <cppdotnet/System/DateTime.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 #include <cmath>
 #include <format>
 

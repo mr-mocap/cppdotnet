@@ -1,6 +1,6 @@
 #include <cppdotnet/System/Console.hpp>
 #include <cppdotnet/System/ValueTuple.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 #include <cppdotnet/System/IO/TextWriter.hpp>
 #include <cassert>
 

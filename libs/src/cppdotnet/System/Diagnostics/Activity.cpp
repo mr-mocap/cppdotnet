@@ -3,6 +3,7 @@
 #include <cppdotnet/System/Convert.hpp>
 #include <cppdotnet/System/Guid.hpp>
 #include <cppdotnet/System/Span.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 #include <random>
 #include <algorithm>
 

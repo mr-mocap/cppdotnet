@@ -1,6 +1,6 @@
 #include <cppdotnet/System/Xml/XmlTextWriter.hpp>
 #include <cppdotnet/System/IO/StreamWriter.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 
 namespace System::Xml
 {

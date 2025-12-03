@@ -1,6 +1,6 @@
 #include <cppdotnet/System/TimeSpan.hpp>
 #include <cppdotnet/System/Exception.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <cmath>
 
 using namespace std::chrono;

@@ -1,5 +1,6 @@
 #include <cppdotnet/System/Diagnostics/Debugger.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 
 
 namespace System::Diagnostics

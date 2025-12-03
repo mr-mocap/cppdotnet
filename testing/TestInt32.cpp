@@ -1,5 +1,5 @@
 #include <cppdotnet/System/Int32.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 #include <iostream>
 #include <cassert>
 #include <format>

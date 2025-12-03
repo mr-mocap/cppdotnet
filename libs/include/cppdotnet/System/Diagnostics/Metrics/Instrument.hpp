@@ -1,6 +1,7 @@
 #pragma once
 
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 #include <cppdotnet/System/Diagnostics/Private/CommonTypes.hpp>
 #include <cppdotnet/System/Diagnostics/Metrics/Concepts.hpp>
 #include <cppdotnet/System/Collections/Generic/List.hpp>

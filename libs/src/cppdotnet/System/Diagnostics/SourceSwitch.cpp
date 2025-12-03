@@ -1,7 +1,7 @@
 #include <cppdotnet/System/Diagnostics/SourceSwitch.hpp>
 #include <cppdotnet/System/Convert.hpp>
 #include <cppdotnet/System/Exception.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 
 
 namespace System::Diagnostics

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cppdotnet/System/Numerics/INumberBase.hpp>
+#include <cppdotnet/System/Macros/Utils.hpp>
 #include <cstdint>
 #include <algorithm>
 

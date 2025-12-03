@@ -3,7 +3,7 @@
 #include <cppdotnet/System/Nullable.hpp>
 #include <cppdotnet/System/Xml/XmlNodeType.hpp>
 #include <cppdotnet/System/Xml/XmlAttributeCollection.hpp>
-#include <cppdotnet/System/Private/private.hpp>
+#include <cppdotnet/System/Macros/Contracts.hpp>
 #include <string>
 #include <string_view>
 #include <memory>
