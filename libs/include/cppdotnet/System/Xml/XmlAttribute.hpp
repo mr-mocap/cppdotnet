@@ -44,6 +44,7 @@ protected:
     std::shared_ptr<XmlDocument> _owner_document;
 
     XmlNodeType _getNodeType() const override;
+    bool        _thisNodeCanHaveChildren() const override;
     void        Value(Nullable<std::string> new_value) override;
 };
 

@@ -99,6 +99,7 @@ protected:
     XmlNode(std::shared_ptr<XmlNodeList> specific_children_object);
 
     virtual XmlNodeType _getNodeType() const = 0;
+    virtual bool _thisNodeCanHaveChildren() const;
     virtual bool _canAddAsChild(std::shared_ptr<XmlNode> new_child) const;
     virtual void Value(Nullable<std::string> s);
 

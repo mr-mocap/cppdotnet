@@ -118,6 +118,11 @@ void XmlAttribute::WriteTo(XmlWriter &xml_writer) const
     assert( false );
 }
 
+bool XmlAttribute::_thisNodeCanHaveChildren() const
+{
+    return true;
+}
+
 XmlNodeType XmlAttribute::_getNodeType() const
 {
     return XmlNodeType::Attribute;

@@ -273,6 +273,11 @@ std::shared_ptr<XmlDocument> XmlDocument::_localSharedFromThis()
     return std::static_pointer_cast<XmlDocument>( shared_from_this() );
 }
 
+bool XmlDocument::_thisNodeCanHaveChildren() const
+{
+    return true;
+}
+
 bool XmlDocument::_canAddAsChild(std::shared_ptr<XmlNode> new_child) const
 {
     INVARIANT( _implementation );

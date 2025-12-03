@@ -166,6 +166,11 @@ void XmlElement::WriteTo(XmlWriter &xml_writer) const
     }
 }
 
+bool XmlElement::_thisNodeCanHaveChildren() const
+{
+    return true;
+}
+
 XmlNodeType XmlElement::_getNodeType() const
 {
     return XmlNodeType::Element;

@@ -18,6 +18,9 @@ std::shared_ptr<XmlNode> XmlNode::Clone() const
 
 std::shared_ptr<XmlNode> XmlNode::AppendChild(std::shared_ptr<XmlNode> new_child)
 {
+    if ( !_thisNodeCanHaveChildren() )
+        ThrowWithTarget( InvalidOperationException( std::format("Node of type '{}' cannot have children.", NodeType() ) ) );
+
     if ( !_isFromSameDocument( new_child ) )
         ThrowWithTarget( ArgumentException( "Cannot add a child node from a different document.", "new_child" ) );
 
@@ -30,6 +33,9 @@ std::shared_ptr<XmlNode> XmlNode::AppendChild(std::shared_ptr<XmlNode> new_child
 
 std::shared_ptr<XmlNode> XmlNode::PrependChild(std::shared_ptr<XmlNode> new_child)
 {
+    if ( !_thisNodeCanHaveChildren() )
+        ThrowWithTarget( InvalidOperationException( std::format("Node of type '{}' cannot have children.", NodeType() ) ) );
+
     if ( !_isFromSameDocument( new_child ) )
         ThrowWithTarget( ArgumentException( "Cannot add a child node from a different document.", "new_child" ) );
 
@@ -157,6 +163,13 @@ void XmlNode::Value(Nullable<std::string> new_value)
     UNUSED( new_value );
 
     ThrowWithTarget( InvalidOperationException( std::format("Cannot set a value on node type '{}'", NodeType()) ) );
+}
+
+bool XmlNode::_thisNodeCanHaveChildren() const
+{
+    // By default, nodes cannot have children.
+    // This should be overridden in derived classes that can have children.
+    return false;
 }
 
 bool XmlNode::_canAddAsChild(std::shared_ptr<XmlNode> new_child) const

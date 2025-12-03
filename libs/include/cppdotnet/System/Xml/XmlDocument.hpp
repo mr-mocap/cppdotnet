@@ -89,6 +89,7 @@ protected:
     std::shared_ptr<XmlImplementation> _implementation;
 
     XmlNodeType _getNodeType() const override;
+    bool        _thisNodeCanHaveChildren() const override;
     bool        _canAddAsChild(std::shared_ptr<XmlNode> new_child) const override;
 
     std::shared_ptr<XmlDocument> _localSharedFromThis();
