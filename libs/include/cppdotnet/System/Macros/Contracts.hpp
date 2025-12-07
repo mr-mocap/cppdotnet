@@ -7,3 +7,5 @@
 #define POSTCONDITION(expr) ASSERT(expr)
 
 #define INVARIANT(expr) ASSERT(expr)
+
+#define IMPLIES(a, b) (!(a) || (b))

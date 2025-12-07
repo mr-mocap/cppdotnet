@@ -2,6 +2,7 @@
 #include <cppdotnet/System/Xml/XmlAttribute.hpp>
 #include <cppdotnet/System/Xml/XmlElement.hpp>
 #include <cppdotnet/System/Xml/XmlText.hpp>
+#include <cppdotnet/System/Xml/XmlComment.hpp>
 #include <cppdotnet/System/Xml/XmlDeclaration.hpp>
 #include <cppdotnet/System/Xml/XmlProcessingInstruction.hpp>
 #include <cppdotnet/System/Xml/NameTable.hpp>
@@ -176,6 +177,11 @@ std::shared_ptr<XmlProcessingInstruction> XmlDocument::CreateProcessingInstructi
                                                                                    std::string_view data)
 {
     return std::make_shared<XmlProcessingInstruction>( target, data, _localSharedFromThis() );
+}
+
+std::shared_ptr<XmlComment> XmlDocument::CreateComment(std::string_view data)
+{
+    return std::make_shared<XmlComment>( data, _localSharedFromThis() );
 }
 
 std::shared_ptr<XmlImplementation> XmlDocument::Implementation() const

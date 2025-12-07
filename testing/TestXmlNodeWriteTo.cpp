@@ -3,6 +3,7 @@
 #include <cppdotnet/System/IO/StringWriter.hpp>
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/XmlImplementation.hpp>
+#include <cppdotnet/System/Xml/XmlComment.hpp>
 #include <cppdotnet/System/Xml/XmlDeclaration.hpp>
 #include <cppdotnet/System/Xml/XmlElement.hpp>
 #include <cppdotnet/System/Xml/XmlProcessingInstruction.hpp>
@@ -179,6 +180,46 @@ void XmlElementWithTextNodeChild()
     assert( data_written == "<book>Pride And Prejudice</book>" );
 }
 
+void XmlCommentEmptyIsWrittenCorrectly()
+{
+    XmlNodeTestFixture fixture;
+
+    std::shared_ptr<System::Xml::XmlComment> comment = fixture.xml_doc->CreateComment("");
+
+    assert( comment->Name() == "#comment" );
+    assert( comment->Value().HasValue() );
+    assert( comment->Value().Value() == "" );
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+
+    comment->WriteTo( *(fixture.xml_writer) );
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Prolog );
+
+    std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
+
+    assert( data_written == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!---->" );
+}
+
+void XmlCommentWithDataIsWrittenCorrectly()
+{
+    XmlNodeTestFixture fixture;
+
+    std::shared_ptr<System::Xml::XmlComment> comment = fixture.xml_doc->CreateComment("This should be a comment");
+
+    assert( comment->Name() == "#comment" );
+    assert( comment->Value().HasValue() );
+    assert( comment->Value().Value() == "This should be a comment" );
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+
+    comment->WriteTo( *(fixture.xml_writer) );
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Prolog );
+
+    std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
+
+    assert( data_written == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!--This should be a comment-->" );
+}
+
 void Run()
 {
     EmptyXmlDeclaration();
@@ -189,6 +230,8 @@ void Run()
     EmptyXmlElement();
     CannotAddValueToXmlElement();
     XmlElementWithTextNodeChild();
+    XmlCommentEmptyIsWrittenCorrectly();
+    XmlCommentWithDataIsWrittenCorrectly();
 }
 
 }

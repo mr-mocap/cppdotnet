@@ -12,6 +12,7 @@ namespace System::Xml
 class XmlAttribute;
 class XmlElement;
 class XmlText;
+class XmlComment;
 class XmlDeclaration;
 class XmlProcessingInstruction;
 
@@ -60,6 +61,8 @@ public:
 
     virtual std::shared_ptr<XmlProcessingInstruction> CreateProcessingInstruction(std::string_view target);
     virtual std::shared_ptr<XmlProcessingInstruction> CreateProcessingInstruction(std::string_view target, std::string_view data);
+
+    virtual std::shared_ptr<XmlComment> CreateComment(std::string_view data);
 
     XmlNameTable &NameTable() const
     {

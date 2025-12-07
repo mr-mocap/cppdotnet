@@ -55,7 +55,14 @@ void XmlComment::WriteTo(XmlWriter &xml_writer) const
 {
     Nullable<std::string> value = Value();
 
-    xml_writer.WriteRaw( std::format( "<?--{}-->", value.GetValueOrDefault() ) );
+    if ( xml_writer.WriteState() == Xml::WriteState::Start )
+        xml_writer.WriteStartDocument();
+
+    Xml::WriteState before_write_state = xml_writer.WriteState();
+
+    xml_writer.WriteRaw( std::format( "<!--{}-->", value.GetValueOrDefault() ) );
+
+    POSTCONDITION( xml_writer.WriteState() == before_write_state );
 }
 
 XmlNodeType XmlComment::_getNodeType() const
