@@ -10,6 +10,49 @@ XmlLinkedNode::XmlLinkedNode(std::shared_ptr<XmlNodeList> specific_children_obje
 {
 }
 
+XmlLinkedNode::XmlLinkedNode(std::shared_ptr<XmlNodeList> specific_children_object,
+                             std::string_view             local_name,
+                             std::string_view             name)
+    :
+    XmlNode( specific_children_object, local_name, name )
+{
+}
+
+XmlLinkedNode::XmlLinkedNode(std::shared_ptr<XmlNodeList> specific_children_object,
+                             std::string_view             local_name,
+                             std::string_view             name,
+                             std::string_view             namespace_uri,
+                             std::string_view             prefix,
+                             std::shared_ptr<XmlDocument> owner_document)
+    :
+    XmlNode( specific_children_object, local_name, name, namespace_uri, prefix, owner_document )
+{
+}
+
+XmlLinkedNode::XmlLinkedNode(const XmlLinkedNode &other)
+    :
+    XmlNode( other._children->MemberwiseClone() )
+{
+}
+
+XmlLinkedNode::XmlLinkedNode(XmlLinkedNode &&other)
+    :
+    XmlNode( std::move( other._children ) )
+{
+}
+
+XmlLinkedNode &XmlLinkedNode::operator =(const XmlLinkedNode &other)
+{
+    XmlNode::operator =( other );
+    return *this;
+}
+
+XmlLinkedNode &XmlLinkedNode::operator =(XmlLinkedNode &&other)
+{
+    XmlNode::operator =( std::move( other ) );
+    return *this;
+}
+
 std::shared_ptr<XmlNode> XmlLinkedNode::NextSibling() const
 {
     if ( !ParentNode() )

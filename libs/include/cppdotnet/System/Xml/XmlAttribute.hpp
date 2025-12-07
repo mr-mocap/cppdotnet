@@ -12,17 +12,13 @@ class XmlAttribute : public XmlNode
 public:
     XmlAttribute(std::string_view prefix, std::string_view local_name, std::string_view namespace_uri, std::shared_ptr<XmlDocument> document);
     XmlAttribute(const XmlAttribute &other);
+    XmlAttribute(XmlAttribute &&other);
    ~XmlAttribute() override = default;
 
     XmlAttribute &operator =(const XmlAttribute &other);
+    XmlAttribute &operator =(XmlAttribute &&other);
 
     std::shared_ptr<XmlNode> CloneNode(bool deep) const override;
-
-    std::string_view LocalName() const override;
-    std::string_view Name() const override;
-    std::string_view NamespaceURI() const override;
-
-    std::shared_ptr<XmlDocument> OwnerDocument() const override;
 
     void RemoveAll() override;
 
@@ -32,16 +28,9 @@ public:
 
     Nullable<std::string> Value() const override;
 
-    std::string_view Prefix() const override;
-                void Prefix(std::string_view new_prefix) override;
-
     void WriteTo(XmlWriter &xml_writer) const override;
 protected:
-    std::string _prefix;
-    std::string _local_name;
-    std::string _namespace_uri;
     std::string _value;
-    std::shared_ptr<XmlDocument> _owner_document;
 
     XmlNodeType _getNodeType() const override;
     bool        _thisNodeCanHaveChildren() const override;

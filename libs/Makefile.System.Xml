@@ -17,6 +17,7 @@ LIB_SRC  = $(SRC_DIR)/System/Xml/NameTable.cpp \
            $(SRC_DIR)/System/Xml/XmlAttribute.cpp \
            $(SRC_DIR)/System/Xml/XmlAttributeCollection.cpp \
            $(SRC_DIR)/System/Xml/XmlCharacterData.cpp \
+           $(SRC_DIR)/System/Xml/XmlComment.cpp \
            $(SRC_DIR)/System/Xml/XmlDeclaration.cpp \
            $(SRC_DIR)/System/Xml/XmlDocument.cpp \
            $(SRC_DIR)/System/Xml/XmlElement.cpp \

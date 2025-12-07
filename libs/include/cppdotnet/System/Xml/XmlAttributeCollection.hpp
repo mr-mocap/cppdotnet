@@ -10,7 +10,12 @@ class XmlAttributeCollection : public XmlNamedNodeMap
 {
 public:
     XmlAttributeCollection() = default;
+    XmlAttributeCollection(const XmlAttributeCollection &other) = default;
+    XmlAttributeCollection(XmlAttributeCollection &&other) = default;
    ~XmlAttributeCollection() override = default;
+
+    XmlAttributeCollection &operator =(const XmlAttributeCollection &other) = default;
+    XmlAttributeCollection &operator =(XmlAttributeCollection &&other) = default;
 
     size_t Count() const override;
     

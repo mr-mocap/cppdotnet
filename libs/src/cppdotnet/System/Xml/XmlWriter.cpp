@@ -1,5 +1,6 @@
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/XmlTextWriter.hpp>
+#include <cppdotnet/System/Xml/XmlComment.hpp>
 #include <cppdotnet/System/Xml/XmlDeclaration.hpp>
 #include <cppdotnet/System/Xml/XmlProcessingInstruction.hpp>
 #include <cppdotnet/System/IO/FileStream.hpp>
@@ -149,6 +150,22 @@ void XmlWriter::WriteProcessingInstruction(std::string_view name, std::string_vi
     XmlProcessingInstruction xml_processing_instruction( name, text, nullptr );
 
     xml_processing_instruction.WriteTo( *this );
+
+    POSTCONDITION( WriteState() == entry_state );
+}
+
+void XmlWriter::WriteComment(std::string_view comment)
+{
+    if ( WriteState() == Xml::WriteState::Start )
+        WriteStartDocument();
+
+    ASSERT( WriteState() != Xml::WriteState::Start );
+
+    Xml::WriteState entry_state = WriteState();
+
+    XmlComment xml_comment( comment, nullptr );
+
+    xml_comment.WriteTo( *this );
 
     POSTCONDITION( WriteState() == entry_state );
 }

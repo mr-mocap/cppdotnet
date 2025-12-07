@@ -11,6 +11,88 @@ XmlNode::XmlNode(std::shared_ptr<XmlNodeList> specific_children_object)
 {
 }
 
+XmlNode::XmlNode(std::shared_ptr<XmlNodeList> specific_children_object,
+                 std::string_view             local_name,
+                 std::string_view             name)
+    :
+    _children( specific_children_object ),
+    _local_name( local_name ),
+    _name( name )
+{
+}
+
+XmlNode::XmlNode(std::shared_ptr<XmlNodeList> specific_children_object,
+                 std::string_view             local_name,
+                 std::string_view             name,
+                 std::string_view             namespace_uri,
+                 std::string_view             prefix,
+                 std::shared_ptr<XmlDocument> owner_document)
+    :
+    _children( specific_children_object ),
+    _local_name( local_name ),
+    _name( name ),
+    _namespace_uri( namespace_uri ),
+    _prefix( prefix ),
+    _owner_document( owner_document )
+{
+}
+
+XmlNode::XmlNode(const XmlNode &other)
+    :
+    std::enable_shared_from_this<XmlNode>( other ),
+    _attributes( other._attributes ),
+    _children( other._children->MemberwiseClone() ),
+    _local_name( other._local_name ),
+    _name( other._name ),
+    _namespace_uri( other._namespace_uri ),
+    _prefix( other._prefix ),
+    _owner_document( other._owner_document )
+{
+}
+
+XmlNode::XmlNode(XmlNode &&other)
+    :
+    std::enable_shared_from_this<XmlNode>( other ),
+    _attributes( other._attributes ),
+    _children( std::move( other._children ) ),
+    _local_name( std::move( other._local_name ) ),
+    _name( std::move( other._name ) ),
+    _namespace_uri( std::move( other._namespace_uri ) ),
+    _prefix( std::move( other._prefix ) ),
+    _owner_document( std::move( other._owner_document ) )
+{
+}
+
+XmlNode &XmlNode::operator =(const XmlNode &other)
+{
+    if ( this != &other )
+    {
+        _attributes = other._attributes;
+        _children = other._children->MemberwiseClone();
+        _local_name = other._local_name;
+        _name = other._name;
+        _namespace_uri = other._namespace_uri;
+        _prefix = other._prefix;
+        _owner_document = other._owner_document;
+    }
+    return *this;
+}
+
+XmlNode &XmlNode::operator =(XmlNode &&other)
+{
+    if ( this != &other )
+    {
+        _attributes = std::move( other._attributes );
+        _children = std::move( other._children );
+        _local_name = std::move( other._local_name );
+        _name = std::move( other._name );
+        _namespace_uri = std::move( other._namespace_uri );
+        _prefix = std::move( other._prefix );
+        _owner_document = std::move( other._owner_document );
+    }
+    return *this;
+}
+
 std::shared_ptr<XmlNode> XmlNode::Clone() const
 {
     return CloneNode( true );
@@ -153,6 +235,21 @@ std::shared_ptr<XmlNode> XmlNode::ParentNode() const
     return nullptr;
 }
 
+std::string_view XmlNode::Prefix() const
+{
+    return _prefix;
+}
+
+void XmlNode::Prefix(std::string_view new_prefix)
+{
+    _prefix = new_prefix;
+}
+
+std::shared_ptr<XmlDocument> XmlNode::OwnerDocument() const
+{
+    return _owner_document;
+}
+
 Nullable<std::string> XmlNode::Value() const
 {
     return { };
@@ -163,6 +260,21 @@ void XmlNode::Value(Nullable<std::string> new_value)
     UNUSED( new_value );
 
     ThrowWithTarget( InvalidOperationException( std::format("Cannot set a value on node type '{}'", NodeType()) ) );
+}
+
+std::string_view XmlNode::LocalName() const
+{
+    return _local_name;
+}
+
+std::string_view XmlNode::Name() const
+{
+    return _name;
+}
+
+std::string_view XmlNode::NamespaceURI() const
+{
+    return _namespace_uri;
 }
 
 bool XmlNode::_thisNodeCanHaveChildren() const

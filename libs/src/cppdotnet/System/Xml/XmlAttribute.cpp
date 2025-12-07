@@ -12,21 +12,26 @@ XmlAttribute::XmlAttribute(std::string_view prefix,
                            std::string_view namespace_uri,
                            std::shared_ptr<XmlDocument> document)
     :
-    XmlNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _prefix( prefix ),
-    _local_name( local_name ),
-    _namespace_uri( namespace_uri ),
-    _owner_document( document )
+    XmlNode( std::make_shared<Private::DefaultNodeListImplementation>(),
+             local_name,
+             local_name,
+             namespace_uri,
+             prefix,
+             document )
 {
 }
 
 XmlAttribute::XmlAttribute(const XmlAttribute &other)
     :
-    XmlNode( other._children->MemberwiseClone() ),
-    _prefix( other._prefix ),
-    _local_name( other._local_name ),
-    _namespace_uri( other._namespace_uri ),
-    _owner_document( other._owner_document )
+    XmlNode( other ),
+    _value( other._value )
+{
+}
+
+XmlAttribute::XmlAttribute(XmlAttribute &&other)
+    :
+    XmlNode( std::move( other ) ),
+    _value( std::move( other._value ) )
 {
 }
 
@@ -34,11 +39,16 @@ XmlAttribute &XmlAttribute::operator =(const XmlAttribute &other)
 {
     if ( this != &other )
     {
-        _prefix = other._prefix;
-        _local_name = other._local_name;
-        _namespace_uri = other._namespace_uri;
-        _owner_document = other._owner_document;
+        XmlNode::operator =( other );
+        _value = other._value;
     }
+    return *this;
+}
+
+XmlAttribute &XmlAttribute::operator =(XmlAttribute &&other)
+{
+    XmlNode::operator =( std::move( other ) );
+    _value = std::move( other._value );
     return *this;
 }
 
@@ -51,26 +61,6 @@ std::shared_ptr<XmlNode> XmlAttribute::CloneNode(bool deep) const
         return std::make_shared<XmlAttribute>( *this );
 }
 
-std::string_view XmlAttribute::LocalName() const
-{
-    return _local_name;
-}
-
-std::string_view XmlAttribute::Name() const
-{
-    return _local_name;
-}
-
-std::string_view XmlAttribute::NamespaceURI() const
-{
-    return _namespace_uri;
-}
-
-std::shared_ptr<XmlDocument> XmlAttribute::OwnerDocument() const
-{
-    return _owner_document;
-}
-
 Nullable<std::string> XmlAttribute::Value() const
 {
     return _value;
@@ -79,16 +69,6 @@ Nullable<std::string> XmlAttribute::Value() const
 void XmlAttribute::Value(Nullable<std::string> new_value)
 {
     _value = new_value;
-}
-
-std::string_view XmlAttribute::Prefix() const
-{
-    return _prefix;
-}
-
-void XmlAttribute::Prefix(std::string_view new_prefix)
-{
-    _prefix = new_prefix;
 }
 
 void XmlAttribute::RemoveAll()

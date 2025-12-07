@@ -10,25 +10,29 @@ namespace System::Xml
 {
 
 XmlElement::XmlElement(std::string_view prefix,
-                           std::string_view local_name,
-                           std::string_view namespace_uri,
-                           std::shared_ptr<XmlDocument> document)
+                       std::string_view local_name,
+                       std::string_view namespace_uri,
+                       std::shared_ptr<XmlDocument> document)
     :
-    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _prefix( prefix ),
-    _local_name( local_name ),
-    _namespace_uri( namespace_uri ),
-    _owner_document( document )
+    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
+                   local_name,
+                   local_name,
+                   namespace_uri,
+                   prefix,
+                   document )
 {
 }
 
 XmlElement::XmlElement(const XmlElement &other)
     :
-    XmlLinkedNode( other._children->MemberwiseClone() ),
-    _prefix( other._prefix ),
-    _local_name( other._local_name ),
-    _namespace_uri( other._namespace_uri ),
-    _owner_document( other._owner_document )
+    XmlLinkedNode( other._children->MemberwiseClone() )
+{
+}
+
+XmlElement::XmlElement(XmlElement &&other)
+    :
+    XmlLinkedNode( std::move( other._children ) ),
+    _value( std::move( other._value ) )
 {
 }
 
@@ -36,11 +40,16 @@ XmlElement &XmlElement::operator =(const XmlElement &other)
 {
     if ( this != &other )
     {
-        _prefix = other._prefix;
-        _local_name = other._local_name;
-        _namespace_uri = other._namespace_uri;
-        _owner_document = other._owner_document;
+        XmlLinkedNode::operator =( other );
+        _value = other._value;
     }
+    return *this;
+}
+
+XmlElement &XmlElement::operator =(XmlElement &&other)
+{
+    XmlLinkedNode::operator =( std::move( other ) );
+    _value = std::move( other._value );
     return *this;
 }
 
@@ -53,34 +62,9 @@ std::shared_ptr<XmlNode> XmlElement::CloneNode(bool deep) const
         return std::make_shared<XmlElement>( *this );
 }
 
-std::string_view XmlElement::LocalName() const
+Nullable<std::string> XmlElement::Value() const
 {
-    return _local_name;
-}
-
-std::string_view XmlElement::Name() const
-{
-    return _local_name;
-}
-
-std::string_view XmlElement::NamespaceURI() const
-{
-    return _namespace_uri;
-}
-
-std::shared_ptr<XmlDocument> XmlElement::OwnerDocument() const
-{
-    return _owner_document;
-}
-
-std::string_view XmlElement::Prefix() const
-{
-    return _prefix;
-}
-
-void XmlElement::Prefix(std::string_view new_prefix)
-{
-    _prefix = new_prefix;
+    return _value;
 }
 
 void XmlElement::RemoveAll()

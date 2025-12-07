@@ -58,6 +58,8 @@ public:
 
     virtual void WriteWhitespace(std::string_view ws);
 
+    virtual void WriteComment(std::string_view comment);
+
     virtual void Close() = 0;
 
     virtual System::Xml::WriteState WriteState() const = 0;
