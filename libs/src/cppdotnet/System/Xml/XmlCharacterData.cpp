@@ -46,9 +46,9 @@ XmlCharacterData::XmlCharacterData(XmlCharacterData &&other)
 
 XmlCharacterData &XmlCharacterData::operator =(const XmlCharacterData &other)
 {
+    XmlLinkedNode::operator =( other );
     if ( this != &other )
     {
-        XmlLinkedNode::operator =( other );
         _value = other._value;
     }
     return *this;

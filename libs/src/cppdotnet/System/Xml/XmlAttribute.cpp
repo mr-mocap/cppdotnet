@@ -37,9 +37,9 @@ XmlAttribute::XmlAttribute(XmlAttribute &&other)
 
 XmlAttribute &XmlAttribute::operator =(const XmlAttribute &other)
 {
+    XmlNode::operator =( other );
     if ( this != &other )
     {
-        XmlNode::operator =( other );
         _value = other._value;
     }
     return *this;

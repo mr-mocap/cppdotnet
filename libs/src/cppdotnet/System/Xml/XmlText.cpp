@@ -37,10 +37,7 @@ XmlText &XmlText::operator =(const XmlText &other)
 {
     INVARIANT( !HasChildNodes());
 
-    if ( this != &other )
-    {
-        XmlCharacterData::operator =( other );
-    }
+    XmlCharacterData::operator =( other );
     return *this;
 }
 

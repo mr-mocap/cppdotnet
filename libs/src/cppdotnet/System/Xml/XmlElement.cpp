@@ -38,9 +38,9 @@ XmlElement::XmlElement(XmlElement &&other)
 
 XmlElement &XmlElement::operator =(const XmlElement &other)
 {
+    XmlLinkedNode::operator =( other );
     if ( this != &other )
     {
-        XmlLinkedNode::operator =( other );
         _value = other._value;
     }
     return *this;
