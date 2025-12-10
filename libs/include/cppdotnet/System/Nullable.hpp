@@ -64,13 +64,13 @@ public:
     template <class U = std::remove_cv_t<T>>
     constexpr T GetValueOrDefault(U &&default_value) const &
     {
-        return _data.value_or( default_value );
+        return _data.value_or( std::move( default_value ) );
     }
 
     template <class U = std::remove_cv_t<T>>
     constexpr T GetValueOrDefault(U &&default_value) &&
     {
-        return _data.value_or( default_value );
+        return _data.value_or( std::move( default_value ) );
     }
 
     constexpr T GetValueOrDefault() const
