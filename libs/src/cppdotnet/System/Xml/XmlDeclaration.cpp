@@ -11,17 +11,26 @@ namespace System::Xml
 
 XmlDeclaration::XmlDeclaration()
     :
-    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _value{ std::format("version={}", Private::Utils::Quote(_version)) }
+    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
+                   "xml",
+                   "xml",
+                   std::string_view{ },
+                   std::string_view{ },
+                   nullptr ),
+    _value( std::format("version={}", Private::Utils::Quote(_version)) )
 {
 }
 
 XmlDeclaration::XmlDeclaration(std::string_view version, std::shared_ptr<XmlDocument> document)
     :
-    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
+    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
+                   "xml",
+                   "xml",
+                   std::string_view{ },
+                   std::string_view{ },
+                   document ),
     _version( version ),
-    _owner_document( document ),
-    _value{ std::format("version={}", Private::Utils::Quote(version)) }
+    _value( std::format("version={}", Private::Utils::Quote(_version)) )
 {
 }
 
@@ -29,11 +38,15 @@ XmlDeclaration::XmlDeclaration(std::string_view version,
                                std::string_view encoding,
                                std::shared_ptr<XmlDocument> document)
     :
-    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
+    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
+                   "xml",
+                   "xml",
+                   std::string_view{ },
+                   std::string_view{ },
+                   document ),
     _version( version ),
     _encoding( encoding ),
-    _owner_document( document ),
-    _value{ std::format("version={} encoding={}", Private::Utils::Quote(version), Private::Utils::Quote(encoding)) }
+    _value( std::format("version={} encoding={}", Private::Utils::Quote(_version), Private::Utils::Quote(_encoding)) )
 {
 }
 
@@ -42,37 +55,53 @@ XmlDeclaration::XmlDeclaration(std::string_view version,
                                std::string_view standalone,
                                std::shared_ptr<XmlDocument> document)
     :
-    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
+    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
+                   "xml",
+                   "xml",
+                   std::string_view{ },
+                   std::string_view{ },
+                   document ),
     _version( version ),
     _encoding( encoding ),
     _standalone( standalone ),
-    _owner_document( document ),
-    _value{ std::format("version={} encoding={} standalone={}", Private::Utils::Quote(version), Private::Utils::Quote(encoding), Private::Utils::Quote(standalone)) }
+    _value{ std::format("version={} encoding={} standalone={}",
+            Private::Utils::Quote(_version),
+            Private::Utils::Quote(_encoding),
+            Private::Utils::Quote(_standalone)) }
 {
     POSTCONDITION( _standalone == "yes" || _standalone == "no" );
 }
 
 XmlDeclaration::XmlDeclaration(const XmlDeclaration &other)
     :
-    XmlLinkedNode( other._children->MemberwiseClone() ),
+    XmlLinkedNode( other ),
     _version( other._version ),
     _encoding( other._encoding ),
     _standalone( other._standalone ),
-    _owner_document( other._owner_document ),
     _value( other._value )
 {
 }
 
 XmlDeclaration &XmlDeclaration::operator =(const XmlDeclaration &other)
 {
+    XmlLinkedNode::operator =( other );
     if (this != &other)
     {
         _version        = other._version;
         _encoding       = other._encoding;
         _standalone     = other._standalone;
-        _owner_document = other._owner_document;
         _value          = other._value;
     }
+    return *this;
+}
+
+XmlDeclaration &XmlDeclaration::operator =(XmlDeclaration &&other)
+{
+    XmlLinkedNode::operator =( std::move( other ) );
+    _version    = std::move( other._version );
+    _encoding   = std::move( other._encoding );
+    _standalone = std::move( other._standalone );
+    _value      = std::move( other._value );
     return *this;
 }
 
@@ -83,38 +112,6 @@ std::shared_ptr<XmlNode> XmlDeclaration::CloneNode(bool deep) const
         return std::make_shared<XmlDeclaration>( *this );
     else
         return std::make_shared<XmlDeclaration>( *this );
-}
-
-std::string_view XmlDeclaration::LocalName() const
-{
-    return "xml";
-}
-
-std::string_view XmlDeclaration::Name() const
-{
-    return LocalName();
-}
-
-std::string_view XmlDeclaration::NamespaceURI() const
-{
-    // TODO: Return proper namespace URI!
-    return { };
-}
-
-std::shared_ptr<XmlDocument> XmlDeclaration::OwnerDocument() const
-{
-    return _owner_document;
-}
-
-std::string_view XmlDeclaration::Prefix() const
-{
-    // TODO: FIXME
-    return { };
-}
-
-void XmlDeclaration::Prefix(std::string_view new_prefix)
-{
-    UNUSED( new_prefix );
 }
 
 void XmlDeclaration::RemoveAll()
@@ -141,6 +138,11 @@ Nullable<std::string> XmlDeclaration::Value() const
     PRECONDITION( !Version().empty() );
 
     return { _value };
+}
+
+void XmlDeclaration::Value(Nullable<std::string> new_value)
+{
+    _value = new_value;
 }
 
 void XmlDeclaration::WriteTo(XmlWriter &xml_writer) const
