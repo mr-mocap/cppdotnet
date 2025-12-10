@@ -18,16 +18,7 @@ public:
 
     std::shared_ptr<XmlNode> CloneNode(bool deep) const override;
 
-    std::string_view LocalName() const override;
-    std::string_view Name() const override;
-    std::string_view NamespaceURI() const override;
-
-    std::shared_ptr<XmlDocument> OwnerDocument() const override;
-
     void RemoveAll() override;
-
-    std::string_view Prefix() const override;
-                void Prefix(std::string_view new_prefix) override;
 
     std::shared_ptr<XmlNode> RemoveChild(std::shared_ptr<XmlNode> old_child) override;
 
@@ -35,7 +26,7 @@ public:
 
     std::string_view Target() const
     {
-        return _target;
+        return Name();
     }
 
     std::string_view Data() const
@@ -50,9 +41,7 @@ public:
 
     void WriteTo(XmlWriter &xml_writer) const override;
 protected:
-    std::string _target;
     std::string _data;
-    std::shared_ptr<XmlDocument> _document;
 
     XmlNodeType _getNodeType() const override;
 };

@@ -16,31 +16,35 @@ XmlProcessingInstruction::XmlProcessingInstruction()
 
 XmlProcessingInstruction::XmlProcessingInstruction(std::string_view target, std::shared_ptr<XmlDocument> document)
     :
-    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _target( target ),
-    _document( document )
+    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
+                   target,
+                   target,
+                   std::string_view{ },
+                   std::string_view{ },
+                   document )
 {
     INVARIANT( ChildNodes().Count() == 0 );
 }
 
 XmlProcessingInstruction::XmlProcessingInstruction(std::string_view target,
-                                                       std::string_view data,
-                                                       std::shared_ptr<XmlDocument> document)
+                                                   std::string_view data,
+                                                   std::shared_ptr<XmlDocument> document)
     :
-    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() ),
-    _target( target ),
-    _data( data ),
-    _document( document )
+    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
+                   target,
+                   target,
+                   std::string_view{ },
+                   std::string_view{ },
+                   document ),
+    _data( data )
 {
     INVARIANT( ChildNodes().Count() == 0 );
 }
 
 XmlProcessingInstruction::XmlProcessingInstruction(const XmlProcessingInstruction &other)
     :
-    XmlLinkedNode( other._children->MemberwiseClone() ),
-    _target( other._target ),
-    _data( other._data ),
-    _document( other._document )
+    XmlLinkedNode( other ),
+    _data( other._data )
 {
     INVARIANT( ChildNodes().Count() == 0 );
 }
@@ -49,13 +53,14 @@ XmlProcessingInstruction &XmlProcessingInstruction::operator =(const XmlProcessi
 {
     INVARIANT( ChildNodes().Count() == 0 );
 
+    XmlLinkedNode::operator =( other );
     if (this != &other)
     {
-        _target = other._target;
         _data   = other._data;
-        _document = other._document;
-        _children = other._children->MemberwiseClone();
     }
+
+    INVARIANT( ChildNodes().Count() == 0 );
+
     return *this;
 }
 
@@ -68,47 +73,6 @@ std::shared_ptr<XmlNode> XmlProcessingInstruction::CloneNode(bool deep) const
         return std::make_shared<XmlProcessingInstruction>( *this );
     else
         return std::make_shared<XmlProcessingInstruction>( *this );
-}
-
-std::string_view XmlProcessingInstruction::LocalName() const
-{
-    INVARIANT( ChildNodes().Count() == 0 );
-
-    return { };
-}
-
-std::string_view XmlProcessingInstruction::Name() const
-{
-    INVARIANT( ChildNodes().Count() == 0 );
-
-    return { };
-}
-
-std::string_view XmlProcessingInstruction::NamespaceURI() const
-{
-    INVARIANT( ChildNodes().Count() == 0 );
-
-    return { };
-}
-
-std::shared_ptr<XmlDocument> XmlProcessingInstruction::OwnerDocument() const
-{
-    INVARIANT( ChildNodes().Count() == 0 );
-
-    return _document;
-}
-
-std::string_view XmlProcessingInstruction::Prefix() const
-{
-    INVARIANT( ChildNodes().Count() == 0 );
-
-    return { };
-}
-
-void XmlProcessingInstruction::Prefix(std::string_view new_prefix)
-{
-    UNUSED( new_prefix );
-    INVARIANT( ChildNodes().Count() == 0 );
 }
 
 void XmlProcessingInstruction::RemoveAll()
