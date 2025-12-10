@@ -56,7 +56,22 @@ XmlProcessingInstruction &XmlProcessingInstruction::operator =(const XmlProcessi
     XmlLinkedNode::operator =( other );
     if (this != &other)
     {
-        _data   = other._data;
+        _data = other._data;
+    }
+
+    INVARIANT( ChildNodes().Count() == 0 );
+
+    return *this;
+}
+
+XmlProcessingInstruction &XmlProcessingInstruction::operator =(XmlProcessingInstruction &&other)
+{
+    INVARIANT( ChildNodes().Count() == 0 );
+
+    XmlLinkedNode::operator =( std::move( other ) );
+    if (this != &other)
+    {
+        _data = other._data;
     }
 
     INVARIANT( ChildNodes().Count() == 0 );

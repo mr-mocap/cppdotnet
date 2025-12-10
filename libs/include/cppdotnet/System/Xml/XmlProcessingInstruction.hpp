@@ -15,6 +15,7 @@ public:
    ~XmlProcessingInstruction() override = default;
 
     XmlProcessingInstruction &operator =(const XmlProcessingInstruction &other);
+    XmlProcessingInstruction &operator =(XmlProcessingInstruction &&other);
 
     std::shared_ptr<XmlNode> CloneNode(bool deep) const override;
 
