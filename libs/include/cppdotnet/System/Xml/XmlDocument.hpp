@@ -15,6 +15,7 @@ class XmlText;
 class XmlComment;
 class XmlDeclaration;
 class XmlProcessingInstruction;
+class XmlDocumentType;
 
 class XmlDocument : public XmlNode
 {
@@ -64,6 +65,12 @@ public:
 
     virtual std::shared_ptr<XmlComment> CreateComment(std::string_view data);
 
+    virtual std::shared_ptr<XmlDocumentType> CreateDocumentType(std::string_view name);
+    virtual std::shared_ptr<XmlDocumentType> CreateDocumentType(std::string_view name,
+                                                                std::string_view publicId,
+                                                                std::string_view systemId,
+                                                                std::string_view internalSubset);
+
     XmlNameTable &NameTable() const
     {
         INVARIANT( _implementation );
@@ -73,15 +80,6 @@ public:
 
     std::shared_ptr<XmlImplementation> Implementation() const;
 
-    std::string_view LocalName() const override;
-    std::string_view Name() const override;
-    std::string_view NamespaceURI() const override;
-
-    std::shared_ptr<XmlDocument> OwnerDocument() const override;
-
-    std::string_view Prefix() const override;
-                void Prefix(std::string_view new_prefix) override;
-    
     void RemoveAll() override;
 
     std::shared_ptr<XmlNode> RemoveChild(std::shared_ptr<XmlNode> old_child) override;

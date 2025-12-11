@@ -4,6 +4,7 @@
 #include <cppdotnet/System/Xml/XmlText.hpp>
 #include <cppdotnet/System/Xml/XmlComment.hpp>
 #include <cppdotnet/System/Xml/XmlDeclaration.hpp>
+#include <cppdotnet/System/Xml/XmlDocumentType.hpp>
 #include <cppdotnet/System/Xml/XmlProcessingInstruction.hpp>
 #include <cppdotnet/System/Xml/NameTable.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
@@ -184,53 +185,24 @@ std::shared_ptr<XmlComment> XmlDocument::CreateComment(std::string_view data)
     return std::make_shared<XmlComment>( data, _localSharedFromThis() );
 }
 
+std::shared_ptr<XmlDocumentType> XmlDocument::CreateDocumentType(std::string_view name)
+{
+    return std::make_shared<XmlDocumentType>( name, _localSharedFromThis() );
+}
+
+std::shared_ptr<XmlDocumentType> XmlDocument::CreateDocumentType(std::string_view name,
+                                                                 std::string_view publicId,
+                                                                 std::string_view systemId,
+                                                                 std::string_view internalSubset)
+{
+    return std::make_shared<XmlDocumentType>( name, publicId, systemId, internalSubset, _localSharedFromThis() );
+}
+
 std::shared_ptr<XmlImplementation> XmlDocument::Implementation() const
 {
     INVARIANT( _implementation );
 
     return _implementation;
-}
-
-std::string_view XmlDocument::LocalName() const
-{
-    INVARIANT( _implementation );
-
-    return "XmlDocument::LocalName() Not Implemented!";
-}
-
-std::string_view XmlDocument::Name() const
-{
-    INVARIANT( _implementation );
-
-    return "XmlDocument::Name() Not Implemented!";
-}
-
-std::string_view XmlDocument::NamespaceURI() const
-{
-    INVARIANT( _implementation );
-
-    return "XmlDocument::NamespaceURI() Not Implemented!";
-}
-
-std::shared_ptr<XmlDocument> XmlDocument::OwnerDocument() const
-{
-    INVARIANT( _implementation );
-
-    return nullptr;
-}
-
-std::string_view XmlDocument::Prefix() const
-{
-    INVARIANT( _implementation );
-
-    return "XmlDocument::Prefix() NOT IMPLEMENTED";
-}
-
-void XmlDocument::Prefix(std::string_view new_prefix)
-{
-    INVARIANT( _implementation );
-
-    UNUSED( new_prefix );
 }
 
 void XmlDocument::RemoveAll()
