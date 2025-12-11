@@ -2,6 +2,8 @@
 #include <cassert>
 #include <cppdotnet/System/Xml/XmlTextWriter.hpp>
 #include <cppdotnet/System/IO/StringWriter.hpp>
+#include "UnitTesting.hpp"
+
 
 struct XmlWriterTestFixture
 {
@@ -88,15 +90,7 @@ void CanOnlyCallWriteStartDocumentOnceAndWhileWriteStateIsStart()
 
     assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Prolog );
 
-    try
-    {
-        fixture.xml_writer->WriteStartDocument();
-        assert( false );  // Shouldn't get here
-    }
-    catch(const System::SystemException &e)
-    {
-        assert( true );
-    }
+    ASSERT_THROWS_EXCEPTION(System::SystemException, fixture.xml_writer->WriteStartDocument() );
 }
 
 void CanCallWriteProcessingInstructionInsteadOfWriteStartDocument()
@@ -125,16 +119,7 @@ void CallingWriteProcessingInstructionWithEmptyNameThrowsException()
 
     assert( xml_writer->WriteState() == System::Xml::WriteState::Start );
 
-    try
-    {
-        xml_writer->WriteProcessingInstruction("", "Some Text");
-        assert( false );
-    }
-    catch(const System::ArgumentException &)
-    {
-        assert( true );
-    }
-    
+    ASSERT_THROWS_EXCEPTION(System::ArgumentException, xml_writer->WriteProcessingInstruction("", "Some Text") );
 }
 
 void CallingWriteStartDocumentProducesADefaultProlog()
@@ -193,15 +178,7 @@ void SettingOmitXmlDeclarationToTrueAllowsWriteStartElementToBeImmediatelyCalled
         assert( !xml_writer->Settings().OmitXmlDeclaration() );
         assert( xml_writer->WriteState() == System::Xml::WriteState::Start );
 
-        try
-        {
-            xml_writer->WriteStartElement("book");
-            assert( false );
-        }
-        catch(const std::exception& e)
-        {
-            assert( true );
-        }
+        ASSERT_THROWS_EXCEPTION(System::Exception, xml_writer->WriteStartElement("book") );
     }
 }
 
