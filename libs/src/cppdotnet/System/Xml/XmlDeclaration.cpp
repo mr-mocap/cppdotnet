@@ -82,6 +82,16 @@ XmlDeclaration::XmlDeclaration(const XmlDeclaration &other)
 {
 }
 
+XmlDeclaration::XmlDeclaration(XmlDeclaration &&other)
+    :
+    XmlLinkedNode( std::move(other) ),
+    _version( std::move(other._version) ),
+    _encoding( std::move(other._encoding) ),
+    _standalone( std::move(other._standalone) ),
+    _value( std::move(other._value) )
+{
+}
+
 XmlDeclaration &XmlDeclaration::operator =(const XmlDeclaration &other)
 {
     XmlLinkedNode::operator =( other );

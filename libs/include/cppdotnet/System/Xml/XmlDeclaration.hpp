@@ -14,6 +14,7 @@ public:
     XmlDeclaration(std::string_view version, std::string_view encoding, std::shared_ptr<XmlDocument> document);
     XmlDeclaration(std::string_view version, std::string_view encoding, std::string_view standalone, std::shared_ptr<XmlDocument> document);
     XmlDeclaration(const XmlDeclaration &other);
+    XmlDeclaration(XmlDeclaration &&other);
    ~XmlDeclaration() override = default;
 
     XmlDeclaration &operator =(const XmlDeclaration &other);
