@@ -1,6 +1,7 @@
 #include <cppdotnet/System/Span.hpp>
 #include <iostream>
 #include <cassert>
+#include "UnitTesting.hpp"
 
 
 namespace TestSpan
@@ -215,32 +216,10 @@ void Slice()
     }
     
     // Index past end
-    try
-    {
-        System::Span<int> span_c( span_a.Slice( 99 ) );
-    }
-    catch (const System::ArgumentOutOfRangeException &e)
-    {
-        std::cout << std::string(e.Message()).append(" at ").append(e.TargetSite()) << std::endl;
-    }
-    catch (...)
-    {
-        assert( false );
-    }
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::Span<int> span_c( span_a.Slice( 99 ) ) );
 
     // Length past end
-    try
-    {
-        System::Span<int> span_d( span_a.Slice( 0, 99 ) );
-    }
-    catch (const System::ArgumentOutOfRangeException &e)
-    {
-        std::cout << std::string(e.Message()).append(" at ").append(e.TargetSite()) << std::endl;
-    }
-    catch (...)
-    {
-        assert( false );
-    }
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::Span<int> span_c( span_a.Slice( 0, 99 ) ) );
 }
 
 void CopyTo()
@@ -272,15 +251,7 @@ void CopyTo()
     assert( span_b[3] == 5 );
     assert( span_b[4] == 5 );
 
-    try
-    {
-        span_b.CopyTo( span_a );
-    }
-    catch(const System::ArgumentException &e)
-    {
-        std::cout << std::string(e.Message()).append(" at ").append(e.TargetSite()) << std::endl;
-    }
-    
+    ASSERT_THROWS_EXCEPTION( System::ArgumentException, span_b.CopyTo( span_a ) );
 }
 
 void TryCopyTo()

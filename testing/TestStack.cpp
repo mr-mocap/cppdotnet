@@ -1,7 +1,7 @@
 #include <cppdotnet/System/Collections/Generic/Stack.hpp>
 #include <iostream>
 #include <cassert>
-
+#include "UnitTesting.hpp"
 
 namespace TestStack
 {
@@ -69,17 +69,7 @@ void PoppingAnEmptyStackThrowsAnException()
 
     assert( stack.Count() == 0 );
 
-    try
-    {
-        int top_item = stack.Pop();
-
-        UNUSED(top_item);
-        assert( false );
-    }
-    catch(const System::InvalidOperationException &e)
-    {
-        std::cout << e.ToString() << std::endl;
-    }
+    ASSERT_THROWS_EXCEPTION( System::InvalidOperationException, stack.Pop() );
     
     assert( stack.Count() == 0 );
 }
@@ -90,17 +80,7 @@ void PeekingAnEmptyStackThrowsAnException()
 
     assert( stack.Count() == 0 );
 
-    try
-    {
-        int top_item = stack.Peek();
-
-        UNUSED(top_item);
-        assert( false );
-    }
-    catch(const System::InvalidOperationException &e)
-    {
-        std::cout << e.ToString() << std::endl;
-    }
+    ASSERT_THROWS_EXCEPTION( System::InvalidOperationException, stack.Peek() );
     
     assert( stack.Count() == 0 );
 }

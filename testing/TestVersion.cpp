@@ -2,6 +2,7 @@
 #include <cppdotnet/System/Exception.hpp>
 #include <iostream>
 #include <cassert>
+#include "UnitTesting.hpp"
 
 
 namespace TestVersion
@@ -122,18 +123,7 @@ void ToStringWithParameter()
             assert( s == "0.0" );
         }
 
-        try
-        {
-            std::string s{ d.ToString(3) };
-
-            assert( s == "Shouldn't get here!" );
-        }
-        catch (const System::ArgumentException &e)
-        {
-            std::cout << e.ToString() << std::endl;
-            std::cout << e.TargetSite() << std::endl;
-            std::cout << std::endl;
-        }
+        ASSERT_THROWS_EXCEPTION( System::ArgumentException, std::string s{ d.ToString(3) } );
     }
 }
 

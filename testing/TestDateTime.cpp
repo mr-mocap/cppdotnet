@@ -1,6 +1,7 @@
 #include <cppdotnet/System/DateTime.hpp>
 #include <iostream>
 #include <cassert>
+#include "UnitTesting.hpp"
 
 
 namespace TestDateTime
@@ -264,30 +265,10 @@ void AddYears()
     }
 
     // Test for underflow of DateTime
-    try
-    {
-        System::DateTime::MinValue().AddYears(-1);
-        
-        assert( false );
-    }
-    catch(const System::ArgumentOutOfRangeException &e)
-    {
-        std::cerr << "Underflow!" << '\n';
-        assert( true );
-    }
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::DateTime::MinValue().AddYears(-1) );
     
     // Test for overflow of DateTime
-    try
-    {
-        System::DateTime::MaxValue().AddYears(1);
-        
-        assert( false );
-    }
-    catch(const System::ArgumentOutOfRangeException &e)
-    {
-        std::cerr << "Overflow!" << '\n';
-        assert( true );
-    }
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::DateTime::MaxValue().AddYears(1) );
 }
 
 void AddMonths()
@@ -325,55 +306,14 @@ void AddMonths()
     }
 
     // Test for underflow of DateTime
-    try
-    {
-        System::DateTime::MinValue().AddMonths(-1);
-        
-        assert( false );
-    }
-    catch(const System::ArgumentOutOfRangeException &e)
-    {
-        std::cerr << "Underflow!" << '\n';
-        assert( true );
-    }
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::DateTime::MinValue().AddMonths(-1) );
     
     // Test for overflow of DateTime
-    try
-    {
-        System::DateTime::MaxValue().AddMonths(1);
-        
-        assert( false );
-    }
-    catch(const System::ArgumentOutOfRangeException &e)
-    {
-        std::cerr << "Overflow!" << '\n';
-        assert( true );
-    }
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::DateTime::MaxValue().AddMonths(1) );
 
     // Test for out-of-bounds months input
-    try
-    {
-        System::DateTime::Now().AddMonths(120'001);
-        
-        assert( false );
-    }
-    catch(const System::ArgumentOutOfRangeException &e)
-    {
-        std::cerr << "Tried to add too many months over!" << '\n';
-        assert( true );
-    }
-
-    try
-    {
-        System::DateTime::Now().AddMonths(-120'001);
-        
-        assert( false );
-    }
-    catch(const System::ArgumentOutOfRangeException &e)
-    {
-        std::cerr << "Tried to add too many months under!" << '\n';
-        assert( true );
-    }
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::DateTime::Now().AddMonths(120'001) );
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::DateTime::Now().AddMonths(-120'001) );
 }
 
 void AddDays()
@@ -416,30 +356,10 @@ void AddDays()
     }
 
     // Test for underflow of DateTime
-    try
-    {
-        System::DateTime::MinValue().AddDays(-1);
-        
-        assert( false );
-    }
-    catch(const System::ArgumentOutOfRangeException &e)
-    {
-        std::cerr << "Underflow!" << '\n';
-        assert( true );
-    }
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::DateTime::MinValue().AddDays(-1) );
     
     // Test for overflow of DateTime
-    try
-    {
-        System::DateTime::MaxValue().AddDays(1);
-        
-        assert( false );
-    }
-    catch(const System::ArgumentOutOfRangeException &e)
-    {
-        std::cerr << "Overflow!" << '\n';
-        assert( true );
-    }
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::DateTime::MaxValue().AddDays(1) );
 
     // Now to test for fractional days being added
     {
@@ -491,30 +411,10 @@ void AddHours()
     }
 
     // Test for underflow of DateTime
-    try
-    {
-        System::DateTime::MinValue().AddHours(-1);
-        
-        assert( false );
-    }
-    catch(const System::ArgumentOutOfRangeException &e)
-    {
-        std::cerr << "Underflow!" << '\n';
-        assert( true );
-    }
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::DateTime::MinValue().AddHours(-1) );
     
     // Test for overflow of DateTime
-    try
-    {
-        System::DateTime::MaxValue().AddHours(1);
-        
-        assert( false );
-    }
-    catch(const System::ArgumentOutOfRangeException &e)
-    {
-        std::cerr << "Overflow!" << '\n';
-        assert( true );
-    }
+    ASSERT_THROWS_EXCEPTION( System::ArgumentOutOfRangeException, System::DateTime::MaxValue().AddHours(1) );
 
     // Now to test for fractional Hours being added
     {
