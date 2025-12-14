@@ -14,7 +14,6 @@ XmlCharacterData::XmlCharacterData(std::shared_ptr<XmlDocument> doc, std::string
                    std::string_view(),
                    doc )
 {
-    INVARIANT( _owner_document );
 }
 
 XmlCharacterData::XmlCharacterData(std::string_view data, std::shared_ptr<XmlDocument> doc, std::string_view name)
@@ -27,7 +26,6 @@ XmlCharacterData::XmlCharacterData(std::string_view data, std::shared_ptr<XmlDoc
                    doc ),
     _value( std::string(data) )
 {
-    INVARIANT( _owner_document );
 }
 
 XmlCharacterData::XmlCharacterData(const XmlCharacterData &other)
@@ -71,36 +69,26 @@ void XmlCharacterData::AppendData(std::string_view data)
 
 Nullable<std::string> XmlCharacterData::Value() const
 {
-    INVARIANT( _owner_document );
-
     return _value;
 }
 
 void XmlCharacterData::Value(Nullable<std::string> new_value)
 {
-    INVARIANT( _owner_document );
-
     _value = new_value;
 }
 
 Nullable<std::string> XmlCharacterData::Data() const
 {
-    INVARIANT( _owner_document );
-
     return _value;
 }
 
 void XmlCharacterData::Data(Nullable<std::string_view> new_data)
 {
-    INVARIANT( _owner_document );
-
     _value = new_data;
 }
 
 std::size_t XmlCharacterData::Length() const
 {
-    INVARIANT( _owner_document );
-
     return _value.HasValue() ? _value.Value().size() : 0;
 }
 
