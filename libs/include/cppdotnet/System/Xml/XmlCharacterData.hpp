@@ -20,20 +20,17 @@ public:
 
     virtual void AppendData(std::string_view data);
 
-    Nullable<std::string> Value() const override;
+    std::string_view Value() const override;
+    void             Value(std::string_view new_value) override;
 
-    virtual Nullable<std::string> Data() const;
-            void                  Data(std::nullopt_t null_value)
+    virtual std::string_view Data() const;
+    virtual void             Data(std::string_view new_data);
+            void             Data(const char *new_data)
             {
-                Data( Nullable<std::string_view>{ null_value } );
-            }
-            void                  Data(std::string_view new_data)
-            {
-                Data( Nullable<std::string_view>{ new_data } );
-            }
-            void                  Data(const char *new_data)
-            {
-                Data( std::string_view( new_data ) );
+                if ( new_data )
+                    Data( std::string_view( new_data ) );
+                else
+                    Data( std::string_view() );
             }
 
     virtual std::size_t Length() const;
@@ -45,11 +42,7 @@ public:
     std::shared_ptr<XmlNode> ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child) override;
 
 protected:
-    Nullable<std::string> _value;
-
-    void Value(Nullable<std::string> new_value) override;
-
-    virtual void Data(Nullable<std::string_view> new_data);
+    std::string _value;
 };
 
 }

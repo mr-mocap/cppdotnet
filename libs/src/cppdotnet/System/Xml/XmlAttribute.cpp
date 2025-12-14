@@ -61,12 +61,12 @@ std::shared_ptr<XmlNode> XmlAttribute::CloneNode(bool deep) const
         return std::make_shared<XmlAttribute>( *this );
 }
 
-Nullable<std::string> XmlAttribute::Value() const
+std::string_view XmlAttribute::Value() const
 {
     return _value;
 }
 
-void XmlAttribute::Value(Nullable<std::string> new_value)
+void XmlAttribute::Value(std::string_view new_value)
 {
     _value = new_value;
 }

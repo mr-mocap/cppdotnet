@@ -18,8 +18,7 @@ void EmptyXmlDeclaration()
     assert( declaration.OwnerDocument() == nullptr );
     assert( declaration.NodeType() == System::Xml::XmlNodeType::XmlDeclaration );
 
-    assert( declaration.Value().HasValue() );
-    assert( declaration.Value().Value() == "version=\"1.0\"" );
+    assert( declaration.Value() == "version=\"1.0\"" );
 }
 
 void XmlDeclarationWithVersion()
@@ -34,8 +33,7 @@ void XmlDeclarationWithVersion()
     assert( declaration.OwnerDocument() == nullptr );
     assert( declaration.NodeType() == System::Xml::XmlNodeType::XmlDeclaration );
 
-    assert( declaration.Value().HasValue() );
-    assert( declaration.Value().Value() == "version=\"1.1\"" );
+    assert( declaration.Value() == "version=\"1.1\"" );
 }
 
 void XmlDeclarationWithVersionAndOwnerDocument()
@@ -51,8 +49,7 @@ void XmlDeclarationWithVersionAndOwnerDocument()
     assert( declaration.OwnerDocument() == fixture.xml_doc );
     assert( declaration.NodeType() == System::Xml::XmlNodeType::XmlDeclaration );
 
-    assert( declaration.Value().HasValue() );
-    assert( declaration.Value().Value() == "version=\"1.1\"" );
+    assert( declaration.Value() == "version=\"1.1\"" );
 }
 
 void XmlDeclarationWithVersionAndEncoding()
@@ -67,8 +64,7 @@ void XmlDeclarationWithVersionAndEncoding()
     assert( declaration.OwnerDocument() == nullptr );
     assert( declaration.NodeType() == System::Xml::XmlNodeType::XmlDeclaration );
 
-    assert( declaration.Value().HasValue() );
-    assert( declaration.Value().Value() == "version=\"1.1\" encoding=\"UTF-8\"" );
+    assert( declaration.Value() == "version=\"1.1\" encoding=\"UTF-8\"" );
 }
 
 void XmlDeclarationWithVersionAndEncodingAndOwnerDocument()
@@ -84,8 +80,7 @@ void XmlDeclarationWithVersionAndEncodingAndOwnerDocument()
     assert( declaration.OwnerDocument() == fixture.xml_doc );
     assert( declaration.NodeType() == System::Xml::XmlNodeType::XmlDeclaration );
 
-    assert( declaration.Value().HasValue() );
-    assert( declaration.Value().Value() == "version=\"1.1\" encoding=\"UTF-8\"" );
+    assert( declaration.Value() == "version=\"1.1\" encoding=\"UTF-8\"" );
 }
 
 void Run()

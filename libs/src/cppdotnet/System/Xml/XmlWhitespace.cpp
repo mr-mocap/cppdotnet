@@ -33,13 +33,12 @@ XmlWhitespace::XmlWhitespace(std::string_view comment, std::shared_ptr<XmlDocume
     :
     XmlCharacterData( comment, doc, "#whitespace" )
 {
-    bool all_valid = IsAllWhitespace( _value.Value() );
+    bool all_valid = IsAllWhitespace( Value() );
 
     if ( !all_valid )
         ThrowWithTarget( InvalidOperationException( "Cannot construct XmlWhitespace with non-whitespace characters" ) );
 
-    POSTCONDITION( _value.HasValue() );
-    POSTCONDITION( IsAllWhitespace( _value.Value() ) );
+    POSTCONDITION( IsAllWhitespace( Value() ) );
 }
 
 XmlWhitespace::XmlWhitespace(const XmlWhitespace &other)

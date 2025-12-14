@@ -2,6 +2,7 @@
 #include <cppdotnet/System/Xml/XmlNodeList.hpp>
 #include <cppdotnet/System/Macros/Utils.hpp>
 
+
 namespace System::Xml
 {
 
@@ -250,12 +251,12 @@ std::shared_ptr<XmlDocument> XmlNode::OwnerDocument() const
     return _owner_document;
 }
 
-Nullable<std::string> XmlNode::Value() const
+std::string_view XmlNode::Value() const
 {
     return { };
 }
 
-void XmlNode::Value(Nullable<std::string> new_value)
+void XmlNode::Value(std::string_view new_value)
 {
     UNUSED( new_value );
 

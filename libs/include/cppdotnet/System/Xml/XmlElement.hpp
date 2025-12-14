@@ -9,6 +9,7 @@ namespace System::Xml
 class XmlElement : public XmlLinkedNode
 {
 public:
+    XmlElement() = delete;
     XmlElement(std::string_view prefix, std::string_view local_name, std::string_view namespace_uri, std::shared_ptr<XmlDocument> document);
     XmlElement(const XmlElement &other);
     XmlElement(XmlElement &&other);
@@ -19,7 +20,7 @@ public:
 
     std::shared_ptr<XmlNode> CloneNode(bool deep) const override;
 
-    Nullable<std::string> Value() const override;
+    std::string_view Value() const override;
     using XmlNode::Value;
 
     void RemoveAll() override;
@@ -38,7 +39,7 @@ public:
 
     void WriteTo(XmlWriter &xml_writer) const override;
 protected:
-    Nullable<std::string> _value;
+    std::string _value;
 
     XmlNodeType _getNodeType() const override;
     bool        _thisNodeCanHaveChildren() const override;

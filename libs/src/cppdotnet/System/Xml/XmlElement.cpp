@@ -62,7 +62,7 @@ std::shared_ptr<XmlNode> XmlElement::CloneNode(bool deep) const
         return std::make_shared<XmlElement>( *this );
 }
 
-Nullable<std::string> XmlElement::Value() const
+std::string_view XmlElement::Value() const
 {
     return _value;
 }
@@ -103,9 +103,9 @@ std::string_view XmlElement::GetAttribute(std::string_view name) const
     std::shared_ptr<XmlAttribute> attr_node = GetAttributeNode( name );
 
     if ( attr_node )
-        return attr_node->Value().GetValueOrDefault( "" );
+        return attr_node->Value();
 
-    return "";
+    return { };
 }
 
 void XmlElement::SetAttribute(std::string_view name, std::string_view value)
@@ -117,6 +117,9 @@ void XmlElement::SetAttribute(std::string_view name, std::string_view value)
         std::static_pointer_cast<XmlNode>(attr_node)->Value( value );
         return;
     }
+
+    if ( !OwnerDocument() )
+        ThrowWithTarget( System::InvalidOperationException( "Cannot create new XmlAttribute without a valid XmlDocument" ) );
 
     attr_node = OwnerDocument()->CreateAttribute(name);
     std::static_pointer_cast<XmlNode>(attr_node)->Value( value );

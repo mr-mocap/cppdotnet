@@ -26,7 +26,8 @@ public:
 
     std::shared_ptr<XmlNode> ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child) override;
 
-    Nullable<std::string> Value() const override;
+    std::string_view Value() const override;
+    void             Value(std::string_view new_value) override;
 
     void WriteTo(XmlWriter &xml_writer) const override;
 protected:
@@ -34,7 +35,6 @@ protected:
 
     XmlNodeType _getNodeType() const override;
     bool        _thisNodeCanHaveChildren() const override;
-    void        Value(Nullable<std::string> new_value) override;
 };
 
 }

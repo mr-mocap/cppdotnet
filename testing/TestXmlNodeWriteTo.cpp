@@ -140,7 +140,7 @@ void CannotAddValueToXmlElement()
     std::shared_ptr<System::Xml::XmlElement> element = fixture.xml_doc->CreateElement("book");
 
     assert( element->Name() == "book" );
-    assert( !element->Value().HasValue() );
+    assert( element->Value().empty() );
 
     ASSERT_THROWS_EXCEPTION( System::InvalidOperationException, element->Value( "Pride and Prejudice" ) );
 }
@@ -154,7 +154,7 @@ void XmlElementWithTextNodeChild()
     std::shared_ptr<System::Xml::XmlElement> element = fixture.xml_doc->CreateElement("book");
 
     assert( element->Name() == "book" );
-    assert( !element->Value().HasValue() );
+    assert( element->Value().empty() );
 
     std::string prolog_written = fixture.string_writer->GetStringBuilder().ToString();
 
@@ -181,8 +181,7 @@ void XmlCommentEmptyIsWrittenCorrectly()
     std::shared_ptr<System::Xml::XmlComment> comment = fixture.xml_doc->CreateComment("");
 
     assert( comment->Name() == "#comment" );
-    assert( comment->Value().HasValue() );
-    assert( comment->Value().Value() == "" );
+    assert( comment->Value().empty() );
     assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
 
     comment->WriteTo( *(fixture.xml_writer) );
@@ -201,8 +200,7 @@ void XmlCommentWithDataIsWrittenCorrectly()
     std::shared_ptr<System::Xml::XmlComment> comment = fixture.xml_doc->CreateComment("This should be a comment");
 
     assert( comment->Name() == "#comment" );
-    assert( comment->Value().HasValue() );
-    assert( comment->Value().Value() == "This should be a comment" );
+    assert( comment->Value() == "This should be a comment" );
     assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
 
     comment->WriteTo( *(fixture.xml_writer) );
@@ -221,8 +219,7 @@ void XmlWhitespaceThatIsEmptyIsWrittenCorrectly()
     std::shared_ptr<System::Xml::XmlWhitespace> whitespace = fixture.xml_doc->CreateWhitespace( std::string_view() );
 
     assert( whitespace->Name() == "#whitespace" );
-    assert( whitespace->Value().HasValue() );
-    assert( whitespace->Value().Value() == "" );
+    assert( whitespace->Value().empty() );
     assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
 
     whitespace->WriteTo( *(fixture.xml_writer) );
@@ -242,8 +239,7 @@ void XmlWhitespaceThatHasDataIsWrittenCorrectly()
     std::shared_ptr<System::Xml::XmlWhitespace> whitespace = fixture.xml_doc->CreateWhitespace(ws);
 
     assert( whitespace->Name() == "#whitespace" );
-    assert( whitespace->Value().HasValue() );
-    assert( whitespace->Value().Value() == ws );
+    assert( whitespace->Value() == ws );
     assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
 
     whitespace->WriteTo( *(fixture.xml_writer) );

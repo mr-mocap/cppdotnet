@@ -17,7 +17,7 @@ TESTS = Activity ActivitySource BinaryWriter BitConverter Console ConsoleTraceLi
 		Dictionary Enum Environment Exception Guid ICollection IDictionary IList Int32 \
 		LinkedList List Nullable Path Progress ReadOnlySpan Span Stack Stopwatch StringBuilder \
 		StringReader StringWriter TimeOnly TimeSpan Trace TraceSource ValueTuple Version \
-		NameTable XmlDeclaration XmlDocument XmlDocumentType XmlNodeWriteTo XmlTextWriter
+		NameTable XmlDeclaration XmlDocument XmlElement XmlDocumentType XmlNodeWriteTo XmlTextWriter
 TEST_BINARIES = $(patsubst %,Test%,${TESTS})
 PASSING_TESTS = $(patsubst %,%.pass,${TEST_BINARIES})
 
@@ -233,6 +233,10 @@ TestActivitySource.pass: TestActivitySource
 TestActivity: TestActivity.cpp
 
 TestActivity.pass: TestActivity
+
+TestXmlElement: TestXmlElement.cpp
+
+TestXmlElement.pass: TestXmlElement
 
 .PHONY: all
 all: $(PASSING_TESTS) $(LIB_TARGET)

@@ -61,35 +61,32 @@ XmlCharacterData &XmlCharacterData::operator =(XmlCharacterData &&other)
 
 void XmlCharacterData::AppendData(std::string_view data)
 {
-    if ( _value.HasValue() )
-        _value.Value().append( data );
-    else
-        _value = Nullable<std::string>( std::string(data) );
+    _value.append( data );
 }
 
-Nullable<std::string> XmlCharacterData::Value() const
+std::string_view XmlCharacterData::Value() const
 {
     return _value;
 }
 
-void XmlCharacterData::Value(Nullable<std::string> new_value)
+void XmlCharacterData::Value(std::string_view new_value)
 {
     _value = new_value;
 }
 
-Nullable<std::string> XmlCharacterData::Data() const
+std::string_view XmlCharacterData::Data() const
 {
     return _value;
 }
 
-void XmlCharacterData::Data(Nullable<std::string_view> new_data)
+void XmlCharacterData::Data(std::string_view new_data)
 {
     _value = new_data;
 }
 
 std::size_t XmlCharacterData::Length() const
 {
-    return _value.HasValue() ? _value.Value().size() : 0;
+    return _value.size();
 }
 
 void XmlCharacterData::RemoveAll()

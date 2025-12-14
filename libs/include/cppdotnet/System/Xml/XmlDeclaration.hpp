@@ -43,7 +43,8 @@ public:
         return _standalone;
     }
 
-    Nullable<std::string> Value() const override;
+    std::string_view Value() const override;
+    void             Value(std::string_view new_value) override;
 
     void WriteTo(XmlWriter &xml_writer) const override;
 protected:
@@ -53,7 +54,6 @@ protected:
     std::string                  _value;
 
     XmlNodeType _getNodeType() const override;
-    void Value(Nullable<std::string> new_value) override;
 };
 
 }

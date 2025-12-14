@@ -69,22 +69,17 @@ public:
 
     virtual std::shared_ptr<XmlDocument> OwnerDocument() const;
 
-    virtual Nullable<std::string> Value() const;
+    virtual std::string_view Value() const;
             
     void Value(const char *new_value)
     {
-        Value( std::string_view( new_value ) );
+        if ( new_value )
+            Value( std::string_view( new_value ) );
+        else
+            Value( std::string_view() );  // We can't construct a std::string_view(nullptr)
     }
 
-    void Value(std::string_view new_value)
-    {
-        Value( Nullable<std::string>{ new_value } );
-    }
-
-    void Value(std::nullopt_t new_value_that_is_null)
-    {
-        Value( Nullable<std::string>{ new_value_that_is_null } );
-    }
+    virtual void Value(std::string_view new_value);
 
     virtual std::shared_ptr<XmlNode> ParentNode() const;
 
@@ -121,7 +116,6 @@ protected:
     virtual XmlNodeType _getNodeType() const = 0;
     virtual bool _thisNodeCanHaveChildren() const;
     virtual bool _canAddAsChild(std::shared_ptr<XmlNode> new_child) const;
-    virtual void Value(Nullable<std::string> s); // Only allow user to set the value via public overloads
 
     bool _isFromSameDocument(std::shared_ptr<XmlNode> node);
 };

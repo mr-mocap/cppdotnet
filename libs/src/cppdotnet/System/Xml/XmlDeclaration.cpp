@@ -143,14 +143,14 @@ std::shared_ptr<XmlNode> XmlDeclaration::ReplaceChild(std::shared_ptr<XmlNode> n
     return children_as_derived_type->ReplaceChild( new_child, old_child );
 }
 
-Nullable<std::string> XmlDeclaration::Value() const
+std::string_view XmlDeclaration::Value() const
 {
     PRECONDITION( !Version().empty() );
 
-    return { _value };
+    return _value;
 }
 
-void XmlDeclaration::Value(Nullable<std::string> new_value)
+void XmlDeclaration::Value(std::string_view new_value)
 {
     _value = new_value;
 }
