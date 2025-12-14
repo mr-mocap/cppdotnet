@@ -6,6 +6,7 @@
 #include <cppdotnet/System/Xml/XmlDeclaration.hpp>
 #include <cppdotnet/System/Xml/XmlDocumentType.hpp>
 #include <cppdotnet/System/Xml/XmlProcessingInstruction.hpp>
+#include <cppdotnet/System/Xml/XmlWhitespace.hpp>
 #include <cppdotnet/System/Xml/NameTable.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 #include <cppdotnet/System/Macros/Contracts.hpp>
@@ -196,6 +197,11 @@ std::shared_ptr<XmlDocumentType> XmlDocument::CreateDocumentType(std::string_vie
                                                                  std::string_view internalSubset)
 {
     return std::make_shared<XmlDocumentType>( name, publicId, systemId, internalSubset, _localSharedFromThis() );
+}
+
+std::shared_ptr<XmlWhitespace> XmlDocument::CreateWhitespace(std::string_view ws)
+{
+    return std::make_shared<XmlWhitespace>( ws, _localSharedFromThis() );
 }
 
 std::shared_ptr<XmlImplementation> XmlDocument::Implementation() const

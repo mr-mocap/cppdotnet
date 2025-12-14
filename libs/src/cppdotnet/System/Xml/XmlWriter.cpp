@@ -3,6 +3,7 @@
 #include <cppdotnet/System/Xml/XmlComment.hpp>
 #include <cppdotnet/System/Xml/XmlDeclaration.hpp>
 #include <cppdotnet/System/Xml/XmlProcessingInstruction.hpp>
+#include <cppdotnet/System/Xml/XmlWhitespace.hpp>
 #include <cppdotnet/System/IO/FileStream.hpp>
 #include <cppdotnet/System/IO/StreamWriter.hpp>
 #include <cppdotnet/System/Exception.hpp>
@@ -172,7 +173,18 @@ void XmlWriter::WriteComment(std::string_view comment)
 
 void XmlWriter::WriteWhitespace(std::string_view ws)
 {
-    WriteValue( ws );
+    if ( WriteState() == Xml::WriteState::Start )
+        WriteStartDocument();
+
+    ASSERT( WriteState() != Xml::WriteState::Start );
+
+    Xml::WriteState entry_state = WriteState();
+
+    XmlWhitespace xml_whitespace( ws, nullptr );
+
+    xml_whitespace.WriteTo( *this );
+
+    POSTCONDITION( WriteState() == entry_state );
 }
 
 }

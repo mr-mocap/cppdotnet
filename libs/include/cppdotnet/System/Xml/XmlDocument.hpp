@@ -16,6 +16,7 @@ class XmlComment;
 class XmlDeclaration;
 class XmlProcessingInstruction;
 class XmlDocumentType;
+class XmlWhitespace;
 
 class XmlDocument : public XmlNode
 {
@@ -70,6 +71,8 @@ public:
                                                                 std::string_view publicId,
                                                                 std::string_view systemId,
                                                                 std::string_view internalSubset);
+
+    virtual std::shared_ptr<XmlWhitespace> CreateWhitespace(std::string_view ws);
 
     XmlNameTable &NameTable() const
     {

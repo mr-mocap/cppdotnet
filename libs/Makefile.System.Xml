@@ -32,6 +32,7 @@ LIB_SRC  = $(SRC_DIR)/System/Xml/NameTable.cpp \
            $(SRC_DIR)/System/Xml/XmlText.cpp \
            $(SRC_DIR)/System/Xml/XmlTextReader.cpp \
            $(SRC_DIR)/System/Xml/XmlTextWriter.cpp \
+           $(SRC_DIR)/System/Xml/XmlWhitespace.cpp \
            $(SRC_DIR)/System/Xml/XmlWriter.cpp \
            $(SRC_DIR)/System/Xml/XmlWriterSettings.cpp
 

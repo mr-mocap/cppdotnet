@@ -182,6 +182,58 @@ void SettingOmitXmlDeclarationToTrueAllowsWriteStartElementToBeImmediatelyCalled
     }
 }
 
+void CallingWriteCommentWithEmptyStringProducesExpectedOutput()
+{
+    XmlWriterTestFixture fixture;
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+    assert( fixture.string_writer->GetStringBuilder().ToString().empty() );
+
+    fixture.xml_writer->WriteComment("");
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Prolog );
+    assert( fixture.string_writer->GetStringBuilder().ToString() == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!---->" );
+}
+
+void CallingWriteCommentWithValidStringProducesExpectedOutput()
+{
+    XmlWriterTestFixture fixture;
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+    assert( fixture.string_writer->GetStringBuilder().ToString().empty() );
+
+    fixture.xml_writer->WriteComment("This is a comment");
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Prolog );
+    assert( fixture.string_writer->GetStringBuilder().ToString() == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!--This is a comment-->" );
+}
+
+void CallingWriteWhitespaceWithEmptyStringProducesExpectedOutput()
+{
+    XmlWriterTestFixture fixture;
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+    assert( fixture.string_writer->GetStringBuilder().ToString().empty() );
+
+    fixture.xml_writer->WriteWhitespace("");
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Prolog );
+    assert( fixture.string_writer->GetStringBuilder().ToString() == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
+}
+
+void CallingWriteWhitespaceWithValidStringProducesExpectedOutput()
+{
+    XmlWriterTestFixture fixture;
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+    assert( fixture.string_writer->GetStringBuilder().ToString().empty() );
+
+    fixture.xml_writer->WriteWhitespace("     ");
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Prolog );
+    assert( fixture.string_writer->GetStringBuilder().ToString() == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>     " );
+}
+
 void Run()
 {
     InitialXmlWriterState();
@@ -192,6 +244,10 @@ void Run()
     CanCallWriteProcessingInstructionInsteadOfWriteStartDocument();
     CallingWriteProcessingInstructionWithEmptyNameThrowsException();
     CallingWriteStartDocumentProducesADefaultProlog();
+    CallingWriteCommentWithEmptyStringProducesExpectedOutput();
+    CallingWriteCommentWithValidStringProducesExpectedOutput();
+    CallingWriteWhitespaceWithEmptyStringProducesExpectedOutput();
+    CallingWriteWhitespaceWithValidStringProducesExpectedOutput();
     return;
     CallingWriteEndDocumentPutsXmlWriterBackInWriteStateOfStart();
     SettingOmitXmlDeclarationToTrueAllowsWriteStartElementToBeImmediatelyCalled();

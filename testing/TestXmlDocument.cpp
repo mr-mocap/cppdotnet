@@ -1,8 +1,10 @@
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
+#include <cppdotnet/System/Xml/XmlWhitespace.hpp>
 #include <cppdotnet/System/Xml/NameTable.hpp>
 #include <cstdlib>
 #include <cassert>
-
+#include "UnitTesting.hpp"
+#include "XmlNodeTestFixture.hpp"
 
 namespace TestXmlDocument
 {
@@ -57,11 +59,83 @@ void ConstructWithSharedPointerToExternalNameTableRefersToTheExternalNameTable()
     assert( d.NameTable().Get( "Test" ) == "Test" );
 }
 
+void CreateWhitespaceWithEmptyString()
+{
+    XmlNodeTestFixture fixture;
+
+    {
+        std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace("");
+        System::Nullable<std::string> data = node->Data();
+
+        assert( node->Name() == "#whitespace" );
+        assert( data.HasValue() );
+        assert( data.Value() == "" );
+    }
+}
+
+void CreateWhitespaceWithValidString()
+{
+    XmlNodeTestFixture fixture;
+
+    {
+        std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace("    ");
+        System::Nullable<std::string> data = node->Data();
+
+        assert( node->Name() == "#whitespace" );
+        assert( data.HasValue() );
+        assert( data.Value() == "    " );
+    }
+    {
+        std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace("\t");
+        System::Nullable<std::string> data = node->Data();
+
+        assert( node->Name() == "#whitespace" );
+        assert( data.HasValue() );
+        assert( data.Value() == "\t" );
+    }
+    {
+        std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace("\r");
+        System::Nullable<std::string> data = node->Data();
+
+        assert( node->Name() == "#whitespace" );
+        assert( data.HasValue() );
+        assert( data.Value() == "\r" );
+    }
+    {
+        std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace("\n");
+        System::Nullable<std::string> data = node->Data();
+
+        assert( node->Name() == "#whitespace" );
+        assert( data.HasValue() );
+        assert( data.Value() == "\n" );
+    }
+    {
+        std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace(" \t\r\n");
+        System::Nullable<std::string> data = node->Data();
+
+        assert( node->Name() == "#whitespace" );
+        assert( data.HasValue() );
+        assert( data.Value() == " \t\r\n" );
+    }
+}
+
+void CreateWhitespaceWithInvalidString()
+{
+    XmlNodeTestFixture fixture;
+
+    ASSERT_THROWS_EXCEPTION( System::InvalidOperationException, fixture.xml_doc->CreateWhitespace("This is invalid data") );
+    ASSERT_THROWS_EXCEPTION( System::InvalidOperationException, fixture.xml_doc->CreateWhitespace("T") );
+    ASSERT_THROWS_EXCEPTION( System::InvalidOperationException, fixture.xml_doc->CreateWhitespace(" \t\r\nX") );
+}
+
 void Run()
 {
     DefaultConstructed();
     ConstructWithReferenceToExternalNameTableCopiesTheExternalTable();
     ConstructWithSharedPointerToExternalNameTableRefersToTheExternalNameTable();
+    CreateWhitespaceWithEmptyString();
+    CreateWhitespaceWithValidString();
+    CreateWhitespaceWithInvalidString();
 }
 
 }

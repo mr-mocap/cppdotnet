@@ -9,6 +9,8 @@
 #include <cppdotnet/System/Xml/XmlProcessingInstruction.hpp>
 #include <cppdotnet/System/Xml/XmlText.hpp>
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
+#include <cppdotnet/System/Xml/XmlWhitespace.hpp>
+#include "UnitTesting.hpp"
 #include "XmlNodeTestFixture.hpp"
 
 namespace TestXmlNodeWriteTo
@@ -140,15 +142,7 @@ void CannotAddValueToXmlElement()
     assert( element->Name() == "book" );
     assert( !element->Value().HasValue() );
 
-    try
-    {
-        element->Value( "Pride And Prejudice" );
-        assert( false );
-    }
-    catch (const System::InvalidOperationException &e)
-    {
-        assert( true);
-    }
+    ASSERT_THROWS_EXCEPTION( System::InvalidOperationException, element->Value( "Pride and Prejudice" ) );
 }
 
 void XmlElementWithTextNodeChild()
@@ -220,6 +214,47 @@ void XmlCommentWithDataIsWrittenCorrectly()
     assert( data_written == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!--This should be a comment-->" );
 }
 
+void XmlWhitespaceThatIsEmptyIsWrittenCorrectly()
+{
+    XmlNodeTestFixture fixture;
+
+    std::shared_ptr<System::Xml::XmlWhitespace> whitespace = fixture.xml_doc->CreateWhitespace( std::string_view() );
+
+    assert( whitespace->Name() == "#whitespace" );
+    assert( whitespace->Value().HasValue() );
+    assert( whitespace->Value().Value() == "" );
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+
+    whitespace->WriteTo( *(fixture.xml_writer) );
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Prolog );
+
+    std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
+
+    assert( data_written == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
+}
+
+void XmlWhitespaceThatHasDataIsWrittenCorrectly()
+{
+    XmlNodeTestFixture fixture;
+
+    const char *ws = "      ";
+    std::shared_ptr<System::Xml::XmlWhitespace> whitespace = fixture.xml_doc->CreateWhitespace(ws);
+
+    assert( whitespace->Name() == "#whitespace" );
+    assert( whitespace->Value().HasValue() );
+    assert( whitespace->Value().Value() == ws );
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Start );
+
+    whitespace->WriteTo( *(fixture.xml_writer) );
+
+    assert( fixture.xml_writer->WriteState() == System::Xml::WriteState::Prolog );
+
+    std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
+
+    assert( data_written == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>      " );
+}
+
 void Run()
 {
     EmptyXmlDeclaration();
@@ -232,6 +267,8 @@ void Run()
     XmlElementWithTextNodeChild();
     XmlCommentEmptyIsWrittenCorrectly();
     XmlCommentWithDataIsWrittenCorrectly();
+    XmlWhitespaceThatIsEmptyIsWrittenCorrectly();
+    XmlWhitespaceThatHasDataIsWrittenCorrectly();
 }
 
 }
