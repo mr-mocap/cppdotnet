@@ -7,6 +7,7 @@
 #include <string>
 #include <string_view>
 #include <memory>
+#include <concepts>
 
 namespace System::Xml
 {
@@ -26,6 +27,12 @@ public:
 
     XmlNode &operator =(const XmlNode &other);
     XmlNode &operator =(XmlNode &&other);
+
+    template<std::derived_from<XmlNode> NodeType>
+    std::shared_ptr<NodeType> AppendChild(std::shared_ptr<NodeType> new_child)
+    {
+        return std::static_pointer_cast<NodeType>( AppendChild( std::static_pointer_cast<XmlNode>( new_child ) ) );
+    }
 
     virtual std::shared_ptr<XmlNode> AppendChild(std::shared_ptr<XmlNode> new_child);
     virtual std::shared_ptr<XmlNode> PrependChild(std::shared_ptr<XmlNode> new_child);

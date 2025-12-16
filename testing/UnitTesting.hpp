@@ -26,21 +26,36 @@ bool CheckEqual(std::string_view actual, std::string_view expected)
 }
 
 template <class E>
-bool CheckThrowsException(const auto &function)
+int CheckThrowsException(const auto &function)
+try
+{
+    function();
+    return 0;
+}
+catch(const E &)
+{
+    return 1;
+}
+catch (...)
+{
+    return -1;
+}
+
+bool CheckThrowsAnyException(const auto &function)
 try
 {
     function();
     return false;
 }
-catch(const E &)
+catch (...)
 {
     return true;
 }
-catch (...)
-{
-    return false;
-}
 
-#define ASSERT_THROWS_EXCEPTION(e, code) assert( CheckThrowsException<e>( [&]{ code; } ) )
+#define ASSERT_THROWS_EXCEPTION(e, code) assert( CheckThrowsException<e>( [&]{ code; } ) == 1 )
+
+#define ASSERT_THROWS_ANY_EXCEPTION(code) assert( CheckThrowsAnyException( [&]{ code; } ) )
+
+#define ASSERT_DOES_NOT_THROW_EXCEPTION(code) assert( !CheckThrowsAnyException( [&]{ code; } ) )
 
 #define TEST(name) void name()
