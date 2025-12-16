@@ -114,7 +114,7 @@ void XmlElement::SetAttribute(std::string_view name, std::string_view value)
 
     if ( attr_node )
     {
-        std::static_pointer_cast<XmlNode>(attr_node)->Value( value );
+        attr_node->Value( value );
         return;
     }
 
@@ -122,7 +122,7 @@ void XmlElement::SetAttribute(std::string_view name, std::string_view value)
         ThrowWithTarget( System::InvalidOperationException( "Cannot create new XmlAttribute without a valid XmlDocument" ) );
 
     attr_node = OwnerDocument()->CreateAttribute(name);
-    std::static_pointer_cast<XmlNode>(attr_node)->Value( value );
+    attr_node->Value( value );
     _attributes.SetNamedItem( attr_node );
 }
 
