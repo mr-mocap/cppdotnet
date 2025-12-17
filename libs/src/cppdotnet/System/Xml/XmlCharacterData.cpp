@@ -7,24 +7,27 @@ namespace System::Xml
 
 XmlCharacterData::XmlCharacterData(std::shared_ptr<XmlDocument> doc, std::string_view name)
     :
-    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
-                   name,
-                   name,
-                   std::string_view(),
-                   std::string_view(),
-                   doc )
+    XmlCharacterData( std::make_shared<Private::DefaultNodeListImplementation>(),
+                      NodeConstructionParameters{ .local_name     = name,
+                                                  .name           = name,
+                                                  .owner_document = doc } )
 {
 }
 
 XmlCharacterData::XmlCharacterData(std::string_view data, std::shared_ptr<XmlDocument> doc, std::string_view name)
     :
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
-                   name,
-                   name,
-                   std::string_view(),
-                   std::string_view(),
-                   doc ),
+                   NodeConstructionParameters{ .local_name     = name,
+                                               .name           = name,
+                                               .owner_document = doc } ),
     _value( std::string(data) )
+{
+}
+
+XmlCharacterData::XmlCharacterData(std::shared_ptr<XmlNodeList>   specific_child_object,
+                                   NodeConstructionParameters   &&parameters)
+    :
+    XmlLinkedNode( specific_child_object, std::move( parameters ) )
 {
 }
 

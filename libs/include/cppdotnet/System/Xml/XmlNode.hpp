@@ -20,7 +20,7 @@ class XmlWriter;
 class XmlNode : public std::enable_shared_from_this<XmlNode>
 {
 public:
-    XmlNode();
+    XmlNode() = default;
     XmlNode(const XmlNode &other);
     XmlNode(XmlNode &&other);
     virtual ~XmlNode() = default;
@@ -28,9 +28,11 @@ public:
     XmlNode &operator =(const XmlNode &other);
     XmlNode &operator =(XmlNode &&other);
 
+    // Allow treating std::shared_ptr like a normal point and allow auto-cast to base class type
     template<std::derived_from<XmlNode> NodeType>
     std::shared_ptr<NodeType> AppendChild(std::shared_ptr<NodeType> new_child)
     {
+        // Call the virtual method with the base class type (XmlNode)
         return std::static_pointer_cast<NodeType>( AppendChild( std::static_pointer_cast<XmlNode>( new_child ) ) );
     }
 
@@ -74,6 +76,8 @@ public:
         return type;
     }
 
+    virtual std::string_view OuterXml() const;
+
     virtual std::shared_ptr<XmlDocument> OwnerDocument() const;
 
     virtual std::string_view Value() const;
@@ -108,8 +112,19 @@ protected:
     std::string                  _local_name;
     std::string                  _name;
     std::string                  _namespace_uri;
+    std::string                  _outer_xml;
     std::string                  _prefix;
     std::shared_ptr<XmlDocument> _owner_document;
+
+    struct NodeConstructionParameters
+    {
+        std::string_view local_name;
+        std::string_view name;
+        std::string_view namespace_uri;
+        std::string      outer_xml;
+        std::string_view prefix;
+        std::shared_ptr<XmlDocument> owner_document;
+    };
 
     XmlNode(std::shared_ptr<XmlNodeList> specific_children_object);
     XmlNode(std::shared_ptr<XmlNodeList> specific_children_object, std::string_view local_name, std::string_view name);
@@ -119,6 +134,7 @@ protected:
             std::string_view namespace_uri,
             std::string_view prefix,
             std::shared_ptr<XmlDocument> owner_document);
+    XmlNode(std::shared_ptr<XmlNodeList> specific_children_object, NodeConstructionParameters &&parameters);
 
     virtual XmlNodeType _getNodeType() const = 0;
     virtual bool _thisNodeCanHaveChildren() const;

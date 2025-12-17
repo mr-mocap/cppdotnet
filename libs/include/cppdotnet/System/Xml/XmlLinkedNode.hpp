@@ -8,7 +8,7 @@ namespace System::Xml
 class XmlLinkedNode : public XmlNode
 {
 public:
-    XmlLinkedNode();
+    XmlLinkedNode() = default;
     XmlLinkedNode(const XmlLinkedNode &other);
     XmlLinkedNode(XmlLinkedNode &&other);
    ~XmlLinkedNode() override = default;
@@ -29,6 +29,8 @@ protected:
                   std::string_view             namespace_uri,
                   std::string_view             prefix,
                   std::shared_ptr<XmlDocument> owner_document);
+    XmlLinkedNode(std::shared_ptr<XmlNodeList>   specific_children_object,
+                  NodeConstructionParameters   &&parameters);
 };
 
 }

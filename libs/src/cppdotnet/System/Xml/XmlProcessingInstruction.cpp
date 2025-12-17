@@ -3,6 +3,18 @@
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 #include <cppdotnet/System/Macros/Contracts.hpp>
 #include <cppdotnet/System/Macros/Utils.hpp>
+#include <format>
+
+
+namespace
+{
+
+std::string GenerateOuterXml(std::string_view target, std::string_view data)
+{
+    return std::format( "<?{} {}?>", target, data );
+}
+
+}
 
 namespace System::Xml
 {
@@ -11,18 +23,21 @@ XmlProcessingInstruction::XmlProcessingInstruction()
     :
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() )
 {
+    _outer_xml = GenerateOuterXml( Target(), Data() );
+
     INVARIANT( ChildNodes().Count() == 0 );
 }
 
 XmlProcessingInstruction::XmlProcessingInstruction(std::string_view target, std::shared_ptr<XmlDocument> document)
     :
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
-                   target,
-                   target,
-                   std::string_view{ },
-                   std::string_view{ },
-                   document )
+                   NodeConstructionParameters{ .local_name     = target,
+                                               .name           = target,
+                                               .owner_document = document }
+                 )
 {
+    _outer_xml = GenerateOuterXml( Target(), Data() );
+
     INVARIANT( ChildNodes().Count() == 0 );
 }
 
@@ -31,13 +46,14 @@ XmlProcessingInstruction::XmlProcessingInstruction(std::string_view target,
                                                    std::shared_ptr<XmlDocument> document)
     :
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
-                   target,
-                   target,
-                   std::string_view{ },
-                   std::string_view{ },
-                   document ),
+                   NodeConstructionParameters{ .local_name     = target,
+                                               .name           = target,
+                                               .owner_document = document }
+                 ),
     _data( data )
 {
+    _outer_xml = GenerateOuterXml( Target(), Data() );
+
     INVARIANT( ChildNodes().Count() == 0 );
 }
 

@@ -8,7 +8,7 @@ namespace System::Xml
 class XmlText : public XmlCharacterData
 {
 public:
-    XmlText() = default;
+    XmlText();
     XmlText(std::shared_ptr<XmlDocument> doc);
     XmlText(std::string_view data, std::shared_ptr<XmlDocument> doc);
     XmlText(const XmlText &other);

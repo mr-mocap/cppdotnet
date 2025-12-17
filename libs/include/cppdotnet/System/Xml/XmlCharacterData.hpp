@@ -8,7 +8,7 @@ namespace System::Xml
 class XmlCharacterData : public XmlLinkedNode
 {
 public:
-    XmlCharacterData();
+    XmlCharacterData() = default;
     XmlCharacterData(std::shared_ptr<XmlDocument> doc, std::string_view name);
     XmlCharacterData(std::string_view data, std::shared_ptr<XmlDocument> doc, std::string_view name);
     XmlCharacterData(const XmlCharacterData &other);
@@ -43,6 +43,9 @@ public:
 
 protected:
     std::string _value;
+
+    XmlCharacterData(std::shared_ptr<XmlNodeList>   specific_children_object,
+                     NodeConstructionParameters   &&parameters);
 };
 
 }

@@ -2,7 +2,18 @@
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
+#include <cppdotnet/System/Xml/Private/Utils.hpp>
 #include <cppdotnet/System/Macros/Utils.hpp>
+
+namespace
+{
+
+std::string GenerateOuterXml(std::string_view local_name)
+{
+    return std::format( "{}=\"\"", local_name );
+}
+
+}
 
 namespace System::Xml
 {
@@ -13,11 +24,13 @@ XmlAttribute::XmlAttribute(std::string_view prefix,
                            std::shared_ptr<XmlDocument> document)
     :
     XmlNode( std::make_shared<Private::DefaultNodeListImplementation>(),
-             local_name,
-             local_name,
-             namespace_uri,
-             prefix,
-             document )
+             NodeConstructionParameters{ .local_name    = local_name,
+                                         .name          = local_name,
+                                         .namespace_uri = namespace_uri,
+                                         .outer_xml     = GenerateOuterXml( local_name ),
+                                         .prefix        = prefix,
+                                         .owner_document = document }
+           )
 {
 }
 

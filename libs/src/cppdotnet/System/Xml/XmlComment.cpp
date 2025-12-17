@@ -2,20 +2,34 @@
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <format>
 
+
+namespace
+{
+
+std::string_view CommentNodeName = "#comment";
+
+std::string GenerateOuterXml(std::string_view comment)
+{
+    return std::format( "<!--{}-->", comment );
+}
+
+}
+
 namespace System::Xml
 {
 
-
 XmlComment::XmlComment(std::shared_ptr<XmlDocument> doc)
     :
-    XmlCharacterData( doc, "#comment" )
+    XmlCharacterData( doc, CommentNodeName )
 {
+    _outer_xml = GenerateOuterXml( _value );
 }
 
 XmlComment::XmlComment(std::string_view comment, std::shared_ptr<XmlDocument> doc)
     :
-    XmlCharacterData( comment, doc, "#comment" )
+    XmlCharacterData( comment, doc, CommentNodeName )
 {
+    _outer_xml = GenerateOuterXml( _value );
 }
 
 XmlComment::XmlComment(const XmlComment &other)

@@ -6,32 +6,63 @@
 #include <cppdotnet/System/Xml/Private/Utils.hpp>
 #include <format>
 
+namespace
+{
+
+std::string_view DeclarationNodeName = "xml";
+
+std::string GenerateOuterXml(std::string_view local_name, std::string value)
+{
+    return std::format( "<?{} {}?>", local_name, value );
+}
+
+std::string GenerateValue(std::string_view version)
+{
+    return std::format( "version={}", System::Xml::Private::Utils::Quote(version) );
+}
+
+std::string GenerateValue(std::string_view version, std::string_view encoding)
+{
+    return std::format( "version={} encoding={}",
+                        System::Xml::Private::Utils::Quote(version),
+                        System::Xml::Private::Utils::Quote(encoding) );
+}
+
+std::string GenerateValue(std::string_view version, std::string_view encoding, std::string_view standalone)
+{
+    return std::format( "version={} encoding={} standalone={}",
+                        System::Xml::Private::Utils::Quote(version),
+                        System::Xml::Private::Utils::Quote(encoding),
+                        System::Xml::Private::Utils::Quote(standalone)
+                      );
+}
+
+}
+
 namespace System::Xml
 {
 
 XmlDeclaration::XmlDeclaration()
     :
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
-                   "xml",
-                   "xml",
-                   std::string_view{ },
-                   std::string_view{ },
-                   nullptr ),
-    _value( std::format("version={}", Private::Utils::Quote(_version)) )
+                   NodeConstructionParameters{ .local_name = DeclarationNodeName, .name = DeclarationNodeName }
+                 ),
+    _value( GenerateValue( _version ) )
 {
+    _outer_xml = GenerateOuterXml( DeclarationNodeName, _value );
 }
 
 XmlDeclaration::XmlDeclaration(std::string_view version, std::shared_ptr<XmlDocument> document)
     :
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
-                   "xml",
-                   "xml",
-                   std::string_view{ },
-                   std::string_view{ },
-                   document ),
+                   NodeConstructionParameters{ .local_name = DeclarationNodeName,
+                                               .name       = DeclarationNodeName,
+                                               .owner_document = document }
+                 ),
     _version( version ),
-    _value( std::format("version={}", Private::Utils::Quote(_version)) )
+    _value( GenerateValue( version ) )
 {
+    _outer_xml = GenerateOuterXml( DeclarationNodeName, _value );
 }
 
 XmlDeclaration::XmlDeclaration(std::string_view version,
@@ -39,15 +70,15 @@ XmlDeclaration::XmlDeclaration(std::string_view version,
                                std::shared_ptr<XmlDocument> document)
     :
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
-                   "xml",
-                   "xml",
-                   std::string_view{ },
-                   std::string_view{ },
-                   document ),
+                   NodeConstructionParameters{ .local_name = DeclarationNodeName,
+                                               .name       = DeclarationNodeName,
+                                               .owner_document = document }
+                 ),
     _version( version ),
     _encoding( encoding ),
-    _value( std::format("version={} encoding={}", Private::Utils::Quote(_version), Private::Utils::Quote(_encoding)) )
+    _value( GenerateValue( version, encoding ) )
 {
+    _outer_xml = GenerateOuterXml( DeclarationNodeName, _value );
 }
 
 XmlDeclaration::XmlDeclaration(std::string_view version,
@@ -56,19 +87,17 @@ XmlDeclaration::XmlDeclaration(std::string_view version,
                                std::shared_ptr<XmlDocument> document)
     :
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
-                   "xml",
-                   "xml",
-                   std::string_view{ },
-                   std::string_view{ },
-                   document ),
+                   NodeConstructionParameters{ .local_name = DeclarationNodeName,
+                                               .name       = DeclarationNodeName,
+                                               .owner_document = document }
+                 ),
     _version( version ),
     _encoding( encoding ),
     _standalone( standalone ),
-    _value{ std::format("version={} encoding={} standalone={}",
-            Private::Utils::Quote(_version),
-            Private::Utils::Quote(_encoding),
-            Private::Utils::Quote(_standalone)) }
+    _value( GenerateValue( version, encoding, standalone ) )
 {
+    _outer_xml = GenerateOuterXml( DeclarationNodeName, _value );
+
     POSTCONDITION( _standalone == "yes" || _standalone == "no" );
 }
 

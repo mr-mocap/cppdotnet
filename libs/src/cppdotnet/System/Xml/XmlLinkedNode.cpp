@@ -29,6 +29,13 @@ XmlLinkedNode::XmlLinkedNode(std::shared_ptr<XmlNodeList> specific_children_obje
 {
 }
 
+XmlLinkedNode::XmlLinkedNode(std::shared_ptr<XmlNodeList>   specific_children_object,
+                             NodeConstructionParameters   &&parameters)
+    :
+    XmlNode(specific_children_object, std::move( parameters ) )
+{
+}
+
 XmlLinkedNode::XmlLinkedNode(const XmlLinkedNode &other)
     :
     XmlNode( other._children->MemberwiseClone() )

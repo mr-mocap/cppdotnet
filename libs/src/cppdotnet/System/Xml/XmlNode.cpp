@@ -38,6 +38,19 @@ XmlNode::XmlNode(std::shared_ptr<XmlNodeList> specific_children_object,
 {
 }
 
+XmlNode::XmlNode(std::shared_ptr<XmlNodeList>   specific_children_object,
+                 NodeConstructionParameters   &&parameters)
+    :
+    _children( specific_children_object ),
+    _local_name( std::move( parameters.local_name ) ),
+    _name( std::move( parameters.name ) ),
+    _namespace_uri( std::move( parameters.namespace_uri ) ),
+    _outer_xml( std::move( parameters.outer_xml ) ),
+    _prefix( std::move( parameters.prefix ) ),
+    _owner_document( std::move( parameters.owner_document ) )
+{
+}
+
 XmlNode::XmlNode(const XmlNode &other)
     :
     std::enable_shared_from_this<XmlNode>( other ),
@@ -46,6 +59,7 @@ XmlNode::XmlNode(const XmlNode &other)
     _local_name( other._local_name ),
     _name( other._name ),
     _namespace_uri( other._namespace_uri ),
+    _outer_xml( other._outer_xml ),
     _prefix( other._prefix ),
     _owner_document( other._owner_document )
 {
@@ -59,6 +73,7 @@ XmlNode::XmlNode(XmlNode &&other)
     _local_name( std::move( other._local_name ) ),
     _name( std::move( other._name ) ),
     _namespace_uri( std::move( other._namespace_uri ) ),
+    _outer_xml( std::move( other._outer_xml ) ),
     _prefix( std::move( other._prefix ) ),
     _owner_document( std::move( other._owner_document ) )
 {
@@ -73,6 +88,7 @@ XmlNode &XmlNode::operator =(const XmlNode &other)
         _local_name = other._local_name;
         _name = other._name;
         _namespace_uri = other._namespace_uri;
+        _outer_xml = other._outer_xml;
         _prefix = other._prefix;
         _owner_document = other._owner_document;
     }
@@ -88,6 +104,7 @@ XmlNode &XmlNode::operator =(XmlNode &&other)
         _local_name = std::move( other._local_name );
         _name = std::move( other._name );
         _namespace_uri = std::move( other._namespace_uri );
+        _outer_xml = std::move( other._outer_xml );
         _prefix = std::move( other._prefix );
         _owner_document = std::move( other._owner_document );
     }
@@ -276,6 +293,11 @@ std::string_view XmlNode::Name() const
 std::string_view XmlNode::NamespaceURI() const
 {
     return _namespace_uri;
+}
+
+std::string_view XmlNode::OuterXml() const
+{
+    return _outer_xml;
 }
 
 bool XmlNode::_thisNodeCanHaveChildren() const
