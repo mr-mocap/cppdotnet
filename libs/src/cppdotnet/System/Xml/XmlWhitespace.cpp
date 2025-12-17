@@ -8,6 +8,8 @@
 namespace
 {
 
+std::string_view WhitespaceNodeName = "#whitespace";
+
 bool IsWhitespace(char c)
 {
     return std::isspace( static_cast<unsigned char>(c) );
@@ -25,18 +27,20 @@ namespace System::Xml
 
 XmlWhitespace::XmlWhitespace(std::shared_ptr<XmlDocument> doc)
     :
-    XmlCharacterData( doc, "#whitespace" )
+    XmlCharacterData( doc, WhitespaceNodeName )
 {
 }
 
 XmlWhitespace::XmlWhitespace(std::string_view comment, std::shared_ptr<XmlDocument> doc)
     :
-    XmlCharacterData( comment, doc, "#whitespace" )
+    XmlCharacterData( comment, doc, WhitespaceNodeName )
 {
     bool all_valid = IsAllWhitespace( Value() );
 
     if ( !all_valid )
         ThrowWithTarget( InvalidOperationException( "Cannot construct XmlWhitespace with non-whitespace characters" ) );
+
+    _outer_xml = _value;
 
     POSTCONDITION( IsAllWhitespace( Value() ) );
 }
