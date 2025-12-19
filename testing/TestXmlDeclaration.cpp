@@ -19,6 +19,7 @@ void EmptyXmlDeclaration()
     assert( declaration.NodeType() == System::Xml::XmlNodeType::XmlDeclaration );
 
     assert( declaration.Value() == "version=\"1.0\"" );
+    assert( declaration.OuterXml() == "<?xml version=\"1.0\"?>" );
 }
 
 void XmlDeclarationWithVersion()
@@ -34,6 +35,7 @@ void XmlDeclarationWithVersion()
     assert( declaration.NodeType() == System::Xml::XmlNodeType::XmlDeclaration );
 
     assert( declaration.Value() == "version=\"1.1\"" );
+    assert( declaration.OuterXml() == "<?xml version=\"1.1\"?>" );
 }
 
 void XmlDeclarationWithVersionAndOwnerDocument()
@@ -50,6 +52,7 @@ void XmlDeclarationWithVersionAndOwnerDocument()
     assert( declaration.NodeType() == System::Xml::XmlNodeType::XmlDeclaration );
 
     assert( declaration.Value() == "version=\"1.1\"" );
+    assert( declaration.OuterXml() == "<?xml version=\"1.1\"?>" );
 }
 
 void XmlDeclarationWithVersionAndEncoding()
@@ -65,6 +68,7 @@ void XmlDeclarationWithVersionAndEncoding()
     assert( declaration.NodeType() == System::Xml::XmlNodeType::XmlDeclaration );
 
     assert( declaration.Value() == "version=\"1.1\" encoding=\"UTF-8\"" );
+    assert( declaration.OuterXml() == "<?xml version=\"1.1\" encoding=\"UTF-8\"?>" );
 }
 
 void XmlDeclarationWithVersionAndEncodingAndOwnerDocument()
@@ -81,6 +85,7 @@ void XmlDeclarationWithVersionAndEncodingAndOwnerDocument()
     assert( declaration.NodeType() == System::Xml::XmlNodeType::XmlDeclaration );
 
     assert( declaration.Value() == "version=\"1.1\" encoding=\"UTF-8\"" );
+    assert( declaration.OuterXml() == "<?xml version=\"1.1\" encoding=\"UTF-8\"?>" );
 }
 
 void Run()
