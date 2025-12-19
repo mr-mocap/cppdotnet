@@ -6,10 +6,12 @@ namespace System::Xml
 {
 
 class XmlDocument;
+class XmlText;
 
 class XmlAttribute : public XmlNode
 {
 public:
+    XmlAttribute() = delete;
     XmlAttribute(std::string_view prefix, std::string_view local_name, std::string_view namespace_uri, std::shared_ptr<XmlDocument> document);
     XmlAttribute(const XmlAttribute &other);
     XmlAttribute(XmlAttribute &&other);
@@ -17,6 +19,12 @@ public:
 
     XmlAttribute &operator =(const XmlAttribute &other);
     XmlAttribute &operator =(XmlAttribute &&other);
+
+    using XmlNode::AppendChild;
+    std::shared_ptr<XmlText> AppendChild(std::shared_ptr<XmlText> new_child);
+
+    using XmlNode::PrependChild;
+    std::shared_ptr<XmlText> PrependChild(std::shared_ptr<XmlText> new_child);
 
     std::shared_ptr<XmlNode> CloneNode(bool deep) const override;
 
@@ -34,6 +42,7 @@ protected:
     std::string _value;
 
     XmlNodeType _getNodeType() const override;
+    bool        _canAddAsChild(std::shared_ptr<XmlNode> new_child) const override;
     bool        _thisNodeCanHaveChildren() const override;
 };
 

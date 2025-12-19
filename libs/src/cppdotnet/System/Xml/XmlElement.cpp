@@ -3,6 +3,7 @@
 #include <cppdotnet/System/Xml/XmlAttribute.hpp>
 #include <cppdotnet/System/Xml/XmlAttributeCollection.hpp>
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
+#include <cppdotnet/System/Xml/XmlText.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 #include <cppdotnet/System/Exception.hpp>
 
@@ -114,15 +115,21 @@ void XmlElement::SetAttribute(std::string_view name, std::string_view value)
 
     if ( attr_node )
     {
-        attr_node->Value( value );
+        ASSERT( attr_node->ChildNodes().Count() == 1 );
+        ASSERT( attr_node->ChildNodes().Item( 0 )->NodeType() == XmlNodeType::Text );
+
+        std::shared_ptr<XmlText> text = std::static_pointer_cast<XmlText>( attr_node->ChildNodes().Item( 0 ) );
+
+        text->Data( value );
         return;
     }
 
     if ( !OwnerDocument() )
         ThrowWithTarget( System::InvalidOperationException( "Cannot create new XmlAttribute without a valid XmlDocument" ) );
 
-    attr_node = OwnerDocument()->CreateAttribute(name);
-    attr_node->Value( value );
+    attr_node = OwnerDocument()->CreateAttribute( name );
+
+    attr_node->AppendChild( OwnerDocument()->CreateTextNode( value ) );
     _attributes.SetNamedItem( attr_node );
 }
 

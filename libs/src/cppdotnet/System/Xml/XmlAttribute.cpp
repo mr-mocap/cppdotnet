@@ -1,5 +1,6 @@
 #include <cppdotnet/System/Xml/XmlAttribute.hpp>
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
+#include <cppdotnet/System/Xml/XmlText.hpp>
 #include <cppdotnet/System/Xml/XmlWriter.hpp>
 #include <cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp>
 #include <cppdotnet/System/Xml/Private/Utils.hpp>
@@ -11,6 +12,11 @@ namespace
 std::string GenerateOuterXml(std::string_view local_name)
 {
     return std::format( "{}=\"\"", local_name );
+}
+
+std::string GenerateOuterXml(std::string_view local_name, std::string_view value)
+{
+    return std::format( "{}={}", local_name, System::Xml::Private::Utils::Quote( value ) );
 }
 
 }
@@ -65,6 +71,28 @@ XmlAttribute &XmlAttribute::operator =(XmlAttribute &&other)
     return *this;
 }
 
+std::shared_ptr<XmlText> XmlAttribute::AppendChild(std::shared_ptr<XmlText> new_child)
+{
+    if ( ChildNodes().Count() > 0 )
+        ThrowWithTarget( InvalidOperationException("Attribute node can have only a single child") );
+
+    XmlNode::AppendChild( std::static_pointer_cast<XmlNode>(new_child) );
+    Value( new_child->Data() );
+    _outer_xml = GenerateOuterXml( Name(), new_child->Value() );
+    return new_child;
+}
+
+std::shared_ptr<XmlText> XmlAttribute::PrependChild(std::shared_ptr<XmlText> new_child)
+{
+    if ( ChildNodes().Count() > 0 )
+        ThrowWithTarget( InvalidOperationException("Attribute node can have only a single child") );
+
+    XmlNode::PrependChild( std::static_pointer_cast<XmlNode>(new_child) );
+    Value( new_child->Data() );
+    _outer_xml = GenerateOuterXml( Name(), new_child->Value() );
+    return new_child;
+}
+
 std::shared_ptr<XmlNode> XmlAttribute::CloneNode(bool deep) const
 {
     // TODO: Implement properly!
@@ -114,6 +142,13 @@ void XmlAttribute::WriteTo(XmlWriter &xml_writer) const
 bool XmlAttribute::_thisNodeCanHaveChildren() const
 {
     return true;
+}
+
+bool XmlAttribute::_canAddAsChild(std::shared_ptr<XmlNode> new_child) const
+{
+    XmlNodeType new_child_type = new_child->NodeType();
+
+    return new_child_type == XmlNodeType::Text;
 }
 
 XmlNodeType XmlAttribute::_getNodeType() const

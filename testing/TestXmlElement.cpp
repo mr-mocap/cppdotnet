@@ -128,6 +128,25 @@ void AddingAttributeToXmlElementAffectsAttributesCount()
     assert( element->Attributes().Count() == 1 );
 }
 
+void AddingAttributeToXmlElementAddsXmlAttributeNodeWithXmlTextChildToAttributes()
+{
+    XmlNodeTestFixture fixture;
+    std::shared_ptr<System::Xml::XmlElement> element = fixture.xml_doc->CreateElement("book");
+
+    assert( element->Attributes().Count() == 0 );
+
+    element->SetAttribute( "color", "red" );
+
+    assert( element->Attributes().Count() == 1 );
+    assert( element->Attributes().Item( 0 )->NodeType() == System::Xml::XmlNodeType::Attribute );
+
+    std::shared_ptr<System::Xml::XmlNode> attribute = element->Attributes().Item( 0 );
+
+    assert( attribute->HasChildNodes() );
+    assert( attribute->ChildNodes().Item( 0 )->NodeType() == System::Xml::XmlNodeType::Text );
+    assert( attribute->ChildNodes().Item( 0 )->Value() == "red" );
+}
+
 void CanAddAttributeWithNoValueToXmlElement()
 {
     XmlNodeTestFixture fixture;
@@ -338,6 +357,7 @@ void Run()
     GetAttributeReturnsEmptyWhenThereIsNoMatchingAttribute();
     GetAttributeReturnsAttributeValueWhenSetAttributeHasValue();
     OnlyCertainNodesCanBeChildrenOfXmlElement();
+    AddingAttributeToXmlElementAddsXmlAttributeNodeWithXmlTextChildToAttributes();
 }
 
 }
