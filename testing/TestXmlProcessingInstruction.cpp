@@ -7,16 +7,6 @@
 namespace TestXmlProcessingInstruction
 {
 
-void DefaultConstructedXmlProcessingInstruction()
-{
-    System::Xml::XmlProcessingInstruction node;
-
-    assert( node.Name() == "" );
-    assert( node.Value() == "" );
-    assert( node.OuterXml() == "<? ?>");
-    assert( node.OwnerDocument() == nullptr );
-}
-
 void XmlProcessingInstructionWithOnlyTarget()
 {
     System::Xml::XmlProcessingInstruction node("target", nullptr);
@@ -39,8 +29,8 @@ void XmlProcessingInstructionWithTargetAndData()
 
 void Run()
 {
-    DefaultConstructedXmlProcessingInstruction();
     XmlProcessingInstructionWithOnlyTarget();
+    XmlProcessingInstructionWithTargetAndData();
 }
 
 }

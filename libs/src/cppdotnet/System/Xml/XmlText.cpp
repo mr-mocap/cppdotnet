@@ -89,16 +89,25 @@ std::shared_ptr<XmlNode> XmlText::CloneNode(bool deep) const
         return std::make_shared<XmlText>( *this );
 }
 
+void XmlText::Value(std::string_view new_value)
+{
+    XmlCharacterData::Value( new_value );
+    _outer_xml = new_value;
+}
+
+void XmlText::Data(std::string_view new_value)
+{
+    XmlCharacterData::Data( new_value );
+    _outer_xml = new_value;
+}
+
 void XmlText::WriteTo(XmlWriter &xml_writer) const
 {
     INVARIANT( !HasChildNodes());
     INVARIANT( _outer_xml == Data() );
     INVARIANT( _outer_xml == _value );
 
-    Nullable<std::string> value = Value();
-
-    if ( value.HasValue() )
-        xml_writer.WriteRaw( value.Value() );
+    xml_writer.WriteRaw( OuterXml() );
 }
 
 XmlNodeType XmlText::_getNodeType() const

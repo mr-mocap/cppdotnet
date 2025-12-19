@@ -11,7 +11,7 @@ namespace
 
 std::string_view DeclarationNodeName = "xml";
 
-std::string GenerateOuterXml(std::string_view local_name, std::string value)
+std::string GenerateOuterXml(std::string_view local_name, std::string_view value)
 {
     return std::format( "<?{} {}?>", local_name, value );
 }
@@ -182,6 +182,7 @@ std::string_view XmlDeclaration::Value() const
 void XmlDeclaration::Value(std::string_view new_value)
 {
     _value = new_value;
+    _outer_xml = GenerateOuterXml( Name(), new_value );
 }
 
 void XmlDeclaration::WriteTo(XmlWriter &xml_writer) const
@@ -191,14 +192,6 @@ void XmlDeclaration::WriteTo(XmlWriter &xml_writer) const
         ThrowWithTarget( ArgumentException("XML Declaration has already been written") );
 
     // We are at the start state, so we can write the XML Declaration
-    std::string text = std::format("<?{} version={}", LocalName(), Private::Utils::Quote( Version() ));
-
-    if ( !Encoding().empty() )
-        text += std::format(" encoding={}", Private::Utils::Quote( Encoding() ));
-    if ( !Standalone().empty() )
-        text += std::format(" standalone={}", Private::Utils::Quote( Standalone() ));
-
-    text += "?>";
     bool omit_xml_declaration = xml_writer.Settings().OmitXmlDeclaration();
 
     xml_writer.Settings().OmitXmlDeclaration( true );
@@ -208,6 +201,8 @@ void XmlDeclaration::WriteTo(XmlWriter &xml_writer) const
 
     xml_writer.WriteStartDocument(); // Should write nothing because we set OmitXmlDeclaration to true
     xml_writer.Settings().OmitXmlDeclaration( omit_xml_declaration ); // Restore previous setting
+
+    std::string_view text = OuterXml();
 
     xml_writer.WriteRaw( text ); // Manually write the XML declaration
 

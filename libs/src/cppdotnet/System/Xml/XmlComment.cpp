@@ -65,6 +65,18 @@ std::shared_ptr<XmlNode> XmlComment::CloneNode(bool deep) const
         return std::make_shared<XmlComment>( *this );
 }
 
+void XmlComment::Value(std::string_view new_value)
+{
+    XmlCharacterData::Value( new_value );
+    _outer_xml = GenerateOuterXml( new_value );
+}
+
+void XmlComment::Data(std::string_view new_value)
+{
+    XmlCharacterData::Data( new_value );
+    _outer_xml = GenerateOuterXml( new_value );
+}
+
 void XmlComment::WriteTo(XmlWriter &xml_writer) const
 {
     Nullable<std::string> value = Value();
@@ -72,9 +84,10 @@ void XmlComment::WriteTo(XmlWriter &xml_writer) const
     if ( xml_writer.WriteState() == Xml::WriteState::Start )
         xml_writer.WriteStartDocument();
 
-    Xml::WriteState before_write_state = xml_writer.WriteState();
+    Xml::WriteState  before_write_state = xml_writer.WriteState();
+    std::string_view data_to_write = OuterXml();
 
-    xml_writer.WriteRaw( std::format( "<!--{}-->", value.GetValueOrDefault() ) );
+    xml_writer.WriteRaw( data_to_write );
 
     POSTCONDITION( xml_writer.WriteState() == before_write_state );
 }

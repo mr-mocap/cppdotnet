@@ -8,7 +8,7 @@ namespace System::Xml
 class XmlProcessingInstruction : public XmlLinkedNode
 {
 public:
-    XmlProcessingInstruction();
+    XmlProcessingInstruction() = delete;
     XmlProcessingInstruction(std::string_view target, std::shared_ptr<XmlDocument> document);
     XmlProcessingInstruction(std::string_view target, std::string_view data, std::shared_ptr<XmlDocument> document);
     XmlProcessingInstruction(const XmlProcessingInstruction &other);
@@ -18,6 +18,9 @@ public:
     XmlProcessingInstruction &operator =(XmlProcessingInstruction &&other);
 
     std::shared_ptr<XmlNode> CloneNode(bool deep) const override;
+
+    using XmlLinkedNode::Value;
+    std::string_view Value() const override;
 
     void RemoveAll() override;
 
@@ -35,10 +38,7 @@ public:
         return _data;
     }
 
-    void Data(std::string_view new_data)
-    {
-        _data = new_data;
-    }
+    virtual void Data(std::string_view new_data);
 
     void WriteTo(XmlWriter &xml_writer) const override;
 protected:

@@ -20,6 +20,7 @@ public:
 
     virtual void AppendData(std::string_view data);
 
+    using XmlLinkedNode::Value;
     std::string_view Value() const override;
     void             Value(std::string_view new_value) override;
 

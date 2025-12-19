@@ -78,6 +78,18 @@ std::shared_ptr<XmlNode> XmlWhitespace::CloneNode(bool deep) const
         return std::make_shared<XmlWhitespace>( *this );
 }
 
+void XmlWhitespace::Value(std::string_view new_value)
+{
+    XmlCharacterData::Value( new_value );
+    _outer_xml = new_value;
+}
+
+void XmlWhitespace::Data(std::string_view new_value)
+{
+    XmlCharacterData::Data( new_value );
+    _outer_xml = new_value;
+}
+
 void XmlWhitespace::WriteTo(XmlWriter &xml_writer) const
 {
     Nullable<std::string> value = Value();

@@ -73,23 +73,21 @@ XmlAttribute &XmlAttribute::operator =(XmlAttribute &&other)
 
 std::shared_ptr<XmlText> XmlAttribute::AppendChild(std::shared_ptr<XmlText> new_child)
 {
-    if ( ChildNodes().Count() > 0 )
+    if ( HasChildNodes() )
         ThrowWithTarget( InvalidOperationException("Attribute node can have only a single child") );
 
     XmlNode::AppendChild( std::static_pointer_cast<XmlNode>(new_child) );
     Value( new_child->Data() );
-    _outer_xml = GenerateOuterXml( Name(), new_child->Value() );
     return new_child;
 }
 
 std::shared_ptr<XmlText> XmlAttribute::PrependChild(std::shared_ptr<XmlText> new_child)
 {
-    if ( ChildNodes().Count() > 0 )
+    if ( HasChildNodes() )
         ThrowWithTarget( InvalidOperationException("Attribute node can have only a single child") );
 
     XmlNode::PrependChild( std::static_pointer_cast<XmlNode>(new_child) );
     Value( new_child->Data() );
-    _outer_xml = GenerateOuterXml( Name(), new_child->Value() );
     return new_child;
 }
 
@@ -109,26 +107,55 @@ std::string_view XmlAttribute::Value() const
 
 void XmlAttribute::Value(std::string_view new_value)
 {
-    _value = new_value;
+    if ( !OwnerDocument() )
+        ThrowWithTarget( InvalidOperationException("Attribute needs an OwnerDocument in order to set Value") );
+
+    if ( HasChildNodes() )
+    {
+        ASSERT( ChildNodes().Count() == 1 );
+        ASSERT( ChildNodes().Item( 0 )->NodeType() == XmlNodeType::Text );
+    
+        ChildNodes().Item( 0 )->Value( new_value );
+        _updateValue( new_value );
+    }
+    else
+    {
+        // Add a Text node as a child...
+        std::shared_ptr<XmlText> node = OwnerDocument()->CreateTextNode( new_value );
+
+        AppendChild( node );
+    }
+
+    POSTCONDITION( ChildNodes().Count() == 1 );
+    POSTCONDITION( ChildNodes().Item( 0 )->NodeType() == XmlNodeType::Text );
+    POSTCONDITION( ChildNodes().Item( 0 )->Value() == new_value );
 }
 
 void XmlAttribute::RemoveAll()
 {
     _children = std::make_shared<Private::DefaultNodeListImplementation>();
+    _clearValue();
 }
 
 std::shared_ptr<XmlNode> XmlAttribute::RemoveChild(std::shared_ptr<XmlNode> old_child)
 {
     std::shared_ptr<Private::DefaultNodeListImplementation> children_as_derived_type = std::static_pointer_cast<Private::DefaultNodeListImplementation>( _children );
 
-    return children_as_derived_type->RemoveChild( old_child );
+    auto retval = children_as_derived_type->RemoveChild( old_child );
+
+    if ( retval )
+        _clearValue();
+    return retval;
 }
 
 std::shared_ptr<XmlNode> XmlAttribute::ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child)
 {
     std::shared_ptr<Private::DefaultNodeListImplementation> children_as_derived_type = std::static_pointer_cast<Private::DefaultNodeListImplementation>( _children );
 
-    return children_as_derived_type->ReplaceChild( new_child, old_child );
+    auto retval = children_as_derived_type->ReplaceChild( new_child, old_child );
+
+    _updateValue( new_child->Value() );
+    return retval;
 }
 
 void XmlAttribute::WriteTo(XmlWriter &xml_writer) const
@@ -154,6 +181,18 @@ bool XmlAttribute::_canAddAsChild(std::shared_ptr<XmlNode> new_child) const
 XmlNodeType XmlAttribute::_getNodeType() const
 {
     return XmlNodeType::Attribute;
+}
+
+void XmlAttribute::_clearValue()
+{
+    _value.clear();
+    _outer_xml = GenerateOuterXml( Name(), _value );
+}
+
+void XmlAttribute::_updateValue(std::string_view new_value)
+{
+    _value = new_value;
+    _outer_xml = GenerateOuterXml( Name(), new_value );
 }
 
 }

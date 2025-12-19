@@ -44,6 +44,8 @@ protected:
     XmlNodeType _getNodeType() const override;
     bool        _canAddAsChild(std::shared_ptr<XmlNode> new_child) const override;
     bool        _thisNodeCanHaveChildren() const override;
+    void        _clearValue();
+    void        _updateValue(std::string_view new_value);
 };
 
 }

@@ -19,15 +19,6 @@ std::string GenerateOuterXml(std::string_view target, std::string_view data)
 namespace System::Xml
 {
 
-XmlProcessingInstruction::XmlProcessingInstruction()
-    :
-    XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>() )
-{
-    _outer_xml = GenerateOuterXml( Target(), Data() );
-
-    INVARIANT( ChildNodes().Count() == 0 );
-}
-
 XmlProcessingInstruction::XmlProcessingInstruction(std::string_view target, std::shared_ptr<XmlDocument> document)
     :
     XmlLinkedNode( std::make_shared<Private::DefaultNodeListImplementation>(),
@@ -106,6 +97,17 @@ std::shared_ptr<XmlNode> XmlProcessingInstruction::CloneNode(bool deep) const
         return std::make_shared<XmlProcessingInstruction>( *this );
 }
 
+void XmlProcessingInstruction::Data(std::string_view new_data)
+{
+    _data = new_data;
+    _outer_xml = GenerateOuterXml( Target(), Data() );
+}
+
+std::string_view XmlProcessingInstruction::Value() const
+{
+    return _data;
+}
+
 void XmlProcessingInstruction::RemoveAll()
 {
     INVARIANT( ChildNodes().Count() == 0 );
@@ -148,18 +150,7 @@ void XmlProcessingInstruction::WriteTo(XmlWriter &xml_writer) const
 
     ASSERT( xml_writer.WriteState() != Xml::WriteState::Start );
 
-    if ( Data().empty() )
-    {
-        std::string data = std::format("<?{}?>", Target() );
-
-        xml_writer.WriteRaw( data );
-    }
-    else
-    {
-        std::string data = std::format("<?{} {}?>", Target(), Data());
-
-        xml_writer.WriteRaw( data );
-    }
+    xml_writer.WriteRaw( OuterXml() );
 
     POSTCONDITION( xml_writer.WriteState() == current_state );
 }

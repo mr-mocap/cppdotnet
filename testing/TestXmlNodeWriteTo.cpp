@@ -59,7 +59,7 @@ void XmlProcessingInstructionWithTarget()
 
     std::string data_written = fixture.string_writer->GetStringBuilder().ToString();
 
-    assert( data_written == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet?>" );
+    assert( data_written == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet ?>" );
 }
 
 void XmlProcessingInstructionWithTargetAndData()

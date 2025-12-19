@@ -233,6 +233,22 @@ void CanOnlyPrependASingleTextNodeChild()
     ASSERT_THROWS_EXCEPTION( System::InvalidOperationException, attribute->PrependChild( text2 ) );
 }
 
+void SettingValueAddsTextNodeChild()
+{
+    XmlNodeTestFixture fixture;
+    std::shared_ptr<System::Xml::XmlAttribute> attribute = fixture.xml_doc->CreateAttribute("color");
+
+    assert( !attribute->HasChildNodes() );
+    assert( attribute->ChildNodes().Count() == 0 );
+    assert( attribute->Value() == "" );
+
+    attribute->Value("red");
+
+    assert( attribute->HasChildNodes() );
+    assert( attribute->ChildNodes().Count() == 1 );
+    assert( attribute->Value() == "red" );
+}
+
 void Run()
 {
     ConstructedWithNameOnly();
@@ -243,6 +259,8 @@ void Run()
     CanPrependTextNodeChild();
     CanOnlyPrependTextNodeChild();
     CanOnlyPrependASingleTextNodeChild();
+
+    SettingValueAddsTextNodeChild();
 }
 
 }

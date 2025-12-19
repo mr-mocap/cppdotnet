@@ -19,6 +19,12 @@ public:
 
     std::shared_ptr<XmlNode> CloneNode(bool deep) const override;
 
+    using XmlCharacterData::Value;
+    void Value(std::string_view new_value) override;
+
+    using XmlCharacterData::Data;
+    void Data(std::string_view new_data) override;
+
     void WriteTo(XmlWriter &xml_writer) const override;
 protected:
 

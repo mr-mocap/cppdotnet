@@ -109,7 +109,7 @@ void CanCallWriteProcessingInstructionInsteadOfWriteStartDocument()
 
     std::string_view output = string_writer->GetStringBuilder().ToString();
 
-    assert( output == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet?>" );
+    assert( output == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><?xml-stylesheet ?>" );
 }
 
 void CallingWriteProcessingInstructionWithEmptyNameThrowsException()
