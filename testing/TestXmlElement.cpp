@@ -25,6 +25,7 @@ void EmptyXmlElement()
     assert( element.NodeType() == System::Xml::XmlNodeType::Element );
 
     assert( element.Value().empty() );
+    assert( element.OuterXml() == "<book />" );
 
     assert( !element.HasChildNodes() );
     assert( element.ChildNodes().Count() == 0 );
@@ -80,10 +81,13 @@ void CanOnlyCallSetAttributeWhenXmlElementHasDocument()
         assert( element->Name() == "book" );
         assert( element->OwnerDocument() == fixture.xml_doc );
         assert( element->NodeType() == System::Xml::XmlNodeType::Element );
+        assert( element->OuterXml() == "<book />" );
 
         assert( element->Value().empty() );
 
-        element->SetAttribute("attribute", "value");
+        ASSERT_DOES_NOT_THROW_EXCEPTION( element->SetAttribute("attribute", "value") );
+
+        assert( element->OuterXml() == "<book attribute=\"value\" />" );
     }
 }
 
@@ -164,6 +168,7 @@ void CanAddAttributeWithNoValueToXmlElement()
     element->SetAttribute("attribute", "");
 
     assert( element->Attributes().Count() == 1 );
+    assert( element->OuterXml() == "<book attribute=\"\" />" );
 }
 
 void GetAttributeReturnsEmptyWhenAddedAttributeHasNoValue()
@@ -224,6 +229,7 @@ void GetAttributeReturnsAttributeValueWhenSetAttributeHasValue()
 
     assert( element->Attributes().Count() == 1 );
     assert( element->GetAttribute("attribute") == "some value" );
+    assert( element->OuterXml() == "<book attribute=\"some value\" />" );
 }
 
 void OnlyCertainNodesCanBeChildrenOfXmlElement()

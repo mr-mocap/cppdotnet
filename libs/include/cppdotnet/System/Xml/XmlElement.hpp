@@ -47,6 +47,10 @@ protected:
 
     void _writeAttributes(XmlWriter &xml_writer) const;
     void _writeChildren(XmlWriter &xml_writer) const;
+    void _clearValue();
+    void _updateValue(std::string_view new_value);
+    void _updateOuterXml();
+    std::string _generateValue() const;
 };
 
 }
