@@ -65,11 +65,10 @@ void CreateWhitespaceWithEmptyString()
 
     {
         std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace("");
-        System::Nullable<std::string> data = node->Data();
+        std::string_view data = node->Data();
 
         assert( node->Name() == "#whitespace" );
-        assert( data.HasValue() );
-        assert( data.Value() == "" );
+        assert( data == "" );
     }
 }
 
@@ -79,43 +78,38 @@ void CreateWhitespaceWithValidString()
 
     {
         std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace("    ");
-        System::Nullable<std::string> data = node->Data();
+        std::string_view data = node->Data();
 
         assert( node->Name() == "#whitespace" );
-        assert( data.HasValue() );
-        assert( data.Value() == "    " );
+        assert( data == "    " );
     }
     {
         std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace("\t");
-        System::Nullable<std::string> data = node->Data();
+        std::string_view data = node->Data();
 
         assert( node->Name() == "#whitespace" );
-        assert( data.HasValue() );
-        assert( data.Value() == "\t" );
+        assert( data == "\t" );
     }
     {
         std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace("\r");
-        System::Nullable<std::string> data = node->Data();
+        std::string_view data = node->Data();
 
         assert( node->Name() == "#whitespace" );
-        assert( data.HasValue() );
-        assert( data.Value() == "\r" );
+        assert( data == "\r" );
     }
     {
         std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace("\n");
-        System::Nullable<std::string> data = node->Data();
+        std::string_view data = node->Data();
 
         assert( node->Name() == "#whitespace" );
-        assert( data.HasValue() );
-        assert( data.Value() == "\n" );
+        assert( data == "\n" );
     }
     {
         std::shared_ptr<System::Xml::XmlWhitespace> node = fixture.xml_doc->CreateWhitespace(" \t\r\n");
-        System::Nullable<std::string> data = node->Data();
+        std::string_view data = node->Data();
 
         assert( node->Name() == "#whitespace" );
-        assert( data.HasValue() );
-        assert( data.Value() == " \t\r\n" );
+        assert( data == " \t\r\n" );
     }
 }
 
