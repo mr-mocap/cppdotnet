@@ -12,6 +12,26 @@
 #include <cppdotnet/System/Macros/Contracts.hpp>
 #include <cppdotnet/System/Macros/Utils.hpp>
 
+
+namespace
+{
+
+std::string GenerateOuterXml(std::shared_ptr<System::Xml::XmlDocument> node)
+{
+    std::string retval;
+    System::Xml::XmlNodeList &children = node->ChildNodes();
+
+    for (size_t i = 0, count = children.Count(); i < count; ++i)
+    {
+        std::shared_ptr<System::Xml::XmlNode> iNode = children.Item( i );
+
+        retval += iNode->OuterXml();
+    }
+    return retval;
+}
+
+}
+
 namespace System::Xml
 {
 
@@ -211,11 +231,22 @@ std::shared_ptr<XmlImplementation> XmlDocument::Implementation() const
     return _implementation;
 }
 
+std::shared_ptr<XmlNode> XmlDocument::AppendChild(std::shared_ptr<XmlNode> new_child)
+{
+    INVARIANT( _implementation );
+
+    std::shared_ptr<XmlNode> retval = XmlNode::AppendChild( new_child );
+
+    _updateValue();
+    return retval;
+}
+
 void XmlDocument::RemoveAll()
 {
     INVARIANT( _implementation );
 
     _children = std::make_shared<Private::DefaultNodeListImplementation>();
+    _updateValue();
 }
 
 std::shared_ptr<XmlNode> XmlDocument::RemoveChild(std::shared_ptr<XmlNode> old_child)
@@ -223,8 +254,10 @@ std::shared_ptr<XmlNode> XmlDocument::RemoveChild(std::shared_ptr<XmlNode> old_c
     INVARIANT( _implementation );
 
     std::shared_ptr<Private::DefaultNodeListImplementation> children_as_derived_type = std::static_pointer_cast<Private::DefaultNodeListImplementation>( _children );
+    std::shared_ptr<XmlNode> retval = children_as_derived_type->RemoveChild( old_child );
 
-    return children_as_derived_type->RemoveChild( old_child );
+    _updateValue();
+    return retval;
 }
 
 std::shared_ptr<XmlNode> XmlDocument::ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child)
@@ -232,8 +265,10 @@ std::shared_ptr<XmlNode> XmlDocument::ReplaceChild(std::shared_ptr<XmlNode> new_
     INVARIANT( _implementation );
 
     std::shared_ptr<Private::DefaultNodeListImplementation> children_as_derived_type = std::static_pointer_cast<Private::DefaultNodeListImplementation>( _children );
+    std::shared_ptr<XmlNode> retval = children_as_derived_type->ReplaceChild( new_child, old_child );
 
-    return children_as_derived_type->ReplaceChild( new_child, old_child );
+    _updateValue();
+    return retval;
 }
 
 void XmlDocument::WriteTo(XmlWriter &xml_writer) const
@@ -272,6 +307,11 @@ bool XmlDocument::_canAddAsChild(std::shared_ptr<XmlNode> new_child) const
            new_child_type == XmlNodeType::ProcessingInstruction ||
            new_child_type == XmlNodeType::Comment ||
            new_child_type == XmlNodeType::DocumentType;
+}
+
+void XmlDocument::_updateValue()
+{
+    _outer_xml = GenerateOuterXml( _localSharedFromThis() );
 }
 
 }

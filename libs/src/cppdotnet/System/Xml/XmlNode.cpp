@@ -1,5 +1,6 @@
 #include <cppdotnet/System/Xml/XmlNode.hpp>
 #include <cppdotnet/System/Xml/XmlNodeList.hpp>
+#include <cppdotnet/System/Xml/XmlDocument.hpp>
 #include <cppdotnet/System/Macros/Utils.hpp>
 
 
@@ -316,10 +317,22 @@ bool XmlNode::_canAddAsChild(std::shared_ptr<XmlNode> new_child) const
 
 bool XmlNode::_isFromSameDocument(std::shared_ptr<XmlNode> node)
 {
-    std::shared_ptr<XmlDocument> this_owner_doc  = OwnerDocument();
-    std::shared_ptr<XmlDocument> other_owner_doc = node->OwnerDocument();
+    if ( NodeType() == XmlNodeType::Document )
+    {
+        // The OwnerDocument() of a Document is null, so we check against
+        // THIS node (as an XmlDocument).
+        XmlDocument *this_document   = static_cast<XmlDocument *>(this);
+        XmlDocument *other_owner_doc = node->OwnerDocument().get();
 
-    return this_owner_doc == other_owner_doc;
+        return this_document == other_owner_doc;
+    }
+    else
+    {
+        XmlDocument *this_owner_doc  = OwnerDocument().get();
+        XmlDocument *other_owner_doc = node->OwnerDocument().get();
+
+        return this_owner_doc == other_owner_doc;
+    }
 }
 
 }

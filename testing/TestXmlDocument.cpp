@@ -1,4 +1,5 @@
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
+#include <cppdotnet/System/Xml/XmlElement.hpp>
 #include <cppdotnet/System/Xml/XmlWhitespace.hpp>
 #include <cppdotnet/System/Xml/NameTable.hpp>
 #include <cstdlib>
@@ -122,6 +123,41 @@ void CreateWhitespaceWithInvalidString()
     ASSERT_THROWS_EXCEPTION( System::InvalidOperationException, fixture.xml_doc->CreateWhitespace(" \t\r\nX") );
 }
 
+void EmptyDocumentOuterXml()
+{
+    XmlNodeTestFixture fixture;
+
+    assert( fixture.xml_doc->OuterXml() == "" );
+}
+
+void DocumentWithOneEmptyElement()
+{
+    XmlNodeTestFixture fixture;
+    std::shared_ptr<System::Xml::XmlElement> node = fixture.xml_doc->CreateElement( "book" );
+
+    assert( fixture.xml_doc->OuterXml() == "" );
+    assert( node->OwnerDocument() == fixture.xml_doc );
+
+    fixture.xml_doc->AppendChild( node );
+
+    assert( fixture.xml_doc->OuterXml() == "<book />" );
+    assert( node->OwnerDocument() == fixture.xml_doc );
+}
+
+void DocumentWithOneEmptyElement()
+{
+    XmlNodeTestFixture fixture;
+    std::shared_ptr<System::Xml::XmlElement> node = fixture.xml_doc->CreateElement( "book" );
+
+    assert( fixture.xml_doc->OuterXml() == "" );
+    assert( node->OwnerDocument() == fixture.xml_doc );
+
+    fixture.xml_doc->AppendChild( node );
+
+    assert( fixture.xml_doc->OuterXml() == "<book />" );
+    assert( node->OwnerDocument() == fixture.xml_doc );
+}
+
 void Run()
 {
     DefaultConstructed();
@@ -130,6 +166,8 @@ void Run()
     CreateWhitespaceWithEmptyString();
     CreateWhitespaceWithValidString();
     CreateWhitespaceWithInvalidString();
+    EmptyDocumentOuterXml();
+    DocumentWithOneEmptyElement();
 }
 
 }

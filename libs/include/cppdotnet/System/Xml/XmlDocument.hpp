@@ -83,6 +83,8 @@ public:
 
     std::shared_ptr<XmlImplementation> Implementation() const;
 
+    std::shared_ptr<XmlNode> AppendChild(std::shared_ptr<XmlNode> new_child) override;
+
     void RemoveAll() override;
 
     std::shared_ptr<XmlNode> RemoveChild(std::shared_ptr<XmlNode> old_child) override;
@@ -97,6 +99,7 @@ protected:
     bool        _canAddAsChild(std::shared_ptr<XmlNode> new_child) const override;
 
     std::shared_ptr<XmlDocument> _localSharedFromThis();
+    void                         _updateValue();
 };
 
 }
