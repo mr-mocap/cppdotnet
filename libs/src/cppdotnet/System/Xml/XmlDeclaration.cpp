@@ -50,6 +50,8 @@ XmlDeclaration::XmlDeclaration()
     _value( GenerateValue( _version ) )
 {
     _outer_xml = GenerateOuterXml( DeclarationNodeName, _value );
+
+    INVARIANT( !HasChildNodes() );
 }
 
 XmlDeclaration::XmlDeclaration(std::string_view version, std::shared_ptr<XmlDocument> document)
@@ -63,6 +65,8 @@ XmlDeclaration::XmlDeclaration(std::string_view version, std::shared_ptr<XmlDocu
     _value( GenerateValue( version ) )
 {
     _outer_xml = GenerateOuterXml( DeclarationNodeName, _value );
+
+    INVARIANT( !HasChildNodes() );
 }
 
 XmlDeclaration::XmlDeclaration(std::string_view version,
@@ -79,6 +83,8 @@ XmlDeclaration::XmlDeclaration(std::string_view version,
     _value( GenerateValue( version, encoding ) )
 {
     _outer_xml = GenerateOuterXml( DeclarationNodeName, _value );
+
+    INVARIANT( !HasChildNodes() );
 }
 
 XmlDeclaration::XmlDeclaration(std::string_view version,
@@ -99,6 +105,8 @@ XmlDeclaration::XmlDeclaration(std::string_view version,
     _outer_xml = GenerateOuterXml( DeclarationNodeName, _value );
 
     POSTCONDITION( _standalone == "yes" || _standalone == "no" );
+
+    INVARIANT( !HasChildNodes() );
 }
 
 XmlDeclaration::XmlDeclaration(const XmlDeclaration &other)
@@ -109,6 +117,7 @@ XmlDeclaration::XmlDeclaration(const XmlDeclaration &other)
     _standalone( other._standalone ),
     _value( other._value )
 {
+    INVARIANT( !HasChildNodes() );
 }
 
 XmlDeclaration::XmlDeclaration(XmlDeclaration &&other)
@@ -119,10 +128,13 @@ XmlDeclaration::XmlDeclaration(XmlDeclaration &&other)
     _standalone( std::move(other._standalone) ),
     _value( std::move(other._value) )
 {
+    INVARIANT( !HasChildNodes() );
 }
 
 XmlDeclaration &XmlDeclaration::operator =(const XmlDeclaration &other)
 {
+    INVARIANT( !HasChildNodes() );
+
     XmlLinkedNode::operator =( other );
     if (this != &other)
     {
@@ -136,6 +148,8 @@ XmlDeclaration &XmlDeclaration::operator =(const XmlDeclaration &other)
 
 XmlDeclaration &XmlDeclaration::operator =(XmlDeclaration &&other)
 {
+    INVARIANT( !HasChildNodes() );
+
     XmlLinkedNode::operator =( std::move( other ) );
     _version    = std::move( other._version );
     _encoding   = std::move( other._encoding );
@@ -146,6 +160,8 @@ XmlDeclaration &XmlDeclaration::operator =(XmlDeclaration &&other)
 
 std::shared_ptr<XmlNode> XmlDeclaration::CloneNode(bool deep) const
 {
+    INVARIANT( !HasChildNodes() );
+
     // TODO: Implement properly!
     if ( deep )
         return std::make_shared<XmlDeclaration>( *this );
@@ -155,11 +171,15 @@ std::shared_ptr<XmlNode> XmlDeclaration::CloneNode(bool deep) const
 
 void XmlDeclaration::RemoveAll()
 {
+    INVARIANT( !HasChildNodes() );
+
     _children = std::make_shared<Private::DefaultNodeListImplementation>();
 }
 
 std::shared_ptr<XmlNode> XmlDeclaration::RemoveChild(std::shared_ptr<XmlNode> old_child)
 {
+    INVARIANT( !HasChildNodes() );
+
     std::shared_ptr<Private::DefaultNodeListImplementation> children_as_derived_type = std::static_pointer_cast<Private::DefaultNodeListImplementation>( _children );
 
     return children_as_derived_type->RemoveChild( old_child );
@@ -167,6 +187,8 @@ std::shared_ptr<XmlNode> XmlDeclaration::RemoveChild(std::shared_ptr<XmlNode> ol
 
 std::shared_ptr<XmlNode> XmlDeclaration::ReplaceChild(std::shared_ptr<XmlNode> new_child, std::shared_ptr<XmlNode> old_child)
 {
+    INVARIANT( !HasChildNodes() );
+
     std::shared_ptr<Private::DefaultNodeListImplementation> children_as_derived_type = std::static_pointer_cast<Private::DefaultNodeListImplementation>( _children );
 
     return children_as_derived_type->ReplaceChild( new_child, old_child );
@@ -174,6 +196,7 @@ std::shared_ptr<XmlNode> XmlDeclaration::ReplaceChild(std::shared_ptr<XmlNode> n
 
 std::string_view XmlDeclaration::Value() const
 {
+    INVARIANT( !HasChildNodes() );
     PRECONDITION( !Version().empty() );
 
     return _value;
@@ -181,12 +204,16 @@ std::string_view XmlDeclaration::Value() const
 
 void XmlDeclaration::Value(std::string_view new_value)
 {
+    INVARIANT( !HasChildNodes() );
+
     _value = new_value;
     _outer_xml = GenerateOuterXml( Name(), new_value );
 }
 
 void XmlDeclaration::WriteTo(XmlWriter &xml_writer) const
 {
+    INVARIANT( !HasChildNodes() );
+
     // Check for invalid state(s)
     if ( xml_writer.WriteState() != Xml::WriteState::Start )
         ThrowWithTarget( ArgumentException("XML Declaration has already been written") );
