@@ -235,6 +235,11 @@ std::shared_ptr<XmlNode> XmlDocument::AppendChild(std::shared_ptr<XmlNode> new_c
 {
     INVARIANT( _implementation );
 
+    if ( new_child->NodeType() == XmlNodeType::XmlDeclaration )
+    {
+        if ( HasChildNodes() )
+            ThrowWithTarget( System::InvalidOperationException( "Declaration node can only be the first node in a Document" ) );
+    }
     std::shared_ptr<XmlNode> retval = XmlNode::AppendChild( new_child );
 
     _updateValue();
@@ -306,6 +311,7 @@ bool XmlDocument::_canAddAsChild(std::shared_ptr<XmlNode> new_child) const
     return new_child_type == XmlNodeType::Element ||
            new_child_type == XmlNodeType::ProcessingInstruction ||
            new_child_type == XmlNodeType::Comment ||
+           new_child_type == XmlNodeType::XmlDeclaration ||
            new_child_type == XmlNodeType::DocumentType;
 }
 

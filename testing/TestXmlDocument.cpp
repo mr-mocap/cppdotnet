@@ -1,4 +1,6 @@
 #include <cppdotnet/System/Xml/XmlDocument.hpp>
+#include <cppdotnet/System/Xml/XmlComment.hpp>
+#include <cppdotnet/System/Xml/XmlDeclaration.hpp>
 #include <cppdotnet/System/Xml/XmlElement.hpp>
 #include <cppdotnet/System/Xml/XmlWhitespace.hpp>
 #include <cppdotnet/System/Xml/NameTable.hpp>
@@ -144,18 +146,66 @@ void DocumentWithOneEmptyElement()
     assert( node->OwnerDocument() == fixture.xml_doc );
 }
 
-void DocumentWithOneEmptyElement()
+void DocumentWithOneComment()
 {
     XmlNodeTestFixture fixture;
-    std::shared_ptr<System::Xml::XmlElement> node = fixture.xml_doc->CreateElement( "book" );
+    std::shared_ptr<System::Xml::XmlComment> node = fixture.xml_doc->CreateComment( "Comment Here!" );
 
     assert( fixture.xml_doc->OuterXml() == "" );
     assert( node->OwnerDocument() == fixture.xml_doc );
 
     fixture.xml_doc->AppendChild( node );
 
-    assert( fixture.xml_doc->OuterXml() == "<book />" );
+    assert( fixture.xml_doc->OuterXml() == "<!--Comment Here!-->" );
     assert( node->OwnerDocument() == fixture.xml_doc );
+}
+
+void DocumentWithOneDeclaration()
+{
+    XmlNodeTestFixture fixture;
+    std::shared_ptr<System::Xml::XmlDeclaration> node = fixture.xml_doc->CreateXmlDeclaration( "1.9" );
+
+    assert( fixture.xml_doc->OuterXml() == "" );
+    assert( node->OwnerDocument() == fixture.xml_doc );
+
+    fixture.xml_doc->AppendChild( node );
+
+    assert( fixture.xml_doc->OuterXml() == "<?xml version=\"1.9\"?>" );
+    assert( node->OwnerDocument() == fixture.xml_doc );
+}
+
+void DeclarationMustBeTheFirstNode()
+{
+    XmlNodeTestFixture fixture;
+    std::shared_ptr<System::Xml::XmlComment> comment = fixture.xml_doc->CreateComment( "Comment Here" );
+    std::shared_ptr<System::Xml::XmlDeclaration> node = fixture.xml_doc->CreateXmlDeclaration( "1.9" );
+
+    assert( fixture.xml_doc->OuterXml() == "" );
+    assert( node->OwnerDocument() == fixture.xml_doc );
+
+    fixture.xml_doc->AppendChild( comment );
+
+    ASSERT_THROWS_EXCEPTION( System::InvalidOperationException, fixture.xml_doc->AppendChild( node ) );
+
+    assert( fixture.xml_doc->OuterXml() == "<!--Comment Here-->" );
+    assert( node->OwnerDocument() == fixture.xml_doc );
+}
+
+void DocumentWithCommentAndEmptyElement()
+{
+    XmlNodeTestFixture fixture;
+    std::shared_ptr<System::Xml::XmlComment> comment = fixture.xml_doc->CreateComment( "This is a comment" );
+    std::shared_ptr<System::Xml::XmlElement> element = fixture.xml_doc->CreateElement( "book" );
+
+    assert( fixture.xml_doc->OuterXml() == "" );
+    assert( element->OwnerDocument() == fixture.xml_doc );
+
+    fixture.xml_doc->AppendChild( comment );
+    fixture.xml_doc->AppendChild( element );
+
+    assert( fixture.xml_doc->OuterXml() == "<!--This is a comment--><book />" );
+    assert( comment->OwnerDocument() == fixture.xml_doc );
+    assert( element->OwnerDocument() == fixture.xml_doc );
 }
 
 void Run()
@@ -168,6 +218,10 @@ void Run()
     CreateWhitespaceWithInvalidString();
     EmptyDocumentOuterXml();
     DocumentWithOneEmptyElement();
+    DocumentWithOneComment();
+    DocumentWithOneDeclaration();
+    DeclarationMustBeTheFirstNode();
+    DocumentWithCommentAndEmptyElement();
 }
 
 }
