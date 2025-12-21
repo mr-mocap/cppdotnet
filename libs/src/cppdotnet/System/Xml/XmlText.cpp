@@ -72,6 +72,10 @@ XmlText &XmlText::operator =(const XmlText &other)
 
 XmlText &XmlText::operator =(XmlText &&other)
 {
+    INVARIANT( !HasChildNodes());
+    INVARIANT( _outer_xml == Data() );
+    INVARIANT( _outer_xml == _value );
+
     XmlCharacterData::operator =( std::move( other ) );
     return *this;
 }
@@ -93,12 +97,16 @@ void XmlText::Value(std::string_view new_value)
 {
     XmlCharacterData::Value( new_value );
     _outer_xml = new_value;
+
+    INVARIANT( !HasChildNodes());
 }
 
 void XmlText::Data(std::string_view new_value)
 {
     XmlCharacterData::Data( new_value );
     _outer_xml = new_value;
+
+    INVARIANT( !HasChildNodes());
 }
 
 void XmlText::WriteTo(XmlWriter &xml_writer) const
