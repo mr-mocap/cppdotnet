@@ -46,28 +46,32 @@ $(BUILD_DIR):
 .PHONY: lib
 lib: $(TARGET) | $(BUILD_DIR)
 
+.PHONY: $(BUILD_DIR)/libSystem.Base.a
 $(BUILD_DIR)/libSystem.Base.a:
+	@echo Building System.Base
 	$(MAKE) -f Makefile.System.Base
 
+.PHONY: $(BUILD_DIR)/libSystem.Collections.a
 $(BUILD_DIR)/libSystem.Collections.a:
+	@echo Building System.Collections
 	$(MAKE) -f Makefile.System.Collections
 
+.PHONY: $(BUILD_DIR)/libSystem.IO.a
 $(BUILD_DIR)/libSystem.IO.a:
+	@echo Building System.IO
 	$(MAKE) -f Makefile.System.IO
 
+.PHONY: $(BUILD_DIR)/libSystem.Diagnostics.a
 $(BUILD_DIR)/libSystem.Diagnostics.a:
+	@echo Building System.Diagnostics
 	$(MAKE) -f Makefile.System.Diagnostics
 
+.PHONY: $(BUILD_DIR)/libSystem.Xml.a
 $(BUILD_DIR)/libSystem.Xml.a:
+	@echo Building System.Xml
 	$(MAKE) -f Makefile.System.Xml
 
-#$(TARGET): $(LIB_OBJS)
-#	@ar -crs $(TARGET) $(LIB_OBJS)
-#	@ranlib $(TARGET)
-
 $(TARGET): $(BUILD_DIR)/libSystem.Diagnostics.a $(BUILD_DIR)/libSystem.Xml.a $(BUILD_DIR)/libSystem.IO.a $(BUILD_DIR)/libSystem.Collections.a $(BUILD_DIR)/libSystem.Base.a
-#	@ar -crs $(TARGET) $^
-#	@ranlib $(TARGET)
 
 $(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
 	@mkdir -p ${dir $@}
