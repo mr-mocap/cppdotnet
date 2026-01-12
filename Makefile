@@ -3,16 +3,16 @@ default: all
 all: test
 
 lib:
-	@cd libs && $(MAKE) lib
+	$(MAKE) --directory=libs --quiet lib
 
 .PHONY: test
 test:
-	@cd testing && $(MAKE)
+	$(MAKE) --directory=testing --quiet
 
 .PHONY: clean
 cleanlib:
-	@cd libs && $(MAKE) clean
+	$(MAKE) --directory=libs --quiet clean
 
 .PHONY: cleantest
 cleantest:
-	@cd testing && $(MAKE) clean
+	$(MAKE) --directory=testing --quiet clean
