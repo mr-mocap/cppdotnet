@@ -68,7 +68,7 @@ public:
 
     mapped_type &operator[](std::string_view key)
     {
-#if __cpp_lib_associative_heterogeneous_insertion
+#ifdef __cpp_lib_associative_heterogeneous_insertion
         return m_data[ key ];
 #else
         return m_data[ std::string(key) ];
