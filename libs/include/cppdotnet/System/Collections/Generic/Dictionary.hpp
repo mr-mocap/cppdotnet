@@ -222,6 +222,7 @@ public:
         }
     }
 
+#ifdef __cpp_lib_generic_unordered_lookup
     // Support Heterogenous Lookup
     template <typename K>
     const mapped_type &at(const K &key) const
@@ -233,6 +234,7 @@ public:
         
         return found->second;
     }
+#endif
 
     mapped_type &at(const key_type &key)
     {
@@ -246,6 +248,7 @@ public:
         }
     }
 
+#ifdef __cpp_lib_generic_unordered_lookup
     // Support Heterogenous Lookup
     template <typename K>
     mapped_type &at(const K &key)
@@ -257,6 +260,7 @@ public:
         
         return found->second;
     }
+#endif
 
     void Add(const key_type &key, const mapped_type &value)
     {
@@ -278,12 +282,14 @@ public:
         return m_data.contains( key );
     }
 
+#ifdef __cpp_lib_generic_unordered_lookup
     // Support Heterogenous Lookup
     template <class K>
     constexpr bool ContainsKey(const K &key) const
     {
         return m_data.contains( key );
     }
+#endif
 
     constexpr bool TryGetValue(const key_type &key, mapped_type &value_out) const
     {
@@ -298,6 +304,7 @@ public:
         return true;
     }
 
+#ifdef __cpp_lib_generic_unordered_lookup
     // Support Heterogenous Lookup
     template <class K>
     constexpr bool TryGetValue(const K &key, mapped_type &value_out) const
@@ -312,6 +319,7 @@ public:
         value_out = iter->second;
         return true;
     }
+#endif
 
     KeyCollection Keys() const
     {

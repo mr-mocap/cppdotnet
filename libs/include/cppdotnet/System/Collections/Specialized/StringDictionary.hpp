@@ -9,7 +9,7 @@ namespace System::Collections::Specialized
 namespace Types
 {
 
-struct StringDictionaryTransparentHash
+struct StringTransparentHash
 {
     using is_transparent = void;
 
@@ -24,47 +24,28 @@ struct StringDictionaryTransparentHash
     }
 };
 
-struct StringDictionaryTransparentEqual
-{
-    using is_transparent = void;
-
-    bool operator()(std::string_view lhs, std::string_view rhs) const noexcept
-    {
-        return lhs == rhs;
-    }
-
-    bool operator()(const std::string &lhs, const std::string &rhs) const noexcept
-    {
-        return lhs == rhs;
-    }
-
-    bool operator()(std::string_view lhs, const std::string &rhs) const noexcept
-    {
-        return lhs == rhs;
-    }
-
-    bool operator()(const std::string &lhs, std::string_view rhs) const noexcept
-    {
-        return lhs == rhs;
-    }
-};
-
 }
 
 // NOTE: How can I generalize this to be templated like Dictionary
 //       but make it all default template parameters AND not be
 //       syntactically unwieldy?
 class StringDictionary : public Generic::Dictionary<std::string, std::string,
-                                                    Types::StringDictionaryTransparentHash,
-                                                    Types::StringDictionaryTransparentEqual>
+                                                    Types::StringTransparentHash,
+                                                    std::equal_to<void>>
 {
 public:
     using Base = Generic::Dictionary<std::string, std::string,
-                                     Types::StringDictionaryTransparentHash,
-                                     Types::StringDictionaryTransparentEqual>;
+                                     Types::StringTransparentHash,
+                                     std::equal_to<void>>;
 
     using Base::Dictionary;
     using Base::operator =;
+
+    StringDictionary(const std::unordered_map<std::string, std::string> &init_value)
+        :
+        Dictionary( init_value.begin(), init_value.end() )
+    {
+    }
 
     void Add(std::string_view key, std::string_view value)
     {
@@ -78,12 +59,20 @@ public:
 
     bool Remove(std::string_view key)
     {
-        return m_data.erase( std::string(key) ); // TODO: FIXME in C++23
+#ifdef __cpp_lib_associative_heterogeneous_erasure
+        return m_data.erase( key );
+#else
+        return m_data.erase( std::string(key) );
+#endif
     }
 
     mapped_type &operator[](std::string_view key)
     {
+#if __cpp_lib_associative_heterogeneous_insertion
+        return m_data[ key ];
+#else
         return m_data[ std::string(key) ];
+#endif
     }
 };
 

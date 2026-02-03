@@ -16,7 +16,7 @@ TESTS = Activity ActivitySource BinaryWriter BitConverter Console ConsoleTraceLi
 	Counter DateOnly DateTime DateTimeOffset Debug DefaultTraceListener Delegates \
 	Dictionary Enum Environment Exception Guid ICollection IDictionary IList Int32 \
 	LinkedList List Nullable Path Progress ReadOnlySpan Span Stack Stopwatch StringBuilder \
-	StringReader StringWriter TimeOnly TimeSpan Trace TraceSource ValueTuple Version \
+	StringDictionary StringReader StringWriter TimeOnly TimeSpan Trace TraceSource ValueTuple Version \
 	NameTable XmlAttribute XmlDeclaration XmlDocument XmlElement XmlDocumentType XmlProcessingInstruction \
 	XmlText XmlNodeWriteTo XmlTextWriter
 TEST_BINARIES = $(patsubst %,Test%,${TESTS})
