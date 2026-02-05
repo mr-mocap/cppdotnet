@@ -12,6 +12,9 @@ template <typename T>
 concept HasValueType = requires { typename T::value_type; };
 
 template <typename T>
+concept IsTransparent = requires { typename T::is_transparent; };
+
+template <typename T>
 concept Comparable = requires(T Object, T OtherObject) {
     { Object.CompareTo(OtherObject) } -> std::same_as<int>; // Must return -1, 0, or 1 ( for <, ==, > )
 };

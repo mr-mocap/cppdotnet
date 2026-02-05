@@ -3,6 +3,7 @@
 #include <cppdotnet/System/Collections/Generic/KeyNotFoundException.hpp>
 #include <cppdotnet/System/Collections/Generic/List.hpp>
 #include <cppdotnet/System/Collections/Generic/KeyValuePair.hpp>
+#include <cppdotnet/System/Concepts.hpp>
 #include <cppdotnet/System/Exception.hpp>
 #include <cppdotnet/System/Macros/Contracts.hpp>
 #include <unordered_map>
@@ -210,6 +211,22 @@ public:
         return m_data[key];
     }
 
+#ifdef __cpp_lib_associative_heterogeneous_insertion
+    template <typename K>
+        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
+    mapped_type &operator[](const K &key)
+    {
+        return m_data[ key ];
+    }
+
+    template <typename K>
+        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
+    mapped_type &operator[](K &&key)
+    {
+        return m_data[ std::move(key) ];
+    }
+#endif
+
     const mapped_type &at(const key_type &key) const
     {
         try
@@ -222,17 +239,20 @@ public:
         }
     }
 
-#ifdef __cpp_lib_generic_unordered_lookup
-    // Support Heterogenous Lookup
+#ifdef __cpp_lib_associative_heterogeneous_insertion
     template <typename K>
+        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal> &&
+                  std::convertible_to<K, key_type>)
     const mapped_type &at(const K &key) const
     {
-        auto found = m_data.find( key );
-
-        if ( found == m_data.end() )
+        try
+        {
+            return m_data.at( key );
+        }
+        catch(const std::out_of_range &)
+        {
             ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
-        
-        return found->second;
+        }
     }
 #endif
 
@@ -248,17 +268,19 @@ public:
         }
     }
 
-#ifdef __cpp_lib_generic_unordered_lookup
-    // Support Heterogenous Lookup
+#ifdef __cpp_lib_associative_heterogeneous_insertion
     template <typename K>
+        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
     mapped_type &at(const K &key)
     {
-        auto found = m_data.find( key );
-
-        if ( found == m_data.end() )
+        try
+        {
+            return m_data.at( key );
+        }
+        catch(const std::out_of_range &)
+        {
             ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
-        
-        return found->second;
+        }
     }
 #endif
 
@@ -272,24 +294,47 @@ public:
         POSTCONDITION( ContainsKey(key) );
     }
 
+#if defined(__cpp_lib_generic_unordered_lookup) || defined(__cpp_lib_associative_heterogeneous_insertion)
+    // Support Heterogenous Lookup
+    template <typename K, typename V>
+        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
+    void Add(const K &key, const V &value)
+    {
+        if ( ContainsKey( key ) )
+            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the Dictionary", key), "key" ) );
+
+        m_data[ key ] = value;
+        
+        POSTCONDITION( ContainsKey(key) );
+    }
+#endif
+
     bool Remove(const key_type &key)
     {
         return m_data.erase( key );
     }
+
+#ifdef __cpp_lib_associative_heterogeneous_erasure
+    template <typename K>
+        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
+    bool Remove(const K &key)
+    {
+        return m_data.erase( key );
+    }
+#endif
 
     constexpr bool ContainsKey(const key_type &key) const
     {
         return m_data.contains( key );
     }
 
-#ifdef __cpp_lib_generic_unordered_lookup
     // Support Heterogenous Lookup
-    template <class K>
-    constexpr bool ContainsKey(const K &key) const
+    template <typename K>
+        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
+    constexpr auto ContainsKey(const K &key) const
     {
         return m_data.contains( key );
     }
-#endif
 
     constexpr bool TryGetValue(const key_type &key, mapped_type &value_out) const
     {
@@ -306,7 +351,8 @@ public:
 
 #ifdef __cpp_lib_generic_unordered_lookup
     // Support Heterogenous Lookup
-    template <class K>
+    template <typename K>
+        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
     constexpr bool TryGetValue(const K &key, mapped_type &value_out) const
     {
         auto iter = m_data.find( key );
@@ -343,13 +389,35 @@ public:
 
     constexpr bool TryAdd(const key_type &key, const mapped_type &value)
     {
-        if ( Contains( key ) )
+        if ( ContainsKey( key ) )
             return false;
         m_data[ key ] = value;
         return true;
     }
 
+#if defined(__cpp_lib_generic_unordered_lookup) || defined(__cpp_lib_associative_heterogeneous_insertion)
+    // Support Heterogenous Lookup
+    template <typename K, typename V>
+        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
+    constexpr bool TryAdd(const K &key, const V &value)
+    {
+        if ( ContainsKey( key ) )
+            return false;
+        m_data[ key ] = value;
+        return true;
+    }
+#endif
+
     constexpr bool ContainsValue(const mapped_type &value) const
+    {
+        for (auto const &v : std::views::values( m_data ) )
+            if ( v == value )
+                return true;
+        return false;
+    }
+
+    template <std::equality_comparable_with<mapped_type> M>
+    constexpr bool ContainsValue(const M &value) const
     {
         for (auto const &v : std::views::values( m_data ) )
             if ( v == value )
