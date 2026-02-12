@@ -3,6 +3,7 @@
 #include <cppdotnet/System/Collections/Generic/KeyNotFoundException.hpp>
 #include <cppdotnet/System/Collections/Generic/List.hpp>
 #include <cppdotnet/System/Collections/Generic/KeyValuePair.hpp>
+#include <cppdotnet/System/Concepts.hpp>
 #include <cppdotnet/System/Exception.hpp>
 #include <cppdotnet/System/Macros/Contracts.hpp>
 #include <map>
@@ -190,9 +191,19 @@ public:
         return _data[key];
     }
 
-    constexpr const mapped_type &operator[](const key_type &key) const
+    constexpr mapped_type &operator[](key_type &&key)
     {
-        return _data[key];
+        return _data[ std::move(key) ];
+    }
+
+    template <typename Kt>
+    constexpr mapped_type &operator[](Kt &&key)
+    {
+#if __cpp_lib_associative_heterogeneous_insertion
+        return _data[ std::forward<Kt>(key) ];
+#else
+        return _data[ key_type( std::forward<Kt>(key) ) ];
+#endif
     }
 
     constexpr mapped_type &at(const key_type &key)
@@ -219,9 +230,43 @@ public:
         }
     }
 
+    template <typename Kt>
+    constexpr mapped_type &at(const Kt &key)
+    {
+        try
+        {
+#if __cpp_lib_associative_heterogeneous_insertion
+            return _data.at( key );
+#else
+            return _data.at( key_type(key) );
+#endif
+        }
+        catch(const std::out_of_range &)
+        {
+            ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in SortedDictionary", key) ) );
+        }
+    }
+
+    template <typename Kt>
+    constexpr const mapped_type &at(const Kt &key) const
+    {
+        try
+        {
+#if __cpp_lib_associative_heterogeneous_insertion
+            return _data.at( key );
+#else
+            return _data.at( key_type(key) );
+#endif
+        }
+        catch(const std::out_of_range &)
+        {
+            ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in SortedDictionary", key) ) );
+        }
+    }
+
     constexpr bool TryAdd(const key_type &key, const mapped_type &value)
     {
-        if ( _data.contains( key ) )
+        if ( ContainsKey( key ) )
             return false;
         _data[ key ] = value;
         return true;
@@ -251,12 +296,43 @@ public:
         return _data.erase( key );
     }
 
+    bool Remove(key_type &&key)
+    {
+        return _data.erase( std::move(key) );
+    }
+
+    template <typename Kt>
+    bool Remove(Kt &&key)
+    {
+#ifdef __cpp_lib_associative_heterogeneous_erasure
+        return _data.erase( std::forward<Kt>(key) );
+#else
+        return _data.erase( key_type( std::forward<Kt>(key) ) );
+#endif
+    }
+
     constexpr bool ContainsKey(const key_type &key) const
     {
         return _data.contains( key );
     }
 
+    template <typename Kt>
+        requires (System::Concepts::IsTransparent<key_compare>)
+    constexpr bool ContainsKey(const Kt &key) const
+    {
+        return _data.contains( std::forward<Kt>(key) ); // Supported by C++20's heterogenous lookup per standard definition
+    }
+
     constexpr bool ContainsValue(const mapped_type &value) const
+    {
+        for (auto const &v : std::views::values( _data ) )
+            if ( v == value )
+                return true;
+        return false;
+    }
+
+    template <std::equality_comparable_with<mapped_type> M>
+    constexpr bool ContainsValue(const M &value) const
     {
         for (auto const &v : std::views::values( _data ) )
             if ( v == value )
@@ -297,7 +373,19 @@ public:
 
     constexpr void Add(const key_type &key, const mapped_type &value)
     {
-        if ( _data.contains( key ) )
+        if ( ContainsKey( key ) )
+            ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the SortedDictionary", key), "key" ) );
+        else
+            _data[ key ] = value;
+        
+        POSTCONDITION( ContainsKey(key) );
+    }
+
+    template <typename Kt, typename Vt>
+        requires (System::Concepts::IsTransparent<key_compare>)
+    constexpr void Add(const Kt &key, const Vt &value)
+    {
+        if ( ContainsKey( key ) )
             ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the SortedDictionary", key), "key" ) );
         else
             _data[ key ] = value;

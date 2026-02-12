@@ -74,6 +74,16 @@ public:
         return m_data.erase( key );
     }
 
+    template <typename Vt>
+    bool Remove(Vt &&key)
+    {
+#ifdef __cpp_lib_associative_heterogeneous_erasure
+        return m_data.erase( std::forward<Vt>(key) );
+#else
+        return m_data.erase( value_type( std::forward<Vt>(key) ) );
+#endif
+    }
+
     bool TryGetValue(const value_type &key, value_type &value_out)
     {
         auto iter = m_data.find( key );
