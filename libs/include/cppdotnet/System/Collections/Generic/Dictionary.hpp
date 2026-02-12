@@ -227,30 +227,6 @@ public:
         if ( iter_found != m_data.end() )
             return iter_found->second;
 
-        auto [iter_emplaced, was_emplaced] = m_data.emplace( key, mapped_type{} );
-
-        ASSERT( was_emplaced );
-
-        return iter_emplaced->second;
-#endif
-    }
-
-    template <typename K>
-    mapped_type &operator[](K &&key)
-    {
-#ifdef __cpp_lib_associative_heterogeneous_insertion
-        return m_data[ std::move(key) ];
-#else
-# ifdef __cpp_lib_generic_unordered_lookup
-        auto iter_found = m_data.find( key );
-# else
-        // We have to construct a temporary key of type K (least efficient option)
-        auto iter_found = m_data.find( key_type(key) );
-# endif
-
-        if ( iter_found != m_data.end() )
-            return iter_found->second;
-
         auto [iter_emplaced, was_emplaced] = m_data.emplace( std::move(key), mapped_type{} );
 
         ASSERT( was_emplaced );
@@ -346,22 +322,12 @@ public:
     }
 
     template <typename K>
-    bool Remove(const K &key)
-    {
-#ifdef __cpp_lib_associative_heterogeneous_erasure
-        return m_data.erase( key );
-#else
-        return m_data.erase( key_type(key) );
-#endif
-    }
-
-    template <typename K>
     bool Remove(K &&key)
     {
 #ifdef __cpp_lib_associative_heterogeneous_erasure
-        return m_data.erase( key );
+        return m_data.erase( std::forward<K>(key) );
 #else
-        return m_data.erase( key_type( std::move(key) ) );
+        return m_data.erase( key_type( std::forward<K>(key) ) );
 #endif
     }
 
@@ -393,12 +359,12 @@ public:
 
     // Support Heterogenous Lookup
     template <typename K>
-    constexpr bool TryGetValue(const K &key, mapped_type &value_out) const
+    constexpr bool TryGetValue(K &&key, mapped_type &value_out) const
     {
 #ifdef __cpp_lib_generic_unordered_lookup
-        auto iter = m_data.find( key );
+        auto iter = m_data.find( std::forward<K>(key) );
 #else
-        auto iter = m_data.find( key_type(key) );
+        auto iter = m_data.find( key_type( std::forward<K>(key) ) );
 #endif
 
         if ( iter == m_data.end() )
