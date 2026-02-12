@@ -211,21 +211,53 @@ public:
         return m_data[key];
     }
 
-#ifdef __cpp_lib_associative_heterogeneous_insertion
     template <typename K>
-        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
     mapped_type &operator[](const K &key)
     {
+#ifdef __cpp_lib_associative_heterogeneous_insertion
         return m_data[ key ];
+#else
+# ifdef __cpp_lib_generic_unordered_lookup
+        auto iter_found = m_data.find( key );
+# else
+        // We have to construct a temporary key of type K (least efficient option)
+        auto iter_found = m_data.find( key_type(key) );
+# endif
+
+        if ( iter_found != m_data.end() )
+            return iter_found->second;
+
+        auto [iter_emplaced, was_emplaced] = m_data.emplace( key, mapped_type{} );
+
+        ASSERT( was_emplaced );
+
+        return iter_emplaced->second;
+#endif
     }
 
     template <typename K>
-        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
     mapped_type &operator[](K &&key)
     {
+#ifdef __cpp_lib_associative_heterogeneous_insertion
         return m_data[ std::move(key) ];
-    }
+#else
+# ifdef __cpp_lib_generic_unordered_lookup
+        auto iter_found = m_data.find( key );
+# else
+        // We have to construct a temporary key of type K (least efficient option)
+        auto iter_found = m_data.find( key_type(key) );
+# endif
+
+        if ( iter_found != m_data.end() )
+            return iter_found->second;
+
+        auto [iter_emplaced, was_emplaced] = m_data.emplace( std::move(key), mapped_type{} );
+
+        ASSERT( was_emplaced );
+
+        return iter_emplaced->second;
 #endif
+    }
 
     const mapped_type &at(const key_type &key) const
     {
@@ -239,22 +271,22 @@ public:
         }
     }
 
-#ifdef __cpp_lib_associative_heterogeneous_insertion
     template <typename K>
-        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal> &&
-                  std::convertible_to<K, key_type>)
     const mapped_type &at(const K &key) const
     {
         try
         {
+#ifdef __cpp_lib_associative_heterogeneous_insertion
             return m_data.at( key );
+#else
+            return m_data.at( key_type(key) );
+#endif
         }
         catch(const std::out_of_range &)
         {
             ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
         }
     }
-#endif
 
     mapped_type &at(const key_type &key)
     {
@@ -268,21 +300,22 @@ public:
         }
     }
 
-#ifdef __cpp_lib_associative_heterogeneous_insertion
     template <typename K>
-        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
     mapped_type &at(const K &key)
     {
         try
         {
+#ifdef __cpp_lib_associative_heterogeneous_insertion
             return m_data.at( key );
+#else
+            return m_data.at( key_type(key) );
+#endif
         }
         catch(const std::out_of_range &)
         {
             ThrowWithTarget( KeyNotFoundException( std::format("Key '{}' not found in Dictionary", key) ) );
         }
     }
-#endif
 
     void Add(const key_type &key, const mapped_type &value)
     {
@@ -294,7 +327,6 @@ public:
         POSTCONDITION( ContainsKey(key) );
     }
 
-#if defined(__cpp_lib_generic_unordered_lookup) || defined(__cpp_lib_associative_heterogeneous_insertion)
     // Support Heterogenous Lookup
     template <typename K, typename V>
         requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
@@ -303,25 +335,35 @@ public:
         if ( ContainsKey( key ) )
             ThrowWithTarget( ArgumentException( std::format("Key '{}' is already in the Dictionary", key), "key" ) );
 
-        m_data[ key ] = value;
+        (*this)[ key ] = value;
         
         POSTCONDITION( ContainsKey(key) );
     }
-#endif
 
     bool Remove(const key_type &key)
     {
         return m_data.erase( key );
     }
 
-#ifdef __cpp_lib_associative_heterogeneous_erasure
     template <typename K>
-        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
     bool Remove(const K &key)
     {
+#ifdef __cpp_lib_associative_heterogeneous_erasure
         return m_data.erase( key );
-    }
+#else
+        return m_data.erase( key_type(key) );
 #endif
+    }
+
+    template <typename K>
+    bool Remove(K &&key)
+    {
+#ifdef __cpp_lib_associative_heterogeneous_erasure
+        return m_data.erase( key );
+#else
+        return m_data.erase( key_type( std::move(key) ) );
+#endif
+    }
 
     constexpr bool ContainsKey(const key_type &key) const
     {
@@ -333,7 +375,7 @@ public:
         requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
     constexpr auto ContainsKey(const K &key) const
     {
-        return m_data.contains( key );
+        return m_data.contains( key ); // Supported by C++20's heterogenous lookup per standard definition
     }
 
     constexpr bool TryGetValue(const key_type &key, mapped_type &value_out) const
@@ -349,13 +391,15 @@ public:
         return true;
     }
 
-#ifdef __cpp_lib_generic_unordered_lookup
     // Support Heterogenous Lookup
     template <typename K>
-        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
     constexpr bool TryGetValue(const K &key, mapped_type &value_out) const
     {
+#ifdef __cpp_lib_generic_unordered_lookup
         auto iter = m_data.find( key );
+#else
+        auto iter = m_data.find( key_type(key) );
+#endif
 
         if ( iter == m_data.end() )
         {
@@ -365,7 +409,6 @@ public:
         value_out = iter->second;
         return true;
     }
-#endif
 
     KeyCollection Keys() const
     {
@@ -395,18 +438,15 @@ public:
         return true;
     }
 
-#if defined(__cpp_lib_generic_unordered_lookup) || defined(__cpp_lib_associative_heterogeneous_insertion)
     // Support Heterogenous Lookup
     template <typename K, typename V>
-        requires (System::Concepts::IsTransparent<hasher> && System::Concepts::IsTransparent<key_equal>)
     constexpr bool TryAdd(const K &key, const V &value)
     {
         if ( ContainsKey( key ) )
             return false;
-        m_data[ key ] = value;
+        (*this)[ key ] = value;
         return true;
     }
-#endif
 
     constexpr bool ContainsValue(const mapped_type &value) const
     {
