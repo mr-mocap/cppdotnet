@@ -87,6 +87,20 @@ public:
         return true;
     }
 
+    template <typename K>
+    bool TryGetValue(K &&key, value_type &value_out)
+    {
+        auto iter = m_data.find( std::forward<K>(key) );
+
+        if ( iter == m_data.end() )
+        {
+            value_out = value_type{};
+            return false;
+        }
+        value_out = *iter;
+        return true;
+    }
+
 #if 0
     void ExceptWith(range_of_values)
     {
@@ -108,6 +122,16 @@ public:
         return m_data.insert( std::move(moved_value) ).second;
     }
 
+    template <typename K>
+    bool Add(K &&item)
+    {
+#ifdef __cpp_lib_associative_heterogeneous_insertion
+        return m_data.insert( std::forward<K>(item) ).second;
+#else
+        return m_data.insert( key_type( std::forward<K>(item) ) ).second;
+#endif
+    }
+
     void Clear()
     {
         m_data.clear();
@@ -118,6 +142,12 @@ public:
     bool Contains(const value_type &item) const
     {
         return m_data.count( item );
+    }
+
+    template <typename K>
+    bool Contains(K &&item) const
+    {
+        return m_data.count( std::forward<K>(item) );
     }
 
 #if 0
