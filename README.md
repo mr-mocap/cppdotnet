@@ -6,6 +6,8 @@ Implementation of .NET core libraries in C++
 
 This is a simple implementation of the .NET libraries in C++ and as such does not yet take into account thread safety.  It isn't currently meant to be an exact match, but instead uses C++-style idioms when I think it will help.
 
+This library currently is made for building on a Unix-style system using Makefiles.
+
 ## Why
 
 This is my attempt to experiment with implementing a small C++ library
