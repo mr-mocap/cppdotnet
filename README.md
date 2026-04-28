@@ -37,6 +37,10 @@ I also plan on writing better unit tests for this so I can practice doing that a
 * Reverse the template parameters for System::Func<...>
     * Use template trickery/sorcery
 * C++20 Modules!
+* Deduction Guides
+* Hidden-Friend functions
+* Spaceship operator ( <=> )
+* Operator-rewriting:  ( != generated from == ) ( <, <=, >, >= generated from <=> )
 
 ## Lessons Learned So Far
 
@@ -99,6 +103,18 @@ I also plan on writing better unit tests for this so I can practice doing that a
 * Get rid of a lot of the interface class inheritance and just implement the interfaces in the resulting class directly.  This
   shrinks the size of the final object in memory (yay!) while still allowing the use of the "type erasure" pattern to throw
   around objects as the correct base-class types.
+* Deduction Guides
+    * Used for allowing construction of a templated class without needing to use a template parameter
+    * Allows for a much cleaner library user experience
+* Hidden-friend functions
+    * Allows for better encapsulation of a class and all of its associated functions
+    * Keeps from polluting the global namespace
+* Spaceship Operator ( <=> )
+    * Automatically generated for simple classes whose member(s) are PODs or types that have <=> defined
+* Operator re-writing
+    * Allows to only need supplying of operator ==() and operator <=>() to get all of the rest of the relational operators
+    * Doesn't need to be defined if the members of a class also define those operators.  The default operator will be generated.
+
 
   __NOTE: See Int16/32/64 as an example.__
 * C++20 Modules: Because of the introduction of build order when using modules, you have to go with some sort of meta-build
@@ -117,3 +133,6 @@ I also plan on writing better unit tests for this so I can practice doing that a
   Possible Solution(s)
     * Maybe just have the library only importable as a single "System" module
     * Try to use CMake
+    * Don't use modules (at least until it improves)
+    * Only use modules on Windows & their build systems.  (modules seem to be implemented with their impl. as the main example case)
+
