@@ -15,6 +15,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-16 100 \
  && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /workspaces
+WORKDIR /workspaces/cppdotnet
 
 CMD ["bash"]

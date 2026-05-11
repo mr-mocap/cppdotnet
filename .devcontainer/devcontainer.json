@@ -10,11 +10,11 @@
 		"--security-opt",
 		"seccomp=unconfined"
 	],
-	"settings": {
+	"customizations/vscode/settings": {
 		"cmake.configureOnOpen": true,
 		"editor.formatOnSave": false
 	},
-	"extensions": [
+	"customizations/vscode/extensions": [
 		"ms-vscode.cpptools-extension-pack",
 		"pkief.material-icon-theme",
 		"brennondenny.vsc-jetbrains-icons-enhanced"
@@ -28,8 +28,7 @@
 	"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=delegated",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"features": {
-		"git": "latest",
-		"git-lfs": "latest",
-		"powershell": "latest"
+		//"git": "latest",
+		//"git-lfs": "latest",
 	}
 }
