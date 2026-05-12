@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 #include <type_traits>
+#include <variant>
 
 namespace System
 {
