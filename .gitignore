@@ -32,9 +32,9 @@
 *.app
 
 # VSCode
-.vscode/*
+.vscode/
 
-.vs/*
+.vs/
 
 # Project Level
 testing/*.pass
