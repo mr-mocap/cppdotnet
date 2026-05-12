@@ -10,15 +10,19 @@
 		"--security-opt",
 		"seccomp=unconfined"
 	],
-	"customizations/vscode/settings": {
-		"cmake.configureOnOpen": true,
-		"editor.formatOnSave": false
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"cmake.configureOnOpen": true,
+				"editor.formatOnSave": false
+			},
+			"extensions": [
+				"ms-vscode.cpptools-extension-pack",
+				"pkief.material-icon-theme",
+				"brennondenny.vsc-jetbrains-icons-enhanced"
+			]
+		}
 	},
-	"customizations/vscode/extensions": [
-		"ms-vscode.cpptools-extension-pack",
-		"pkief.material-icon-theme",
-		"brennondenny.vsc-jetbrains-icons-enhanced"
-	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
