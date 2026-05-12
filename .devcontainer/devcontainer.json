@@ -19,7 +19,9 @@
 			"extensions": [
 				"ms-vscode.cpptools-extension-pack",
 				"pkief.material-icon-theme",
-				"brennondenny.vsc-jetbrains-icons-enhanced"
+				"brennondenny.vsc-jetbrains-icons-enhanced",
+				"twxs.cmake",
+				"cschlosser.doxdocgen"
 			]
 		}
 	},
