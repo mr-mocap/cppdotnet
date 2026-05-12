@@ -9,6 +9,8 @@
 #include <stacktrace>
 #endif
 
+extern char **environ; // Also in <unistd.h>
+
 
 namespace System
 {
