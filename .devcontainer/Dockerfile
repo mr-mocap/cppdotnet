@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	git git-lfs \
 	curl \
 	gdb gdbserver \
+	uuid-dev \
  && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-16 100 \
  && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-16 100 \
  && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-16 100 \
