@@ -21,7 +21,8 @@
 				"pkief.material-icon-theme",
 				"brennondenny.vsc-jetbrains-icons-enhanced",
 				"twxs.cmake",
-				"cschlosser.doxdocgen"
+				"cschlosser.doxdocgen",
+				"jlwoolf.makefile-tools-nameable"
 			]
 		}
 	},
