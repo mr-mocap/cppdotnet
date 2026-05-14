@@ -1,9 +1,17 @@
-FROM ubuntu:26.04
+# [Choice] noble (24.04), oracular (24.10), resolute (26.04)
+ARG VARIANT="resolute"
 
-ARG DEBIAN_FRONTEND=noninteractive
+FROM ubuntu:${VARIANT}
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    g++-16 gcc-16 cpp-16 \
+# Restate the variant to use it later on in the llvm and cmake installations
+ARG VARIANT
+
+ARG GCC_VER="16"
+
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && \
+    apt-get install -y --no-install-recommends \
+	binutils \
+    g++-${GCC_VER} gcc-${GCC_VER} cpp-${GCC_VER} \
 	make \
 	cmake \
     ca-certificates \
@@ -11,11 +19,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	curl \
 	gdb gdbserver \
 	uuid-dev \
-	doxygen doxygen-awesome-css \
- && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-16 100 \
- && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-16 100 \
- && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-16 100 \
+	doxygen doxygen-awesome-css graphviz \
  && rm -rf /var/lib/apt/lists/*
+
+RUN update-alternatives --install /usr/bin/cpp cpp $(which cpp-${GCC_VER}) 100
+RUN update-alternatives --install /usr/bin/gcc gcc $(which gcc-${GCC_VER}) 100
+RUN update-alternatives --install /usr/bin/g++ g++ $(which g++-${GCC_VER}) 100
+
+# Install editor(s)
+RUN apt-get update -qq && export DEBIAN_FRONTEND=noninteractive && \
+    apt-get install -y --no-install-recommends \
+        vim neovim
 
 WORKDIR /workspaces/cppdotnet
 
