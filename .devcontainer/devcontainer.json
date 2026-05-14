@@ -3,7 +3,11 @@
 {
 	"name": "C++",
 	"build": {
-		"dockerfile": "Dockerfile"
+		"dockerfile": "Dockerfile",
+		"args": {
+			"VARIANT": "resolute",
+			"GCC_VER": "16"
+		}
 	},
 	"runArgs": [
 		"--cap-add=SYS_PTRACE",
@@ -18,11 +22,13 @@
 			},
 			"extensions": [
 				"ms-vscode.cpptools-extension-pack",
+				"twxs.cmake",
+				"ms-vscode.cmake-tools",
+				"jlwoolf.makefile-tools-nameable",
+				"ms-vscode.cpptools-themes",
 				"pkief.material-icon-theme",
 				"brennondenny.vsc-jetbrains-icons-enhanced",
-				"twxs.cmake",
-				"cschlosser.doxdocgen",
-				"jlwoolf.makefile-tools-nameable"
+				"cschlosser.doxdocgen"
 			]
 		}
 	},
