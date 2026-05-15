@@ -16,10 +16,11 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && \
 	cmake \
     ca-certificates \
 	git git-lfs \
-	curl \
+	curl wget \
 	gdb gdbserver \
 	uuid-dev \
 	doxygen doxygen-awesome-css graphviz \
+	zsh \
  && rm -rf /var/lib/apt/lists/*
 
 RUN update-alternatives --install /usr/bin/cpp cpp $(which cpp-${GCC_VER}) 100
@@ -31,6 +32,12 @@ RUN apt-get update -qq && export DEBIAN_FRONTEND=noninteractive && \
     apt-get install -y --no-install-recommends \
         vim neovim
 
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+COPY ./.zshrc /root
+
+ENV SHELL="/usr/bin/zsh"
+
 WORKDIR /workspaces/cppdotnet
 
-CMD ["bash"]
+CMD ["/usr/bin/zsh"]
