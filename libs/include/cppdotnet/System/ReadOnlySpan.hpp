@@ -24,13 +24,8 @@ public:
       using difference_type        = std::ptrdiff_t;
       using const_pointer          = const Type *;
       using const_reference        = const element_type &;
-#if __cplusplus > 202002L
-      using const_iterator         = std::span<Type, Extent>::const_iterator;
-      using const_reverse_iterator = std::span<Type, Extent>::const_reverse_iterator;
-#else
       using const_iterator         = std::span<element_type, Extent>::iterator;
       using const_reverse_iterator = std::span<element_type, Extent>::reverse_iterator;
-#endif
 
     constexpr ReadOnlySpan() noexcept
         requires(Extent == std::dynamic_extent  ||  Extent == 0) = default;
@@ -144,7 +139,7 @@ public:
     constexpr const_iterator rend()  const noexcept { return _data.rend();   }
     constexpr const_iterator crend() const noexcept { return _data.crend();   }
 protected:
-    std::span<const Type, Extent> _data;
+    std::span<element_type, Extent> _data; // element_type is always a const type!
 };
 
 template <typename SpecializedType, std::size_t Extent>
