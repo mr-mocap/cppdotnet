@@ -14,6 +14,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && \
     g++-${GCC_VER} gcc-${GCC_VER} cpp-${GCC_VER} \
 	make \
 	cmake \
+	pkgconf \
     ca-certificates \
 	git git-lfs \
 	curl wget \
