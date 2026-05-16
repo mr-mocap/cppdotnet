@@ -1,0 +1,48 @@
+add_library(cppdotnet_io)
+
+target_sources(cppdotnet_io
+        PRIVATE
+           src/cppdotnet/System/Console.cpp
+           src/cppdotnet/System/IO/BinaryWriter.cpp
+           src/cppdotnet/System/IO/ConsoleStream.cpp
+           src/cppdotnet/System/IO/FileStream.cpp
+           src/cppdotnet/System/IO/Exception.cpp
+           src/cppdotnet/System/IO/MemoryStream.cpp
+           src/cppdotnet/System/IO/NullStream.cpp
+           src/cppdotnet/System/IO/Path.cpp
+           src/cppdotnet/System/IO/Stream.cpp
+           src/cppdotnet/System/IO/StreamReader.cpp
+           src/cppdotnet/System/IO/StreamWriter.cpp
+           src/cppdotnet/System/IO/StringReader.cpp
+           src/cppdotnet/System/IO/StringWriter.cpp
+           src/cppdotnet/System/IO/TextReader.cpp
+           src/cppdotnet/System/IO/TextWriter.cpp
+               
+        PUBLIC
+        FILE_SET HEADERS
+        BASE_DIRS
+            include
+        FILES
+            include/cppdotnet/System/IO.hpp
+            include/cppdotnet/System/IO/BinaryWriter.hpp
+            include/cppdotnet/System/IO/ConsoleStream.hpp
+            include/cppdotnet/System/IO/Exception.hpp
+            include/cppdotnet/System/IO/FileAccess.hpp
+            include/cppdotnet/System/IO/FileMode.hpp
+            include/cppdotnet/System/IO/FileStream.hpp
+            include/cppdotnet/System/IO/FileStreamOptions.hpp
+            include/cppdotnet/System/IO/MatchCasing.hpp
+            include/cppdotnet/System/IO/MatchType.hpp
+            include/cppdotnet/System/IO/MemoryStream.hpp
+            include/cppdotnet/System/IO/NullStream.hpp
+            include/cppdotnet/System/IO/Path.hpp
+            include/cppdotnet/System/IO/SeekOrigin.hpp
+            include/cppdotnet/System/IO/Stream.hpp
+            include/cppdotnet/System/IO/StreamReader.hpp
+            include/cppdotnet/System/IO/StreamWriter.hpp
+            include/cppdotnet/System/IO/StringReader.hpp
+            include/cppdotnet/System/IO/StringWriter.hpp
+            include/cppdotnet/System/IO/TextReader.hpp
+            include/cppdotnet/System/IO/TextWriter.hpp
+            include/cppdotnet/System/IO/UnixFileMode.hpp
+)
