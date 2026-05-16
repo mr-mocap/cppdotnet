@@ -1,0 +1,72 @@
+add_library(cppdotnet_diagnostics)
+
+target_sources(cppdotnet_diagnostics
+        PRIVATE
+            src/cppdotnet/System/Diagnostics/Activity.cpp
+            src/cppdotnet/System/Diagnostics/ActivityListener.cpp
+            src/cppdotnet/System/Diagnostics/ActivitySource.cpp
+            src/cppdotnet/System/Diagnostics/ActivitySpanId.cpp
+            src/cppdotnet/System/Diagnostics/ActivityTraceId.cpp
+            src/cppdotnet/System/Diagnostics/BooleanSwitch.cpp
+            src/cppdotnet/System/Diagnostics/ConsoleTraceListener.cpp
+            src/cppdotnet/System/Diagnostics/Debug.cpp
+            src/cppdotnet/System/Diagnostics/Debugger.cpp
+            src/cppdotnet/System/Diagnostics/DefaultTraceListener.cpp
+            src/cppdotnet/System/Diagnostics/DiagnosticListener.cpp
+            src/cppdotnet/System/Diagnostics/EventTypeFilter.cpp
+            src/cppdotnet/System/Diagnostics/SampleActivity.cpp
+            src/cppdotnet/System/Diagnostics/SourceFilter.cpp
+            src/cppdotnet/System/Diagnostics/SourceSwitch.cpp
+            src/cppdotnet/System/Diagnostics/Switch.cpp
+            src/cppdotnet/System/Diagnostics/TextWriterTraceListener.cpp
+            src/cppdotnet/System/Diagnostics/Trace.cpp
+            src/cppdotnet/System/Diagnostics/TraceEventCache.cpp
+            src/cppdotnet/System/Diagnostics/TraceFilter.cpp
+            src/cppdotnet/System/Diagnostics/TraceListener.cpp
+            src/cppdotnet/System/Diagnostics/TraceListenerCollection.cpp
+            src/cppdotnet/System/Diagnostics/TraceSource.cpp
+            src/cppdotnet/System/Diagnostics/Private/DebugAndTraceCommon.cpp
+               
+        PUBLIC
+        FILE_SET HEADERS
+        BASE_DIRS
+            include
+        FILES
+            include/cppdotnet/System/Diagnostics/Activity.hpp
+            include/cppdotnet/System/Diagnostics/ActivityListener.hpp
+            include/cppdotnet/System/Diagnostics/ActivitySamplingResult.hpp
+            include/cppdotnet/System/Diagnostics/ActivitySource.hpp
+            include/cppdotnet/System/Diagnostics/ActivitySpanId.hpp
+            include/cppdotnet/System/Diagnostics/ActivityTraceId.hpp
+            include/cppdotnet/System/Diagnostics/BooleanSwitch.hpp
+            include/cppdotnet/System/Diagnostics/ConsoleTraceListener.hpp
+            include/cppdotnet/System/Diagnostics/Debug.hpp
+            include/cppdotnet/System/Diagnostics/Debugger.hpp
+            include/cppdotnet/System/Diagnostics/DefaultTraceListener.hpp
+            include/cppdotnet/System/Diagnostics/DiagnosticListener.hpp
+            include/cppdotnet/System/Diagnostics/DiagnosticSource.hpp
+            include/cppdotnet/System/Diagnostics/EventTypeFilter.hpp
+            include/cppdotnet/System/Diagnostics/ExceptionRecorder.hpp
+            include/cppdotnet/System/Diagnostics/Private.hpp
+            include/cppdotnet/System/Diagnostics/SampleActivity.hpp
+            include/cppdotnet/System/Diagnostics/SourceFilter.hpp
+            include/cppdotnet/System/Diagnostics/SourceLevels.hpp
+            include/cppdotnet/System/Diagnostics/SourceSwitch.hpp
+            include/cppdotnet/System/Diagnostics/Stopwatch.hpp
+            include/cppdotnet/System/Diagnostics/Switch.hpp
+            include/cppdotnet/System/Diagnostics/TagList.hpp
+            include/cppdotnet/System/Diagnostics/TextWriterTraceListener.hpp
+            include/cppdotnet/System/Diagnostics/Trace.hpp
+            include/cppdotnet/System/Diagnostics/TraceEventCache.hpp
+            include/cppdotnet/System/Diagnostics/TraceEventType.hpp
+            include/cppdotnet/System/Diagnostics/TraceFilter.hpp
+            include/cppdotnet/System/Diagnostics/TraceLevel.hpp
+            include/cppdotnet/System/Diagnostics/TraceListener.hpp
+            include/cppdotnet/System/Diagnostics/TraceListenerCollection.hpp
+            include/cppdotnet/System/Diagnostics/TraceOptions.hpp
+            include/cppdotnet/System/Diagnostics/TraceSource.hpp
+            include/cppdotnet/System/Diagnostics/TraceSwitch.hpp
+            include/cppdotnet/System/Diagnostics/Private/CommonTypes.hpp
+            include/cppdotnet/System/Diagnostics/Private/DebugAndTraceCommon.hpp
+            include/cppdotnet/System/Diagnostics/Private/Formatting.hpp
+)

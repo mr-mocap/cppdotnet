@@ -1,0 +1,69 @@
+add_library(cppdotnet_xml)
+
+target_sources(cppdotnet_xml
+        PRIVATE
+            src/cppdotnet/System/Xml/NameTable.cpp
+            src/cppdotnet/System/Xml/Private/DefaultNodeListImplementation.cpp
+            src/cppdotnet/System/Xml/XmlAttribute.cpp
+            src/cppdotnet/System/Xml/XmlAttributeCollection.cpp
+            src/cppdotnet/System/Xml/XmlCharacterData.cpp
+            src/cppdotnet/System/Xml/XmlComment.cpp
+            src/cppdotnet/System/Xml/XmlDeclaration.cpp
+            src/cppdotnet/System/Xml/XmlDocument.cpp
+            src/cppdotnet/System/Xml/XmlDocumentType.cpp
+            src/cppdotnet/System/Xml/XmlElement.cpp
+            src/cppdotnet/System/Xml/XmlImplementation.cpp
+            src/cppdotnet/System/Xml/XmlLinkedNode.cpp
+            src/cppdotnet/System/Xml/XmlNode.cpp
+            src/cppdotnet/System/Xml/XmlNodeReader.cpp
+            src/cppdotnet/System/Xml/XmlProcessingInstruction.cpp
+            src/cppdotnet/System/Xml/XmlReader.cpp
+            src/cppdotnet/System/Xml/XmlReaderSettings.cpp
+            src/cppdotnet/System/Xml/XmlText.cpp
+            src/cppdotnet/System/Xml/XmlTextReader.cpp
+            src/cppdotnet/System/Xml/XmlTextWriter.cpp
+            src/cppdotnet/System/Xml/XmlWhitespace.cpp
+            src/cppdotnet/System/Xml/XmlWriter.cpp
+            src/cppdotnet/System/Xml/XmlWriterSettings.cpp
+               
+        PUBLIC
+        FILE_SET HEADERS
+        BASE_DIRS
+            include
+        FILES
+            include/cppdotnet/System/Xml/Formatting.hpp
+            include/cppdotnet/System/Xml/NameTable.hpp
+            include/cppdotnet/System/Xml/NewLineHandling.hpp
+            include/cppdotnet/System/Xml/ReadState.hpp
+            include/cppdotnet/System/Xml/WriteState.hpp
+            include/cppdotnet/System/Xml/XmlAttribute.hpp
+            include/cppdotnet/System/Xml/XmlAttributeCollection.hpp
+            include/cppdotnet/System/Xml/XmlCharacterData.hpp
+            include/cppdotnet/System/Xml/XmlComment.hpp
+            include/cppdotnet/System/Xml/XmlDeclaration.hpp
+            include/cppdotnet/System/Xml/XmlDocument.hpp
+            include/cppdotnet/System/Xml/XmlDocumentType.hpp
+            include/cppdotnet/System/Xml/XmlElement.hpp
+            include/cppdotnet/System/Xml/XmlException.hpp
+            include/cppdotnet/System/Xml/XmlImplementation.hpp
+            include/cppdotnet/System/Xml/XmlLinkedNode.hpp
+            include/cppdotnet/System/Xml/XmlNamedNodeMap.hpp
+            include/cppdotnet/System/Xml/XmlNameTable.hpp
+            include/cppdotnet/System/Xml/XmlNode.hpp
+            include/cppdotnet/System/Xml/XmlNodeList.hpp
+            include/cppdotnet/System/Xml/XmlNodeReader.hpp
+            include/cppdotnet/System/Xml/XmlNodeType.hpp
+            include/cppdotnet/System/Xml/XmlOutputMethod.hpp
+            include/cppdotnet/System/Xml/XmlProcessingInstruction.hpp
+            include/cppdotnet/System/Xml/XmlReader.hpp
+            include/cppdotnet/System/Xml/XmlReaderSettings.hpp
+            include/cppdotnet/System/Xml/XmlSpace.hpp
+            include/cppdotnet/System/Xml/XmlText.hpp
+            include/cppdotnet/System/Xml/XmlTextReader.hpp
+            include/cppdotnet/System/Xml/XmlTextWriter.hpp
+            include/cppdotnet/System/Xml/XmlWhitespace.hpp
+            include/cppdotnet/System/Xml/XmlWriter.hpp
+            include/cppdotnet/System/Xml/XmlWriterSettings.hpp
+            include/cppdotnet/System/Xml/Private/DefaultNodeListImplementation.hpp
+            include/cppdotnet/System/Xml/Private/Utils.hpp
+)
