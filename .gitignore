@@ -34,7 +34,11 @@
 # VSCode
 .vscode/
 
+# Visual Studio
 .vs/
+
+#CMake
+build/
 
 # Project Level
 testing/*.pass
