@@ -54,7 +54,7 @@ private:
         bool IsReadOnly() const override { return data.IsReadOnly(); }
         bool IsReadOnly()       override { return data.IsReadOnly(); }
 
-        bool IsSynchronized() const { return data.IsSynchronized(); }
+        bool IsSynchronized() const override { return data.IsSynchronized(); }
 
         void Add(const T &item) override { data.Add(item); }
 

@@ -61,7 +61,7 @@ private:
             return data.IsReadOnly();
         }
 
-        bool IsSynchronized() const
+        bool IsSynchronized() const override
         {
             return data.IsSynchronized();
         }
@@ -95,7 +95,7 @@ private:
             return Private::IListIndexer<ListType>::GetAt(data, index);
         }
 
-        size_type IndexOf(const value_type &item) const
+        size_type IndexOf(const value_type &item) const override
         {
             return data.IndexOf(item);
         }
@@ -278,7 +278,7 @@ private:
             return data->IsReadOnly();
         }
         
-        bool IsSynchronized() const
+        bool IsSynchronized() const override
         {
             return data->IsSynchronized();
         }
@@ -313,7 +313,7 @@ private:
             return Private::IListIndexer<ListType>::GetAt(data, index);
         }
 
-        std::size_t IndexOf(const T &item) const
+        std::size_t IndexOf(const T &item) const override
         {
             return data->IndexOf(item);
         }
