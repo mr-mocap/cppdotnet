@@ -121,13 +121,13 @@ private:
         }
 
         // Range-for compatibility
-              iterator  begin()       override { return iterator( std::make_unique<typename IteratorBase::IteratorModel<ListType>>( data.begin() ) ); }
-        const_iterator  begin() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data.begin() ) ); }
-        const_iterator cbegin() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data.cbegin() ) ); }
+              iterator  begin()       override { return iterator( std::make_unique<typename IteratorBase::template IteratorModel<ListType>>( data.begin() ) ); }
+        const_iterator  begin() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data.begin() ) ); }
+        const_iterator cbegin() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data.cbegin() ) ); }
 
-              iterator  end()       override { return iterator( std::make_unique<typename IteratorBase::IteratorModel<ListType>>( data.end() ) ); }
-        const_iterator  end() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data.end() ) ); }
-        const_iterator cend() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data.cend() ) ); }
+              iterator  end()       override { return iterator( std::make_unique<typename IteratorBase::template IteratorModel<ListType>>( data.end() ) ); }
+        const_iterator  end() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data.end() ) ); }
+        const_iterator cend() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data.cend() ) ); }
 
         ListType data;
     };
@@ -339,13 +339,13 @@ private:
         }
 
         // Range-for compatibility
-              iterator  begin()       override { return iterator( std::make_unique<typename IteratorBase::IteratorModel<ListType>>( data->begin() ) ); }
-        const_iterator  begin() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data->begin() ) ); }
-        const_iterator cbegin() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data->cbegin() ) ); }
+              iterator  begin()       override { return iterator( std::make_unique<typename IteratorBase::template IteratorModel<ListType>>( data->begin() ) ); }
+        const_iterator  begin() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data->begin() ) ); }
+        const_iterator cbegin() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data->cbegin() ) ); }
 
-              iterator  end()       override { return iterator( std::make_unique<typename IteratorBase::IteratorModel<ListType>>( data->end() ) ); }
-        const_iterator  end() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data->end() ) ); }
-        const_iterator cend() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data->cend() ) ); }
+              iterator  end()       override { return iterator( std::make_unique<typename IteratorBase::template IteratorModel<ListType>>( data->end() ) ); }
+        const_iterator  end() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data->end() ) ); }
+        const_iterator cend() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data->cend() ) ); }
 
         ListType *data = nullptr;
     };

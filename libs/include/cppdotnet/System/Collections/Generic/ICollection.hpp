@@ -75,13 +75,13 @@ private:
         }
 
         // Range-for compatibility
-        iterator        begin()       override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>(data.begin()) }; }
-        const_iterator  begin() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>(data.begin()) }; }
-        const_iterator cbegin() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>(data.cbegin()) }; }
+        iterator        begin()       override { return       iterator{ std::make_unique<typename IteratorBase::template IteratorModel<CollectionType>>(data.begin()) }; }
+        const_iterator  begin() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>(data.begin()) }; }
+        const_iterator cbegin() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>(data.cbegin()) }; }
 
-        iterator        end()       override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>(data.end()) }; }
-        const_iterator  end() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>(data.end()) }; }
-        const_iterator cend() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>(data.cend()) }; }
+        iterator        end()       override { return       iterator{ std::make_unique<typename IteratorBase::template IteratorModel<CollectionType>>(data.end()) }; }
+        const_iterator  end() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>(data.end()) }; }
+        const_iterator cend() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>(data.cend()) }; }
 
         CollectionType data;
     };
@@ -239,28 +239,28 @@ private:
         // Range-for compatibility
         iterator  begin() override
         {
-            return iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>( data->begin() ) };
+            return iterator{ std::make_unique<typename IteratorBase::template IteratorModel<CollectionType>>( data->begin() ) };
         }
         const_iterator begin() const override
         {
-            return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>( data->begin() ) };
+            return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>( data->begin() ) };
         }
         const_iterator cbegin() const override
         {
-            return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>( data->cbegin() ) };
+            return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>( data->cbegin() ) };
         }
 
         iterator  end() override
         {
-            return iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>( data->end() ) };
+            return iterator{ std::make_unique<typename IteratorBase::template IteratorModel<CollectionType>>( data->end() ) };
         }
         const_iterator end() const override
         {
-            return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>( data->end() ) };
+            return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>( data->end() ) };
         }
         const_iterator cend() const override
         {
-            return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>( data->cend() ) };
+            return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>( data->cend() ) };
         }
 
         CollectionType *data = nullptr;

@@ -137,13 +137,13 @@ private:
             return data.Values();
         }
 
-        iterator        begin()       override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<DictionaryType>>( data.begin() ) }; }
-        const_iterator  begin() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.begin() ) }; }
-        const_iterator cbegin() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.cbegin() ) }; }
+        iterator        begin()       override { return       iterator{ std::make_unique<typename IteratorBase::template IteratorModel<DictionaryType>>( data.begin() ) }; }
+        const_iterator  begin() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<DictionaryType>>( data.begin() ) }; }
+        const_iterator cbegin() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<DictionaryType>>( data.cbegin() ) }; }
         
-        iterator        end()       override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<DictionaryType>>( data.end() ) }; }
-        const_iterator  end() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.end() ) }; }
-        const_iterator cend() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.cend() ) }; }
+        iterator        end()       override { return       iterator{ std::make_unique<typename IteratorBase::template IteratorModel<DictionaryType>>( data.end() ) }; }
+        const_iterator  end() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<DictionaryType>>( data.end() ) }; }
+        const_iterator cend() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<DictionaryType>>( data.cend() ) }; }
 
         std::unique_ptr<Interface> Clone() override
         {
