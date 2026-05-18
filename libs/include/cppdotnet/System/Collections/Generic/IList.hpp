@@ -12,21 +12,21 @@ class IList : public Private::LegacyForwardIteratorBase<T>
 public:
     using IteratorBase = Private::LegacyForwardIteratorBase<T>;
 
-    using difference_type  = IteratorBase::difference_type;
-    using size_type        = IteratorBase::size_type;
-    using value_type       = IteratorBase::value_type;
-    using pointer          = IteratorBase::pointer;
-    using reference        = IteratorBase::reference;
-    using iterator         = IteratorBase::iterator;
-    using const_iterator   = IteratorBase::const_iterator;
+    using difference_type  = typename IteratorBase::difference_type;
+    using size_type        = typename IteratorBase::size_type;
+    using value_type       = typename IteratorBase::value_type;
+    using pointer          = typename IteratorBase::pointer;
+    using reference        = typename IteratorBase::reference;
+    using iterator         = typename IteratorBase::iterator;
+    using const_iterator   = typename IteratorBase::const_iterator;
 
 private:
     struct Policy
     {
-        using value_type         = IteratorBase::value_type;
-        using size_type          = IteratorBase::size_type;
-        using IteratorType       = IteratorBase::iterator;
-        using ConstIteratorType  = IteratorBase::const_iterator;
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
     };
 
     using Interface = Private::IListInterface<Policy>;
@@ -238,10 +238,10 @@ public:
 private:
     struct Policy
     {
-        using value_type         = IteratorBase::value_type;
-        using size_type          = IteratorBase::size_type;
-        using IteratorType       = IteratorBase::iterator;
-        using ConstIteratorType  = IteratorBase::const_iterator;
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
     };
 
     using Interface = Private::IListInterface<Policy>;

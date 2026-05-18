@@ -14,24 +14,24 @@ public:
 
     using key_type        = KeyT;
     using mapped_type     = ValueT;
-    using value_type      = IteratorBase::value_type;
-    using size_type       = IteratorBase::size_type;
-    using reference       = IteratorBase::reference;
-    using const_reference = IteratorBase::const_reference;
-    using pointer         = IteratorBase::pointer;
-    using const_pointer   = IteratorBase::const_pointer;
-    using iterator        = IteratorBase::iterator;
-    using const_iterator  = IteratorBase::const_iterator;
+    using value_type      = typename IteratorBase::value_type;
+    using size_type       = typename IteratorBase::size_type;
+    using reference       = typename IteratorBase::reference;
+    using const_reference = typename IteratorBase::const_reference;
+    using pointer         = typename IteratorBase::pointer;
+    using const_pointer   = typename IteratorBase::const_pointer;
+    using iterator        = typename IteratorBase::iterator;
+    using const_iterator  = typename IteratorBase::const_iterator;
 
 private:
     struct Policy
     {
         using key_type    = KeyT;
         using mapped_type = ValueT;
-        using value_type         = IteratorBase::value_type;
-        using size_type          = IteratorBase::size_type;
-        using IteratorType       = IteratorBase::iterator;
-        using ConstIteratorType  = IteratorBase::const_iterator;
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
     };
 
     using Interface = Private::IDictionaryInterface<Policy>;
