@@ -6,4 +6,4 @@ project(cppdotnet
         LANGUAGES CXX C)
 
 add_subdirectory(libs)
-add_subdirectory(tests)
+add_subdirectory(testing)
