@@ -8,6 +8,13 @@ pkg_check_modules(UUID REQUIRED uuid)
 target_include_directories(cppdotnet_base PUBLIC ${UUID_INCLUDE_DIRS})
 target_link_libraries(cppdotnet_base ${UUID_LIBRARIES})
 
+# set C++ standard for this target from the option
+set_target_properties(cppdotnet_base PROPERTIES
+    CXX_STANDARD ${CMAKE_CXX_STANDARD}
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
 target_sources(cppdotnet_base
         PRIVATE
             src/cppdotnet/System/Action.cpp

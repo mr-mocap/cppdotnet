@@ -1,9 +1,15 @@
 #pragma once
 
-#include <cppdotnet/System/Exception.hpp>
 #include <string>
 #include <concepts>
+#include <type_traits>
 
+namespace System
+{
+
+class Exception;
+
+}
 
 namespace System::Concepts
 {
@@ -13,6 +19,9 @@ concept HasValueType = requires { typename T::value_type; };
 
 template <typename T>
 concept IsTransparent = requires { typename T::is_transparent; };
+
+template <typename T>
+concept EnumType = std::is_enum_v<T>;
 
 template <typename T>
 concept Comparable = requires(T Object, T OtherObject) {
@@ -30,7 +39,7 @@ concept Formattable = requires(T Object, const std::string &format) {
 };
 
 template <typename T>
-concept Observer = requires(T Object, T NewData, Exception ExceptionObject) {
+concept Observer = requires(T Object, T NewData, Exception &ExceptionObject) {
     { Object.OnCompleted() } -> std::same_as<void>;
     { Object.OnError(ExceptionObject) } -> std::same_as<void>;
     { Object.OnNext(NewData) } -> std::same_as<void>;

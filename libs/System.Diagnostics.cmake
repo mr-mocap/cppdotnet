@@ -1,5 +1,12 @@
 add_library(cppdotnet_diagnostics)
 
+# set C++ standard for this target from the option
+set_target_properties(cppdotnet_base PROPERTIES
+    CXX_STANDARD ${CMAKE_CXX_STANDARD}
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
 target_sources(cppdotnet_diagnostics
         PRIVATE
             src/cppdotnet/System/Diagnostics/Activity.cpp
