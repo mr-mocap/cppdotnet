@@ -18,6 +18,8 @@ struct Action : Delegate<void, ArgTypes...>
 };
 
 // Deduction guides
+Action() -> Action<>; ///@< Default to function that neither takes nor returns a value
+
 Action(std::function<void ()> ) -> Action<>; ///@< Default to function that neither takes nor returns a value
 
 }
