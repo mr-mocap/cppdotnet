@@ -1,210 +1,158 @@
 add_executable(TestActivity TestActivity.cpp)
 target_link_libraries(TestActivity PRIVATE cppdotnet_base)
-target_include_directories(TestActivity PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestActivitySource TestActivitySource.cpp)
 target_link_libraries(TestActivitySource PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestActivitySource PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestBinaryWriter TestBinaryWriter.cpp)
 target_link_libraries(TestBinaryWriter PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestBinaryWriter PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestBitConverter TestBitConverter.cpp)
 target_link_libraries(TestBitConverter PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestBitConverter PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestConsole TestConsole.cpp)
 target_link_libraries(TestConsole PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestConsole PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestConsoleTraceListener TestConsoleTraceListener.cpp)
 target_link_libraries(TestConsoleTraceListener PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestConsoleTraceListener PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestConvert TestConvert.cpp)
 target_link_libraries(TestConvert PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestConvert PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestCounter TestCounter.cpp)
 target_link_libraries(TestCounter PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestCounter PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestDateOnly TestDateOnly.cpp)
 target_link_libraries(TestDateOnly PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestDateOnly PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestDateTime TestDateTime.cpp)
 target_link_libraries(TestDateTime PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestDateTime PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestDateTimeOffset TestDateTimeOffset.cpp)
 target_link_libraries(TestDateTimeOffset PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestDateTimeOffset PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestDebug TestDebug.cpp)
 target_link_libraries(TestDebug PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestDebug PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestDefaultTraceListener TestDefaultTraceListener.cpp)
 target_link_libraries(TestDefaultTraceListener PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestDefaultTraceListener PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestDelegates TestDelegates.cpp)
 target_link_libraries(TestDelegates PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestDelegates PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestDictionary TestDictionary.cpp)
 target_link_libraries(TestDictionary PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestDictionary PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestEnum TestEnum.cpp)
 target_link_libraries(TestEnum PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestEnum PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestEnvironment TestEnvironment.cpp)
 target_link_libraries(TestEnvironment PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestEnvironment PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestException TestException.cpp)
 target_link_libraries(TestException PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestException PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestGuid TestGuid.cpp)
 target_link_libraries(TestGuid PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestGuid PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestICollection TestICollection.cpp)
 target_link_libraries(TestICollection PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestICollection PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestIDictionary TestIDictionary.cpp)
 target_link_libraries(TestIDictionary PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestIDictionary PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestIList TestIList.cpp)
 target_link_libraries(TestIList PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestIList PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestInt32 TestInt32.cpp)
 target_link_libraries(TestInt32 PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestInt32 PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestLinkedList TestLinkedList.cpp)
 target_link_libraries(TestLinkedList PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestLinkedList PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestList TestList.cpp)
 target_link_libraries(TestList PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestList PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestNameTable TestNameTable.cpp)
 target_link_libraries(TestNameTable PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestNameTable PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestNullable TestNullable.cpp)
 target_link_libraries(TestNullable PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestNullable PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestPath TestPath.cpp)
 target_link_libraries(TestPath PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestPath PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestProgress TestProgress.cpp)
 target_link_libraries(TestProgress PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestProgress PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestReadOnlySpan TestReadOnlySpan.cpp)
 target_link_libraries(TestReadOnlySpan PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestReadOnlySpan PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestSpan TestSpan.cpp)
 target_link_libraries(TestSpan PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestSpan PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestStack TestStack.cpp)
 target_link_libraries(TestStack PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestStack PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestStopwatch TestStopwatch.cpp)
 target_link_libraries(TestStopwatch PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestStopwatch PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestStringBuilder TestStringBuilder.cpp)
 target_link_libraries(TestStringBuilder PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestStringBuilder PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestStringDictionary TestStringDictionary.cpp)
 target_link_libraries(TestStringDictionary PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestStringDictionary PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestStringReader TestStringReader.cpp)
 target_link_libraries(TestStringReader PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestStringReader PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestStringWriter TestStringWriter.cpp)
 target_link_libraries(TestStringWriter PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestStringWriter PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestTimeOnly TestTimeOnly.cpp)
 target_link_libraries(TestTimeOnly PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestTimeOnly PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestTimeSpan TestTimeSpan.cpp)
 target_link_libraries(TestTimeSpan PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestTimeSpan PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestTrace TestTrace.cpp)
 target_link_libraries(TestTrace PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestTrace PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestTraceSource TestTraceSource.cpp)
 target_link_libraries(TestTraceSource PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestTraceSource PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestValueTuple TestValueTuple.cpp)
 target_link_libraries(TestValueTuple PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestValueTuple PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestVersion TestVersion.cpp)
 target_link_libraries(TestVersion PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestVersion PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestXmlAttribute TestXmlAttribute.cpp)
 target_link_libraries(TestXmlAttribute PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestXmlAttribute PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestXmlDeclaration TestXmlDeclaration.cpp)
 target_link_libraries(TestXmlDeclaration PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestXmlDeclaration PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestXmlDocument TestXmlDocument.cpp)
 target_link_libraries(TestXmlDocument PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestXmlDocument PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestXmlDocumentType TestXmlDocumentType.cpp)
 target_link_libraries(TestXmlDocumentType PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestXmlDocumentType PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestXmlElement TestXmlElement.cpp)
 target_link_libraries(TestXmlElement PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestXmlElement PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestXmlNodeWriteTo TestXmlNodeWriteTo.cpp)
 target_link_libraries(TestXmlNodeWriteTo PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestXmlNodeWriteTo PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestXmlProcessingInstruction TestXmlProcessingInstruction.cpp)
 target_link_libraries(TestXmlProcessingInstruction PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestXmlProcessingInstruction PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestXmlText TestXmlText.cpp)
 target_link_libraries(TestXmlText PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestXmlText PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 add_executable(TestXmlTextWriter TestXmlTextWriter.cpp)
 target_link_libraries(TestXmlTextWriter PRIVATE cppdotnet_diagnostics cppdotnet_xml cppdotnet_io cppdotnet_collections cppdotnet_base)
-target_include_directories(TestXmlTextWriter PRIVATE ${PROJECT_SOURCE_DIR}/libs/include)
 
 enable_testing()
 
