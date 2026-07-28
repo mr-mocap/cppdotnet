@@ -6,7 +6,38 @@ Implementation of .NET core libraries in C++
 
 This is a simple implementation of the .NET libraries in C++ and as such does not yet take into account thread safety.  It isn't currently meant to be an exact match, but instead uses C++-style idioms when I think it will help.
 
-This library currently is made for building on a Unix-style system using Makefiles.
+This library currently is made for building on a Unix-style system using Makefiles OR using CMake.
+
+## Making the libraries
+
+This currently supports both the Makefile and CMake style of making the libraries and tests.
+
+### Makefile instructions
+
+From the top directory: `make lib`.  It builds only the **static-link** libraries under the project root `./libs/build/System` directory.
+
+For building and running the tests, type:
+
+```bash
+# Assume we are in the project root directory
+cd testing
+make
+```
+
+This will build and run each test.
+
+You can also just type `make test` from the top directory to build and run the tests.
+
+### CMake instructions
+
+From the top directory:
+```bash
+mkdir build; cd build; cmake ..
+make
+```
+  
+This will build EVERYTHING.  It builds the libraries and the tests.  From there,
+you can go into the `testing` directory and run the individual tests you choose.
 
 ## Why
 
