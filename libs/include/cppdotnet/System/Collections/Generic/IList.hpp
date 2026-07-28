@@ -12,21 +12,21 @@ class IList : public Private::LegacyForwardIteratorBase<T>
 public:
     using IteratorBase = Private::LegacyForwardIteratorBase<T>;
 
-    using difference_type  = IteratorBase::difference_type;
-    using size_type        = IteratorBase::size_type;
-    using value_type       = IteratorBase::value_type;
-    using pointer          = IteratorBase::pointer;
-    using reference        = IteratorBase::reference;
-    using iterator         = IteratorBase::iterator;
-    using const_iterator   = IteratorBase::const_iterator;
+    using difference_type  = typename IteratorBase::difference_type;
+    using size_type        = typename IteratorBase::size_type;
+    using value_type       = typename IteratorBase::value_type;
+    using pointer          = typename IteratorBase::pointer;
+    using reference        = typename IteratorBase::reference;
+    using iterator         = typename IteratorBase::iterator;
+    using const_iterator   = typename IteratorBase::const_iterator;
 
 private:
     struct Policy
     {
-        using value_type         = IteratorBase::value_type;
-        using size_type          = IteratorBase::size_type;
-        using IteratorType       = IteratorBase::iterator;
-        using ConstIteratorType  = IteratorBase::const_iterator;
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
     };
 
     using Interface = Private::IListInterface<Policy>;
@@ -61,7 +61,7 @@ private:
             return data.IsReadOnly();
         }
 
-        bool IsSynchronized() const
+        bool IsSynchronized() const override
         {
             return data.IsSynchronized();
         }
@@ -95,7 +95,7 @@ private:
             return Private::IListIndexer<ListType>::GetAt(data, index);
         }
 
-        size_type IndexOf(const value_type &item) const
+        size_type IndexOf(const value_type &item) const override
         {
             return data.IndexOf(item);
         }
@@ -121,13 +121,13 @@ private:
         }
 
         // Range-for compatibility
-              iterator  begin()       override { return iterator( std::make_unique<typename IteratorBase::IteratorModel<ListType>>( data.begin() ) ); }
-        const_iterator  begin() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data.begin() ) ); }
-        const_iterator cbegin() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data.cbegin() ) ); }
+              iterator  begin()       override { return iterator( std::make_unique<typename IteratorBase::template IteratorModel<ListType>>( data.begin() ) ); }
+        const_iterator  begin() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data.begin() ) ); }
+        const_iterator cbegin() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data.cbegin() ) ); }
 
-              iterator  end()       override { return iterator( std::make_unique<typename IteratorBase::IteratorModel<ListType>>( data.end() ) ); }
-        const_iterator  end() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data.end() ) ); }
-        const_iterator cend() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data.cend() ) ); }
+              iterator  end()       override { return iterator( std::make_unique<typename IteratorBase::template IteratorModel<ListType>>( data.end() ) ); }
+        const_iterator  end() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data.end() ) ); }
+        const_iterator cend() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data.cend() ) ); }
 
         ListType data;
     };
@@ -238,10 +238,10 @@ public:
 private:
     struct Policy
     {
-        using value_type         = IteratorBase::value_type;
-        using size_type          = IteratorBase::size_type;
-        using IteratorType       = IteratorBase::iterator;
-        using ConstIteratorType  = IteratorBase::const_iterator;
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
     };
 
     using Interface = Private::IListInterface<Policy>;
@@ -278,7 +278,7 @@ private:
             return data->IsReadOnly();
         }
         
-        bool IsSynchronized() const
+        bool IsSynchronized() const override
         {
             return data->IsSynchronized();
         }
@@ -313,7 +313,7 @@ private:
             return Private::IListIndexer<ListType>::GetAt(data, index);
         }
 
-        std::size_t IndexOf(const T &item) const
+        std::size_t IndexOf(const T &item) const override
         {
             return data->IndexOf(item);
         }
@@ -339,13 +339,13 @@ private:
         }
 
         // Range-for compatibility
-              iterator  begin()       override { return iterator( std::make_unique<typename IteratorBase::IteratorModel<ListType>>( data->begin() ) ); }
-        const_iterator  begin() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data->begin() ) ); }
-        const_iterator cbegin() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data->cbegin() ) ); }
+              iterator  begin()       override { return iterator( std::make_unique<typename IteratorBase::template IteratorModel<ListType>>( data->begin() ) ); }
+        const_iterator  begin() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data->begin() ) ); }
+        const_iterator cbegin() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data->cbegin() ) ); }
 
-              iterator  end()       override { return iterator( std::make_unique<typename IteratorBase::IteratorModel<ListType>>( data->end() ) ); }
-        const_iterator  end() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data->end() ) ); }
-        const_iterator cend() const override { return const_iterator( std::make_unique<typename IteratorBase::ConstIteratorModel<ListType>>( data->cend() ) ); }
+              iterator  end()       override { return iterator( std::make_unique<typename IteratorBase::template IteratorModel<ListType>>( data->end() ) ); }
+        const_iterator  end() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data->end() ) ); }
+        const_iterator cend() const override { return const_iterator( std::make_unique<typename IteratorBase::template ConstIteratorModel<ListType>>( data->cend() ) ); }
 
         ListType *data = nullptr;
     };

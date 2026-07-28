@@ -1,0 +1,210 @@
+add_executable(TestActivity TestActivity.cpp)
+target_link_libraries(TestActivity PRIVATE cppdotnetSystem.Base)
+
+add_executable(TestActivitySource TestActivitySource.cpp)
+target_link_libraries(TestActivitySource PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestBinaryWriter TestBinaryWriter.cpp)
+target_link_libraries(TestBinaryWriter PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestBitConverter TestBitConverter.cpp)
+target_link_libraries(TestBitConverter PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestConsole TestConsole.cpp)
+target_link_libraries(TestConsole PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestConsoleTraceListener TestConsoleTraceListener.cpp)
+target_link_libraries(TestConsoleTraceListener PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestConvert TestConvert.cpp)
+target_link_libraries(TestConvert PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestCounter TestCounter.cpp)
+target_link_libraries(TestCounter PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestDateOnly TestDateOnly.cpp)
+target_link_libraries(TestDateOnly PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestDateTime TestDateTime.cpp)
+target_link_libraries(TestDateTime PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestDateTimeOffset TestDateTimeOffset.cpp)
+target_link_libraries(TestDateTimeOffset PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestDebug TestDebug.cpp)
+target_link_libraries(TestDebug PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestDefaultTraceListener TestDefaultTraceListener.cpp)
+target_link_libraries(TestDefaultTraceListener PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestDelegates TestDelegates.cpp)
+target_link_libraries(TestDelegates PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestDictionary TestDictionary.cpp)
+target_link_libraries(TestDictionary PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestEnum TestEnum.cpp)
+target_link_libraries(TestEnum PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestEnvironment TestEnvironment.cpp)
+target_link_libraries(TestEnvironment PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestException TestException.cpp)
+target_link_libraries(TestException PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestGuid TestGuid.cpp)
+target_link_libraries(TestGuid PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestICollection TestICollection.cpp)
+target_link_libraries(TestICollection PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestIDictionary TestIDictionary.cpp)
+target_link_libraries(TestIDictionary PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestIList TestIList.cpp)
+target_link_libraries(TestIList PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestInt32 TestInt32.cpp)
+target_link_libraries(TestInt32 PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestLinkedList TestLinkedList.cpp)
+target_link_libraries(TestLinkedList PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestList TestList.cpp)
+target_link_libraries(TestList PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestNameTable TestNameTable.cpp)
+target_link_libraries(TestNameTable PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestNullable TestNullable.cpp)
+target_link_libraries(TestNullable PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestPath TestPath.cpp)
+target_link_libraries(TestPath PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestProgress TestProgress.cpp)
+target_link_libraries(TestProgress PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestReadOnlySpan TestReadOnlySpan.cpp)
+target_link_libraries(TestReadOnlySpan PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestSpan TestSpan.cpp)
+target_link_libraries(TestSpan PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestStack TestStack.cpp)
+target_link_libraries(TestStack PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestStopwatch TestStopwatch.cpp)
+target_link_libraries(TestStopwatch PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestStringBuilder TestStringBuilder.cpp)
+target_link_libraries(TestStringBuilder PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestStringDictionary TestStringDictionary.cpp)
+target_link_libraries(TestStringDictionary PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestStringReader TestStringReader.cpp)
+target_link_libraries(TestStringReader PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestStringWriter TestStringWriter.cpp)
+target_link_libraries(TestStringWriter PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestTimeOnly TestTimeOnly.cpp)
+target_link_libraries(TestTimeOnly PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestTimeSpan TestTimeSpan.cpp)
+target_link_libraries(TestTimeSpan PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestTrace TestTrace.cpp)
+target_link_libraries(TestTrace PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestTraceSource TestTraceSource.cpp)
+target_link_libraries(TestTraceSource PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestValueTuple TestValueTuple.cpp)
+target_link_libraries(TestValueTuple PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestVersion TestVersion.cpp)
+target_link_libraries(TestVersion PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestXmlAttribute TestXmlAttribute.cpp)
+target_link_libraries(TestXmlAttribute PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestXmlDeclaration TestXmlDeclaration.cpp)
+target_link_libraries(TestXmlDeclaration PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestXmlDocument TestXmlDocument.cpp)
+target_link_libraries(TestXmlDocument PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestXmlDocumentType TestXmlDocumentType.cpp)
+target_link_libraries(TestXmlDocumentType PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestXmlElement TestXmlElement.cpp)
+target_link_libraries(TestXmlElement PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestXmlNodeWriteTo TestXmlNodeWriteTo.cpp)
+target_link_libraries(TestXmlNodeWriteTo PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestXmlProcessingInstruction TestXmlProcessingInstruction.cpp)
+target_link_libraries(TestXmlProcessingInstruction PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestXmlText TestXmlText.cpp)
+target_link_libraries(TestXmlText PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+add_executable(TestXmlTextWriter TestXmlTextWriter.cpp)
+target_link_libraries(TestXmlTextWriter PRIVATE cppdotnetSystem.Diagnostics cppdotnetSystem.Xml cppdotnetSystem.IO cppdotnetSystem.Collections cppdotnetSystem.Base)
+
+enable_testing()
+
+add_test(NAME TestActivity COMMAND TestActivity)
+add_test(NAME TestActivitySource COMMAND TestActivitySource)
+add_test(NAME TestBinaryWriter COMMAND TestBinaryWriter)
+add_test(NAME TestBitConverter COMMAND TestBitConverter)
+add_test(NAME TestConsole COMMAND TestConsole)
+add_test(NAME TestConsoleTraceListener COMMAND TestConsoleTraceListener)
+add_test(NAME TestConvert COMMAND TestConvert)
+add_test(NAME TestCounter COMMAND TestCounter)
+add_test(NAME TestDateOnly COMMAND TestDateOnly)
+add_test(NAME TestDateTime COMMAND TestDateTime)
+add_test(NAME TestDateTimeOffset COMMAND TestDateTimeOffset)
+add_test(NAME TestDebug COMMAND TestDebug)
+add_test(NAME TestDefaultTraceListener COMMAND TestDefaultTraceListener)
+add_test(NAME TestDelegates COMMAND TestDelegates)
+add_test(NAME TestDictionary COMMAND TestDictionary)
+add_test(NAME TestEnum COMMAND TestEnum)
+add_test(NAME TestEnvironment COMMAND TestEnvironment)
+add_test(NAME TestException COMMAND TestException)
+add_test(NAME TestGuid COMMAND TestGuid)
+add_test(NAME TestICollection COMMAND TestICollection)
+add_test(NAME TestIDictionary COMMAND TestIDictionary)
+add_test(NAME TestIList COMMAND TestIList)
+add_test(NAME TestInt32 COMMAND TestInt32)
+add_test(NAME TestLinkedList COMMAND TestLinkedList)
+add_test(NAME TestList COMMAND TestList)
+add_test(NAME TestNameTable COMMAND TestNameTable)
+add_test(NAME TestNullable COMMAND TestNullable)
+add_test(NAME TestPath COMMAND TestPath)
+add_test(NAME TestProgress COMMAND TestProgress)
+add_test(NAME TestReadOnlySpan COMMAND TestReadOnlySpan)
+add_test(NAME TestSpan COMMAND TestSpan)
+add_test(NAME TestStack COMMAND TestStack)
+add_test(NAME TestStopwatch COMMAND TestStopwatch)
+add_test(NAME TestStringBuilder COMMAND TestStringBuilder)
+add_test(NAME TestStringDictionary COMMAND TestStringDictionary)
+add_test(NAME TestStringReader COMMAND TestStringReader)
+add_test(NAME TestStringWriter COMMAND TestStringWriter)
+add_test(NAME TestTimeOnly COMMAND TestTimeOnly)
+add_test(NAME TestTimeSpan COMMAND TestTimeSpan)
+add_test(NAME TestTrace COMMAND TestTrace)
+add_test(NAME TestTraceSource COMMAND TestTraceSource)
+add_test(NAME TestValueTuple COMMAND TestValueTuple)
+add_test(NAME TestVersion COMMAND TestVersion)
+add_test(NAME TestXmlAttribute COMMAND TestXmlAttribute)
+add_test(NAME TestXmlDeclaration COMMAND TestXmlDeclaration)
+add_test(NAME TestXmlDocument COMMAND TestXmlDocument)
+add_test(NAME TestXmlDocumentType COMMAND TestXmlDocumentType)
+add_test(NAME TestXmlElement COMMAND TestXmlElement)
+add_test(NAME TestXmlNodeWriteTo COMMAND TestXmlNodeWriteTo)
+add_test(NAME TestXmlProcessingInstruction COMMAND TestXmlProcessingInstruction)
+add_test(NAME TestXmlText COMMAND TestXmlText)
+add_test(NAME TestXmlTextWriter COMMAND TestXmlTextWriter)

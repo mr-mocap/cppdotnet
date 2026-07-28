@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cppdotnet/System/Concepts.hpp>
 #include <utility>
 #include <string_view>
 #include <span>
@@ -13,8 +14,7 @@
 namespace System
 {
 
-template <class T>
-    requires std::is_enum_v<T>
+template <Concepts::EnumType T>
 struct EnumTraitTypes
 {
     using value_type           = T;
@@ -22,8 +22,7 @@ struct EnumTraitTypes
     using name_value_pair_type = std::pair<std::string_view, T>;
 };
 
-template <class T>
-    requires std::is_enum_v<T>
+template <Concepts::EnumType T>
 struct EnumPolicy : EnumTraitTypes<T>
 {
 public:
@@ -35,8 +34,7 @@ public:
         };
 };
 
-template <class T, class EnumPolicyT = EnumPolicy<T>>
-    requires std::is_enum_v<T>
+template <Concepts::EnumType T, class EnumPolicyT = EnumPolicy<T>>
 struct EnumTraits : EnumPolicyT
 {
     using value_type           = EnumPolicyT::value_type;
@@ -113,8 +111,7 @@ struct EnumTraits : EnumPolicyT
     static constexpr value_type Max() { return NameValuePairs().back(); }
 };
 
-template <class T>
-    requires std::is_enum_v<T>
+template <Concepts::EnumType T>
 struct EnumFormatter
 {
     // Use {} to print the string form (default)

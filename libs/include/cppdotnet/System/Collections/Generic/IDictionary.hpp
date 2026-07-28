@@ -14,24 +14,24 @@ public:
 
     using key_type        = KeyT;
     using mapped_type     = ValueT;
-    using value_type      = IteratorBase::value_type;
-    using size_type       = IteratorBase::size_type;
-    using reference       = IteratorBase::reference;
-    using const_reference = IteratorBase::const_reference;
-    using pointer         = IteratorBase::pointer;
-    using const_pointer   = IteratorBase::const_pointer;
-    using iterator        = IteratorBase::iterator;
-    using const_iterator  = IteratorBase::const_iterator;
+    using value_type      = typename IteratorBase::value_type;
+    using size_type       = typename IteratorBase::size_type;
+    using reference       = typename IteratorBase::reference;
+    using const_reference = typename IteratorBase::const_reference;
+    using pointer         = typename IteratorBase::pointer;
+    using const_pointer   = typename IteratorBase::const_pointer;
+    using iterator        = typename IteratorBase::iterator;
+    using const_iterator  = typename IteratorBase::const_iterator;
 
 private:
     struct Policy
     {
         using key_type    = KeyT;
         using mapped_type = ValueT;
-        using value_type         = IteratorBase::value_type;
-        using size_type          = IteratorBase::size_type;
-        using IteratorType       = IteratorBase::iterator;
-        using ConstIteratorType  = IteratorBase::const_iterator;
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
     };
 
     using Interface = Private::IDictionaryInterface<Policy>;
@@ -137,13 +137,13 @@ private:
             return data.Values();
         }
 
-        iterator        begin()       override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<DictionaryType>>( data.begin() ) }; }
-        const_iterator  begin() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.begin() ) }; }
-        const_iterator cbegin() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.cbegin() ) }; }
+        iterator        begin()       override { return       iterator{ std::make_unique<typename IteratorBase::template IteratorModel<DictionaryType>>( data.begin() ) }; }
+        const_iterator  begin() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<DictionaryType>>( data.begin() ) }; }
+        const_iterator cbegin() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<DictionaryType>>( data.cbegin() ) }; }
         
-        iterator        end()       override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<DictionaryType>>( data.end() ) }; }
-        const_iterator  end() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.end() ) }; }
-        const_iterator cend() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<DictionaryType>>( data.cend() ) }; }
+        iterator        end()       override { return       iterator{ std::make_unique<typename IteratorBase::template IteratorModel<DictionaryType>>( data.end() ) }; }
+        const_iterator  end() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<DictionaryType>>( data.end() ) }; }
+        const_iterator cend() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<DictionaryType>>( data.cend() ) }; }
 
         std::unique_ptr<Interface> Clone() override
         {

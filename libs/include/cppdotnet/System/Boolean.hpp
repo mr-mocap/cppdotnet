@@ -32,20 +32,20 @@ public:
 
     std::byte ToByte() const { return std::byte{_value}; }
 
-    char ToChar() const { return {_value}; }
+    char ToChar() const { return _value; }
 
-    std::int16_t ToInt16() const { return {_value}; }
-    std::int32_t ToInt32() const { return {_value}; }
-    std::int64_t ToInt64() const { return {_value}; }
+    std::int16_t ToInt16() const { return _value; }
+    std::int32_t ToInt32() const { return _value; }
+    std::int64_t ToInt64() const { return _value; }
 
-    std::uint16_t ToUInt16() const { return {_value}; }
-    std::uint32_t ToUInt32() const { return {_value}; }
-    std::uint64_t ToUInt64() const { return {_value}; }
+    std::uint16_t ToUInt16() const { return _value; }
+    std::uint32_t ToUInt32() const { return _value; }
+    std::uint64_t ToUInt64() const { return _value; }
 
     float  ToSingle() const { return static_cast<float>(_value); }
     double ToDouble() const { return static_cast<double>(_value); }
 
-    std::string ToString() const { return (_value) ? std::string{TrueString} : std::string{FalseString}; }
+    std::string_view ToString() const { return (_value) ? TrueString : FalseString; }
     /// @}
 
     /** @name IComparable Interface

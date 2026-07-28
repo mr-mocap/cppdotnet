@@ -13,23 +13,23 @@ class ICollection : public Private::LegacyForwardIteratorBase<T>
 public:
     using IteratorBase = Private::LegacyForwardIteratorBase<T>;
 
-    using value_type       = IteratorBase::value_type;
-    using size_type        = IteratorBase::size_type;
-    using difference_type  = IteratorBase::difference_type;
-    using pointer          = IteratorBase::pointer;
-    using reference        = IteratorBase::reference;
-    using const_pointer    = IteratorBase::const_pointer;
-    using const_reference  = IteratorBase::const_reference;
-    using iterator         = IteratorBase::iterator;
-    using const_iterator   = IteratorBase::const_iterator;
+    using value_type       = typename IteratorBase::value_type;
+    using size_type        = typename IteratorBase::size_type;
+    using difference_type  = typename IteratorBase::difference_type;
+    using pointer          = typename IteratorBase::pointer;
+    using reference        = typename IteratorBase::reference;
+    using const_pointer    = typename IteratorBase::const_pointer;
+    using const_reference  = typename IteratorBase::const_reference;
+    using iterator         = typename IteratorBase::iterator;
+    using const_iterator   = typename IteratorBase::const_iterator;
 
 private:
     struct Policy
     {
-        using value_type         = IteratorBase::value_type;
-        using size_type          = IteratorBase::size_type;
-        using IteratorType       = IteratorBase::iterator;
-        using ConstIteratorType  = IteratorBase::const_iterator;
+        using value_type         = typename IteratorBase::value_type;
+        using size_type          = typename IteratorBase::size_type;
+        using IteratorType       = typename IteratorBase::iterator;
+        using ConstIteratorType  = typename IteratorBase::const_iterator;
     };
 
     using Interface = Private::ICollectionInterface<Policy>;
@@ -54,7 +54,7 @@ private:
         bool IsReadOnly() const override { return data.IsReadOnly(); }
         bool IsReadOnly()       override { return data.IsReadOnly(); }
 
-        bool IsSynchronized() const { return data.IsSynchronized(); }
+        bool IsSynchronized() const override { return data.IsSynchronized(); }
 
         void Add(const T &item) override { data.Add(item); }
 
@@ -75,13 +75,13 @@ private:
         }
 
         // Range-for compatibility
-        iterator        begin()       override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>(data.begin()) }; }
-        const_iterator  begin() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>(data.begin()) }; }
-        const_iterator cbegin() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>(data.cbegin()) }; }
+        iterator        begin()       override { return       iterator{ std::make_unique<typename IteratorBase::template IteratorModel<CollectionType>>(data.begin()) }; }
+        const_iterator  begin() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>(data.begin()) }; }
+        const_iterator cbegin() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>(data.cbegin()) }; }
 
-        iterator        end()       override { return       iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>(data.end()) }; }
-        const_iterator  end() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>(data.end()) }; }
-        const_iterator cend() const override { return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>(data.cend()) }; }
+        iterator        end()       override { return       iterator{ std::make_unique<typename IteratorBase::template IteratorModel<CollectionType>>(data.end()) }; }
+        const_iterator  end() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>(data.end()) }; }
+        const_iterator cend() const override { return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>(data.cend()) }; }
 
         CollectionType data;
     };
@@ -239,28 +239,28 @@ private:
         // Range-for compatibility
         iterator  begin() override
         {
-            return iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>( data->begin() ) };
+            return iterator{ std::make_unique<typename IteratorBase::template IteratorModel<CollectionType>>( data->begin() ) };
         }
         const_iterator begin() const override
         {
-            return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>( data->begin() ) };
+            return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>( data->begin() ) };
         }
         const_iterator cbegin() const override
         {
-            return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>( data->cbegin() ) };
+            return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>( data->cbegin() ) };
         }
 
         iterator  end() override
         {
-            return iterator{ std::make_unique<typename IteratorBase::IteratorModel<CollectionType>>( data->end() ) };
+            return iterator{ std::make_unique<typename IteratorBase::template IteratorModel<CollectionType>>( data->end() ) };
         }
         const_iterator end() const override
         {
-            return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>( data->end() ) };
+            return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>( data->end() ) };
         }
         const_iterator cend() const override
         {
-            return const_iterator{ std::make_unique<typename IteratorBase::ConstIteratorModel<CollectionType>>( data->cend() ) };
+            return const_iterator{ std::make_unique<typename IteratorBase::template ConstIteratorModel<CollectionType>>( data->cend() ) };
         }
 
         CollectionType *data = nullptr;

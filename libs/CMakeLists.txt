@@ -1,0 +1,5 @@
+include(System.Base.cmake)
+include(System.Collections.cmake)
+include(System.IO.cmake)
+include(System.Diagnostics.cmake)
+include(System.Xml.cmake)

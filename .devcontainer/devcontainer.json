@@ -28,7 +28,8 @@
 				"ms-vscode.cpptools-themes",
 				"pkief.material-icon-theme",
 				"brennondenny.vsc-jetbrains-icons-enhanced",
-				"cschlosser.doxdocgen"
+				"cschlosser.doxdocgen",
+				"isaias.doxygen-pack"
 			]
 		}
 	},

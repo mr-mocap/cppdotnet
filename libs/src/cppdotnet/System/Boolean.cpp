@@ -1,12 +1,10 @@
 #include <cppdotnet/System/Boolean.hpp>
 
-using namespace std::literals;
-
 namespace System
 {
 
-std::string_view Boolean::FalseString = "False"sv;
-std::string_view Boolean::TrueString  = "True"sv;
+std::string_view Boolean::FalseString = "False";
+std::string_view Boolean::TrueString  = "True";
 
 int Boolean::CompareTo(const Boolean &other) const
 {
