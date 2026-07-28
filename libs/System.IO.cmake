@@ -1,6 +1,6 @@
-add_library(cppdotnet_io)
+add_library(cppdotnetSystem.IO)
 
-target_sources(cppdotnet_io
+target_sources(cppdotnetSystem.IO
         PRIVATE
            src/cppdotnet/System/Console.cpp
            src/cppdotnet/System/IO/BinaryWriter.cpp

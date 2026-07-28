@@ -1,6 +1,6 @@
-add_library(cppdotnet_collections)
+add_library(cppdotnetSystem.Collections)
 
-target_sources(cppdotnet_collections
+target_sources(cppdotnetSystem.Collections
         PRIVATE
             src/cppdotnet/System/Collections/Generic/Dictionary.cpp
             src/cppdotnet/System/Collections/Generic/HashSet.cpp

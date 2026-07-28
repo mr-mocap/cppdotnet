@@ -1,14 +1,14 @@
-add_library(cppdotnet_base)
+add_library(cppdotnetSystem.Base)
 
 # The Guid class depends on this
 # NOTE: How do we include the Copyright?
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(UUID REQUIRED uuid)
 
-target_include_directories(cppdotnet_base PUBLIC ${UUID_INCLUDE_DIRS})
-target_link_libraries(cppdotnet_base ${UUID_LIBRARIES})
+target_include_directories(cppdotnetSystem.Base PUBLIC ${UUID_INCLUDE_DIRS})
+target_link_libraries(cppdotnetSystem.Base ${UUID_LIBRARIES})
 
-target_sources(cppdotnet_base
+target_sources(cppdotnetSystem.Base
         PRIVATE
             src/cppdotnet/System/Action.cpp
             src/cppdotnet/System/Boolean.cpp

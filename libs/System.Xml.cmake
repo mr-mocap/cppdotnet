@@ -1,6 +1,6 @@
-add_library(cppdotnet_xml)
+add_library(cppdotnetSystem.Xml)
 
-target_sources(cppdotnet_xml
+target_sources(cppdotnetSystem.Xml
         PRIVATE
             src/cppdotnet/System/Xml/NameTable.cpp
             src/cppdotnet/System/Xml/Private/DefaultNodeListImplementation.cpp

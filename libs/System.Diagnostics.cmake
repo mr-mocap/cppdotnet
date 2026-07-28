@@ -1,6 +1,6 @@
-add_library(cppdotnet_diagnostics)
+add_library(cppdotnetSystem.Diagnostics)
 
-target_sources(cppdotnet_diagnostics
+target_sources(cppdotnetSystem.Diagnostics
         PRIVATE
             src/cppdotnet/System/Diagnostics/Activity.cpp
             src/cppdotnet/System/Diagnostics/ActivityListener.cpp
