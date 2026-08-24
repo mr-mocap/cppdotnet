@@ -14,6 +14,10 @@
 namespace System
 {
 
+/** A class containing the basic types that an enum policy should provide
+ * 
+ *  @note This is here mainly for refactoring purposes
+ */
 template <Concepts::EnumType T>
 struct EnumTraitTypes
 {
@@ -22,18 +26,37 @@ struct EnumTraitTypes
     using name_value_pair_type = std::pair<std::string_view, T>;
 };
 
+/** A basic enum policy for getting at values & their respective strings
+ *   
+ *  @tparam T A valid C++ enum type
+ * 
+ *  @note We define the class here as a basic placeholder representing an
+ *        undefined enumeration.  You should actually use template specialization
+ *        to redefine the two members in this class to fit the given C++ enum.
+ * 
+ *  @note We keep this class as small as possible because this will be all you
+ *        have to implement to obtain the necessary functionality of the Enum<T>
+ *        class and all of its methods.
+ */
 template <Concepts::EnumType T>
 struct EnumPolicy : EnumTraitTypes<T>
 {
 public:
 
+    /// The name of the enumerated type
     static constexpr std::string_view EnumName = "UndefinedEnumPolicy";
 
+    /// An array of name/underlying value pairs of the enumeration
     static constexpr typename EnumTraitTypes<T>::name_value_pair_type NameValueArray[] = {
             { "UndefinedEnumValue", static_cast<T>(0) }
         };
 };
 
+/** A class containing methods to extract the underlying names and values of a given C++ enum
+ *   
+ *   @tparam T           The C++ enum type
+ *   @tparam EnumPolicyT The policy that contains the raw name/value data
+ */
 template <Concepts::EnumType T, class EnumPolicyT = EnumPolicy<T>>
 struct EnumTraits : EnumPolicyT
 {
@@ -111,6 +134,12 @@ struct EnumTraits : EnumPolicyT
     static constexpr value_type Max() { return NameValuePairs().back(); }
 };
 
+/** A class for using the std::format library with a C++ enum type
+ * 
+ *  @note Use {} to print the string form (default).
+ *        Use {:s} to print the string form and forward to the standard string formatting.
+ *        Use {:i} to print the integer value and forward to the standard integer formatting.
+ */
 template <Concepts::EnumType T>
 struct EnumFormatter
 {
@@ -170,6 +199,11 @@ protected:
 
 }
 
+/** A definition of the std::formatter for our C++ enum formatter
+ * 
+ *  @note This class will allow you to use the newer std::format library
+ *        to format raw C++ enum values
+ */
 template <typename T>
 requires
 requires {

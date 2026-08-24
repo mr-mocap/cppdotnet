@@ -1,5 +1,6 @@
 #include <cppdotnet/System/Enum.hpp>
 #include <iostream>
+#include <sstream>
 #include <array>
 #include <map>
 #include <iterator>
@@ -22,45 +23,9 @@ enum Values {
 };
 
 
-#if 0
-class MyTraceLevel : public System::Enum<MyTraceLevel>
-{
-public:
-#if 1
-    enum Values : value_type {
-        Off = 0,
-        Error,
-        Warning,
-        Info,
-        Verbose
-    };
-#else
-    using Values = TestEnum::Values;
-    using enum Values;
-#endif
-
-    using BaseType         = System::Enum<MyTraceLevel, int>;
-    using value_array_type = typename std::array<value_type, 5>;
-    using name_array_type  = std::array<std::string_view, 5>;
-    using name_value_pair_type  = std::pair<const char *, Values>;
-    using name_value_array_type = std::array<name_value_pair_type, 5>;
-
-    MyTraceLevel(Values v = Values::Off) : Enum( static_cast<value_type>(v) ) { }
-
-    friend class System::Enum<MyTraceLevel, int>;
-protected:
-
-    static const name_value_array_type _name_value_array;
-};
-
-const MyTraceLevel::name_value_array_type MyTraceLevel::_name_value_array{ {
-    { "Off",     MyTraceLevel::Off     },
-    { "Error",   MyTraceLevel::Error   },
-    { "Warning", MyTraceLevel::Warning },
-    { "Info",    MyTraceLevel::Info    },
-    { "Verbose", MyTraceLevel::Verbose }
-} };
-#else
+/** An example policy for use with System::Enum, using class-scoped enum
+ * 
+ */
 class MyTraceLevelPolicy
 {
 public:
@@ -91,25 +56,26 @@ public:
 };
 
 using MyTraceLevel = System::Enum<MyTraceLevelPolicy>;
-#endif
 
 
 void CheckGetNames()
 {
     MyTraceLevel t;
+    std::ostringstream output;
 
-    std::cout << "GetNames() =\t";
-    std::ranges::copy( t.GetNames(), std::ostream_iterator<std::string_view>(std::cout, "\t") );
-    std::cout << std::endl;
+    std::ranges::copy( t.GetNames(), std::ostream_iterator<std::string_view>(output, "\t") );
+
+    assert( output.view() == "Off\tError\tWarning\tInfo\tVerbose\t" );
 }
 
 void CheckGetValues()
 {
     MyTraceLevel t;
+    std::ostringstream output;
 
-    std::cout << "GetValues() =\t";
-    std::ranges::copy( t.GetValues(), std::ostream_iterator<MyTraceLevel::value_type>(std::cout, "\t") );
-    std::cout << std::endl;
+    std::ranges::copy( t.GetValues(), std::ostream_iterator<MyTraceLevel::value_type>(output, "\t") );
+
+    assert( output.view() == "0\t1\t2\t3\t4\t" );
 }
 
 void IsDefined()

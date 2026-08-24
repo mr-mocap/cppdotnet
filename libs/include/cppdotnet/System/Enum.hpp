@@ -274,6 +274,12 @@ protected:
 
 }
 
+/** A class for using the std::format library with System::Enum
+ * 
+ *  @note Use {} to print the string form (default).
+ *        Use {:s} to print the string form and forward to the standard string formatting.
+ *        Use {:i} to print the integer value and forward to the standard integer formatting.
+ */
 template <class T>
 struct std::formatter<System::Enum<T>>
 {
